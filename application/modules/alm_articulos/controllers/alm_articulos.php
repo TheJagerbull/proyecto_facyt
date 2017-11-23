@@ -1491,45 +1491,60 @@ class Alm_articulos extends MX_Controller
                     'done' => $done
                     )
                 );
-
+            $reporte = $this->model_alm_articulos->get_incongruencies();
             $this->load->library('Pdf');
             ob_start();
             // $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
             $pdf = new Actaspdf('P', 'mm', 'A4', true, 'UTF-8', false);
+            //PDF file properties
             $pdf->SetTitle('ActaCorrectiva');
-            $pdf->SetHeaderMargin(30);
-            $pdf->SetTopMargin(20);
-            $pdf->setFooterMargin(20);
-            $pdf->SetAutoPageBreak(true);
-            $pdf->SetAuthor('Author');
+            $pdf->SetHeaderMargin(70);
+            $pdf->SetLeftMargin(24);
+            $pdf->SetRightMargin(26);
+            $pdf->setFooterMargin(30);
+            $pdf->SetAutoPageBreak(true, 35);
+            $pdf->SetAuthor('Sistema de SiSAI');
             $pdf->SetDisplayMode('real', 'default');
-
+            //end PDF file properties
             $pdf->AddPage();
-            // $pdf->table();
-                $pdf->Ln(38);
+            
+                // $pdf->Ln(38);
                 // set font
                 $pdf->SetFont('helvetica', 'B', 14);
 
                 $pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
                 $pdf->Ln(3);
-                $pdf->SetMargins(23, 30, 35);
+                // $pdf->SetMargins(23, 30, 35);
                 // create some HTML content
-                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.</p>';
+                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.
+                <br><br>
+                <strong>Artículos con cantidad errada en el sistema:</strong></p>';
                 // set core font
                 $pdf->SetFont('helvetica', '', 12);
                 // output the HTML content
                 $pdf->writeHTML($html, true, 0, true, true);
                 $pdf->Ln();
 
+                $pdf->table($reporte);
+                $pdf->InventoryOfficials($vars);
                 // $html = '<span style="text-align:justify;">a <u>abc</u> abcdefghijkl (abcdef) abcdefg <b>abcdefghi</b> a ((abc)) abcd <img src="assets/img/FACYT.png" border="0" height="41" width="41" /> <img src="assets/img/FACYT.png" alt="test alt attribute" width="80" height="60" border="0" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc \(abcd\) abcdef abcdefg <b>abcdefghi</b> a abc \\\(abcd\\\) abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href="http://tcpdf.org">abcdef abcdefg</a> start a abc before <span style="background-color:yellow">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>';
                 // set UTF-8 Unicode font
                 // $pdf->SetFont('helvetica', '', 10);
 
                 // output the HTML content
                 // $pdf->writeHTML($html, true, 0, true, true);
-
-                // reset pointer to the last page
-                $pdf->lastPage();
+            $pdf->AddPage();
+                $text = 'con presencia de la máxima autoridad de la Facultad Experimental de Ciencias y Tecnología: Dr. José Gregorio Marcano, la jefe de sección de compras: '.$vars['authors']['jefe_comp'].', y el jefe (Encargado) de Almacén de la FaCyT Sr.'.$vars['authors']['jefe_alm'].', se dio inicio al levantamiento de inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología. El inventario que fue efectuado por el Sr.'..' ya identificado, y revisado por'..' y aprobado por'..' de la FACYT, concluyó'.$vars['dates']['start'].'.';
+                $text .='EL RESULTADO DEL INVENTARIO FÍSICO PRACTICADO A ESTE ALMACÉN Es el que acompaña a la presente que, se presenta en versión escrita con fecha de impresión arrojada por el sistema, sin embargo, la fecha de levantamiento del inventario es la supra indicada, vale decir '.;
+                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, '.$text.'.</p>';
+                // set core font
+                $pdf->SetFont('helvetica', '', 12);
+                // output the HTML content
+                $pdf->writeHTML($html, true, 0, true, true);
+                $pdf->InventoryOfficials($vars);
+                $pdf->Ln();
+            // reset pointer to the last page
+            $pdf->lastPage();
 
                 // ---------------------------------------------------------
 

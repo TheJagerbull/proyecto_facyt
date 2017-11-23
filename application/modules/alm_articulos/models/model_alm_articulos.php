@@ -799,6 +799,20 @@ class Model_alm_articulos extends CI_Model
 			return $this->db->affected_rows();
 		}
 	}
+	public function get_incongruencies()
+	{
+		$this->db->select('cod_articulo AS `Código`, descripcion AS `Artículo`, exist_sistema AS `Cantidad errada`, exist_reportada AS `Cantidad en existencia`');
+		$this->db->join('alm_articulo', 'alm_articulo.ID = alm_reporte.id_articulo');
+		$query = $this->db->get_where('alm_reporte', array('revision'=>'por_revisar'))->result_array();
+		if($query)
+		{
+			return($query);
+		}
+		else
+		{
+			return (FALSE);
+		}
+	}
 	public function get_UnfinishedReporte($bool='')
 	{
 		$this->db->select('*');
@@ -994,36 +1008,36 @@ class Model_alm_articulos extends CI_Model
 		return($output);
 	}
 	//retorna el reporte más nuevo, si $year(año está vacío), en caso de tener el año de cualquiera de los dos formatos ('YYYY', 'YY'), solo retorna el reporte de ese año
-	public function get_reporte($year='')//sin uso(hay que verificar)
-	{
-		$this->load->helper('date');
-		$this->db->select('*');
-		$query = $this->db->get('alm_reporte')->result_array();//traigo toda la tabla
-		$aux = 0;
-		$rep = 0;
-		foreach ($query as $key => $value)//recorro cada record de la tabla
-		{
-			if(isset($year)&&!empty($year))//si piden el año...
-			{
-				if($year == mdate('%Y', $aux) || $year == mdate('%y', $aux))//si el año del reporte es de 4 digitos o solo 2...
-				{
-					$i = $rep;//tomo la posicion del conjunto de reportes, de acuerdo al año que pide.
-				}
-			}
-			if(mdate('%Y%m%d', strtotime($value['TIME']))-mdate('%Y%m%d', $aux) > 0)//si la diferencia entre un record y el siguiente es positiva(ha pasado mucho tiempo entre un record y el siguiente)
-			{
-				$rep++;//creo otro arreglo para el siguiente reporte
-			}
-			$reportes[$rep][]= $value;//almaceno el record en la variable de arreglos de reportes
-			$aux = strtotime($value['TIME']);//guardo el tiempo del record actual, para compararlo en la siguiente iteración
-		}
-		if(isset($i))//si el parametro del año fue usado y encontró el reporte
-		{
-			$rep = $i;//reemplazo el reporte más nuevo, por el reporte del año solicitado
-		}
-		die_pre($reportes[$rep]);
-		return ($reportes[$rep]);//retorno el reporte solicitado
-	}
+	// public function get_reporte($year='')//sin uso(hay que verificar)
+	// {
+	// 	$this->load->helper('date');
+	// 	$this->db->select('*');
+	// 	$query = $this->db->get('alm_reporte')->result_array();//traigo toda la tabla
+	// 	$aux = 0;
+	// 	$rep = 0;
+	// 	foreach ($query as $key => $value)//recorro cada record de la tabla
+	// 	{
+	// 		if(isset($year)&&!empty($year))//si piden el año...
+	// 		{
+	// 			if($year == mdate('%Y', $aux) || $year == mdate('%y', $aux))//si el año del reporte es de 4 digitos o solo 2...
+	// 			{
+	// 				$i = $rep;//tomo la posicion del conjunto de reportes, de acuerdo al año que pide.
+	// 			}
+	// 		}
+	// 		if(mdate('%Y%m%d', strtotime($value['TIME']))-mdate('%Y%m%d', $aux) > 0)//si la diferencia entre un record y el siguiente es positiva(ha pasado mucho tiempo entre un record y el siguiente)
+	// 		{
+	// 			$rep++;//creo otro arreglo para el siguiente reporte
+	// 		}
+	// 		$reportes[$rep][]= $value;//almaceno el record en la variable de arreglos de reportes
+	// 		$aux = strtotime($value['TIME']);//guardo el tiempo del record actual, para compararlo en la siguiente iteración
+	// 	}
+	// 	if(isset($i))//si el parametro del año fue usado y encontró el reporte
+	// 	{
+	// 		$rep = $i;//reemplazo el reporte más nuevo, por el reporte del año solicitado
+	// 	}
+	// 	die_pre($reportes[$rep], __LINE__, __FILE__);
+	// 	return ($reportes[$rep]);//retorno el reporte solicitado
+	// }
 	//Retorna todos los reportes en un arreglo de reportes
 	public function get_reportes()//posiblemente sin uso
 	{
@@ -1047,7 +1061,7 @@ class Model_alm_articulos extends CI_Model
 		// echo ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']);
 		// $aux = mdate('%y%m%d%i', ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']));
 		// echo '<br>'.$aux.'<br>';
-		die_pre($reportes);
+		die_pre($reportes, __LINE__, __FILE__);
 		return($reportes);
 	}
 /////////////////////////////////////////fin de cierre de inventario
