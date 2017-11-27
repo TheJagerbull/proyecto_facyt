@@ -689,10 +689,19 @@ class Model_alm_articulos extends CI_Model
 	{
 		$this->db->select('*, MAX(ID)');
 		$query = $this->db->get('alm_cierre');
-		if($query->row_array()['completed']!='COMPLETED')
+		// die_pre(empty($query->row_array()['ID']), __LINE__, __FILE__);
+		if($query->row_array()['completed']=='COMPLETED' || empty($query->row_array()['ID']))
 		{
+			$this->load->helper('date');
+			$date = date('Y-m-d H:i:s', time());
+			// die_pre($date, __LINE__, __FILE__);
+			// $dateHistory = strtotime($query2['TIME']);
+			// $distance = time() - $dateHistory;
+
+			$user['START'] = $date;
 			$user['auth_por'] = $this->session->userdata('user')['id_usuario'];
 			$user['completed'] = 'BEGINING';
+			// $user['START'] = ;
 			// echo_pre($user, __LINE__, __FILE__);
 			$this->db->insert('alm_cierre', $user);
 		}
@@ -1234,6 +1243,10 @@ class Model_alm_articulos extends CI_Model
 						),
 					'TIME' => array(
 						'type'=> 'TIMESTAMP'
+						),
+					'START' => array(
+						'type'=>'TIMESTAMP',
+						'null'=>TRUE
 						),
 					'auth_por' => array(
 						'type' => 'varchar',

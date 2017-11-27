@@ -1477,14 +1477,51 @@ class Alm_articulos extends MX_Controller
                 hora de inicio
                 hora generado
             */
+
+            $closeStart = strtotime($this->model_alm_articulos->get_latestClosure()['START']);
             $date = time();
             $done = date('h:i a',$date).' del '.readNumber(date('j',$date)).' ('.date('j',$date).')'.' de '.date('F',$date).' de '.date('Y',$date);
-            $start = '';
+            $start = date('h:i a',$closeStart).' del '.readNumber(date('j',$closeStart)).' ('.date('j',$closeStart).')'.' de '.date('F',$closeStart).' de '.date('Y',$closeStart);
+                $dateReport = $closeStart;
+                $dateHistory = $date;
+                // $aux = $dateHistory - $dateReport;//en segundos
+                // $hours = intval($aux/3600);
+                // $minutes = intval(($aux%3600)/60);
+                // $seconds = (($aux%3600)%60);
+
+                // $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+                // $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+                // $seconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
+
+                // echo_pre(($hours).':'.($minutes).':'.($seconds));
+                $distance = $date - $closeStart;
+                // $days = ceil($distance/60/60/24);
+                $days = ($distance/60/60/24);
+                // die_pre($days);
+                if($days<1)
+                {
+
+                    $conclution = 'a las '.date('h:i a', $date).' del mismo día';
+                }
             $vars = array(
                 'authors' => array(
-                    'jefe_alm' => 'Gabriel Hernandez',
-                    'jefe_comp'=> 'Lic. Andreina Granados',
-                    'coord_adm'=> 'Lic. Romali Kolster'
+                    'jefe_alm' => array(
+                        'titulo' => 'Sr.',
+                        'nombre' =>'Gabriel',
+                        'apellido' =>'Hernandez'),
+                    'jefe_comp'=> array(
+                        'titulo' => 'Lic.',
+                        'nombre' =>'Andreina',
+                        'apellido' =>'Granados'),
+                    'coord_adm'=> array(
+                        'titulo' => 'Lic.',
+                        'nombre' =>'Romali',
+                        'apellido' =>'Kolster'),
+                    'autoridad'=> array(
+                        'titulo' => 'Dr.',
+                        'nombre' =>'José Gregorio',
+                        'apellido' =>'Marcano'
+                        )
                     ),
                 'dates' => array(
                     'start' => $start,
@@ -1506,27 +1543,30 @@ class Alm_articulos extends MX_Controller
             $pdf->SetAuthor('Sistema de SiSAI');
             $pdf->SetDisplayMode('real', 'default');
             //end PDF file properties
-            $pdf->AddPage();
-            
-                // $pdf->Ln(38);
-                // set font
-                $pdf->SetFont('helvetica', 'B', 14);
+            if(!empty($reporte))
+            {
+                $pdf->AddPage();
+                
+                    // $pdf->Ln(38);
+                    // set font
+                    $pdf->SetFont('helvetica', 'B', 14);
 
-                $pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
-                $pdf->Ln(3);
-                // $pdf->SetMargins(23, 30, 35);
-                // create some HTML content
-                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.
-                <br><br>
-                <strong>Artículos con cantidad errada en el sistema:</strong></p>';
-                // set core font
-                $pdf->SetFont('helvetica', '', 12);
-                // output the HTML content
-                $pdf->writeHTML($html, true, 0, true, true);
-                $pdf->Ln();
+                    $pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
+                    $pdf->Ln(3);
+                    // $pdf->SetMargins(23, 30, 35);
+                    // create some HTML content
+                    $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.
+                    <br><br>
+                    <strong>Artículos con cantidad errada en el sistema:</strong></p>';
+                    // set core font
+                    $pdf->SetFont('helvetica', '', 12);
+                    // output the HTML content
+                    $pdf->writeHTML($html, true, 0, true, true);
+                    $pdf->Ln();
 
-                $pdf->table($reporte);
-                $pdf->InventoryOfficials($vars);
+                    $pdf->table($reporte);
+                    $pdf->InventoryOfficials($vars);
+            }
                 // $html = '<span style="text-align:justify;">a <u>abc</u> abcdefghijkl (abcdef) abcdefg <b>abcdefghi</b> a ((abc)) abcd <img src="assets/img/FACYT.png" border="0" height="41" width="41" /> <img src="assets/img/FACYT.png" alt="test alt attribute" width="80" height="60" border="0" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc \(abcd\) abcdef abcdefg <b>abcdefghi</b> a abc \\\(abcd\\\) abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href="http://tcpdf.org">abcdef abcdefg</a> start a abc before <span style="background-color:yellow">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>';
                 // set UTF-8 Unicode font
                 // $pdf->SetFont('helvetica', '', 10);
@@ -1534,9 +1574,13 @@ class Alm_articulos extends MX_Controller
                 // output the HTML content
                 // $pdf->writeHTML($html, true, 0, true, true);
             $pdf->AddPage();
-                $text = 'con presencia de la máxima autoridad de la Facultad Experimental de Ciencias y Tecnología: Dr. José Gregorio Marcano, la jefe de sección de compras: '.$vars['authors']['jefe_comp'].', y el jefe (Encargado) de Almacén de la FaCyT Sr.'.$vars['authors']['jefe_alm'].', se dio inicio al levantamiento de inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología. El inventario que fue efectuado por el Sr.'..' ya identificado, y revisado por'..' y aprobado por'..' de la FACYT, concluyó'.$vars['dates']['start'].'.';
-                $text .='EL RESULTADO DEL INVENTARIO FÍSICO PRACTICADO A ESTE ALMACÉN Es el que acompaña a la presente que, se presenta en versión escrita con fecha de impresión arrojada por el sistema, sin embargo, la fecha de levantamiento del inventario es la supra indicada, vale decir '.;
-                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, '.$text.'.</p>';
+                $pdf->SetFont('helvetica', 'B', 14);
+
+                $pdf->Write(0, 'ACTA DE INVENTARIO', '', 0, 'C', true, 0, false, false, 0);
+                $pdf->Ln(3);
+                $text = 'con presencia de la máxima autoridad de la Facultad Experimental de Ciencias y Tecnología: '.$vars['authors']['autoridad']['titulo'].' '.$vars['authors']['autoridad']['nombre'].' <strong>'.strtoupper($vars['authors']['autoridad']['apellido']).'</strong>, la jefe de sección de compras: '.$vars['authors']['jefe_comp']['titulo'].' '.$vars['authors']['jefe_comp']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong>, y el jefe (Encargado) de Almacén de la FaCyT Sr. '.$vars['authors']['jefe_alm']['titulo'].' '.$vars['authors']['jefe_alm']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong>, se dio inicio al levantamiento de inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología. El inventario que fue efectuado por el '.$vars['authors']['jefe_alm']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong> ya identificado, y revisado por '.$vars['authors']['jefe_comp']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong> y aprobado por'.$vars['authors']['coord_adm']['titulo'].' '.$vars['authors']['coord_adm']['nombre'].' <strong>'.strtoupper($vars['authors']['coord_adm']['apellido']).'</strong> de la FACYT, concluyó '.$conclution.'.';
+                $text .='<br><br>EL RESULTADO DEL INVENTARIO FÍSICO PRACTICADO A ESTE ALMACÉN Es el que acompaña a la presente que, se presenta en versión escrita con fecha de impresión arrojada por el sistema, sin embargo, la fecha de levantamiento del inventario es la supra indicada, vale decir '.date('d/m/Y', $closeStart);
+                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$start.'</b>, '.$text.'</p><br><br><br>';
                 // set core font
                 $pdf->SetFont('helvetica', '', 12);
                 // output the HTML content

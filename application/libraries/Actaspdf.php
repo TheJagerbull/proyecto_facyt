@@ -135,6 +135,7 @@ class Actaspdf extends TCPDF
         }
         $table.='</tbody></table>';
 
+        $this->SetFont('helvetica', 'B', 10);
         $this->writeHTML($table, true, false, false, false, '');
         // $this->writeHTML($table, true, false, false, false, '');
         // die_pre($table);
@@ -145,13 +146,13 @@ class Actaspdf extends TCPDF
         $table.= '<tbody>';
         $table.= '<tr>';
         $table.= '<td>
-                    Elaborado por:<br>'.$array['authors']['jefe_alm'].'<br>Jefe de Almacen.
+                    Elaborado por:<br>'.$array['authors']['jefe_alm']['titulo'].' '.$array['authors']['jefe_alm']['nombre'].' '.$array['authors']['jefe_alm']['apellido'].'<br>Jefe de Almacen.
                     </td>';
         $table.= '<td>
-                    Revisado por:<br>'.$array['authors']['jefe_comp'].'<br>Jefe de Compras.
+                    Revisado por:<br>'.$array['authors']['jefe_comp']['titulo'].' '.$array['authors']['jefe_comp']['nombre'].' '.$array['authors']['jefe_comp']['apellido'].'<br>Jefe de Compras.
                     </td>';
         $table.= '<td>
-                    Aprobado por:<br>'.$array['authors']['coord_adm'].'<br>Coordinadora Administrativa.
+                    Aprobado por:<br>'.$array['authors']['coord_adm']['titulo'].' '.$array['authors']['coord_adm']['nombre'].' '.$array['authors']['coord_adm']['apellido'].'<br>Coordinadora Administrativa.
                     </td>';
         $table.= '</tr>';
         $table.= '</tbody>';
