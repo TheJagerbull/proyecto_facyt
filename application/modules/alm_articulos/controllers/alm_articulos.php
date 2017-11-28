@@ -248,12 +248,12 @@ class Alm_articulos extends MX_Controller
         {
             if($this->model_alm_articulos->closure_isStarted())
             {
-                echo json_encode("value");
+                // echo json_encode("value");
             }
             $this->backup_Inventory();
             // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
-            // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
             // $this->validar_reporte();
+            // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
         }
         else
         {
@@ -266,7 +266,11 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
-            echo json_encode($this->model_alm_articulos->makeSQLBackup());
+            if($this->model_alm_articulos->closure_isStarted() == 'REPORTED')
+            {
+                // echo json_encode($this->model_alm_articulos->makeSQLBackup());
+                $this->model_alm_articulos->makeSQLBackup();
+            }
         }
         else
         {
@@ -278,7 +282,10 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
-            echo json_encode($this->model_alm_articulos->insert_stockAdjustment());
+            if($this->model_alm_articulos->closure_isStarted() == 'BACKUP')
+            {
+                echo json_encode($this->model_alm_articulos->insert_stockAdjustment());
+            }
         }
         else
         {
@@ -1465,176 +1472,204 @@ class Alm_articulos extends MX_Controller
     }
     public function pdf_ActaDeCierre()
     {
-        if($this->dec_permiso->has_permission('alm', 8))//permiso para insertar o hacer cierres de inventario
+        if($this->dec_permiso->has_permission('alm', 8))//permiso para insertar o hacer cierres de inventario, Y VERIFICA EL ESTADO ANTERIOR DEL CIERRE
         {
-            // die_pre($this->uri->uri_string(), __LINE__, __FILE__);
-            /*
-            Autores
-                jefe de almacen
-                jefe de compras
-                coordinador administrativo
-            fechas
-                hora de inicio
-                hora generado
-            */
-
-            $closeStart = strtotime($this->model_alm_articulos->get_latestClosure()['START']);
-            $date = time();
-            $done = date('h:i a',$date).' del '.readNumber(date('j',$date)).' ('.date('j',$date).')'.' de '.date('F',$date).' de '.date('Y',$date);
-            $start = date('h:i a',$closeStart).' del '.readNumber(date('j',$closeStart)).' ('.date('j',$closeStart).')'.' de '.date('F',$closeStart).' de '.date('Y',$closeStart);
-                $dateReport = $closeStart;
-                $dateHistory = $date;
-                // $aux = $dateHistory - $dateReport;//en segundos
-                // $hours = intval($aux/3600);
-                // $minutes = intval(($aux%3600)/60);
-                // $seconds = (($aux%3600)%60);
-
-                // $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
-                // $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
-                // $seconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
-
-                // echo_pre(($hours).':'.($minutes).':'.($seconds));
-                $distance = $date - $closeStart;
-                // $days = ceil($distance/60/60/24);
-                $days = ($distance/60/60/24);
-                // die_pre($days);
-                if($days<1)
-                {
-
-                    $conclution = 'a las '.date('h:i a', $date).' del mismo día';
-                }
-            $vars = array(
-                'authors' => array(
-                    'jefe_alm' => array(
-                        'titulo' => 'Sr.',
-                        'nombre' =>'Gabriel',
-                        'apellido' =>'Hernandez'),
-                    'jefe_comp'=> array(
-                        'titulo' => 'Lic.',
-                        'nombre' =>'Andreina',
-                        'apellido' =>'Granados'),
-                    'coord_adm'=> array(
-                        'titulo' => 'Lic.',
-                        'nombre' =>'Romali',
-                        'apellido' =>'Kolster'),
-                    'autoridad'=> array(
-                        'titulo' => 'Dr.',
-                        'nombre' =>'José Gregorio',
-                        'apellido' =>'Marcano'
-                        )
-                    ),
-                'dates' => array(
-                    'start' => $start,
-                    'done' => $done
-                    )
-                );
-            $reporte = $this->model_alm_articulos->get_incongruencies();
-            $this->load->library('Pdf');
-            ob_start();
-            // $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-            $pdf = new Actaspdf('P', 'mm', 'A4', true, 'UTF-8', false);
-            //PDF file properties
-            $pdf->SetTitle('ActaCorrectiva');
-            $pdf->SetHeaderMargin(70);
-            $pdf->SetLeftMargin(24);
-            $pdf->SetRightMargin(26);
-            $pdf->setFooterMargin(30);
-            $pdf->SetAutoPageBreak(true, 35);
-            $pdf->SetAuthor('Sistema de SiSAI');
-            $pdf->SetDisplayMode('real', 'default');
-            //end PDF file properties
-            if(!empty($reporte))
+            if($this->model_alm_articulos->closure_isStarted() == 'ADJUSTED')
             {
+                // die_pre($this->uri->uri_string(), __LINE__, __FILE__);
+                /*
+                Autores
+                    jefe de almacen
+                    jefe de compras
+                    coordinador administrativo
+                fechas
+                    hora de inicio
+                    hora generado
+                */
+
+                $closeStart = strtotime($this->model_alm_articulos->get_latestClosure()['START']);
+                $date = time();
+                $done = date('h:i a',$date).' del '.readNumber(date('j',$date)).' ('.date('j',$date).')'.' de '.date('F',$date).' de '.date('Y',$date);
+                $start = date('h:i a',$closeStart).' del '.readNumber(date('j',$closeStart)).' ('.date('j',$closeStart).')'.' de '.date('F',$closeStart).' de '.date('Y',$closeStart);
+                    $dateReport = $closeStart;
+                    $dateHistory = $date;
+                    // $aux = $dateHistory - $dateReport;//en segundos
+                    // $hours = intval($aux/3600);
+                    // $minutes = intval(($aux%3600)/60);
+                    // $seconds = (($aux%3600)%60);
+
+                    // $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+                    // $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+                    // $seconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
+
+                    // echo_pre(($hours).':'.($minutes).':'.($seconds));
+                    $distance = $date - $closeStart;
+                    // $days = ceil($distance/60/60/24);
+                    $days = ($distance/60/60/24);
+                    // die_pre($days);
+                    if($days<1)
+                    {
+
+                        $conclution = 'a las '.date('h:i a', $date).' del mismo día';
+                    }
+                $vars = array(
+                    'authors' => array(
+                        'jefe_alm' => array(
+                            'titulo' => 'Sr.',
+                            'nombre' =>'Gabriel',
+                            'apellido' =>'Hernandez'),
+                        'jefe_comp'=> array(
+                            'titulo' => 'Lic.',
+                            'nombre' =>'Andreina',
+                            'apellido' =>'Granados'),
+                        'coord_adm'=> array(
+                            'titulo' => 'Lic.',
+                            'nombre' =>'Romali',
+                            'apellido' =>'Kolster'),
+                        'autoridad'=> array(
+                            'titulo' => 'Dr.',
+                            'nombre' =>'José Gregorio',
+                            'apellido' =>'Marcano'
+                            )
+                        ),
+                    'dates' => array(
+                        'start' => $start,
+                        'done' => $done
+                        )
+                    );
+                $reporte = $this->model_alm_articulos->get_incongruencies();
+                $this->load->library('Pdf');
+                ob_start();
+                // $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+                $pdf = new Actaspdf('P', 'mm', 'A4', true, 'UTF-8', false);
+                //PDF file properties
+                $pdf->SetTitle('ActaCorrectiva');
+                $pdf->SetHeaderMargin(70);
+                $pdf->SetLeftMargin(24);
+                $pdf->SetRightMargin(26);
+                $pdf->setFooterMargin(30);
+                $pdf->SetAutoPageBreak(true, 35);
+                $pdf->SetAuthor('Sistema de SiSAI');
+                $pdf->SetDisplayMode('real', 'default');
+                //end PDF file properties
+                if(!empty($reporte))
+                {
+                    $pdf->AddPage();
+                    
+                        // $pdf->Ln(38);
+                        // set font
+                        $pdf->SetFont('helvetica', 'B', 14);
+
+                        $pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
+                        $pdf->Ln(3);
+                        // $pdf->SetMargins(23, 30, 35);
+                        // create some HTML content
+                        $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.
+                        <br><br>
+                        <strong>Artículos con cantidad errada en el sistema:</strong></p>';
+                        // set core font
+                        $pdf->SetFont('helvetica', '', 12);
+                        // output the HTML content
+                        $pdf->writeHTML($html, true, 0, true, true);
+                        $pdf->Ln();
+
+                        $pdf->table($reporte);
+                        $pdf->InventoryOfficials($vars);
+                }
+                    // $html = '<span style="text-align:justify;">a <u>abc</u> abcdefghijkl (abcdef) abcdefg <b>abcdefghi</b> a ((abc)) abcd <img src="assets/img/FACYT.png" border="0" height="41" width="41" /> <img src="assets/img/FACYT.png" alt="test alt attribute" width="80" height="60" border="0" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc \(abcd\) abcdef abcdefg <b>abcdefghi</b> a abc \\\(abcd\\\) abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href="http://tcpdf.org">abcdef abcdefg</a> start a abc before <span style="background-color:yellow">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>';
+                    // set UTF-8 Unicode font
+                    // $pdf->SetFont('helvetica', '', 10);
+
+                    // output the HTML content
+                    // $pdf->writeHTML($html, true, 0, true, true);
                 $pdf->AddPage();
-                
-                    // $pdf->Ln(38);
-                    // set font
                     $pdf->SetFont('helvetica', 'B', 14);
 
-                    $pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
+                    $pdf->Write(0, 'ACTA DE INVENTARIO', '', 0, 'C', true, 0, false, false, 0);
                     $pdf->Ln(3);
-                    // $pdf->SetMargins(23, 30, 35);
-                    // create some HTML content
-                    $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.
-                    <br><br>
-                    <strong>Artículos con cantidad errada en el sistema:</strong></p>';
+                    $text = 'con presencia de la máxima autoridad de la Facultad Experimental de Ciencias y Tecnología: '.$vars['authors']['autoridad']['titulo'].' '.$vars['authors']['autoridad']['nombre'].' <strong>'.strtoupper($vars['authors']['autoridad']['apellido']).'</strong>, la jefe de sección de compras: '.$vars['authors']['jefe_comp']['titulo'].' '.$vars['authors']['jefe_comp']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong>, y el jefe (Encargado) de Almacén de la FaCyT Sr. '.$vars['authors']['jefe_alm']['titulo'].' '.$vars['authors']['jefe_alm']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong>, se dio inicio al levantamiento de inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología. El inventario que fue efectuado por el '.$vars['authors']['jefe_alm']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong> ya identificado, y revisado por '.$vars['authors']['jefe_comp']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong> y aprobado por'.$vars['authors']['coord_adm']['titulo'].' '.$vars['authors']['coord_adm']['nombre'].' <strong>'.strtoupper($vars['authors']['coord_adm']['apellido']).'</strong> de la FACYT, concluyó '.$conclution.'.';
+                    $text .='<br><br><br>EL RESULTADO DEL INVENTARIO FÍSICO PRACTICADO A ESTE ALMACÉN Es el que acompaña a la presente que, se presenta en versión escrita con fecha de impresión arrojada por el sistema, sin embargo, la fecha de levantamiento del inventario es la supra indicada, vale decir '.date('d/m/Y', $closeStart);
+                    $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$start.'</b>, '.$text.'</p><br><br><br><br><br>';
                     // set core font
                     $pdf->SetFont('helvetica', '', 12);
                     // output the HTML content
                     $pdf->writeHTML($html, true, 0, true, true);
-                    $pdf->Ln();
-
-                    $pdf->table($reporte);
                     $pdf->InventoryOfficials($vars);
+                    $pdf->Ln();
+                // reset pointer to the last page
+                $pdf->lastPage();
+
+                    // ---------------------------------------------------------
+                $this->model_alm_articulos->update_closure('ACTAS');
+                    //Close and output PDF document
+                    // if($this->uri->uri_string()=='inventario/generar/acta')
+                    // {
+                        $pdf->Output('Actas_'.date('Y-m-d',$date).'.pdf', 'I');
+                        $file_to_save = './uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
+                        $pdf->Output($file_to_save, 'F');
+
+                        $data = array('acta' => $file_to_save,
+                            'FILE_DIR' => './uploads/cierres/actas',
+                            'completed'=> 'COMPLETED');
+
+                        $this->model_alm_articulos->update_closure($data);
+                    // }
+                    // if($this->uri->uri_string()=='inventario/cerrar')
+                    // {
+                    //     $pdf->Output('example_039.pdf', 'I');
+
+                    // }
+                // $pdf->Write(20, 'Some sample text');
+                // $pdf->Output('My-File-Name.pdf', 'I');
+                // readNumber();
+                // for ($i=1; $i <=31 ; $i++)
+                // {
+                //     echo $i.': '.readNumber($i).'<br>';
+                // }
+                // die();
+                // $this->pdf->AddActaPage();
+                // $this->pdf->ActaCorrectiva($vars);
+                // // $this->pdf->ActaHeader();
+                // // $this->pdf->ActaFooter();
+                // $this->pdf->SetDisplayMode(100,'default');
+
+                // $this->pdf->AliasNbPages();
+
+                // $this->pdf->SetMargins(8, 8 , 8);
+
+                // $this->pdf->SetAutoPageBreak(true,15);
+                
+                // $this->pdf->SetTitle("Cierre de Inventario");
+
+                // $this->pdf->Ln(7);
+                // // $this->pdf->sumary($txt);
+
+                // // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
+                // $date = time();
+                // // $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
+                // // $this->pdf->Output($file_to_save, 'F');
+                // // $this->pdf->Output($file_to_save);
+                // $this->pdf->CloseActaPage();
+                // $this->pdf->Output();
+                // echo $file_to_save;
             }
-                // $html = '<span style="text-align:justify;">a <u>abc</u> abcdefghijkl (abcdef) abcdefg <b>abcdefghi</b> a ((abc)) abcd <img src="assets/img/FACYT.png" border="0" height="41" width="41" /> <img src="assets/img/FACYT.png" alt="test alt attribute" width="80" height="60" border="0" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc \(abcd\) abcdef abcdefg <b>abcdefghi</b> a abc \\\(abcd\\\) abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href="http://tcpdf.org">abcdef abcdefg</a> start a abc before <span style="background-color:yellow">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>';
-                // set UTF-8 Unicode font
-                // $pdf->SetFont('helvetica', '', 10);
-
-                // output the HTML content
-                // $pdf->writeHTML($html, true, 0, true, true);
-            $pdf->AddPage();
-                $pdf->SetFont('helvetica', 'B', 14);
-
-                $pdf->Write(0, 'ACTA DE INVENTARIO', '', 0, 'C', true, 0, false, false, 0);
-                $pdf->Ln(3);
-                $text = 'con presencia de la máxima autoridad de la Facultad Experimental de Ciencias y Tecnología: '.$vars['authors']['autoridad']['titulo'].' '.$vars['authors']['autoridad']['nombre'].' <strong>'.strtoupper($vars['authors']['autoridad']['apellido']).'</strong>, la jefe de sección de compras: '.$vars['authors']['jefe_comp']['titulo'].' '.$vars['authors']['jefe_comp']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong>, y el jefe (Encargado) de Almacén de la FaCyT Sr. '.$vars['authors']['jefe_alm']['titulo'].' '.$vars['authors']['jefe_alm']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong>, se dio inicio al levantamiento de inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología. El inventario que fue efectuado por el '.$vars['authors']['jefe_alm']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong> ya identificado, y revisado por '.$vars['authors']['jefe_comp']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong> y aprobado por'.$vars['authors']['coord_adm']['titulo'].' '.$vars['authors']['coord_adm']['nombre'].' <strong>'.strtoupper($vars['authors']['coord_adm']['apellido']).'</strong> de la FACYT, concluyó '.$conclution.'.';
-                $text .='<br><br>EL RESULTADO DEL INVENTARIO FÍSICO PRACTICADO A ESTE ALMACÉN Es el que acompaña a la presente que, se presenta en versión escrita con fecha de impresión arrojada por el sistema, sin embargo, la fecha de levantamiento del inventario es la supra indicada, vale decir '.date('d/m/Y', $closeStart);
-                $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$start.'</b>, '.$text.'</p><br><br><br>';
-                // set core font
-                $pdf->SetFont('helvetica', '', 12);
-                // output the HTML content
-                $pdf->writeHTML($html, true, 0, true, true);
-                $pdf->InventoryOfficials($vars);
-                $pdf->Ln();
-            // reset pointer to the last page
-            $pdf->lastPage();
-
-                // ---------------------------------------------------------
-
-                //Close and output PDF document
-                // if($this->uri->uri_string()=='inventario/generar/acta')
-                // {
-                    $pdf->Output('example_039.pdf', 'I');
-                // }
-                // if($this->uri->uri_string()=='inventario/cerrar')
-                // {
-                //     $pdf->Output('example_039.pdf', 'I');
-
-                // }
-            // $pdf->Write(20, 'Some sample text');
-            // $pdf->Output('My-File-Name.pdf', 'I');
-            // readNumber();
-            // for ($i=1; $i <=31 ; $i++)
-            // {
-            //     echo $i.': '.readNumber($i).'<br>';
-            // }
-            // die();
-            // $this->pdf->AddActaPage();
-            // $this->pdf->ActaCorrectiva($vars);
-            // // $this->pdf->ActaHeader();
-            // // $this->pdf->ActaFooter();
-            // $this->pdf->SetDisplayMode(100,'default');
-
-            // $this->pdf->AliasNbPages();
-
-            // $this->pdf->SetMargins(8, 8 , 8);
-
-            // $this->pdf->SetAutoPageBreak(true,15);
-            
-            // $this->pdf->SetTitle("Cierre de Inventario");
-
-            // $this->pdf->Ln(7);
-            // // $this->pdf->sumary($txt);
-
-            // // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
-            // $date = time();
-            // // $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
-            // // $this->pdf->Output($file_to_save, 'F');
-            // // $this->pdf->Output($file_to_save);
-            // $this->pdf->CloseActaPage();
-            // $this->pdf->Output();
-            // echo $file_to_save;
+            else
+            {
+                $this->load->helper('directory');
+                $aux['actDeCierres']="
+                <div class='form-group'>
+                    <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                    <div class='col-sm-9'>
+                        <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
+                foreach (directory_map('./uploads/cierres/actas') as $file)
+                {
+                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                }
+                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
+                return $aux;
+            }
         }
         else
         {
@@ -1825,7 +1860,7 @@ class Alm_articulos extends MX_Controller
         {
             //lee un excell para cierre de inventario
             // echo $this->input->post("file");
-            if($this->input->post("file"))
+            if($this->input->post("file") && $this->model_alm_articulos->closure_isStarted()=='BEGINING')
             {
                 $file = $this->input->post("file");
                 $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel

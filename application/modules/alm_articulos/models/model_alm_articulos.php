@@ -1869,7 +1869,8 @@ class Model_alm_articulos extends CI_Model
 	    	die_pre(get_filenames('./uploads/cierres/'), __LINE__, __FILE__);
 	    	if(write_file('./uploads/cierres/RespaldoPreCierre'.$date.'.txt', $backup))
 	    	{
-		    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service
+	    		$this->update_closure('BACKUP');
+		    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service(yeah, i usually write comments in english)
 		    	// $this->load->helper('download');
 		    	// force_download('mybackup.txt', $backup);
 		    	return('success');
@@ -1936,6 +1937,7 @@ class Model_alm_articulos extends CI_Model
 		    	$this->db->insert('alm_historial_a', $historial);
 				$this->db->insert('alm_genera_hist_a', $link);
 	    	}
+	    	$this->update_closure('ADJUSTED');
 	    	// die_pre($this->db->last_query());
 	    }
     }
