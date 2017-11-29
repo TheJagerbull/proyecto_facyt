@@ -719,10 +719,11 @@ class Model_alm_articulos extends CI_Model
 		}
 		else
 		{
-			foreach ($data as $key => $value)
-			{
-				$user[$key] = $value;
-			}
+			$user = $data;
+			// foreach ($data as $key => $value)
+			// {
+			// 	$user[$key] = $value;
+			// }
 		}
 		// echo_pre($user, __LINE__, __FILE__);
 		$this->db->where('ID', $id['ID']);
@@ -1048,31 +1049,31 @@ class Model_alm_articulos extends CI_Model
 	// 	return ($reportes[$rep]);//retorno el reporte solicitado
 	// }
 	//Retorna todos los reportes en un arreglo de reportes
-	public function get_reportes()//posiblemente sin uso
-	{
-		$this->load->helper('date');
-		$this->db->select('*');
-		$query = $this->db->get('alm_reporte')->result_array();
-		$aux = 0;
-		$rep = 0;
-		foreach ($query as $key => $value)
-		{
-			if(mdate('%y%m%d', strtotime($value['TIME']))-mdate('%y%m%d', $aux) > 0)
-			{
-				$rep++;
-			}
-			$reportes[$rep][]= $value;
-			// $query[$key]['Report'] = mdate('%y%m%d', strtotime($value['TIME']))-mdate('%y%m%d', $aux);
-			// $query[$key]['Report'] = mdate('%d', strtotime($value['TIME']) - $aux);
-			$aux = strtotime($value['TIME']);
-		}
-		// echo $query[sizeof($query)-1]['TIME'].'<br>'.$query[0]['TIME'].'<br>';
-		// echo ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']);
-		// $aux = mdate('%y%m%d%i', ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']));
-		// echo '<br>'.$aux.'<br>';
-		die_pre($reportes, __LINE__, __FILE__);
-		return($reportes);
-	}
+	// public function get_reportes()//posiblemente sin uso
+	// {
+	// 	$this->load->helper('date');
+	// 	$this->db->select('*');
+	// 	$query = $this->db->get('alm_reporte')->result_array();
+	// 	$aux = 0;
+	// 	$rep = 0;
+	// 	foreach ($query as $key => $value)
+	// 	{
+	// 		if(mdate('%y%m%d', strtotime($value['TIME']))-mdate('%y%m%d', $aux) > 0)
+	// 		{
+	// 			$rep++;
+	// 		}
+	// 		$reportes[$rep][]= $value;
+	// 		// $query[$key]['Report'] = mdate('%y%m%d', strtotime($value['TIME']))-mdate('%y%m%d', $aux);
+	// 		// $query[$key]['Report'] = mdate('%d', strtotime($value['TIME']) - $aux);
+	// 		$aux = strtotime($value['TIME']);
+	// 	}
+	// 	// echo $query[sizeof($query)-1]['TIME'].'<br>'.$query[0]['TIME'].'<br>';
+	// 	// echo ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']);
+	// 	// $aux = mdate('%y%m%d%i', ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']));
+	// 	// echo '<br>'.$aux.'<br>';
+	// 	die_pre($reportes, __LINE__, __FILE__);
+	// 	return($reportes);
+	// }
 /////////////////////////////////////////fin de cierre de inventario
 ////////////////////alteraciones sobre tablas de la BD
 	public function alterarAlmacen($fecha)
@@ -1372,198 +1373,198 @@ class Model_alm_articulos extends CI_Model
 
 	}
 
-	public function create_newVersionTables()//migracion para version del 21/07/2016
-	{
-		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_historial_s` (
-				  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-				  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				  		    `nr_solicitud` varchar(10) NOT NULL,
-				  		    `fecha_ej` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
-				  		    `usuario_ej` varchar(9) NOT NULL,
-				  		    `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
-				  		    PRIMARY KEY (`ID`),
-				  		    UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`, `usuario_ej`)
-				  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+	// public function create_newVersionTables()//migracion para version del 21/07/2016
+	// {
+	// 	$this->db->query("CREATE TABLE IF NOT EXISTS `alm_historial_s` (
+	// 			  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+	// 			  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	// 			  		    `nr_solicitud` varchar(10) NOT NULL,
+	// 			  		    `fecha_ej` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
+	// 			  		    `usuario_ej` varchar(9) NOT NULL,
+	// 			  		    `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+	// 			  		    PRIMARY KEY (`ID`),
+	// 			  		    UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`, `usuario_ej`)
+	// 			  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 		
-		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_solicitud` (
-						    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-						    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-						    `nr_solicitud` varchar(9) NOT NULL,
-						    `status` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
-						    `observacion` text,
-						    `motivo` text,
-						    `fecha_gen` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
-						    `fecha_comp` timestamp NULL DEFAULT NULL,
-						    PRIMARY KEY (`nr_solicitud`),
-						    UNIQUE KEY `ID` (`ID`)
-						  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+	// 	$this->db->query("CREATE TABLE IF NOT EXISTS `alm_solicitud` (
+	// 					    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+	// 					    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	// 					    `nr_solicitud` varchar(9) NOT NULL,
+	// 					    `status` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+	// 					    `observacion` text,
+	// 					    `motivo` text,
+	// 					    `fecha_gen` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
+	// 					    `fecha_comp` timestamp NULL DEFAULT NULL,
+	// 					    PRIMARY KEY (`nr_solicitud`),
+	// 					    UNIQUE KEY `ID` (`ID`)
+	// 					  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
 
-		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_efectua` (
-		  		  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-		  		  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		  		  		    `id_usuario` varchar(9) NOT NULL,
-		  		  		    `nr_solicitud` varchar(9) NOT NULL,
-		  		  		    `id_historial_s` bigint(20) NOT NULL,
-		  		  		    PRIMARY KEY (`ID`),
-		  		  		    UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`, `id_historial_s`),
-		  		  		    UNIQUE KEY `ID` (`ID`),
-		  		  		    KEY `nr_solicitud` (`nr_solicitud`)
-		  		  		  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+	// 	$this->db->query("CREATE TABLE IF NOT EXISTS `alm_efectua` (
+	// 	  		  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+	// 	  		  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	// 	  		  		    `id_usuario` varchar(9) NOT NULL,
+	// 	  		  		    `nr_solicitud` varchar(9) NOT NULL,
+	// 	  		  		    `id_historial_s` bigint(20) NOT NULL,
+	// 	  		  		    PRIMARY KEY (`ID`),
+	// 	  		  		    UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`, `id_historial_s`),
+	// 	  		  		    UNIQUE KEY `ID` (`ID`),
+	// 	  		  		    KEY `nr_solicitud` (`nr_solicitud`)
+	// 	  		  		  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
 
-		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_art_en_solicitud` (
-		  		  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-		  		  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		  		  		    `id_articulo` bigint(20) NOT NULL,
-		  		  		    `id_usuario` varchar(9) DEFAULT NULL,
-		  		  		    `nr_solicitud` varchar(9) NOT NULL,
-		  		  		    `cant_solicitada` int(11) NOT NULL,
-		  		  		    `cant_aprobada` int(11) DEFAULT NULL,
-		  		  		    `cant_usados` int(11) DEFAULT '0',
-		  		  		    `cant_nuevos` int(11) DEFAULT '0',
-		  		  		    `estado_articulo` enum('activo', 'anulado') NOT NULL DEFAULT 'activo',
-		  		  		    `motivo` text CHARACTER SET utf8 DEFAULT NULL,
-		  		  		    UNIQUE KEY `ID` (`ID`),
-		  		  		    UNIQUE KEY `cont_art_solicitud` (`id_articulo`,`nr_solicitud`),
-		  		  		    KEY `nr_solicitud` (`nr_solicitud`)
-		  		  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
-	}
+	// 	$this->db->query("CREATE TABLE IF NOT EXISTS `alm_art_en_solicitud` (
+	// 	  		  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+	// 	  		  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	// 	  		  		    `id_articulo` bigint(20) NOT NULL,
+	// 	  		  		    `id_usuario` varchar(9) DEFAULT NULL,
+	// 	  		  		    `nr_solicitud` varchar(9) NOT NULL,
+	// 	  		  		    `cant_solicitada` int(11) NOT NULL,
+	// 	  		  		    `cant_aprobada` int(11) DEFAULT NULL,
+	// 	  		  		    `cant_usados` int(11) DEFAULT '0',
+	// 	  		  		    `cant_nuevos` int(11) DEFAULT '0',
+	// 	  		  		    `estado_articulo` enum('activo', 'anulado') NOT NULL DEFAULT 'activo',
+	// 	  		  		    `motivo` text CHARACTER SET utf8 DEFAULT NULL,
+	// 	  		  		    UNIQUE KEY `ID` (`ID`),
+	// 	  		  		    UNIQUE KEY `cont_art_solicitud` (`id_articulo`,`nr_solicitud`),
+	// 	  		  		    KEY `nr_solicitud` (`nr_solicitud`)
+	// 	  		  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+	// }
 
-	public function rename_oldVersionTables()//migracion para version del 21/07/2016
-	{
-		$this->load->dbforge();
-		if(!$this->db->table_exists('alm_old_tablehistorial_s'))
-		{
-			$this->dbforge->rename_table('alm_historial_s', 'alm_old_tablehistorial_s');
-			$this->dbforge->rename_table('alm_solicitud', 'alm_old_tablesolicitud');
-		}
-		else
-		{
-			die_pre('La migracion de version de la base de datos de almacen, ya fueron realizadas previamente');
-		}
-	}
+	// public function rename_oldVersionTables()//migracion para version del 21/07/2016
+	// {
+	// 	$this->load->dbforge();
+	// 	if(!$this->db->table_exists('alm_old_tablehistorial_s'))
+	// 	{
+	// 		$this->dbforge->rename_table('alm_historial_s', 'alm_old_tablehistorial_s');
+	// 		$this->dbforge->rename_table('alm_solicitud', 'alm_old_tablesolicitud');
+	// 	}
+	// 	else
+	// 	{
+	// 		die_pre('La migracion de version de la base de datos de almacen, ya fueron realizadas previamente');
+	// 	}
+	// }
 
-	public function delete_oldVersionTables()//migracion para version del 21/07/2016
-	{
-		$this->load->dbforge();
-		$this->dbforge->drop_table('alm_old_tablehistorial_s');
-		$this->dbforge->drop_table('alm_aprueba');
-		$this->dbforge->drop_table('alm_genera');
-		$this->dbforge->drop_table('alm_retira');
-		$this->dbforge->drop_table('alm_contiene');
-		$this->dbforge->drop_table('alm_old_tablesolicitud');
-	}
+	// public function delete_oldVersionTables()//migracion para version del 21/07/2016
+	// {
+	// 	$this->load->dbforge();
+	// 	$this->dbforge->drop_table('alm_old_tablehistorial_s');
+	// 	$this->dbforge->drop_table('alm_aprueba');
+	// 	$this->dbforge->drop_table('alm_genera');
+	// 	$this->dbforge->drop_table('alm_retira');
+	// 	$this->dbforge->drop_table('alm_contiene');
+	// 	$this->dbforge->drop_table('alm_old_tablesolicitud');
+	// }
 
-	public function migrate_ver1point3()//migracion para version del 21/07/2016
-	{
-		//creating the new tables
-		$this->db->order_by('ID');
-		// // $solicitudes=$this->db->get('alm_solicitud')->result_array();
-		$solicitudes=$this->db->get('alm_old_tablesolicitud')->result_array();
-		// // echo_pre($solicitudes, __LINE__, __FILE__);
-		//enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
-		// enum('carrito','en_proceso','aprobada','enviado','completado')
-		foreach ($solicitudes as $key => $value)
-		{
-			unset($solicitudes[$key]['id_usuario']);
-			if($value['status']=='aprobada')
-			{
-				$solicitudes[$key]['status']='aprobado';
-			}
-			$this->db->insert('alm_solicitud', $solicitudes[$key]);
-		}
-		$this->db->select('TIME, nr_solicitud, id_usuario');
-		$this->db->order_by('ID');
-		$genera = $this->db->get('alm_genera')->result_array();
-		// echo_pre($genera, __LINE__, __FILE__);
-		$this->db->select('nr_solicitud, TIME, id_usuario');
-		$this->db->from('alm_aprueba');
-		// $this->db->group_by('nr_solicitud DESC');
-		$this->db->order_by('nr_solicitud ASC');
-		$aprueba = array_reverse($this->db->get()->result_array());
-		// die_pre($aprueba, __LINE__, __FILE__);
-		$this->db->distinct();
-		$this->db->select('TIME, nr_solicitud, id_usuario');
-		$this->db->order_by('nr_solicitud');
-		$this->db->group_by('nr_solicitud');
-		$retira = $this->db->get('alm_retira')->result_array();//hay un nr_solicitud y un id_usuario por cada articulo en la solicitud
-		// echo_pre($retira, __LINE__, __FILE__);
-		$stop[] = count($genera);
-		$stop[] = count($aprueba);
-		$stop[] = count($retira);
-		for ($i=0; $i < max($stop); $i++)
-		{
-			if(isset($genera[$i]))
-			{
-				$aux = array('nr_solicitud'=>$genera[$i]['nr_solicitud'],
-							 'fecha_ej'=>$genera[$i]['TIME'],
-							 'usuario_ej'=>$genera[$i]['id_usuario'],
-							 'status_ej'=> 'carrito');
-				$this->db->insert('alm_historial_s', $aux);
-				$aux2 = array('TIME'=>$genera[$i]['TIME'],
-							  'nr_solicitud'=>$genera[$i]['nr_solicitud'],
-							  'id_usuario'=>$genera[$i]['id_usuario'],
-							  'id_historial_s'=>$this->db->insert_id());
-				$this->db->insert('alm_efectua', $aux2);
-				$aux = array('nr_solicitud'=>$genera[$i]['nr_solicitud'],
-							 'fecha_ej'=>$genera[$i]['TIME'],
-							 'usuario_ej'=>$genera[$i]['id_usuario'],
-							 'status_ej'=> 'en_proceso');
-				$this->db->insert('alm_historial_s', $aux);
-				$aux2 = array('TIME'=>$genera[$i]['TIME'],
-							  'nr_solicitud'=>$genera[$i]['nr_solicitud'],
-							  'id_usuario'=>$genera[$i]['id_usuario'],
-							  'id_historial_s'=>$this->db->insert_id());
-				$this->db->insert('alm_efectua', $aux2);
-			}
-			if(isset($aprueba[$i]))
-			{
-				$aux = array('nr_solicitud'=>$aprueba[$i]['nr_solicitud'],
-							 'fecha_ej'=>$aprueba[$i]['TIME'],
-							 'usuario_ej'=>$aprueba[$i]['id_usuario'],
-							 'status_ej'=> 'aprobado');
-				$this->db->insert('alm_historial_s', $aux);
-				$aux2 = array('TIME'=>$aprueba[$i]['TIME'],
-							  'nr_solicitud'=>$aprueba[$i]['nr_solicitud'],
-							  'id_usuario'=>$aprueba[$i]['id_usuario'],
-							  'id_historial_s'=>$this->db->insert_id());
-				$this->db->insert('alm_efectua', $aux2);
-			}
-			if(isset($retira[$i]))
-			{
-				$aux = array('nr_solicitud'=>$retira[$i]['nr_solicitud'],
-							 'fecha_ej'=>$retira[$i]['TIME'],
-							 'usuario_ej'=>$retira[$i]['id_usuario'],
-							 'status_ej'=> 'completado');
-				$this->db->insert('alm_historial_s', $aux);
-				$aux2 = array('TIME'=>$retira[$i]['TIME'],
-							  'nr_solicitud'=>$retira[$i]['nr_solicitud'],
-							  'id_usuario'=>$retira[$i]['id_usuario'],
-							  'id_historial_s'=>$this->db->insert_id());
-				$this->db->insert('alm_efectua', $aux2);
-			}
-		}
+	// public function migrate_ver1point3()//migracion para version del 21/07/2016
+	// {
+	// 	//creating the new tables
+	// 	$this->db->order_by('ID');
+	// 	// // $solicitudes=$this->db->get('alm_solicitud')->result_array();
+	// 	$solicitudes=$this->db->get('alm_old_tablesolicitud')->result_array();
+	// 	// // echo_pre($solicitudes, __LINE__, __FILE__);
+	// 	//enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+	// 	// enum('carrito','en_proceso','aprobada','enviado','completado')
+	// 	foreach ($solicitudes as $key => $value)
+	// 	{
+	// 		unset($solicitudes[$key]['id_usuario']);
+	// 		if($value['status']=='aprobada')
+	// 		{
+	// 			$solicitudes[$key]['status']='aprobado';
+	// 		}
+	// 		$this->db->insert('alm_solicitud', $solicitudes[$key]);
+	// 	}
+	// 	$this->db->select('TIME, nr_solicitud, id_usuario');
+	// 	$this->db->order_by('ID');
+	// 	$genera = $this->db->get('alm_genera')->result_array();
+	// 	// echo_pre($genera, __LINE__, __FILE__);
+	// 	$this->db->select('nr_solicitud, TIME, id_usuario');
+	// 	$this->db->from('alm_aprueba');
+	// 	// $this->db->group_by('nr_solicitud DESC');
+	// 	$this->db->order_by('nr_solicitud ASC');
+	// 	$aprueba = array_reverse($this->db->get()->result_array());
+	// 	// die_pre($aprueba, __LINE__, __FILE__);
+	// 	$this->db->distinct();
+	// 	$this->db->select('TIME, nr_solicitud, id_usuario');
+	// 	$this->db->order_by('nr_solicitud');
+	// 	$this->db->group_by('nr_solicitud');
+	// 	$retira = $this->db->get('alm_retira')->result_array();//hay un nr_solicitud y un id_usuario por cada articulo en la solicitud
+	// 	// echo_pre($retira, __LINE__, __FILE__);
+	// 	$stop[] = count($genera);
+	// 	$stop[] = count($aprueba);
+	// 	$stop[] = count($retira);
+	// 	for ($i=0; $i < max($stop); $i++)
+	// 	{
+	// 		if(isset($genera[$i]))
+	// 		{
+	// 			$aux = array('nr_solicitud'=>$genera[$i]['nr_solicitud'],
+	// 						 'fecha_ej'=>$genera[$i]['TIME'],
+	// 						 'usuario_ej'=>$genera[$i]['id_usuario'],
+	// 						 'status_ej'=> 'carrito');
+	// 			$this->db->insert('alm_historial_s', $aux);
+	// 			$aux2 = array('TIME'=>$genera[$i]['TIME'],
+	// 						  'nr_solicitud'=>$genera[$i]['nr_solicitud'],
+	// 						  'id_usuario'=>$genera[$i]['id_usuario'],
+	// 						  'id_historial_s'=>$this->db->insert_id());
+	// 			$this->db->insert('alm_efectua', $aux2);
+	// 			$aux = array('nr_solicitud'=>$genera[$i]['nr_solicitud'],
+	// 						 'fecha_ej'=>$genera[$i]['TIME'],
+	// 						 'usuario_ej'=>$genera[$i]['id_usuario'],
+	// 						 'status_ej'=> 'en_proceso');
+	// 			$this->db->insert('alm_historial_s', $aux);
+	// 			$aux2 = array('TIME'=>$genera[$i]['TIME'],
+	// 						  'nr_solicitud'=>$genera[$i]['nr_solicitud'],
+	// 						  'id_usuario'=>$genera[$i]['id_usuario'],
+	// 						  'id_historial_s'=>$this->db->insert_id());
+	// 			$this->db->insert('alm_efectua', $aux2);
+	// 		}
+	// 		if(isset($aprueba[$i]))
+	// 		{
+	// 			$aux = array('nr_solicitud'=>$aprueba[$i]['nr_solicitud'],
+	// 						 'fecha_ej'=>$aprueba[$i]['TIME'],
+	// 						 'usuario_ej'=>$aprueba[$i]['id_usuario'],
+	// 						 'status_ej'=> 'aprobado');
+	// 			$this->db->insert('alm_historial_s', $aux);
+	// 			$aux2 = array('TIME'=>$aprueba[$i]['TIME'],
+	// 						  'nr_solicitud'=>$aprueba[$i]['nr_solicitud'],
+	// 						  'id_usuario'=>$aprueba[$i]['id_usuario'],
+	// 						  'id_historial_s'=>$this->db->insert_id());
+	// 			$this->db->insert('alm_efectua', $aux2);
+	// 		}
+	// 		if(isset($retira[$i]))
+	// 		{
+	// 			$aux = array('nr_solicitud'=>$retira[$i]['nr_solicitud'],
+	// 						 'fecha_ej'=>$retira[$i]['TIME'],
+	// 						 'usuario_ej'=>$retira[$i]['id_usuario'],
+	// 						 'status_ej'=> 'completado');
+	// 			$this->db->insert('alm_historial_s', $aux);
+	// 			$aux2 = array('TIME'=>$retira[$i]['TIME'],
+	// 						  'nr_solicitud'=>$retira[$i]['nr_solicitud'],
+	// 						  'id_usuario'=>$retira[$i]['id_usuario'],
+	// 						  'id_historial_s'=>$this->db->insert_id());
+	// 			$this->db->insert('alm_efectua', $aux2);
+	// 		}
+	// 	}
 
 
-		//version vieja
-		// CREATE TABLE IF NOT EXISTS `alm_contiene` (
-		//   `NRS` varchar(9) NOT NULL,
-		// ) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8;
-		$cont_en_sol = $this->db->get('alm_contiene')->result_array();
-		foreach ($cont_en_sol as $key => $value)
-		{
-			unset($cont_en_sol[$key]['NRS']);
-			$cont_en_sol[$key]['id_usuario']=NULL;
-			$cont_en_sol[$key]['estado_articulo']='activo';
-			$cont_en_sol[$key]['motivo']='';
-			$this->db->insert('alm_art_en_solicitud', $cont_en_sol[$key]);
-		}
-		//version nueva
-		// CREATE TABLE `alm_art_en_solicitud` (
-		//   `id_usuario` varchar(9) DEFAULT NULL,
-		//   `estado_articulo` enum('activo','anulado') NOT NULL DEFAULT 'activo',
-		//   `motivo` text
-		// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-	}
+	// 	//version vieja
+	// 	// CREATE TABLE IF NOT EXISTS `alm_contiene` (
+	// 	//   `NRS` varchar(9) NOT NULL,
+	// 	// ) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8;
+	// 	$cont_en_sol = $this->db->get('alm_contiene')->result_array();
+	// 	foreach ($cont_en_sol as $key => $value)
+	// 	{
+	// 		unset($cont_en_sol[$key]['NRS']);
+	// 		$cont_en_sol[$key]['id_usuario']=NULL;
+	// 		$cont_en_sol[$key]['estado_articulo']='activo';
+	// 		$cont_en_sol[$key]['motivo']='';
+	// 		$this->db->insert('alm_art_en_solicitud', $cont_en_sol[$key]);
+	// 	}
+	// 	//version nueva
+	// 	// CREATE TABLE `alm_art_en_solicitud` (
+	// 	//   `id_usuario` varchar(9) DEFAULT NULL,
+	// 	//   `estado_articulo` enum('activo','anulado') NOT NULL DEFAULT 'activo',
+	// 	//   `motivo` text
+	// 	// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	// }
 ////////////////////FIN de alteraciones sobre tablas de la BD
    //Esta es la funcion para cargar los datos desde el servidor para el datatable 
     function get_art()
@@ -1842,103 +1843,97 @@ class Model_alm_articulos extends CI_Model
     }
     public function makeSQLBackup()//HAY QUE GUARDAR EL RESPALDO EN LA NUBE (SE CONTEMPLA EL USO DE LA HERRAMIENTA "MEGACMD" pero hay que crear una cuenta para el proyecto)
     {
-    	if($this->verify_closure())
+    	// Load the DB utility class
+    	$this->load->dbutil();
+    	$this->load->helper('date');
+    	$date = date('Ym', time());
+
+    	$prefs = array(
+    	        'tables'        => array('alm_articulo', 'alm_solicitud', 'alm_historial_a', 'alm_art_en_solicitud', 'alm_genera_hist_a', 'alm_reporte'),   // Array of tables to backup.
+    	        'ignore'        => array(),                     // List of tables to omit from the backup
+    	        'format'        => 'txt',                       // gzip, zip, txt
+    	        'filename'      => 'RespaldoDeAlmacen.sql',              // File name - NEEDED ONLY WITH ZIP FILES
+    	        'add_drop'      => FALSE,                        // Whether to add DROP TABLE statements to backup file
+    	        'add_insert'    => TRUE,                        // Whether to add INSERT data to backup file
+    	        'newline'       => "\n"                         // Newline character used in backup file
+    	);
+
+    	$backup = 'Generado antes del cierre, del día '.date('d/m/Y').' en manos del usuario '.$this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'].', de Cédula:'.$this->session->userdata('user')['id_usuario'].'
+    	';
+    	// Backup your entire database and assign it to a variable
+    	$backup .= $this->dbutil->backup($prefs);
+    	// die_pre($backup);
+    	// Load the file helper and write the file to your server
+    	$this->load->helper('file');
+    	// die_pre(get_filenames('./uploads/cierres/'), __LINE__, __FILE__);
+    	if(write_file('./uploads/cierres/RespaldoPreCierre'.$date.'.txt', $backup))
     	{
-	    	// Load the DB utility class
-	    	$this->load->dbutil();
-	    	$this->load->helper('date');
-	    	$date = date('Ym', time());
-
-	    	$prefs = array(
-	    	        'tables'        => array('alm_articulo', 'alm_solicitud', 'alm_historial_a', 'alm_art_en_solicitud', 'alm_genera_hist_a', 'alm_reporte'),   // Array of tables to backup.
-	    	        'ignore'        => array(),                     // List of tables to omit from the backup
-	    	        'format'        => 'txt',                       // gzip, zip, txt
-	    	        'filename'      => 'RespaldoDeAlmacen.sql',              // File name - NEEDED ONLY WITH ZIP FILES
-	    	        'add_drop'      => FALSE,                        // Whether to add DROP TABLE statements to backup file
-	    	        'add_insert'    => TRUE,                        // Whether to add INSERT data to backup file
-	    	        'newline'       => "\n"                         // Newline character used in backup file
-	    	);
-
-	    	$backup = 'Generado antes del cierre, del día '.date('d/m/Y').' en manos del usuario '.$this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'].', de Cédula:'.$this->session->userdata('user')['id_usuario'].'
-	    	';
-	    	// Backup your entire database and assign it to a variable
-	    	$backup .= $this->dbutil->backup($prefs);
-	    	// die_pre($backup);
-	    	// Load the file helper and write the file to your server
-	    	$this->load->helper('file');
-	    	die_pre(get_filenames('./uploads/cierres/'), __LINE__, __FILE__);
-	    	if(write_file('./uploads/cierres/RespaldoPreCierre'.$date.'.txt', $backup))
-	    	{
-	    		$this->update_closure('BACKUP');
-		    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service(yeah, i usually write comments in english)
-		    	// $this->load->helper('download');
-		    	// force_download('mybackup.txt', $backup);
-		    	return('success');
-	    	}
-	    	else
-	    	{
-	    		return('error');
-	    	}
-	    }
+    		$this->update_closure('BACKUP');
+	    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service(yeah, i usually write comments in english)
+	    	// $this->load->helper('download');
+	    	// force_download('mybackup.txt', $backup);
+	    	return('success');
+    	}
+    	else
+    	{
+    		return('error');
+    	}
     }
     public function insert_stockAdjustment()
     {
-    	if($this->verify_closure())
+    	$this->load->helper('date');
+    	$this->db->select('id_articulo, exist_reportada, exist_sistema');
+    	$this->db->where('justificacion is NOT NULL', NULL, false);
+    	$query = $this->db->get_where('alm_reporte', array('revision'=>'por_revisar'))->result_array();
+    	// echo_pre($query, __LINE__, __FILE__);
+    	// alm_historial_a
+    	// alm_genera_hist_a
+    	foreach ($query as $key => $obj)
     	{
-	    	$this->load->helper('date');
-	    	$this->db->select('id_articulo, exist_reportada, exist_sistema');
-	    	$this->db->where('justificacion is NOT NULL', NULL, false);
-	    	$query = $this->db->get_where('alm_reporte', array('revision'=>'por_revisar'))->result_array();
-	    	// echo_pre($query, __LINE__, __FILE__);
-	    	// alm_historial_a
-	    	// alm_genera_hist_a
-	    	foreach ($query as $key => $obj)
-	    	{
-	    		$cod_historial = $obj['id_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
-	    		$this->db->select('ID, cod_articulo, nuevos, ACTIVE');
-	    		$this->db->where('ID', $obj['id_articulo']);
-	    		$articulo = $this->db->get('alm_articulo')->row_array();
-	    		// echo 'antes';
-	    		// print_r($articulo);
-				$historial= array(
-		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
-		                    'nuevo'=>1,
-		                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
-		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
-		                    );	
-				$link=array(
-			        'id_historial_a'=> $cod_historial,
-			        'id_articulo'=> $articulo['cod_articulo']
-			        );
-				if($obj['exist_reportada'] > $obj['exist_sistema'])
-				{
-					$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
-					$articulo['nuevos'] += $historial['entrada'];
-				}
-				else
-				{
-					$historial['salida'] = $obj['exist_sistema'] - $obj['exist_reportada'];
-					$articulo['nuevos'] -= $historial['salida'];
-				}
-				if($articulo['nuevos'] > 0)
-				{
-					$articulo['ACTIVE'] = 1;
-				}
-				else
-				{
-					$articulo['ACTIVE'] = 0;
-				}
-				// print_r($link);
-				// print_r($historial);
-	    		// echo 'después';
-				// print_r($articulo);
-	    		$this->db->where('ID', $articulo['ID']);
-	    		$this->db->update('alm_articulo', $articulo);
-		    	$this->db->insert('alm_historial_a', $historial);
-				$this->db->insert('alm_genera_hist_a', $link);
-	    	}
-	    	$this->update_closure('ADJUSTED');
-	    	// die_pre($this->db->last_query());
-	    }
+    		$cod_historial = $obj['id_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
+    		$this->db->select('ID, cod_articulo, nuevos, ACTIVE');
+    		$this->db->where('ID', $obj['id_articulo']);
+    		$articulo = $this->db->get('alm_articulo')->row_array();
+    		// echo 'antes';
+    		// print_r($articulo);
+			$historial= array(
+	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
+	                    'nuevo'=>1,
+	                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
+	                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+	                    );	
+			$link=array(
+		        'id_historial_a'=> $cod_historial,
+		        'id_articulo'=> $articulo['cod_articulo']
+		        );
+			if($obj['exist_reportada'] > $obj['exist_sistema'])
+			{
+				$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
+				$articulo['nuevos'] += $historial['entrada'];
+			}
+			else
+			{
+				$historial['salida'] = $obj['exist_sistema'] - $obj['exist_reportada'];
+				$articulo['nuevos'] -= $historial['salida'];
+			}
+			if($articulo['nuevos'] > 0)
+			{
+				$articulo['ACTIVE'] = 1;
+			}
+			else
+			{
+				$articulo['ACTIVE'] = 0;
+			}
+			// print_r($link);
+			// print_r($historial);
+    		// echo 'después';
+			// print_r($articulo);
+    		$this->db->where('ID', $articulo['ID']);
+    		$this->db->update('alm_articulo', $articulo);
+	    	$this->db->insert('alm_historial_a', $historial);
+			$this->db->insert('alm_genera_hist_a', $link);
+    	}
+    	$this->update_closure('ADJUSTED');
+    	// die_pre($this->db->last_query());
     }
 }

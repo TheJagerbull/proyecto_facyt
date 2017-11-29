@@ -688,9 +688,36 @@ $(document).ready(function() {
                             <?php endif?>
 
                         <?php   break;?>
-                        <?php //case 'REPORTED':?>
+                        <?php case 'BACKUP':?>
+                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Un respaldo de la Base de datos, ya ha sido guardada en el servidor, todavía faltan procesos en el cierre</strong>
+                            </div>
+                            <?php if(!empty($alm[8])):?>
+                              <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
+                              <div id="divinco" hidden>
+                                <br>
+                                <div class="responsive-table">
+                                    <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
+                                        <thead>
+                                            <tr class="active" ><th></th></tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                              </div>
+                            <?php endif?>
+                        <?php   break;?>
+                        <?php case 'ACTAS':?>
+                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Ya fué generado las actas del cierre de inventario</strong>
+                            </div>
+                            <?php if(!empty($alm[8])):?>
 
-                        <?php   //break;?>
+                            <?php endif?>
+                        <?php   break;?>
                         <?php default:?>
                           <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                             <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">No se ha habilitado el sistema, para realizar el cierre de año fiscal.</strong>
@@ -1617,7 +1644,15 @@ $(document).ready(function() {
         // var closeInvPermit = '<?php echo (!empty($alm[8]) ? $alm[8] : 0); ?>';
         // console.log(closeInvPermit);
     <?php if(!empty($alm[8])):?>
+
+        // $('#continuar').on("click", function(){
+          
+
+
+        // });
+
         $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
+          console.log($(this).html());
           // $("#"+this.id).prop('disabled', true);
           $(this).prop('disabled', true);
           var server = '<?php echo base_url()?>cierre/revision';
@@ -1703,7 +1738,11 @@ $(document).ready(function() {
           var test1 = $("#divinco");//cuerpo de la tabla y control de actas(tabla y botones)
 
           var actaBtn = $("<button/>");
-          actaBtn.html('Finalizar cierre');
+          <?php if($RepInvFisico['completed'] == 'REPORTED'): ?>
+            actaBtn.html('Finalizar cierre');
+          <?php else: ?>
+            actaBtn.html('Continuar cierre');
+          <?php endif; ?>
           actaBtn.attr("class", "btn btn-sm btn-primary pull-right");
           $(actaBtn).prop('disabled', true);
           test1.append(actaBtn);
@@ -1729,7 +1768,7 @@ $(document).ready(function() {
                       {
                         // setTimeout(function ()
                         // {
-                          // console.log(data);
+                          console.log(data);
                           swal(
                             'Cierre exitoso',
                             'El proceso de cierre de inventario ha sido realizado con éxito',
@@ -1795,6 +1834,7 @@ $(document).ready(function() {
                 }
               }
           });
+
           function validateJustificate(X)
           {
             console.log(X);

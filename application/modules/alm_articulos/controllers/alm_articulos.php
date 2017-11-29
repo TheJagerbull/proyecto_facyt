@@ -246,13 +246,15 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
-            if($this->model_alm_articulos->closure_isStarted())
+            if($this->model_alm_articulos->closure_isStarted()=='ACTAS')
             {
-                // echo json_encode("value");
+                $this->validar_reporte();
             }
-            $this->backup_Inventory();
-            // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
-            // $this->validar_reporte();
+            else
+            {
+                // $this->backup_Inventory();
+                // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado   
+            }
             // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
         }
         else
@@ -284,7 +286,8 @@ class Alm_articulos extends MX_Controller
         {
             if($this->model_alm_articulos->closure_isStarted() == 'BACKUP')
             {
-                echo json_encode($this->model_alm_articulos->insert_stockAdjustment());
+                // die_pre('HERE!', __LINE__, __FILE__);
+                $this->model_alm_articulos->insert_stockAdjustment();
             }
         }
         else
@@ -1604,15 +1607,16 @@ class Alm_articulos extends MX_Controller
                     //Close and output PDF document
                     // if($this->uri->uri_string()=='inventario/generar/acta')
                     // {
-                        $pdf->Output('Actas_'.date('Y-m-d',$date).'.pdf', 'I');
                         $file_to_save = './uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
                         $pdf->Output($file_to_save, 'F');
+
+                        $pdf->Output('Actas_'.date('Y-m-d',$date).'.pdf', 'I');
 
                         $data = array('acta' => $file_to_save,
                             'FILE_DIR' => './uploads/cierres/actas',
                             'completed'=> 'COMPLETED');
 
-                        $this->model_alm_articulos->update_closure($data);
+                    $this->model_alm_articulos->update_closure($data);
                     // }
                     // if($this->uri->uri_string()=='inventario/cerrar')
                     // {
@@ -1655,20 +1659,20 @@ class Alm_articulos extends MX_Controller
             }
             else
             {
-                $this->load->helper('directory');
-                $aux['actDeCierres']="
-                <div class='form-group'>
-                    <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
-                    <div class='col-sm-9'>
-                        <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
-                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
-                foreach (directory_map('./uploads/cierres/actas') as $file)
-                {
-                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
-                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
-                }
-                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
-                return $aux;
+                // $this->load->helper('directory');
+                // $aux['actDeCierres']="
+                // <div class='form-group'>
+                //     <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                //     <div class='col-sm-9'>
+                //         <select id='actDeCierres' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
+                // $aux['actDeCierres'].= "<option value='' selected >--SELECCIONE--</option>";
+                // foreach (directory_map('./uploads/cierres/actas') as $file)
+                // {
+                //     $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                //     $aux['actDeCierres'].= "<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                // }
+                // $aux['actDeCierres'].= "</select></div></div>";
+                // return $aux;
             }
         }
         else
@@ -3106,7 +3110,42 @@ class Alm_articulos extends MX_Controller
                 $this->load->helper('directory');
                 $aux['actDeIni']="
                 <div class='form-group'>
-                    <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                    <label class='col-sm-3 control-label text-center'>Actas</label>
+                    <div class='col-sm-9'>
+                        <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
+                die_pre(directory_map('./uploads/cierres', 1));
+                // foreach (directory_map('./uploads/cierres') as $file)
+                // {
+                //     $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                //     $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                // }
+                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
+                return $aux;
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function get_cierresNEW()//para traer un arreglo de cierres de inventario del servidor de la carpeta "uploads"
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+                $this->load->helper('directory');
+                $aux['actDeIni']="
+                <div class='form-group'>
+                    <label class='col-sm-3 control-label text-center'>Actas</label>
                     <div class='col-sm-9'>
                         <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
                 $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
@@ -3116,7 +3155,8 @@ class Alm_articulos extends MX_Controller
                     $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
                 }
                 $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
-                return $aux;
+                // return $aux;
+                print_r($aux);
             }
             else
             {
