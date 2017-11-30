@@ -1888,52 +1888,59 @@ class Model_alm_articulos extends CI_Model
     	// echo_pre($query, __LINE__, __FILE__);
     	// alm_historial_a
     	// alm_genera_hist_a
-    	foreach ($query as $key => $obj)
+		if(!empty($query))
     	{
-    		$cod_historial = $obj['id_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
-    		$this->db->select('ID, cod_articulo, nuevos, ACTIVE');
-    		$this->db->where('ID', $obj['id_articulo']);
-    		$articulo = $this->db->get('alm_articulo')->row_array();
-    		// echo 'antes';
-    		// print_r($articulo);
-			$historial= array(
-	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
-	                    'nuevo'=>1,
-	                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
-	                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
-	                    );	
-			$link=array(
-		        'id_historial_a'=> $cod_historial,
-		        'id_articulo'=> $articulo['cod_articulo']
-		        );
-			if($obj['exist_reportada'] > $obj['exist_sistema'])
-			{
-				$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
-				$articulo['nuevos'] += $historial['entrada'];
-			}
-			else
-			{
-				$historial['salida'] = $obj['exist_sistema'] - $obj['exist_reportada'];
-				$articulo['nuevos'] -= $historial['salida'];
-			}
-			if($articulo['nuevos'] > 0)
-			{
-				$articulo['ACTIVE'] = 1;
-			}
-			else
-			{
-				$articulo['ACTIVE'] = 0;
-			}
-			// print_r($link);
-			// print_r($historial);
-    		// echo 'después';
-			// print_r($articulo);
-    		$this->db->where('ID', $articulo['ID']);
-    		$this->db->update('alm_articulo', $articulo);
-	    	$this->db->insert('alm_historial_a', $historial);
-			$this->db->insert('alm_genera_hist_a', $link);
+    		foreach ($query as $key => $obj)
+	    	{
+	    		$cod_historial = $obj['id_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
+	    		$this->db->select('ID, cod_articulo, nuevos, ACTIVE');
+	    		$this->db->where('ID', $obj['id_articulo']);
+	    		$articulo = $this->db->get('alm_articulo')->row_array();
+	    		// echo 'antes';
+	    		// print_r($articulo);
+				$historial= array(
+		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
+		                    'nuevo'=>1,
+		                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
+		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+		                    );	
+				$link=array(
+			        'id_historial_a'=> $cod_historial,
+			        'id_articulo'=> $articulo['cod_articulo']
+			        );
+				if($obj['exist_reportada'] > $obj['exist_sistema'])
+				{
+					$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
+					$articulo['nuevos'] += $historial['entrada'];
+				}
+				else
+				{
+					$historial['salida'] = $obj['exist_sistema'] - $obj['exist_reportada'];
+					$articulo['nuevos'] -= $historial['salida'];
+				}
+				if($articulo['nuevos'] > 0)
+				{
+					$articulo['ACTIVE'] = 1;
+				}
+				else
+				{
+					$articulo['ACTIVE'] = 0;
+				}
+				// print_r($link);
+				// print_r($historial);
+	    		// echo 'después';
+				// print_r($articulo);
+	    		$this->db->where('ID', $articulo['ID']);
+	    		$this->db->update('alm_articulo', $articulo);
+		    	$this->db->insert('alm_historial_a', $historial);
+				$this->db->insert('alm_genera_hist_a', $link);
+	    	}
+    		$this->update_closure('ADJUSTED');
     	}
-    	$this->update_closure('ADJUSTED');
+    	else
+    	{
+			$this->update_closure('NOADJUSTRQ');
+    	}
     	// die_pre($this->db->last_query());
     }
 }

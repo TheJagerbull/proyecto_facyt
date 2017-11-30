@@ -715,13 +715,16 @@ $(document).ready(function() {
                               <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Ya fué generado las actas del cierre de inventario</strong>
                             </div>
                             <?php if(!empty($alm[8])):?>
-
+                              <button id="showLastActa" class="btn btn-lg btn-info" >Ver Actas</button>
                             <?php endif?>
                         <?php   break;?>
                         <?php default:?>
                           <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                             <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">No se ha habilitado el sistema, para realizar el cierre de año fiscal.</strong>
                           </div>
+                          <?php if(!empty($alm[8])):?>
+                            <button id="showLastActa" class="btn btn-lg btn-info" >Ver últimas actas generadas</button>
+                          <?php endif?>
                         <?php   break;?>
                       <?php endswitch; ?>
 
@@ -1647,6 +1650,7 @@ $(document).ready(function() {
 
         // $('#continuar').on("click", function(){
           
+          
 
 
         // });
@@ -1834,7 +1838,6 @@ $(document).ready(function() {
                 }
               }
           });
-
           function validateJustificate(X)
           {
             console.log(X);
@@ -1874,6 +1877,16 @@ $(document).ready(function() {
           // console.log(tablerep);
           // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
           // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
+        });
+
+        $('#showLastActa').on('click', function()//muestra las actas recientemente generadas
+        {
+          var string = '<!DOCTYPE html>';
+          var pdf = $('<iframe/>');
+          pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
+          pdf.attr("width", "100%");
+          pdf.attr("height", "100%");
+          buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
         });
     <?php endif;?>
 
