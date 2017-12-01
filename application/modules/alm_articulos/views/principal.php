@@ -710,6 +710,28 @@ $(document).ready(function() {
                               </div>
                             <?php endif?>
                         <?php   break;?>
+                        <?php case ('ADJUSTED' || 'NOADJUSTRQ'):?>
+                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">El procedimiento de ajustes necesarios, sobre las cantidades del sistema, ya fué realizado (en los casos necesarios).</strong>
+                            </div>
+                            <?php if(!empty($alm[8])):?>
+                              <button id="continueClosure" class="btn btn-lg btn-info" >Continuar el cierre</button>
+                              <!-- <div id="divinco"> -->
+                              <!--  <br>
+                                <div class="responsive-table">
+                                    <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
+                                        <thead>
+                                            <tr class="active" ><th></th></tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        </tfoot>
+                                    </table>
+                                </div>-->
+                              <!-- </div> -->
+                            <?php endif?>
+                        <?php   break;?>
                         <?php case 'ACTAS':?>
                             <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                               <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Ya fué generado las actas del cierre de inventario</strong>
@@ -1647,237 +1669,270 @@ $(document).ready(function() {
         // var closeInvPermit = '<?php echo (!empty($alm[8]) ? $alm[8] : 0); ?>';
         // console.log(closeInvPermit);
     <?php if(!empty($alm[8])):?>
-
-        // $('#continuar').on("click", function(){
-          
-          
-
-
-        // });
-
-        $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
-          console.log($(this).html());
-          // $("#"+this.id).prop('disabled', true);
-          $(this).prop('disabled', true);
-          var server = '<?php echo base_url()?>cierre/revision';
-        //primera opción
-          // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
-          //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
-          // });
-        //segunda opción
-          // var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
-          var columnDefs = [
-              {
-                  title:"Item",
-                  id: "ID",
-                  data: "ID",
-                  "visible": false,
-                  "searchable": false
-              },{
-                  title: "Código del artículo",
-                  id: "cod_articulo",
-                  data: "cod_articulo",
-                  type: "readonly"
-                                  
-              },{
-                  title:"Descripción del Artículo",
-                  id: "descripcion",
-                  data: "descripcion",
-                  type: "readonly"
-              },{
-                  title:"Cantidad Reportada",
-                  id: "exist_reportada",
-                  data: "exist_reportada",
-                  type: "readonly"
-              },{
-                  title:"Cantidad en Sistema",
-                  id: "exist_sistema",
-                  data: "exist_sistema",
-                  type: "readonly"
-              },{
-                  title: "Justificación",
-                  id: "justificacion",
-                  data: "justificacion",
-                  type: "textarea",
-                  pattern:"^[a-zá-úA-Z0-9\r\n\t\f\v \"\/]*",
-                  required: true,
-                  errorMsg: "* Debe Justificar la incongruencia.",
-                  hoverMsg: "Ejemplo: ... a causa de extravío,... ",
-                  placeholder: "Justifique la causa de la incongruencia"
-              }
-          ];
-          var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
-          var tablas = ["alm_reporte", "alm_articulo"];
-          var commonJoins = ["id_articulo", "ID"];
-          var dbAbiguous = ["ID"];
-          var UIlanguage = {
-            "emptyTable":     "No hay incongruencias",
-            "lengthMenu":     "Mostrar _MENU_ registros",
-            "loadingRecords": "Cargando...",
-            "processing":     "Procesando...",
-            "search":         "Buscar:",
-            "zeroRecords":    "No se encontraron incongruencias",
-            "paginate": {
-                "first":      "Primero",
-                "last":       "Último",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
-              }
-            };
-          var Vars = {
-            mother: "divinco",
-            id: "incongruityTable",
-            url: '<?php echo site_url("tablas/inventario/reportado") ?>',
-            columns: columnDefs,
-            columnAttr: attrColumnas,
-            dbTable: tablas,
-            dbCommonJoins: commonJoins,
-            dbAbiguous: dbAbiguous,
-            buttonName: 'Justificar',
-            language: UIlanguage
-          };
-          // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
-          // buildDataTable(Vars);
-          var tablaEdit = buildEdiTable(Vars);
-          var test1 = $("#divinco");//cuerpo de la tabla y control de actas(tabla y botones)
-
-          var actaBtn = $("<button/>");
-          <?php if($RepInvFisico['completed'] == 'REPORTED'): ?>
-            actaBtn.html('Finalizar cierre');
-          <?php else: ?>
-            actaBtn.html('Continuar cierre');
-          <?php endif; ?>
-          actaBtn.attr("class", "btn btn-sm btn-primary pull-right");
-          $(actaBtn).prop('disabled', true);
-          test1.append(actaBtn);
+        <?php if($RepInvFisico['completed'] == 'ADJUSTED' || $RepInvFisico['completed'] == 'NOADJUSTRQ'): ?>
+            
+            var test1 = $("#divinco");
+            var actaBtn = $("#continueClosure");
+            // actaBtn.html('Continuar cierre');
+            // actaBtn.attr("class", "btn btn-sm btn-primary pull-right");
+            // test1.append(actaBtn);
           actaBtn.click(function(){
-            console.log('finish!!');
-            swal({
-                    title: "Proceso irreversible",
-                    text: "Una vez realizado el cierre, el sistema realizará ajustes sobre aquellos articulos que hayan reportado incongruencias con respecto al inventario físico y el sistema",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Continuar",
-                    cancelButtonText: "Cancelar"
-                }).then(function(){
-
-                  var close = $("#close");
-                  var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
-                  loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
-                  close.html(loadingIMG);
-                  $.ajax({
-                      url:"<?php echo base_url() ?>inventario/cerrar",
-                      type:"POST",
-                      success: function(data)
-                      {
-                        // setTimeout(function ()
-                        // {
-                          console.log(data);
-                          swal(
-                            'Cierre exitoso',
-                            'El proceso de cierre de inventario ha sido realizado con éxito',
-                            'success'
-                            ).then(function(){
-                              //locura
-                              var string = '<!DOCTYPE html>';
-                              var pdf = $('<iframe/>');
-                              pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
-                              pdf.attr("width", "100%");
-                              pdf.attr("height", "100%");
-                              buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
-                              // location.reload();
-                            });
-                        // }, 3000);
-                      }
-                    });
-                },function(dismiss){
-                  if(dismiss=='cancel'){
-                  swal(
-                    'cancelado!',
-                    'Se ha cancelado el proceso de Cierre, Los cambios no se han revertido, pero puede culminar este proceso en otro momento',
-                    'error').then(function(){
-                      location.reload();
-                    })
-                  }
-
-                });
-            actaBtn.remove();
-          })
-          tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado... Para crear las actas
-          {
-            // if(json.draw === 3)//solo para pruebas, BORRAR AL TERMINAR
-            // {
-            //   $(actaBtn).prop('disabled', false);
-            // }
-            if(json.POR_JUSTIFICAR === 0)//si no hay articulos incongruentes POR justificar...
-            {
-              //crear actas
-              $(actaBtn).prop('disabled', false);
-            }
-          });
-          // console.log(test1);
-          test1.toggle("slow", function ()
-          {
-              if(test1.is(":hidden"))
-              {
-                $('html, body').animate({
-                  scrollTop: $('.header').offset().top
-                }, 500, "swing");
-                tablaEdit.DataTable().remove();
-                // tablaEdit.DataTable().clear();
-                // tablaEdit.DataTable().destroy();
+            console.log("FAAAAK!");
+            var close = $("#close");
+            var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+            loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+            close.html(loadingIMG);
+            $.ajax({
+                url:"<?php echo base_url() ?>inventario/cerrar",
+                type:"POST",
+                success: function(data)
+                {
+                  // setTimeout(function ()
+                  // {
+                    console.log(data);
+                    swal(
+                      'Cierre exitoso',
+                      'El proceso de cierre de inventario ha sido realizado con éxito',
+                      'success'
+                      ).then(function(){
+                        //locura
+                        var string = '<!DOCTYPE html>';
+                        var pdf = $('<iframe/>');
+                        pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
+                        pdf.attr("width", "100%");
+                        pdf.attr("height", "100%");
+                        buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
+                        // location.reload();
+                      });
+                  // }, 3000);
               }
-              else
+            });
+          });
+        <?php else: ?>
+          $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
+            console.log($(this).html());
+            // $("#"+this.id).prop('disabled', true);
+            $(this).prop('disabled', true);
+            var server = '<?php echo base_url()?>cierre/revision';
+          //primera opción
+            // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
+            //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
+            // });
+          //segunda opción
+            // var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
+            var columnDefs = [
+                {
+                    title:"Item",
+                    id: "ID",
+                    data: "ID",
+                    "visible": false,
+                    "searchable": false
+                },{
+                    title: "Código del artículo",
+                    id: "cod_articulo",
+                    data: "cod_articulo",
+                    type: "readonly"
+                                    
+                },{
+                    title:"Descripción del Artículo",
+                    id: "descripcion",
+                    data: "descripcion",
+                    type: "readonly"
+                },{
+                    title:"Cantidad Reportada",
+                    id: "exist_reportada",
+                    data: "exist_reportada",
+                    type: "readonly"
+                },{
+                    title:"Cantidad en Sistema",
+                    id: "exist_sistema",
+                    data: "exist_sistema",
+                    type: "readonly"
+                },{
+                    title: "Justificación",
+                    id: "justificacion",
+                    data: "justificacion",
+                    type: "textarea",
+                    pattern:"^[a-zá-úA-Z0-9\r\n\t\f\v \"\/]*",
+                    required: true,
+                    errorMsg: "* Debe Justificar la incongruencia.",
+                    hoverMsg: "Ejemplo: ... a causa de extravío,... ",
+                    placeholder: "Justifique la causa de la incongruencia"
+                }
+            ];
+            var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+            var tablas = ["alm_reporte", "alm_articulo"];
+            var commonJoins = ["id_articulo", "ID"];
+            var dbAbiguous = ["ID"];
+            var UIlanguage = {
+              "emptyTable":     "No hay incongruencias",
+              "lengthMenu":     "Mostrar _MENU_ registros",
+              "loadingRecords": "Cargando...",
+              "processing":     "Procesando...",
+              "search":         "Buscar:",
+              "zeroRecords":    "No se encontraron incongruencias",
+              "paginate": {
+                  "first":      "Primero",
+                  "last":       "Último",
+                  "next":       "Siguiente",
+                  "previous":   "Anterior"
+                }
+              };
+            var Vars = {
+              mother: "divinco",
+              id: "incongruityTable",
+              url: '<?php echo site_url("tablas/inventario/reportado") ?>',
+              columns: columnDefs,
+              columnAttr: attrColumnas,
+              dbTable: tablas,
+              dbCommonJoins: commonJoins,
+              dbAbiguous: dbAbiguous,
+              buttonName: 'Justificar',
+              language: UIlanguage
+            };
+            // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
+            // buildDataTable(Vars);
+            var tablaEdit = buildEdiTable(Vars);
+            var test1 = $("#divinco");//cuerpo de la tabla y control de actas(tabla y botones)
+
+            var actaBtn = $("<button/>");
+            <?php if($RepInvFisico['completed'] == 'REPORTED'): ?>
+              actaBtn.html('Finalizar cierre');
+            <?php else: ?>
+              actaBtn.html('Continuar cierre');
+            <?php endif; ?>
+            actaBtn.attr("class", "btn btn-sm btn-primary pull-right");
+            $(actaBtn).prop('disabled', true);
+            test1.append(actaBtn);
+            actaBtn.click(function(){
+              console.log('finish!!');
+              swal({
+                      title: "Proceso irreversible",
+                      text: "Una vez realizado el cierre, el sistema realizará ajustes sobre aquellos articulos que hayan reportado incongruencias con respecto al inventario físico y el sistema",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Continuar",
+                      cancelButtonText: "Cancelar"
+                  }).then(function(){
+
+                    var close = $("#close");
+                    var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+                    loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+                    close.html(loadingIMG);
+                    $.ajax({
+                        url:"<?php echo base_url() ?>inventario/cerrar",
+                        type:"POST",
+                        success: function(data)
+                        {
+                          // setTimeout(function ()
+                          // {
+                            console.log(data);
+                            swal(
+                              'Cierre exitoso',
+                              'El proceso de cierre de inventario ha sido realizado con éxito',
+                              'success'
+                              ).then(function(){
+                                //locura
+                                var string = '<!DOCTYPE html>';
+                                var pdf = $('<iframe/>');
+                                pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
+                                pdf.attr("width", "100%");
+                                pdf.attr("height", "100%");
+                                buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
+                                // location.reload();
+                              });
+                          // }, 3000);
+                        }
+                      });
+                  },function(dismiss){
+                    if(dismiss=='cancel'){
+                    swal(
+                      'cancelado!',
+                      'Se ha cancelado el proceso de Cierre, Los cambios no se han revertido, pero puede culminar este proceso en otro momento',
+                      'error').then(function(){
+                        location.reload();
+                      })
+                    }
+
+                  });
+              actaBtn.remove();
+            })
+            tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado... Para crear las actas
+            {
+              // if(json.draw === 3)//solo para pruebas, BORRAR AL TERMINAR
+              // {
+              //   $(actaBtn).prop('disabled', false);
+              // }
+              if(json.POR_JUSTIFICAR === 0)//si no hay articulos incongruentes POR justificar...
               {
-                // if(test1.is(":hidden"))
-                if(test1.is(":visible"))
+                //crear actas
+                $(actaBtn).prop('disabled', false);
+              }
+            });
+            // console.log(test1);
+            test1.toggle("slow", function ()
+            {
+                if(test1.is(":hidden"))
                 {
                   $('html, body').animate({
-                    scrollTop: test1.offset().top
+                    scrollTop: $('.header').offset().top
                   }, 500, "swing");
+                  tablaEdit.DataTable().remove();
+                  // tablaEdit.DataTable().clear();
+                  // tablaEdit.DataTable().destroy();
                 }
-              }
+                else
+                {
+                  // if(test1.is(":hidden"))
+                  if(test1.is(":visible"))
+                  {
+                    $('html, body').animate({
+                      scrollTop: test1.offset().top
+                    }, 500, "swing");
+                  }
+                }
+            });
+            function validateJustificate(X)
+            {
+              console.log(X);
+            }
+            // if(test1.is(":visible"))
+            // test1.on('toggle', function()
+            // {
+              // console.log("toggle");
+              // if(test1.is(":hidden"))
+              // {
+              //   $('html, body').animate({
+              //     scrollTop: $('.header').offset().top
+              //   }, 500, "swing");
+              // }
+              // else
+              // {
+              //   // if(test1.is(":hidden"))
+              //   if(test1.is(":visible"))
+              //   {
+              //     $('html, body').animate({
+              //       scrollTop: test1.offset().top
+              //     }, 1500, "swing");
+              //   }
+              // }
+            // });
+            // var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
+            // console.log(modal.length);
+            // modal.on('hide.bs.modal', function(){
+              // console.log("wtf!!!");
+              // test1.toggle();
+            // $('#incongruencias').after($("#divinco"));
+            // });
+            // test1.append(tablerep);
+            //fin de construccion de la tabla
+            // console.log(defColumnas);
+            // console.log(attrColumnas);
+            // console.log(tablerep);
+            // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
+            // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
           });
-          function validateJustificate(X)
-          {
-            console.log(X);
-          }
-          // if(test1.is(":visible"))
-          // test1.on('toggle', function()
-          // {
-            // console.log("toggle");
-            // if(test1.is(":hidden"))
-            // {
-            //   $('html, body').animate({
-            //     scrollTop: $('.header').offset().top
-            //   }, 500, "swing");
-            // }
-            // else
-            // {
-            //   // if(test1.is(":hidden"))
-            //   if(test1.is(":visible"))
-            //   {
-            //     $('html, body').animate({
-            //       scrollTop: test1.offset().top
-            //     }, 1500, "swing");
-            //   }
-            // }
-          // });
-          // var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
-          // console.log(modal.length);
-          // modal.on('hide.bs.modal', function(){
-            // console.log("wtf!!!");
-            // test1.toggle();
-          // $('#incongruencias').after($("#divinco"));
-          // });
-          // test1.append(tablerep);
-          //fin de construccion de la tabla
-          // console.log(defColumnas);
-          // console.log(attrColumnas);
-          // console.log(tablerep);
-          // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
-          // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
-        });
+        <?php endif; ?>
 
         $('#showLastActa').on('click', function()//muestra las actas recientemente generadas
         {

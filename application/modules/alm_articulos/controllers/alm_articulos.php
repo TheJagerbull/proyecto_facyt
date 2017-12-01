@@ -252,10 +252,10 @@ class Alm_articulos extends MX_Controller
             }
             else
             {
-                // $this->backup_Inventory();
-                // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado   
+                $this->backup_Inventory();
+                $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado   
             }
-            // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
+            // $this->pdf_ActaDeCierre();//aqui quedé (hace la llamada desde otro metodo del lado del cliente)
         }
         else
         {
@@ -1477,7 +1477,7 @@ class Alm_articulos extends MX_Controller
     {
         if($this->dec_permiso->has_permission('alm', 8))//permiso para insertar o hacer cierres de inventario, Y VERIFICA EL ESTADO ANTERIOR DEL CIERRE
         {
-            if($this->model_alm_articulos->closure_isStarted() == 'ACTAS')
+            if($this->model_alm_articulos->closure_isStarted() == 'ACTAS' || $this->model_alm_articulos->closure_isStarted() == 'COMPLETED')
             {
                 $this->load->helper('directory');
                 if(is_dir("./uploads/cierres/actas/"))//
@@ -1501,8 +1501,8 @@ class Alm_articulos extends MX_Controller
             }
             else
             {
-            // if($this->model_alm_articulos->closure_isStarted() == 'ADJUSTED' || $this->model_alm_articulos->closure_isStarted() == 'NOADJUSTRQ')
-            // {
+                if($this->model_alm_articulos->closure_isStarted() == 'ADJUSTED' || $this->model_alm_articulos->closure_isStarted() == 'NOADJUSTRQ')
+                {
                 // die_pre($this->uri->uri_string(), __LINE__, __FILE__);
                 /*
                 Autores
@@ -1627,7 +1627,6 @@ class Alm_articulos extends MX_Controller
                 $this->pdf->lastPage();
 
                     // ---------------------------------------------------------
-                $this->model_alm_articulos->update_closure('ACTAS');
                     //Close and output PDF document
                     // if($this->uri->uri_string()=='inventario/generar/acta')
                     // {
@@ -1644,6 +1643,14 @@ class Alm_articulos extends MX_Controller
                     mkdir("./uploads/cierres/actas/", 0777);
                 }
                 $this->pdf->Output($file_to_save, 'F');//guarda en el servidor
+                
+                
+                $data = array(
+                            'acta' => $file_to_save,
+                            'FILE_DIR' => './uploads/cierres/actas/',
+                            'completed'=> 'ACTAS');
+                $this->model_alm_articulos->update_closure($data);//actualizo en la BD del cierre
+
                 $this->pdf->Output('Actas_'.date('Y-m-d',$date).'.pdf', 'I');//envia al browser
                 // if( ! $this->upload->do_upload())//si ocurre un error en la subida...
                 // {
@@ -1699,7 +1706,7 @@ class Alm_articulos extends MX_Controller
                 // $this->pdf->CloseActaPage();
                 // $this->pdf->Output();
                 // echo $file_to_save;
-            // }
+                }
             // else
             // {
                 // $this->load->helper('directory');
@@ -3162,7 +3169,7 @@ class Alm_articulos extends MX_Controller
                 $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
                 // echo_pre(directory_map('./uploads/cierres', 2), __LINE__, __FILE__);
                 $optgroup = array();
-                $optgroup['root'] = '<optgroup label="archivos de cierre de inventario">';
+                $optgroup['root'] = '<optgroup label="Reportes y respaldos">';
                 foreach ($dir as $filepos => $file)
                 {
                     if(is_array($file))
