@@ -639,116 +639,103 @@ $(document).ready(function() {
                       <br>
                       <span class="color"><?php //print_r($RepInvFisico);?></span>
                     <!-- <?php// if($RepInvFisico):?> -->
-                      <?php switch ($RepInvFisico['completed']):
-                        case 'BEGINING':?>
-                            <div class="alert alert-success" style="text-align: center">
-                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">El proceso de cierre de año fiscal, ha sido habilitado.</strong>
-                            </div>
-                            <?php if(!empty($alm[7])):?>
-                            <div id="RepInvFisico">
-                              <div class="alert alert-instruction" style="text-align: center">
-                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
-                              </div>
-                        <!-- Subida de archivo de excel para cierre de inventario-->
-                              <div class="form-group">
-                                  <label class="control-label" for="excel">Insertar archivo de Excel:</label>
-                                  <div class="input-group col-md-5">
-                                      <input id="excel" type="file" name="userfile">
-                                  </div>
-                              </div>
-                            </div>
-                            <?php endif;?>
-                            <?php if(!empty($alm[8])):?>
-                              <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
-                              </div>
-                            <?php endif?>
-                        <?php   break;?>
-                        <?php case 'REPORTED':?>
-                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
-                            </div>
-
-                            <?php if(!empty($alm[8])):?>
-                              <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
-                              <div id="divinco" hidden>
-                                <br>
-                                <div class="responsive-table">
-                                    <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
-                                        <thead>
-                                            <tr class="active" ><th></th></tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                        <tfoot>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                              </div>
-                            <?php endif?>
-
-                        <?php   break;?>
-                        <?php case 'BACKUP':?>
-                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Un respaldo de la Base de datos, ya ha sido guardada en el servidor, todavía faltan procesos en el cierre</strong>
-                            </div>
-                            <?php if(!empty($alm[8])):?>
-                              <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
-                              <div id="divinco" hidden>
-                                <br>
-                                <div class="responsive-table">
-                                    <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
-                                        <thead>
-                                            <tr class="active" ><th></th></tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                        <tfoot>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                              </div>
-                            <?php endif?>
-                        <?php   break;?>
-                        <?php case ('ADJUSTED' || 'NOADJUSTRQ'):?>
+                        <?php if ($RepInvFisico['completed']=='ADJUSTED' || $RepInvFisico['completed']=='NOADJUSTRQ'):?>
                             <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                               <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">El procedimiento de ajustes necesarios, sobre las cantidades del sistema, ya fué realizado (en los casos necesarios).</strong>
                             </div>
                             <?php if(!empty($alm[8])):?>
                               <button id="continueClosure" class="btn btn-lg btn-info" >Continuar el cierre</button>
-                              <!-- <div id="divinco"> -->
-                              <!--  <br>
-                                <div class="responsive-table">
-                                    <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
-                                        <thead>
-                                            <tr class="active" ><th></th></tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                        <tfoot>
-                                        </tfoot>
-                                    </table>
-                                </div>-->
-                              <!-- </div> -->
                             <?php endif?>
-                        <?php   break;?>
-                        <?php case 'ACTAS':?>
-                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Ya fué generado las actas del cierre de inventario</strong>
-                            </div>
-                            <?php if(!empty($alm[8])):?>
-                              <button id="showLastActa" class="btn btn-lg btn-info" >Ver Actas</button>
-                            <?php endif?>
-                        <?php   break;?>
-                        <?php default:?>
-                          <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                            <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">No se ha habilitado el sistema, para realizar el cierre de año fiscal.</strong>
-                          </div>
-                          <?php if(!empty($alm[8])):?>
-                            <button id="showLastActa" class="btn btn-lg btn-info" >Ver últimas actas generadas</button>
-                          <?php endif?>
-                        <?php   break;?>
-                      <?php endswitch; ?>
+                        <?php else:?>
+                          <?php if($RepInvFisico['completed']=='BEGINING'):?>
+                              <div class="alert alert-success" style="text-align: center">
+                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">El proceso de cierre de año fiscal, ha sido habilitado.</strong>
+                              </div>
+                              <?php if(!empty($alm[7])):?>
+                              <div id="RepInvFisico">
+                                <div class="alert alert-instruction" style="text-align: center">
+                                  <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
+                                </div>
+                          <!-- Subida de archivo de excel para cierre de inventario-->
+                                <div class="form-group">
+                                    <label class="control-label" for="excel">Insertar archivo de Excel:</label>
+                                    <div class="input-group col-md-5">
+                                        <input id="excel" type="file" name="userfile">
+                                    </div>
+                                </div>
+                              </div>
+                              <?php endif;?>
+                              <?php if(!empty($alm[8])):?>
+                                <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                                  <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
+                                </div>
+                              <?php endif?>
+                          <?php else:?>
+                            <?php if($RepInvFisico['completed']=='REPORTED'):?>
+                                <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                                  <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
+                                </div>
+
+                                <?php if(!empty($alm[8])):?>
+                                  <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
+                                  <div id="divinco" hidden>
+                                    <br>
+                                    <div class="responsive-table">
+                                        <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
+                                            <thead>
+                                                <tr class="active" ><th></th></tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                            <tfoot>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                  </div>
+                                <?php endif?>
+
+                            <?php else:?>
+                              <?php if($RepInvFisico['completed']=='BACKUP'):?>
+                                  <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                                    <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Un respaldo de la Base de datos, ya ha sido guardada en el servidor, todavía faltan procesos en el cierre</strong>
+                                  </div>
+                                  <?php if(!empty($alm[8])):?>
+                                    <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
+                                    <div id="divinco" hidden>
+                                      <br>
+                                      <div class="responsive-table">
+                                          <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
+                                              <thead>
+                                                  <tr class="active" ><th></th></tr>
+                                              </thead>
+                                              <tbody>
+                                              </tbody>
+                                              <tfoot>
+                                              </tfoot>
+                                          </table>
+                                      </div>
+                                    </div>
+                                  <?php endif?>
+                              <?php  else:?>
+                                <?php if($RepInvFisico['completed']=='ACTAS'):?>
+                                    <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                                      <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Ya fué generado las actas del cierre de inventario</strong>
+                                    </div>
+                                    <?php if(!empty($alm[8])):?>
+                                      <button id="showLastActa" class="btn btn-lg btn-info" >Ver Actas</button>
+                                    <?php endif?>
+                                <?php else:?>
+                                    <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                                      <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">No se ha habilitado el sistema, para realizar el cierre de año fiscal.</strong>
+                                    </div>
+                                    <?php if(!empty($alm[8])):?>
+                                      <button id="showLastActa" class="btn btn-lg btn-info" >Ver últimas actas generadas</button>
+                                    <?php endif;?>
+                                <?php endif;?>
+                              <?php  endif;?>
+                            <?php endif;?>
+                          <?php endif;?>
+                        <?php endif;?>
 
 
                     <!-- <?php// else:?> -->
@@ -759,13 +746,13 @@ $(document).ready(function() {
 
 
 
-										</div>
-									<?php endif;?>
-							</div>
-						
-						</div> <!-- end awidget-body -->
-							
-						</div>
+                    </div>
+                  <?php endif;?>
+              </div>
+            
+            </div> <!-- end awidget-body -->
+              
+            </div>
 					</div>
 
 			</div>
@@ -1672,42 +1659,39 @@ $(document).ready(function() {
         <?php if($RepInvFisico['completed'] == 'ADJUSTED' || $RepInvFisico['completed'] == 'NOADJUSTRQ'): ?>
             
             var test1 = $("#divinco");
-            var actaBtn = $("#continueClosure");
-            // actaBtn.html('Continuar cierre');
-            // actaBtn.attr("class", "btn btn-sm btn-primary pull-right");
-            // test1.append(actaBtn);
-          actaBtn.click(function(){
-            console.log("FAAAAK!");
-            var close = $("#close");
-            var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
-            loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
-            close.html(loadingIMG);
-            $.ajax({
-                url:"<?php echo base_url() ?>inventario/cerrar",
-                type:"POST",
-                success: function(data)
-                {
-                  // setTimeout(function ()
-                  // {
-                    console.log(data);
-                    swal(
-                      'Cierre exitoso',
-                      'El proceso de cierre de inventario ha sido realizado con éxito',
-                      'success'
-                      ).then(function(){
-                        //locura
-                        var string = '<!DOCTYPE html>';
-                        var pdf = $('<iframe/>');
-                        pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
-                        pdf.attr("width", "100%");
-                        pdf.attr("height", "100%");
-                        buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
-                        // location.reload();
-                      });
-                  // }, 3000);
-              }
+            var continueBtn = $("#continueClosure");
+            continueBtn.click(function(){
+              console.log("FAAAAK!");
+              var close = $("#close");
+              var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+              loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+              close.html(loadingIMG);
+              $.ajax({
+                  url:"<?php echo base_url() ?>inventario/cerrar",
+                  type:"POST",
+                  success: function(data)
+                  {
+                    // setTimeout(function ()
+                    // {
+                      console.log(data);
+                      swal(
+                        'Cierre exitoso',
+                        'El proceso de cierre de inventario ha sido realizado con éxito',
+                        'success'
+                        ).then(function(){
+                          //locura
+                          var string = '<!DOCTYPE html>';
+                          var pdf = $('<iframe/>');
+                          pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
+                          pdf.attr("width", "100%");
+                          pdf.attr("height", "100%");
+                          buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
+                          // location.reload();
+                        });
+                    // }, 3000);
+                }
+              });
             });
-          });
         <?php else: ?>
           $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
             console.log($(this).html());
@@ -1942,6 +1926,7 @@ $(document).ready(function() {
           pdf.attr("width", "100%");
           pdf.attr("height", "100%");
           buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
+          console.log($('#pdfCierre').length);
         });
     <?php endif;?>
 

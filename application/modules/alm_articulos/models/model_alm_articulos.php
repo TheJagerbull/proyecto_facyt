@@ -666,7 +666,7 @@ class Model_alm_articulos extends CI_Model
 /////de la nueva tabla
 	public function closure_isStarted()//incompleto
 	{
-		$this->db->select('*, MAX(ID)');
+		$this->db->select('*')->order_by('ID', 'DESC')->limit(1);
 		// $this->db->where('completed !=', 'COMPLETED');
 		$query = $this->db->get('alm_cierre');
 		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
@@ -687,7 +687,7 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function insert_closure()
 	{
-		$this->db->select('*, MAX(ID)');
+		$this->db->select('*')->order_by('ID', 'DESC')->limit(1);
 		$query = $this->db->get('alm_cierre');
 		// die_pre(empty($query->row_array()['ID']), __LINE__, __FILE__);
 		if($query->row_array()['completed']=='COMPLETED' || empty($query->row_array()['ID']))
@@ -708,7 +708,7 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function update_closure($data)
 	{
-		$this->db->select('*, MAX(ID)');
+		$this->db->select('*')->order_by('ID', 'DESC')->limit(1);
 		// $id = $this->db->get_where('alm_cierre', array('MAX(ID)'));
 		$id = $this->db->get_where('alm_cierre')->row_array();
 		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
@@ -731,7 +731,7 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function get_latestClosure()
 	{
-		$this->db->select('*, MAX(ID)');
+		$this->db->select('*')->order_by('ID', 'DESC')->limit(1);
 		return($this->db->get('alm_cierre')->row_array());
 	}
 	public function insert_reporte($reporte='', $batch=false)//inserta un solo item en la tabla de reporte
@@ -1942,5 +1942,14 @@ class Model_alm_articulos extends CI_Model
 			$this->update_closure('NOADJUSTRQ');
     	}
     	// die_pre($this->db->last_query());
+    }
+    public function close_reporte()
+    {
+    	$array['acta'] = $this->get_latestClosure()['acta'];
+    	// $array['acta']=;
+    	$array['revision'] = 'reportado';
+    	$this->db->where('acta IS NULL', NULL, false);
+    	$this->db->update('alm_reporte', $array);
+    	$this->update_closure('CLOSEREP');
     }
 }
