@@ -1338,7 +1338,7 @@ $(document).ready(function() {
       //url: "<?php echo base_url() ?>inventario/articulo/agregar"
       var formArt = $('#addArticulos');
       // $("#addArtcategoria").select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
-      $("#addArtcategoria").select2({
+      var selectCAT = $("#addArtcategoria").select2({
           placeholder:"Indique la categoría del articulo que va a insertar (basado en el catálogo de las naciones unidas)",
           minimumInputLength: 2,
           maximumSelectionSize: 10,
@@ -1366,8 +1366,12 @@ $(document).ready(function() {
             },
             results: function(data, page){
               console.log("results ");
+              var newCat = { ID: "0", TIME: "0", cod_categoria: "0", descripcion: "", nombre: "Agregar Categoría nueva", cod_segmento: "0", segmento: "RECUERDE USAR EL CATALOGO DE LAS NACIONES UNIDAS COMO REFERENCIA", cod_familia: "0", familia: "VISITE EL CATALOGO EN LA PESTAÑA 'catálogo'" }
+              data.push(newCat);
               console.log(data);
+              console.log(data[0]);
               console.log(page);
+
               // var plus = (page * 30) < data.total_count;
               // return { results: data, more: plus };
               return { results: data };
@@ -1395,6 +1399,8 @@ $(document).ready(function() {
             }
           },
           formatResult: function(object, container, query){
+            // console.log('formatResult');
+            // console.log(object);
             textpattern = query.term.toUpperCase();
             pattern = query.term;
             if(object.nombre.search(textpattern) !== -1 || object.cod_categoria.search(pattern) !== -1 || object.cod_segmento.search(pattern) !== -1 || object.cod_familia.search(pattern) !== -1 || object.familia.search(textpattern) !== -1 || object.segmento.search(textpattern) !== -1)
@@ -1405,6 +1411,13 @@ $(document).ready(function() {
               // return('<table class="table table-bordered table-condensed" style="border: 1px solid black">\
               //           <tr><td><strong>Código:</strong> '+object.cod_categoria+'</td><td><strong>Categoria: </strong>'+object.nombre+'</td></tr>'+
               //   '<tr><td><strong>Familia:</strong> '+object.familia+'</td><td><strong>Segmento:</strong> '+object.segmento+'</td></tr></table>');
+            }
+            else
+            {
+              if(object.ID === "0")//para la opción de agregar una categoria nueva
+              {
+                return('<strong> '+object.nombre+'</strong>  <p style="font-size:10px"><strong>|'+object.segmento+' | '+object.familia+'|</strong></p>');
+              }
             }
           },
           formatSelection: function(object, container){
@@ -1427,109 +1440,117 @@ $(document).ready(function() {
 
           // }
         });
-        var categoria = $("#addArtcategoria").select2("val");
-        $("#addArtcategoria").on("change", function(){
+
+        // var categoria = $("#addArtcategoria").select2("val");
+        $("#addArtcategoria").on("change select2-opening", function(){
           categoria = $("#addArtcategoria").select2("val");
           if(categoria !== "")
           {
-            buildAddArtForm();
+            buildAddArtForm(categoria);
           }
         });
         // if(categoria === "")
         // {
         //   buildAddArtForm();
         // }
-        function buildAddArtForm()
+        function buildAddArtForm(categoria)
         {
           console.log("CONSTRUYE FORMULARIO!");
           var codigoCat = categoria.split(' ');
           console.log(codigoCat[0]);
-          var formgroup = $('<br><div/>');
-          formgroup.attr("class", "form-group");
-          //para contruir un panel en boostrap
-          var panel = $("<div/>");
-          var panelHead = $("<div/>");
-          var panelTitle = $("<h2/>");
-          var panelBody = $("<div/>");
-          var panelFoot = $("<div/>");
-          panel.attr("class","panel panel-info")
-          panelHead.attr("class", "panel panel-heading");
-          panelTitle.attr("class","panel-title text-center",);
-          panelTitle.html("Ingrese los datos de artículo");
-          panelHead.append(panelTitle);
-          panel.append(panelHead);
-          panelBody.attr("class","panel-body");
-          var rows = $("<div/>");
-          rows.attr("class","row");
-          var margen = $("<div/>");
-          margen.attr("class","col-lg-12 col-md-12 col-sm-12 col-xm-12")
-          //input de codigo
-          var inputgroup = $("<div/>");
-          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label = $("<label/>");
-          label.attr("class", "control-label");
-          label.html("<i class='color'> * </i> Código");
-          var input = $("<input/>");
-          input.attr("class", "form-control");
-          input.attr("name", "cod_articulo");
-          input.attr("placeholder", "Defina el código del articulo");
-          inputgroup.append(label);
-          inputgroup.append(input);
-          //formgroup.append(inputgroup);
-          //input de unidad
-          var inputgroup2 = $("<div/>");
-          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label = $("<label/>");
-          label.attr("class", "control-label");
-          label.html("<i class='color'> * </i> Unidad");
-          var input = $("<input/>");
-          input.attr("class", "form-control");
-          input.attr("name", "descripcion");
-          input.attr("placeholder", "Defina la Unidad del artículo");
-          inputgroup2.append(label);
-          inputgroup2.append(input);
-          //formgroup.append(inputgroup);
-          //input de ubicación
-          var inputgroup3 = $("<div/>");
-          inputgroup3.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label = $("<label/>");
-          label.attr("class", "control-label");
-          label.html("<i class='color'> * </i> Descripción del artículo");
-          var input = $("<input/>");
-          input.attr("class", "form-control");
-          input.attr("name", "descripcion");
-          input.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup3.append(label);
-          inputgroup3.append(input);
-          //formgroup.append(inputgroup);
-          //input de cantidad
-          var inputgroup4 = $("<div/>");
-          inputgroup4.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label = $("<label/>");
-          label.attr("class", "control-label");
-          label.html("<i class='color'> * </i> Descripción del artículo");
-          var input = $("<input/>");
-          input.attr("class", "form-control");
-          input.attr("name", "descripcion");
-          input.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup4.append(label);
-          inputgroup4.append(input);
-          margen.append(inputgroup);
-          margen.append(inputgroup2);
-          margen.append(inputgroup3);
-          margen.append(inputgroup4);
-          rows.append(margen);
-          panelBody.append(rows);
-          panel.append(panelBody);
-          //formgroup.append(inputgroup);
-          var button = $('<button/>');
-          button.attr('form', 'addArticulos');
-          button.attr('class', 'btn btn-xs btn-primary pull-right');
-          button.html('Agregar');
-          panelFoot.attr("class", "panel panel-footer");
-          panelFoot.append(button);
-          panel.append(panelFoot);
-          formgroup.append(panel);
+          if(codigoCat[0]!== "0")
+          {
+              var formgroup = $('<br><div/>');
+              formgroup.attr("class", "form-group");
+              //para contruir un panel en boostrap
+              var panel = $("<div/>");
+              var panelHead = $("<div/>");
+              var panelTitle = $("<h2/>");
+              var panelBody = $("<div/>");
+              var panelFoot = $("<div/>");
+              panel.attr("class","panel panel-info")
+              panelHead.attr("class", "panel panel-heading");
+              panelTitle.attr("class","panel-title text-center",);
+              panelTitle.html("Ingrese los datos de artículo");
+              panelHead.append(panelTitle);
+              panel.append(panelHead);
+              panelBody.attr("class","panel-body");
+              var rows = $("<div/>");
+              rows.attr("class","row");
+              var margen = $("<div/>");
+              margen.attr("class","col-lg-12 col-md-12 col-sm-12 col-xm-12")
+              //input de codigo
+              var inputgroup = $("<div/>");
+              inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+              var label = $("<label/>");
+              label.attr("class", "control-label");
+              label.html("<i class='color'> * </i> Código");
+              var input = $("<input/>");
+              input.attr("class", "form-control");
+              input.attr("name", "cod_articulo");
+              input.attr("placeholder", "Defina el código del articulo");
+              inputgroup.append(label);
+              inputgroup.append(input);
+              //formgroup.append(inputgroup);
+              //input de unidad
+              var inputgroup2 = $("<div/>");
+              inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+              var label = $("<label/>");
+              label.attr("class", "control-label");
+              label.html("<i class='color'> * </i> Unidad");
+              var input = $("<input/>");
+              input.attr("class", "form-control");
+              input.attr("name", "descripcion");
+              input.attr("placeholder", "Defina la Unidad del artículo");
+              inputgroup2.append(label);
+              inputgroup2.append(input);
+              //formgroup.append(inputgroup);
+              //input de ubicación
+              var inputgroup3 = $("<div/>");
+              inputgroup3.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+              var label = $("<label/>");
+              label.attr("class", "control-label");
+              label.html("<i class='color'> * </i> Descripción del artículo");
+              var input = $("<input/>");
+              input.attr("class", "form-control");
+              input.attr("name", "descripcion");
+              input.attr("placeholder", "Defina la descripción del articulo");
+              inputgroup3.append(label);
+              inputgroup3.append(input);
+              //formgroup.append(inputgroup);
+              //input de cantidad
+              var inputgroup4 = $("<div/>");
+              inputgroup4.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+              var label = $("<label/>");
+              label.attr("class", "control-label");
+              label.html("<i class='color'> * </i> Descripción del artículo");
+              var input = $("<input/>");
+              input.attr("class", "form-control");
+              input.attr("name", "descripcion");
+              input.attr("placeholder", "Defina la descripción del articulo");
+              inputgroup4.append(label);
+              inputgroup4.append(input);
+              margen.append(inputgroup);
+              margen.append(inputgroup2);
+              margen.append(inputgroup3);
+              margen.append(inputgroup4);
+              rows.append(margen);
+              panelBody.append(rows);
+              panel.append(panelBody);
+              //formgroup.append(inputgroup);
+              var button = $('<button/>');
+              button.attr('form', 'addArticulos');
+              button.attr('class', 'btn btn-xs btn-primary pull-right');
+              button.html('Agregar');
+              panelFoot.attr("class", "panel panel-footer");
+              panelFoot.append(button);
+              panel.append(panelFoot);
+              formgroup.append(panel);
+          }
+          else
+          {
+            
+          }
           //input de 
           //Crea el botón de insertar para el submit del formulario
           
