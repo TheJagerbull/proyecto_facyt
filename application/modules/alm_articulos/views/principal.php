@@ -1483,14 +1483,25 @@ $(document).ready(function() {
               var inputgroup = $("<div/>");
               inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
               var label = $("<label/>");
+              //<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>
               label.attr("class", "control-label");
               label.html("<i class='color'> * </i> Código");
               var input = $("<input/>");
+              input.attr('form', 'addArticulos');
               input.attr("class", "form-control");
               input.attr("name", "cod_articulo");
               input.attr("placeholder", "Defina el código del articulo");
+              input.attr('pattern', '^('+codigoCat[0]+')[0-9]{2,4}\-[A-Z0-9]{1,10}');
+              input.attr('title', 'Defina el código empezando por el código de la categoría que le corresponde, ej.: '+codigoCat[0]+'...');
+              input.attr('data-errorMsg', 'El código debe empezar por el código de la categoría');
+              input.attr('style', 'overflow:hidden');
+
+              var errorLabel = $("<label/>");
+              errorLabel.attr('id', input.attr('name')+'label');
+              errorLabel.attr('class', 'alert-danger');
               inputgroup.append(label);
               inputgroup.append(input);
+              inputgroup.append(errorLabel);
               //formgroup.append(inputgroup);
               //input de unidad
               var inputgroup2 = $("<div/>");
@@ -1499,11 +1510,18 @@ $(document).ready(function() {
               label.attr("class", "control-label");
               label.html("<i class='color'> * </i> Unidad");
               var input = $("<input/>");
+              input.attr('form', 'addArticulos');
               input.attr("class", "form-control");
-              input.attr("name", "descripcion");
-              input.attr("placeholder", "Defina la Unidad del artículo");
+              input.attr("name", "unidad");
+              input.attr("placeholder", "Defina la Unidad o porción de despacho");
+              input.attr('pattern', '');
+
+              var errorLabel = $("<label/>");
+              errorLabel.attr('id', input.attr('name')+'label');
+              errorLabel.attr('class', 'alert-danger');
               inputgroup2.append(label);
               inputgroup2.append(input);
+              inputgroup2.append(errorLabel);
               //formgroup.append(inputgroup);
               //input de ubicación
               var inputgroup3 = $("<div/>");
@@ -1512,11 +1530,18 @@ $(document).ready(function() {
               label.attr("class", "control-label");
               label.html("<i class='color'> * </i> Descripción del artículo");
               var input = $("<input/>");
+              input.attr('form', 'addArticulos');
               input.attr("class", "form-control");
               input.attr("name", "descripcion");
               input.attr("placeholder", "Defina la descripción del articulo");
+              // input.attr('pattern', '');
+
+              var errorLabel = $("<label/>");
+              errorLabel.attr('id', input.attr('name')+'label');
+              errorLabel.attr('class', 'alert-danger');
               inputgroup3.append(label);
               inputgroup3.append(input);
+              inputgroup3.append(errorLabel);
               //formgroup.append(inputgroup);
               //input de cantidad
               var inputgroup4 = $("<div/>");
@@ -1525,11 +1550,19 @@ $(document).ready(function() {
               label.attr("class", "control-label");
               label.html("<i class='color'> * </i> Descripción del artículo");
               var input = $("<input/>");
+              input.attr('form', 'addArticulos');
               input.attr("class", "form-control");
               input.attr("name", "descripcion");
               input.attr("placeholder", "Defina la descripción del articulo");
+              // input.attr('pattern', '');
+
+              var errorLabel = $("<label/>");
+              errorLabel.attr('id', input.attr('name')+'label');
+              errorLabel.attr('class', 'alert-danger');
               inputgroup4.append(label);
               inputgroup4.append(input);
+              inputgroup4.append(errorLabel);
+
               margen.append(inputgroup);
               margen.append(inputgroup2);
               margen.append(inputgroup3);
@@ -1540,6 +1573,7 @@ $(document).ready(function() {
               //formgroup.append(inputgroup);
               var button = $('<button/>');
               button.attr('form', 'addArticulos');
+              button.attr('id', 'addFormButton');
               button.attr('class', 'btn btn-xs btn-primary pull-right');
               button.html('Agregar');
               panelFoot.attr("class", "panel panel-footer");
@@ -1549,7 +1583,8 @@ $(document).ready(function() {
           }
           else
           {
-            
+            console.log('new cat');
+
           }
           //input de 
           //Crea el botón de insertar para el submit del formulario
@@ -1558,10 +1593,59 @@ $(document).ready(function() {
           
           //formArt.append(button);
           //Fin de Crea el botón de insertar para el submit del formulario
-          formArt.on('submit', function(){
-            console.log('submiting');
-            return(false);
+          $(document).on('click', '#addFormButton', function(e)
+          {
+            console.log(this.form);
+            var form = this.form.id;
+            if(formValidate(form)){
+              console.log('good!');
+              e.preventDefault();
+              e.stopPropagation();
+              // that._deleteRow();
+            }
+              // $(this).prop('disabled', true);
           });
+
+          // $('#addFormButton').on('click', function(){
+          //   console.log('submiting');
+          //   console.log(this);
+          //   if(formValidate(this))
+          //   {
+          //     return(false);
+          //   }
+          //     return(false);
+          // });
+        }
+        function formValidate(form)//para validar
+        {
+          // console.log("form= "+form);
+          var isValid = false;
+          var errorcount = 0;
+          // console.log($('form[id="'+form+'"] *'));
+          //Ciclo para recorrer todos los inputs
+          $('form[id="'+form+'"] *').filter(':input').each(function( i ){
+            console.log(this);
+            var errorLabel = "#"+ $(this).attr("name") + "label";
+            if(!$(this).context.checkValidity())
+            {
+              $(errorLabel).html($(this).attr("data-errorMsg"));
+              $(errorLabel).show();
+              errorcount++;
+            }
+            else
+            {
+              $(errorLabel).hide();
+              $(errorLabel).empty();
+
+            }
+          });
+
+          if(errorcount === 0)
+          {
+            isValid = true;
+          }
+
+          return isValid;
         }
         // $("#addArtcategoria").on("select2-highlight", function(e) {
         //   console.log ("highlighted val="+ e.val+" choice="+ JSON.stringify(e.choice));
