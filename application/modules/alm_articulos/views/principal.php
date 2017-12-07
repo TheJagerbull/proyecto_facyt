@@ -392,7 +392,7 @@ $(document).ready(function() {
                                     <div class="awidget-body">
                                       <?php if(!empty($alm[6])):?> <!-- agregar articulos de forma individual -->
                                       <br><br><br>
-                                      <form id="addArticulos">
+                                      <form id="addArticulos" role="form">
                                         <input hidden id="addArtcategoria" class="form-control input-sm" name="categoria" type="text">
                                         <!-- <select hidden id="addArtcategoria" class="form-control input-sm"  name="categoria" tabindex="-1">
                                           <option></option>
@@ -1464,44 +1464,46 @@ $(document).ready(function() {
               formgroup.attr("class", "form-group");
               //para contruir un panel en boostrap
               var panel = $("<div/>");
-              var panelHead = $("<div/>");
-              var panelTitle = $("<h2/>");
-              var panelBody = $("<div/>");
-              var panelFoot = $("<div/>");
-              panel.attr("class","panel panel-info")
-              panelHead.attr("class", "panel panel-heading");
-              panelTitle.attr("class","panel-title text-center",);
-              panelTitle.html("Ingrese los datos de artículo");
-              panelHead.append(panelTitle);
+                var panelHead = $("<div/>");
+                  var panelTitle = $("<h2/>");
+                var panelBody = $("<div/>");
+                var panelFoot = $("<div/>");
+              panel.attr("class","panel panel-info");
+                panelHead.attr("class", "panel panel-heading");
+                  panelTitle.attr("class","panel-title text-center");
+                  panelTitle.html("Ingrese los datos de artículo");
+                panelHead.append(panelTitle);
               panel.append(panelHead);
-              panelBody.attr("class","panel-body");
-              var rows = $("<div/>");
-              rows.attr("class","row");
-              var margen = $("<div/>");
-              margen.attr("class","col-lg-12 col-md-12 col-sm-12 col-xm-12")
+                panelBody.attr("class","panel-body");
+                  var rows = $("<div/>");
+                  rows.attr("class","row");
+                  var margen = $("<div/>");
+                  margen.attr("class","col-lg-12 col-md-12 col-sm-12 col-xm-12")
               //input de codigo
-              var inputgroup = $("<div/>");
-              inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-              var label = $("<label/>");
+                  var inputgroup = $("<div/>");
+                  inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+                  var label = $("<label/>");
               //<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>
-              label.attr("class", "control-label");
-              label.html("<i class='color'> * </i> Código");
-              var input = $("<input/>");
-              input.attr('form', 'addArticulos');
-              input.attr("class", "form-control");
-              input.attr("name", "cod_articulo");
-              input.attr("placeholder", "Defina el código del articulo");
-              input.attr('pattern', '^('+codigoCat[0]+')[0-9]{2,4}\-[A-Z0-9]{1,10}');
-              input.attr('title', 'Defina el código empezando por el código de la categoría que le corresponde, ej.: '+codigoCat[0]+'...');
-              input.attr('data-errorMsg', 'El código debe empezar por el código de la categoría');
-              input.attr('style', 'overflow:hidden');
-
-              var errorLabel = $("<label/>");
-              errorLabel.attr('id', input.attr('name')+'label');
-              errorLabel.attr('class', 'alert-danger');
-              inputgroup.append(label);
-              inputgroup.append(input);
-              inputgroup.append(errorLabel);
+                  label.attr("class", "control-label");
+                  label.html("<i class='color'> * </i> Código");
+                  var input1 = $("<input/>");
+                  input1.attr('form', 'addArticulos');
+                  input1.attr("class", "form-control  form-control-sm");
+                  input1.attr("name", "cod_articulo");
+                  input1.attr("required", "required");
+                  input1.attr("placeholder", "Defina el código del articulo");
+                  input1.attr('pattern', '^('+codigoCat[0]+')[0-9]{2,4}\-[A-Z0-9]{1,10}');
+                  input1.attr('title', 'Defina el código empezando por el código de la categoría que le corresponde, ej.: '+codigoCat[0]+'...');
+                  input1.attr('data-errorMsg', '*El código debe empezar por el código de la categoría');
+                  input1.attr('data-special', );
+                  input1.attr('style', 'overflow:hidden');
+                  //<input id="cod_articulo" pattern="^(271217)[0-9]{2,4}-[A-Z0-9]{1,10}" title="Ejemplo: 27121734-AFC" name="cod_articulo" placeholder="Código" data-special="undefined" data-errormsg="* Código invalido." style="overflow:hidden" class="form-control  form-control-sm" value="27121703-AEMT04" type="text">
+                  var errorLabel = $("<label/>");
+                  errorLabel.attr('id', input1.attr('name')+'label');
+                  errorLabel.attr('class', 'alert-danger');
+                  inputgroup.append(label);
+                  inputgroup.append(input1);
+                  inputgroup.append(errorLabel);
               //formgroup.append(inputgroup);
               //input de unidad
               var inputgroup2 = $("<div/>");
@@ -1509,18 +1511,18 @@ $(document).ready(function() {
               var label = $("<label/>");
               label.attr("class", "control-label");
               label.html("<i class='color'> * </i> Unidad");
-              var input = $("<input/>");
-              input.attr('form', 'addArticulos');
-              input.attr("class", "form-control");
-              input.attr("name", "unidad");
-              input.attr("placeholder", "Defina la Unidad o porción de despacho");
-              input.attr('pattern', '');
+              var input2 = $("<input/>");
+              input2.attr('form', 'addArticulos');
+              input2.attr("class", "form-control");
+              input2.attr("name", "unidad");
+              input2.attr("placeholder", "Defina la Unidad o porción de despacho");
+              input2.attr('pattern', '');
 
               var errorLabel = $("<label/>");
-              errorLabel.attr('id', input.attr('name')+'label');
+              errorLabel.attr('id', input2.attr('name')+'label');
               errorLabel.attr('class', 'alert-danger');
               inputgroup2.append(label);
-              inputgroup2.append(input);
+              inputgroup2.append(input2);
               inputgroup2.append(errorLabel);
               //formgroup.append(inputgroup);
               //input de ubicación
@@ -1597,12 +1599,14 @@ $(document).ready(function() {
           {
             console.log(this.form);
             var form = this.form.id;
+            console.log(form);
             if(formValidate(form)){
               console.log('good!');
               e.preventDefault();
               e.stopPropagation();
               // that._deleteRow();
             }
+            return(false);
               // $(this).prop('disabled', true);
           });
 
@@ -1618,14 +1622,19 @@ $(document).ready(function() {
         }
         function formValidate(form)//para validar
         {
-          // console.log("form= "+form);
+          console.log("form= "+$('#'+form).length);
           var isValid = false;
           var errorcount = 0;
           // console.log($('form[id="'+form+'"] *'));
           //Ciclo para recorrer todos los inputs
-          $('form[id="'+form+'"] *').filter(':input').each(function( i ){
-            console.log(this);
-            var errorLabel = "#"+ $(this).attr("name") + "label";
+          // $('form[id="'+form+'"] *').filter(':input').each(function( i ){
+          $('#'+form).filter(':input').each(function( i ){
+            console.log(this.name);
+            // var errorLabel = "#"+ $(this).attr("name") + "label";
+            var errorLabel = "#"+this.name+"label";
+            $(errorLabel).html($(this).attr("data-errorMsg"));
+            $(errorLabel).show();
+            console.log(errorLabel.length);
             if(!$(this).context.checkValidity())
             {
               $(errorLabel).html($(this).attr("data-errorMsg"));
