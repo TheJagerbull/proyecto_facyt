@@ -3713,4 +3713,24 @@ class Alm_articulos extends MX_Controller
         }
 
     }
+    public function json_artFromCat($categoria="")
+    {
+        if($this->session->userdata('user'))
+        {
+            if($_POST)
+            {
+                die_pre($_POST);
+            }
+            // echo_pre('helloWorld!');
+            $articulos = $this->model_alm_articulos->get_catArticulos($categoria);
+            // echo_pre($categorias);
+            echo json_encode($articulos);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+
+    }
 }

@@ -114,6 +114,30 @@ class Model_alm_articulos extends CI_Model
 			return($lista);
 	}
 
+	public function get_catArticulos($categoria="") //recibe un array de varios ID de articulos
+	{
+		if(!empty($categoria) && is_array($categoria))
+		{
+			$aux = $categoria['cod_categoria'];
+			$categoria = $aux;
+		}
+		if(!empty($categoria) && $categoria!='')
+		{
+			$this->db->select('*');
+			$this->db->where(array('cod_categoria' => $categoria));
+			$this->db->join('alm_pertenece', 'alm_pertenece.cod_articulo = alm_articulo.cod_articulo');
+			// $lista = $this->db->get('alm_articulo')->result_array();
+		}
+		else
+		{
+		}
+			$lista = $this->db->get('alm_articulo')->result_array();
+		
+		// die_pre($lista, __LINE__, __FILE__);
+		return($lista);
+	}
+
+
 	public function find_articulo($art='', $field='', $order='', $per_page='', $offset='')
 	{
 		if(!empty($art))
