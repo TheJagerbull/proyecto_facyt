@@ -204,7 +204,7 @@ $(document).ready(function() {
               id: "cod_ubicacion",
               data: "cod_ubicacion",
               type: "text",
-              pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
+              pattern: "^[0-9]*",
               errorMsg: "* Código invalido.",
               hoverMsg: "Ejemplo: 82848688",
               unique: true
@@ -1941,7 +1941,7 @@ $(document).ready(function() {
         // var closeInvPermit = '<?php echo (!empty($alm[8]) ? $alm[8] : 0); ?>';
         // console.log(closeInvPermit);
     <?php if(!empty($alm[8])):?>
-        <?php if($RepInvFisico['completed'] == 'ADJUSTED' || $RepInvFisico['completed'] == 'NOADJUSTRQ'): ?>
+        <?php if(!empty($RepInvFisico) && ($RepInvFisico['completed'] == 'ADJUSTED' || $RepInvFisico['completed'] == 'NOADJUSTRQ')): ?>
             
             var test1 = $("#divinco");
             var continueBtn = $("#continueClosure");
@@ -2065,7 +2065,7 @@ $(document).ready(function() {
             var test1 = $("#divinco");//cuerpo de la tabla y control de actas(tabla y botones)
 
             var actaBtn = $("<button/>");
-            <?php if($RepInvFisico['completed'] == 'REPORTED'): ?>
+            <?php if(!empty($RepInvFisico) && $RepInvFisico['completed'] == 'REPORTED'): ?>
               actaBtn.html('Finalizar cierre');
             <?php else: ?>
               actaBtn.html('Continuar cierre');

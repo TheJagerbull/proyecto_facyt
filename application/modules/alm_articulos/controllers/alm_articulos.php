@@ -2700,17 +2700,18 @@ class Alm_articulos extends MX_Controller
     }
      public function test()
     {
-              // Load all views as normal
-            $this->load->view('reporte_pdf_1');
-            // Get output html
-            $html = $this->output->get_output();
-            // Load library
-            $this->load->library('dompdf_gen');
+        $this->model_alm_articulos->relate_categoria();
+            //   // Load all views as normal
+            // $this->load->view('reporte_pdf_1');
+            // // Get output html
+            // $html = $this->output->get_output();
+            // // Load library
+            // $this->load->library('dompdf_gen');
 
-            // Convert to PDF
-            $this->dompdf->load_html(utf8_decode($html));
-            $this->dompdf->render();
-            $this->dompdf->stream("asignaciones.pdf", array('Attachment' => 0));
+            // // Convert to PDF
+            // $this->dompdf->load_html(utf8_decode($html));
+            // $this->dompdf->render();
+            // $this->dompdf->stream("asignaciones.pdf", array('Attachment' => 0));
     }
     
     public function print_dataTable()
@@ -3375,7 +3376,7 @@ class Alm_articulos extends MX_Controller
             switch($_POST['action']):
                 case 'editRow':
                     // echo_pre($_POST['raw']['data']['0']);
-                    if(!$this->model_alm_articulos->consul_cod($_POST['raw']['data']['0'])){
+                    if($this->model_alm_articulos->consul_cod($_POST['raw']['data']['0'])){
                         if($this->model_alm_articulos->update_cod_articulo($_POST['raw']['data']['0'], $historial))
                         {
                             echo json_encode("true");
@@ -3518,6 +3519,7 @@ class Alm_articulos extends MX_Controller
             ////version actual
                 if($verifica)
                 {
+                    $this->model_alm_articulos->relate_categoria();
                     $success['status']='success';
                     $success['goodLines']= $affected;
                     echo json_encode($success);

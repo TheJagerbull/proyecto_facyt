@@ -138,6 +138,7 @@ $route['solicitud/cancelar/sin_enviar']							='alm_solicitudes/cancelar_carrito
 //Rutas para pruebas de solicitudes
 // $route['testsql']												='alm_solicitudes/test_sql';
 $route['testsql']												='alm_articulos/test_sql';
+$route['relate_category']										='alm_articulos/test';
 //Rutas para migracion de sistema
 $route['migrarDB']												='alm_articulos/migrate';
 $route['alterDB/(.*)']											='alm_articulos/alterDB/$1';

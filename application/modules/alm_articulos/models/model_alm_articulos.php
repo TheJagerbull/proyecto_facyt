@@ -1713,13 +1713,14 @@ class Model_alm_articulos extends CI_Model
     }
     public function update_cod_articulo($articulo, $historial)
     {
-		// die_pre($articulo, __LINE__, __FILE__);
 		$this->db->where('ID', $articulo['ID']);
 		$update = array(
 			'cod_articulo' => $articulo['cod_articulo'],
-			'descripcion' => $articulo['descripcion']);
+			'descripcion' => $articulo['descripcion'],
+			'cod_ubicacion' => $articulo['cod_ubicacion']);
 		//        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
 		$this->db->update('alm_articulo', $update);
+		// print_r($articulo);
 		if($this->db->affected_rows()>0)
 		{
 			$this->db->insert('alm_historial_a', $historial);
@@ -1747,7 +1748,10 @@ class Model_alm_articulos extends CI_Model
 		{
 			return TRUE;
 		}
-		return FALSE;
+		else
+		{
+			return FALSE;
+		}
             
     }
     public function edit_artCod($cod_artviejo, $nueva_data)
