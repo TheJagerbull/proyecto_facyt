@@ -106,8 +106,9 @@ $route['inventario/articulo/cambioCod_excel']					='alm_articulos/excel_code_swi
 $route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_input';
 $route['inventario/articulo/categorias']						='alm_articulos/json_categories';
 $route['inventario/articulos/categoria/(.*)']					='alm_articulos/json_artFromCat/$1';
-$route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
+$route['inventario/articulo']									='alm_articulos/json_articulo';
 		//Rutas para el proceso de cierre de inventario
+$route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
 $route['inventario/habilitarCierre']							='alm_articulos/enable_closure';
 $route['inventario/generarRespaldo']							='alm_articulos/backup_Inventory';
 $route['inventario/cerrar']										='alm_articulos/inventory_closure';

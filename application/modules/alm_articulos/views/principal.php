@@ -784,7 +784,7 @@ $(document).ready(function() {
           iframe.attr("width", "100%");
           iframe.attr("height", "100%");
           // iframe.html(data);
-          var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', '500');
+          var Modal = buildModal('reporte', 'Catálogo de las naciones unidas', iframe, '', 'lg', '500');
         });
         var doc = $(this);
         var bliss = $('div#navbar.navbar-collapse.collapse');
@@ -831,6 +831,7 @@ $(document).ready(function() {
                       Descripción:"descripcion",
                       Entradas:"entradas",
                       Existencia:"exist",
+                      'Partida presupuestaria': "partida_presupuestaria",
                       Salidas:"salidas",
                       Ubicación:"cod_ubicacion",
                       'Fecha de último movimiento':"fechaU",
@@ -853,7 +854,8 @@ $(document).ready(function() {
                         exist:{"bVisible": true, "bSearchable": false, "bSortable": true},
                         entrada:{"bVisible": true, "bSearchable": true, "bSortable": true},
                         salida:{"bVisible": true, "bSearchable": true, "bSortable": true},
-                        cod_ubicacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+                        cod_ubicacion:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        partida_presupuestaria:{"bVisible": true, "bSearchable": true, "bSortable": true}};
 			var selects = $("#columns > div > .input-group > select");
 			var flag = false;
 			var reporteTipo = '';
@@ -1442,15 +1444,20 @@ $(document).ready(function() {
         });
 
         // var categoria = $("#addArtcategoria").select2("val");
+
+        var _instance = 0;
         var panel = $("<div/>");
         panel.attr("class","panel panel-info");
         panel.attr("hidden","");
         
         var panelBody = $("<div/>");
         panelBody.attr("class","panel-body");
-        // panelBody.html('<i class="color" >'+categoria+'</i>');
-        var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm" role="form" novalidate />');
 
+        var panelFoot = $("<div/>");
+        panelFoot.attr("class", "panel-footer");
+        // panelBody.html('<i class="color" >'+categoria+'</i>');
+        var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm'+_instance+'" role="form" novalidate />');
+        var subform = $('<div/>');
         $("#addArtcategoria").on("change clear select2-opening", function(){
           panel.html("");
           categoria = $("#addArtcategoria").select2("val");
@@ -1474,9 +1481,9 @@ $(document).ready(function() {
             }, 1500, "swing");
             panel.show();
             //código de articulo
-            $("#codArtExist").on("change", function(){
-              var codigoArt[0] = 0;
-                articulo = $("#codArtExist").select2("val");
+            $("#codArtExist").on("change clear", function(){
+              var codigoArt = [0];
+              articulo = $("#codArtExist").select2("val");
               if(articulo !== '')
               {
                 var codigoArt = articulo.split(' ');
@@ -1488,8 +1495,27 @@ $(document).ready(function() {
                 else
                 {
                   form.html('');
+                  panel.append(buildNewArtForm(codigoCat[0]));
+                  console.log(form);
+                  //Crea el botón de insertar para el submit del formulario
+                    var button = $('<button/>');
+                    //type='button' data-content='remove' class='btn btn-primary' 
+                    button.attr('form', 'AddArtForm'+_instance);
+                    button.attr('id', 'addFormButton'+_instance);
+                    button.attr('type', 'button');
+                    button.attr('data-content', 'remove');
+                    button.attr('class', 'btn btn-xs btn-primary pull-right');
+                    button.html('Agregar');
+                    button.after('<div style="clear:both;">');
+                    panelFoot.append(button);
+                  //Fin de Crea el botón de insertar para el submit del formulario
+                    panel.append(panelFoot);
                   console.log(panel);
                 }
+              }
+              else
+              {
+                subform.html('');
               }
             });
           }
@@ -1500,12 +1526,16 @@ $(document).ready(function() {
             }, 200, "swing");
             setTimeout(function(){
               panel.html("");
+              form.html("");
+              subform.html("");
+              subform.remove();
+              form.remove();
               panel.remove();
             }, 300);
           }
         });
-        var _instance = 0;
-        function buildArtCode(categoria)
+
+        function buildArtCode(categoria)//listo
         {
           var panelHead = $("<div/>");
           var panelTitle = $("<h2/>");
@@ -1606,8 +1636,43 @@ $(document).ready(function() {
             panel.append(panelBody);
             return(panel);
         }
-        function buildAddArtForm(categoria, articulo)//incompleto
+        function buildNewArtForm(categoria)//listo
         {
+              // panel.html("");
+              form.html("");
+              subform.html("");
+              subform.remove();
+              form.remove();
+              // panel.remove();
+              //Codigo de Articulo:
+              var id = "cod_articulo";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Código del Articulo:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('pattern', "^("+categoria+")[0-9]{2,4}-[A-Z0-9]{1,10}");
+                  input.attr('title', "Debe agregar el código del artículo basado en el catálogo de las naciones unidas, que corresponda en la categoría del catálogo.");
+                  input.attr('placeholder', 'Código del artículo (revisar catálogo de las naciones unidas)');
+                  input.attr('data-errormsg', "* El formato debe ser: código de la categoría, seguido de dos a cuatro números (basados en el catálogo de las naciones unidas), un guión (-), y letras y/o números relacionados con la descripción.");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              subform.append(formgroup);
+
               //Descripción:
               var id = "descripcion";
               var formgroup = $('<div/>');
@@ -1622,7 +1687,7 @@ $(document).ready(function() {
                   input.attr('name', id);
                   input.attr('required', 'required');
                   input.attr('title', "Debe insertar una descripción usando palabras formales de un lenguaje alejado de la jerga coloquial.");
-                  input.attr('placeholder', 'Descripción del artículo (revisar catálogo de las naciones unidas)');
+                  input.attr('placeholder', 'Descripción del artículo (revisar términos usados en el catálogo de las naciones unidas)');
                   // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
                   input.attr('style', "overflow:hidden");
                   input.attr('class', "form-control  form-control-sm");
@@ -1634,7 +1699,7 @@ $(document).ready(function() {
                   aux.append(errorlabel);
                 formgroup.append(label);
                 formgroup.append(aux);
-            form.append(formgroup);
+              subform.append(formgroup);
 
               // unidad:
               var id = "unidad";
@@ -1663,7 +1728,7 @@ $(document).ready(function() {
                   aux.append(errorlabel);
                 formgroup.append(label);
                 formgroup.append(aux);
-            form.append(formgroup);
+              subform.append(formgroup);
 
               //ubicacion:
               var id = "cod_ubicacion";
@@ -1677,10 +1742,10 @@ $(document).ready(function() {
                   var input = $('<input/>');
                   input.attr('id', id);
                   input.attr('name', id);
-                  input.attr('required', 'required');
-                  input.attr('title', "Siga el formato establecido por el jefe de despacho de almacén");
-                  input.attr('placeholder', 'Indique el codigo de representación de la ubicación física del artículo.');
-                  input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+                  // input.attr('required', 'required');
+                  input.attr('title', "Siga el formato implementado por el jefe de despacho de almacén");
+                  input.attr('placeholder', 'Indique el codigo que referencia la ubicación física del artículo(definido por el jefe de despacho de almacén).');
+                  // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
                   input.attr('style', "overflow:hidden");
                   input.attr('class', "form-control  form-control-sm");
                   input.attr('type', 'text');
@@ -1691,7 +1756,7 @@ $(document).ready(function() {
                   aux.append(errorlabel);
                 formgroup.append(label);
                 formgroup.append(aux);
-            form.append(formgroup);
+              subform.append(formgroup);
 
               //partida presupuestaria:
               var id = "partida_presupuestaria";
@@ -1720,13 +1785,149 @@ $(document).ready(function() {
                   aux.append(errorlabel);
                 formgroup.append(label);
                 formgroup.append(aux);
-            form.append(formgroup);
-            panelBody.append(form);
-            return(panelBody);
+              subform.append(formgroup);
+              form.append(subform);
+              panelBody.append(form);
+              return(panelBody);
+        }
+        function buildAddArtForm(categoria, articulo)//incompleto
+        {
+          var descripcion = '';
+          var partida_pre = '';
+          console.log("HERE");
+            $.ajax({
+                url: "<?php echo base_url() ?>inventario/articulo",
+                type: 'POST',
+                dataType: "json",
+                data: {"cod_articulo":articulo},
+                success: function (art) {
+                    console.log(art);
+                    console.log(art.ID);
+                    descripcion = art.descripcion;
+                    partida_pre = art.partida_presupuestaria;
+                }
+            });
+              //Descripción:
+            //   var id = "descripcion";
+            //   var formgroup = $('<div/>');
+            //   formgroup.attr('class', 'form-group');
+            //     var label = $('<div/>');
+            //     label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+            //     label.html('<label for="'+id+'"><span class="color">* </span> Descripción:</label>');
+            //     var aux = $('<div/>');
+            //     aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+            //       var input = $('<input/>');
+            //       input.attr('id', id);
+            //       input.attr('name', id);
+            //       input.attr('required', 'required');
+            //       input.attr('title', "Debe insertar una descripción usando palabras formales de un lenguaje alejado de la jerga coloquial.");
+            //       input.attr('placeholder', 'Descripción del artículo (revisar catálogo de las naciones unidas)');
+            //       // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+            //       input.attr('style', "overflow:hidden");
+            //       input.attr('class', "form-control  form-control-sm");
+            //       input.attr('type', 'text');
+            //       var errorlabel = $('<label/>');
+            //       errorlabel.attr('id', id+'label');
+            //       errorlabel.attr('class', "alert-danger");
+            //       aux.append(input);
+            //       aux.append(errorlabel);
+            //     formgroup.append(label);
+            //     formgroup.append(aux);
+            // subform.append(formgroup);
+
+              // unidad:
+            //   var id = "unidad";
+            //   var formgroup = $('<div/>');
+            //   formgroup.attr('class', 'form-group');
+            //     var label = $('<div/>');
+            //     label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+            //     label.html('<label for="'+id+'"><span class="color">* </span> Unidad:</label>');
+            //     var aux = $('<div/>');
+            //     aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+            //       var input = $('<input/>');
+            //       input.attr('id', id);
+            //       input.attr('name', id);
+            //       input.attr('required', 'required');
+            //       // input.attr('pattern', "^("+codigoCat[0]+")[0-9]{2,4}-[A-Z0-9]{1,10}");
+            //       input.attr('title', "Ejemplo: UNIDAD, CAJA, PAQUETE, BIDÓN, GARRAFA, etc.");
+            //       input.attr('placeholder', 'Unidad de medida del artículo para la cantidad que habitualmente se despacha.');
+            //       // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+            //       input.attr('style', "overflow:hidden");
+            //       input.attr('class', "form-control  form-control-sm");
+            //       input.attr('type', 'text');
+            //       var errorlabel = $('<label/>');
+            //       errorlabel.attr('id', id+'label');
+            //       errorlabel.attr('class', "alert-danger");
+            //       aux.append(input);
+            //       aux.append(errorlabel);
+            //     formgroup.append(label);
+            //     formgroup.append(aux);
+            // subform.append(formgroup);
+
+              //ubicacion:
+            //   var id = "cod_ubicacion";
+            //   var formgroup = $('<div/>');
+            //   formgroup.attr('class', 'form-group');
+            //     var label = $('<div/>');
+            //     label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+            //     label.html('<label for="'+id+'">Código de ubicación:</label>');
+            //     var aux = $('<div/>');
+            //     aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+            //       var input = $('<input/>');
+            //       input.attr('id', id);
+            //       input.attr('name', id);
+            //       input.attr('required', 'required');
+            //       input.attr('title', "Siga el formato establecido por el jefe de despacho de almacén");
+            //       input.attr('placeholder', 'Indique el codigo de representación de la ubicación física del artículo.');
+            //       input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+            //       input.attr('style', "overflow:hidden");
+            //       input.attr('class', "form-control  form-control-sm");
+            //       input.attr('type', 'text');
+            //       var errorlabel = $('<label/>');
+            //       errorlabel.attr('id', id+'label');
+            //       errorlabel.attr('class', "alert-danger");
+            //       aux.append(input);
+            //       aux.append(errorlabel);
+            //     formgroup.append(label);
+            //     formgroup.append(aux);
+            // subform.append(formgroup);
+
+              //partida presupuestaria:
+            //   var id = "partida_presupuestaria";
+            //   var formgroup = $('<div/>');
+            //   formgroup.attr('class', 'form-group');
+            //     var label = $('<div/>');
+            //     label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+            //     label.html('<label for="'+id+'"><span class="color">* </span> Partida presupuesaria:</label>');
+            //     var aux = $('<div/>');
+            //     aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+            //       var input = $('<input/>');
+            //       input.attr('id', id);
+            //       input.attr('name', id);
+            //       input.attr('required', 'required');
+            //       // input.attr('pattern', "^("+codigoCat[0]+")[0-9]{2,4}-[A-Z0-9]{1,10}");
+            //       input.attr('title', "Código de la partida presupuesaria a la cual pertenece el artículo.");
+            //       input.attr('placeholder', 'Código de la partida presupuestaria.');
+            //       // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+            //       input.attr('style', "overflow:hidden");
+            //       input.attr('class', "form-control  form-control-sm");
+            //       input.attr('type', 'text');
+            //       var errorlabel = $('<label/>');
+            //       errorlabel.attr('id', id+'label');
+            //       errorlabel.attr('class', "alert-danger");
+            //       aux.append(input);
+            //       aux.append(errorlabel);
+            //     formgroup.append(label);
+            //     formgroup.append(aux);
+            // subform.append(formgroup);
+            // form.append(subform);
+            // panelBody.append(form);
+            // return(panelBody);
+            console.log("end");
         }
 
 
-        function deprecatedbuildAddArtForm(categoria)//deprecated
+        function deprecatedbuildAddArtForm(categoria)//deprecated, borrar al terminar las funciones nuevas
         {
           console.log(_instance);
           console.log("CONSTRUYE FORMULARIO!");
@@ -2003,6 +2204,7 @@ $(document).ready(function() {
           _instance++;
           return(panel);
         }
+        
         $(document).on('click', '#addFormButton'+_instance, function(e)
         {
             // console.log($('#cod_articulolabel.alert-danger').length);
@@ -2024,14 +2226,14 @@ $(document).ready(function() {
 
         function formValidate(form)//para validar
         {
-          // console.log(form);
+          // console.log('form validation');
           // console.log("form= "+$('#'+form).length);
           var isValid = false;
           var errorcount = 0;
           // console.log($('form[id="'+form+'"] *'));
           //Ciclo para recorrer todos los inputs
           // $('form[id="'+form+'"] *').filter(':input').each(function( i ){
-          // console.log($('form[name="'+form+'"] *').filter(':input'));
+          // console.log($('form[id="'+form+'"] *').filter(':input'));
           $('form[name="'+form+'"] *').filter(':input').each(function( i ){
             console.log(this);
             //para pasar las letras a mayúscula
@@ -2072,6 +2274,7 @@ $(document).ready(function() {
             isValid = true;
           }
 
+          // console.log('END form validation');
           return isValid;
         }
 ///////Fin del Proceso de adición de articulos a inventario

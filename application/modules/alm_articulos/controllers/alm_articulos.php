@@ -3733,6 +3733,14 @@ class Alm_articulos extends MX_Controller
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc',$header);
         }
-
+    }
+    public function json_articulo()
+    {
+        if($this->input->post())
+        {
+            $cod_articulo = $this->input->post();
+            $articulo = $this->model_alm_articulos->exist_articulo($cod_articulo);
+            echo json_encode($articulo);
+        }
     }
 }
