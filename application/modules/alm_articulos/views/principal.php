@@ -1443,8 +1443,6 @@ $(document).ready(function() {
           // }
         });
 
-        // var categoria = $("#addArtcategoria").select2("val");
-
         var _instance = 0;
         var panel = $("<div/>");
         panel.attr("class","panel panel-info");
@@ -1457,6 +1455,7 @@ $(document).ready(function() {
         panelFoot.attr("class", "panel-footer");
         // panelBody.html('<i class="color" >'+categoria+'</i>');
         var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm'+_instance+'" role="form" novalidate />');
+        var catForm = $('<form id="AddCatForm'+_instance+'" name="AddCatForm'+_instance+'" role="form" novalidate />');
         var subform = $('<div/>');
         $("#addArtcategoria").on("change clear select2-opening", function(){
           panel.html("");
@@ -1468,58 +1467,81 @@ $(document).ready(function() {
             if(codigoCat[0] !== "0")
             {
               panel = buildArtCode(codigoCat[0]);
-            }
-            else
-            {
-              //var panel = buildAddCatForm();
-              console.log(panel);
-            }
-            formArt.append(panel);
+              formArt.append(panel);
 
-            $('html, body').animate({
-              scrollTop: formArt.offset().top
-            }, 1500, "swing");
-            panel.show();
-            //código de articulo
-            $("#codArtExist").on("change clear", function(){
-              var codigoArt = [0];
-              articulo = $("#codArtExist").select2("val");
-              if(articulo !== '')
-              {
-                var codigoArt = articulo.split(' ');
-                console.log(codigoArt[0]);
-                panelFoot.html('');
-                if(codigoArt[0] !== "0")
+              $('html, body').animate({
+                scrollTop: formArt.offset().top
+              }, 1500, "swing");
+              panel.show();
+              //código de articulo
+              $("#codArtExist").on("change clear", function(){
+                var codigoArt = [0];
+                articulo = $("#codArtExist").select2("val");
+                if(articulo !== '')
                 {
-                  subform.html('');
-                  panel.append(buildAddArtForm(codigoCat[0], codigoArt[0]));
+                  var codigoArt = articulo.split(' ');
+                  console.log(codigoArt[0]);
+                  panelFoot.html('');
+                  if(codigoArt[0] !== "0")
+                  {
+                    subform.html('');
+                    panel.append(buildAddArtForm(codigoCat[0], codigoArt[0]));
+                  }
+                  else
+                  {
+                    form.html('');
+                    panel.append(buildNewArtForm(codigoCat[0]));
+                    console.log(form);
+                    console.log(panel);
+                  }
+                  $('html, body').animate({
+                      scrollTop: form.offset().top
+                      // scrollTop: $('#cod_articulo').offset().top
+                      // scrollTop: $('#codArtExist').offset().top
+                    }, 1500, "swing");
+                    //Crea el botón de insertar para el submit del formulario
+                      var button = $('<button/>');
+                      //type='button' data-content='remove' class='btn btn-primary' 
+                      button.attr('form', 'AddArtForm'+_instance);
+                      button.attr('id', 'addFormButton'+_instance);
+                      button.attr('type', 'button');
+                      button.attr('data-content', 'remove');
+                      button.attr('class', 'btn btn-xs btn-primary pull-right');
+                      button.html('Agregar');
+                      button.after('<div style="clear:both;">');
+                      panelFoot.append(button);
+                    //Fin de Crea el botón de insertar para el submit del formulario
+                      panel.append(panelFoot);
                 }
                 else
                 {
-                  form.html('');
-                  panel.append(buildNewArtForm(codigoCat[0]));
-                  console.log(form);
-                  console.log(panel);
+                  subform.html('');
                 }
-                  //Crea el botón de insertar para el submit del formulario
-                    var button = $('<button/>');
-                    //type='button' data-content='remove' class='btn btn-primary' 
-                    button.attr('form', 'AddArtForm'+_instance);
-                    button.attr('id', 'addFormButton'+_instance);
-                    button.attr('type', 'button');
-                    button.attr('data-content', 'remove');
-                    button.attr('class', 'btn btn-xs btn-primary pull-right');
-                    button.html('Agregar');
-                    button.after('<div style="clear:both;">');
-                    panelFoot.append(button);
-                  //Fin de Crea el botón de insertar para el submit del formulario
-                    panel.append(panelFoot);
-              }
-              else
-              {
-                subform.html('');
-              }
-            });
+              });
+            }
+            else
+            {
+              panel = buildAddCatForm();
+              formArt.append(panel);
+              $('html, body').animate({
+                scrollTop: formArt.offset().top
+              }, 1500, "swing");
+              //Crea el botón de insertar para el submit del formulario
+                var button = $('<button/>');
+                //type='button' data-content='remove' class='btn btn-primary' 
+                button.attr('form', 'AddCatForm'+_instance);
+                button.attr('id', 'addFormButton'+_instance);
+                button.attr('type', 'button');
+                button.attr('data-content', 'remove');
+                button.attr('class', 'btn btn-xs btn-primary pull-right');
+                button.html('Agregar');
+                button.after('<div style="clear:both;">');
+                panelFoot.append(button);
+              //Fin de Crea el botón de insertar para el submit del formulario
+                panel.append(panelFoot);
+              panel.show();
+              console.log(panel);
+            }
           }
           else
           {
@@ -1530,6 +1552,8 @@ $(document).ready(function() {
               panel.html("");
               form.html("");
               subform.html("");
+              catForm.html("");
+              catForm.remove();
               subform.remove();
               form.remove();
               panel.remove();
@@ -1537,6 +1561,197 @@ $(document).ready(function() {
           }
         });
 
+        function buildAddCatForm()
+        {
+          var panelHead = $("<div/>");
+          var panelTitle = $("<h2/>");
+          // var panelBody = $("<div/>");
+          // var panelFoot = $("<div/>");
+          // form.attr('id', "addCatForm"+_instance);
+          // console.log(form.attr('id'));
+            panelHead.attr("class", "panel panel-heading");
+                  panelTitle.attr("class","panel-title text-center");
+                  panelTitle.html("Ingrese los datos de artículo");
+                panelHead.append(panelTitle);
+              panel.append(panelHead);
+                // panelBody.attr("class","panel-body");
+                panelBody.html('<i class="color" >Nueva Categoría</i>');
+              //Codigo de segmento:
+              var id = "cod_segmento";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Código de segmento:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('pattern', "^[1-9][0-9]{1}");
+                  input.attr('title', "Debe agregar el segmento al cual la familia, y la categoría corresponden, en el catálogo.");
+                  input.attr('placeholder', 'Segmento de la categoría (copiar del catálogo de las naciones unidas)');
+                  input.attr('data-errormsg', "* Es el valor del \"Segmento\" en el catálogo(son 2 dígitos).");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              catForm.append(formgroup);
+
+              //segmento:
+              var id = "segmento";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Nombre del segmento:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('title', "Debe insertar el nombre ó descripción del segmento.");
+                  input.attr('placeholder', 'Descripción del segmento (copiar del catálogo de las naciones unidas)');
+                  // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              catForm.append(formgroup);
+
+              //Codigo de familia:
+              var id = "cod_familia";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Código de familia:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('pattern', "^[1-9][0-9]{3}");
+                  input.attr('title', "Debe agregar la familia del artículo basado en el catálogo de las naciones unidas, que corresponda con la clase en el catálogo.");
+                  input.attr('placeholder', 'Familia de la categoría (copiar del catálogo de las naciones unidas)');
+                  input.attr('data-errormsg', "* Es el valor de la \"Familia\" en el catálogo(son 4 dígitos).");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              catForm.append(formgroup);
+
+              //segmento:
+              var id = "familia";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Nombre de la familia:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('title', "Debe insertar el nombre ó descripción de la familia.");
+                  input.attr('placeholder', 'Descripción de la familia (copiar del catálogo de las naciones unidas)');
+                  // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              catForm.append(formgroup);
+
+              //Codigo de categoria:
+              var id = "cod_categoria";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Código de categoría(clase):</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('pattern', "^[1-9][0-9]{5}");
+                  input.attr('title', "Debe agregar la categoría del artículo basado en el catálogo de las naciones unidas, que corresponda con la clase encontrada en el catálogo.");
+                  input.attr('placeholder', 'Clase del artículo que vaya a agregar posteriormente (copiar del catálogo de las naciones unidas)');
+                  input.attr('data-errormsg', "* Es el valor de la \"Clase\" en el catálogo(son 6 dígitos).");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              catForm.append(formgroup);
+
+              //categoria:
+              var id = "nombre";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Nombre de la categoría:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('required', 'required');
+                  input.attr('title', "Debe insertar el nombre ó descripción de la categoría.");
+                  input.attr('placeholder', 'Descripción de la categoría (copiar del catálogo de las naciones unidas)');
+                  // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+              catForm.append(formgroup);
+
+                panelBody.append(catForm);
+            panel.append(panelBody);
+            return(panel);
+
+        }
         function buildArtCode(categoria)//listo
         {
           var panelHead = $("<div/>");
@@ -1557,7 +1772,7 @@ $(document).ready(function() {
               formgroup.attr('class', 'form-group');
               var label = $('<div/>');
               label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-              label.html('<label for="codArtExist"><span class="color">* </span> Código:</label>');
+              label.html('<label for="codArtExist"><span class="color">* </span> Artículo:</label>');
 
               formgroup.append(label);
               formgroup.append(artCodSelect);
@@ -1793,7 +2008,7 @@ $(document).ready(function() {
               panelBody.append(form);
               return(panelBody);
         }
-        function buildAddArtForm(categoria, articulo)//incompleto
+        function buildAddArtForm(categoria, articulo)//listo
         {
           var cod_articulo = '';
           var descripcion = '';
@@ -1866,32 +2081,6 @@ $(document).ready(function() {
                 formgroup.append(aux);
             subform.append(formgroup);
 
-              // unidad:
-              var id = "unidad";
-              var formgroup = $('<div/>');
-              formgroup.attr('class', 'form-group');
-                var label = $('<div/>');
-                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                label.html('<label for="'+id+'"><span class="color">* </span> Unidad:</label>');
-                var aux = $('<div/>');
-                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                  var input = $('<input/>');
-                  input.attr('id', id);
-                  input.attr('name', id);
-                  input.attr('readonly', '');
-                  input.attr('value', unidad);
-                  input.attr('style', "overflow:hidden");
-                  input.attr('class', "form-control  form-control-sm");
-                  input.attr('type', 'text');
-                  var errorlabel = $('<label/>');
-                  errorlabel.attr('id', id+'label');
-                  errorlabel.attr('class', "alert-danger");
-                  aux.append(input);
-                  aux.append(errorlabel);
-                formgroup.append(label);
-                formgroup.append(aux);
-            subform.append(formgroup);
-
               //ubicacion:
               var id = "cod_ubicacion";
               var formgroup = $('<div/>');
@@ -1944,6 +2133,32 @@ $(document).ready(function() {
                 formgroup.append(aux);
             subform.append(formgroup);
 
+              // unidad:
+              var id = "unidad";
+              var formgroup = $('<div/>');
+              formgroup.attr('class', 'form-group');
+                var label = $('<div/>');
+                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                label.html('<label for="'+id+'"><span class="color">* </span> Unidad:</label>');
+                var aux = $('<div/>');
+                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                  var input = $('<input/>');
+                  input.attr('id', id);
+                  input.attr('name', id);
+                  input.attr('readonly', '');
+                  input.attr('value', unidad);
+                  input.attr('style', "overflow:hidden");
+                  input.attr('class', "form-control  form-control-sm");
+                  input.attr('type', 'text');
+                  var errorlabel = $('<label/>');
+                  errorlabel.attr('id', id+'label');
+                  errorlabel.attr('class', "alert-danger");
+                  aux.append(input);
+                  aux.append(errorlabel);
+                formgroup.append(label);
+                formgroup.append(aux);
+            subform.append(formgroup);
+
             //cantidad
             var id = "nuevos";
             var formgroup = $('<div/>');
@@ -1960,7 +2175,7 @@ $(document).ready(function() {
                 input.attr('pattern', "^[1-9][0-9]{0,4}");
                 input.attr('title', "Cantidad en proceso de recepción por almacén");
                 input.attr('placeholder', 'Cantidad a agregar en inventario (tome en cuenta la unidad).');
-                input.attr('data-errormsg', "* Debe ingresar un valor numerico, entero(que no empieze por '0', y menor a 99999).");
+                input.attr('data-errormsg', "* Debe ingresar un valor numerico, entero(que no empieze por '0', y sea menor a 99999).");
                 input.attr('style', "overflow:hidden");
                 input.attr('class', "form-control  form-control-sm");
                 input.attr('type', 'text');
@@ -1980,303 +2195,28 @@ $(document).ready(function() {
             });
             // console.log("end");
         }
-
-
-        function deprecatedbuildAddArtForm(categoria)//deprecated, borrar al terminar las funciones nuevas
-        {
-          console.log(_instance);
-          console.log("CONSTRUYE FORMULARIO!");
-
-                // var fullform = $('<div/>');
-                // fullform.attr("class", "form-group");
-                //para contruir un panel en boostrap
-                // var panel = $("<div/>");
-                  var panelHead = $("<div/>");
-                    var panelTitle = $("<h2/>");
-                  var panelBody = $("<div/>");
-                  var panelFoot = $("<div/>");
-                panel.attr("class","panel panel-info");
-                panel.attr("hidden","");
-                  panelHead.attr("class", "panel panel-heading");
-                    panelTitle.attr("class","panel-title text-center");
-                    panelTitle.html("Ingrese los datos de artículo");
-                  panelHead.append(panelTitle);
-                panel.append(panelHead);
-                  panelBody.attr("class","panel-body");
-                  panelBody.html('<i class="color" >'+categoria+'</i>');
-                  var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm" role="form" novalidate />');
-                //   //cada input
-
-                  //<input hidden id="addArtcategoria" class="form-control input-sm" name="categoria" type="text">
-                  var artCodSelect = $('<input hidden id="codArtExist" class="form-control input-sm" name="categoria" type="text">');
-                  var formgroup = $('<div/>');
-                  formgroup.attr('class', 'form-group');
-                  var label = $('<div/>');
-                  label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                  label.html('<label for="codArtExist"><span class="color">* </span> Código:</label>');
-
-                  formgroup.append(label);
-                  formgroup.append(artCodSelect);
-                  form.append(formgroup);
-            //[
-            //  {"ID":"6","TIME":"2017-10-06 13:25:17","cod_articulo":"10191510-IR","unidad":"LATA","descripcion":"INSECTICIDAS PARA RASTREROS","ACTIVE":"0","imagen":"NULL","usados":"0","nuevos":"0","reserv":"0","peso_kg":"0","dimension_cm":"NULL","nivel_reab":"0","stock_min":"0","stock_max":"0","partida_presupuestaria":"","cod_ubicacion":"","cod_artviejo":"6736","cod_articulonu":"10191510","cod_categoria":"101915"}
-            //]
-            artCodSelect.select2({
-                placeholder:"Seleccione el código del artículo, en caso de que no exista, agregue uno nuevo basado en el catálogo de las naciones unidas.",
-                // minimumInputLength: 1,
-                maximumSelectionSize: 10,
-                allowClear: true,
-                id: function(e){
-                  return(e.cod_articulo+' '+e.descripcion);
-                },
-                ajax: {
-                  url: '<?php echo base_url() ?>inventario/articulos/categoria/'+categoria,
-                  dataType: 'json',
-                  //http://select2.github.io/select2/
-                  quietMillis: 250,
-                  data: function(term, page){
-                     return {
-                      q: term
-                     };
-                  },
-                  results: function(data, page){
-                    // console.log("results ");
-                    // var newCat = { ID: "0", TIME: "0", cod_articulo: "0", descripcion: "Agregar Categoría nueva", unidad: "", ACTIVE: "0", imagen: "", usados: "0", nuevos: "0", reserv: "0", peso_kg: "0", dimension_cm: "0", nivel_rehab: "0", stock_min: "0", stock_max: "0", partida_presupuestaria: "0", cod_ubicacion: "0", cod_artviejo: "0", cod_articulonu: "0" }
-                    var newCat = {"ID":"0","TIME":"","cod_articulo":"'No veo el artículo'","unidad":"","descripcion":"Agregar Artículo nuevo","ACTIVE":"0","imagen":"NULL","usados":"0","nuevos":"0","reserv":"0","peso_kg":"0","dimension_cm":"NULL","nivel_reab":"0","stock_min":"0","stock_max":"0","partida_presupuestaria":"","cod_ubicacion":"","cod_artviejo":"0","cod_articulonu":"0","cod_categoria":"0"};
-                    data.push(newCat);
-                    return { results: data };
-                  }
-                },
-                initSelection: function(element, callback){
-                  var id = $(element).val();
-                  console.log('init!');
-                  if(id !== "")
-                  {
-                    var aux = [];
-                    aux.push(id.slice(id.indexOf(' '), id.length));
-                    aux.push(id.slice(0, id.indexOf(' ')));
-                    // console.log(aux);
-                    var data = {cod_articulo: aux[1], descripcion: aux[0]};
-                    callback(data);
-                    // console.log('selected...!');
-                  }
-                },
-                formatResult: function(object, container, query){
-                  textpattern = query.term.toUpperCase();
-                  pattern = query.term;
-                  // if(object.descripcion.search(textpattern) !== -1 || object.cod_articulo.search(pattern) !== -1 || object.cod_segmento.search(pattern) !== -1 || object.cod_familia.search(pattern) !== -1 || object.familia.search(textpattern) !== -1 || object.segmento.search(textpattern) !== -1)
-                  if(object.descripcion.search(textpattern) !== -1 || object.cod_articulo.search(pattern) !== -1 )
-                  {
-                    //parrafo
-                    // return('<strong> '+object.cod_articulo+'</strong> '+object.descripcion+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p>');
-                    return('<strong> '+object.cod_articulo+'</strong> '+object.descripcion);
-                  }
-                  else
-                  {
-                    if(object.ID === "0")//para la opción de agregar una categoria nueva
-                    {
-                      // return('<strong> '+object.nombre+'</strong>  <p style="font-size:10px"><strong>|'+object.segmento+' | '+object.familia+'|</strong></p>');
-                      return('<strong> '+object.nombre+'</strong>  ');
-                    }
-                  }
-                },
-                formatSelection: function(object, container){
-                  // console.log('formatSelection');
-                  // console.log(object);
-                  return(object.cod_articulo+' '+object.descripcion);
-                },
-                // dropdownCssClass: "bigdropdown",
-                escapeMarkup: function(m) {
-                  // console.log('escapeMarkup:');
-                  // console.log(m);
-                  return m; 
-                }
-              });
-                    // if()//si el codigo de articulo no existe
-                    // {
-                        //Descripción:
-                        var id = "descripcion";
-                        var formgroup = $('<div/>');
-                        formgroup.attr('class', 'form-group');
-                          var label = $('<div/>');
-                          label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                          label.html('<label for="'+id+'"><span class="color">* </span> Descripción:</label>');
-                          var aux = $('<div/>');
-                          aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                            var input = $('<input/>');
-                            input.attr('id', id);
-                            input.attr('name', id);
-                            input.attr('required', 'required');
-                            input.attr('title', "Debe insertar una descripción usando palabras formales de un lenguaje alejado de la jerga coloquial.");
-                            input.attr('placeholder', 'Descripción del artículo (revisar catálogo de las naciones unidas)');
-                            // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
-                            input.attr('style', "overflow:hidden");
-                            input.attr('class', "form-control  form-control-sm");
-                            input.attr('type', 'text');
-                            var errorlabel = $('<label/>');
-                            errorlabel.attr('id', id+'label');
-                            errorlabel.attr('class', "alert-danger");
-                            aux.append(input);
-                            aux.append(errorlabel);
-                          formgroup.append(label);
-                          formgroup.append(aux);
-                      form.append(formgroup);
-
-                        // unidad:
-                        var id = "unidad";
-                        var formgroup = $('<div/>');
-                        formgroup.attr('class', 'form-group');
-                          var label = $('<div/>');
-                          label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                          label.html('<label for="'+id+'"><span class="color">* </span> Unidad:</label>');
-                          var aux = $('<div/>');
-                          aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                            var input = $('<input/>');
-                            input.attr('id', id);
-                            input.attr('name', id);
-                            input.attr('required', 'required');
-                            // input.attr('pattern', "^("+codigoCat[0]+")[0-9]{2,4}-[A-Z0-9]{1,10}");
-                            input.attr('title', "Ejemplo: UNIDAD, CAJA, PAQUETE, BIDÓN, GARRAFA, etc.");
-                            input.attr('placeholder', 'Unidad de medida del artículo para la cantidad que habitualmente se despacha.');
-                            // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
-                            input.attr('style', "overflow:hidden");
-                            input.attr('class', "form-control  form-control-sm");
-                            input.attr('type', 'text');
-                            var errorlabel = $('<label/>');
-                            errorlabel.attr('id', id+'label');
-                            errorlabel.attr('class', "alert-danger");
-                            aux.append(input);
-                            aux.append(errorlabel);
-                          formgroup.append(label);
-                          formgroup.append(aux);
-                      form.append(formgroup);
-
-                        //ubicacion:
-                        var id = "cod_ubicacion";
-                        var formgroup = $('<div/>');
-                        formgroup.attr('class', 'form-group');
-                          var label = $('<div/>');
-                          label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                          label.html('<label for="'+id+'">Código de ubicación:</label>');
-                          var aux = $('<div/>');
-                          aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                            var input = $('<input/>');
-                            input.attr('id', id);
-                            input.attr('name', id);
-                            input.attr('required', 'required');
-                            input.attr('title', "Siga el formato establecido por el jefe de despacho de almacén");
-                            input.attr('placeholder', 'Indique el codigo de representación de la ubicación física del artículo.');
-                            input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
-                            input.attr('style', "overflow:hidden");
-                            input.attr('class', "form-control  form-control-sm");
-                            input.attr('type', 'text');
-                            var errorlabel = $('<label/>');
-                            errorlabel.attr('id', id+'label');
-                            errorlabel.attr('class', "alert-danger");
-                            aux.append(input);
-                            aux.append(errorlabel);
-                          formgroup.append(label);
-                          formgroup.append(aux);
-                      form.append(formgroup);
-
-                        //partida presupuestaria:
-                        var id = "partida_presupuestaria";
-                        var formgroup = $('<div/>');
-                        formgroup.attr('class', 'form-group');
-                          var label = $('<div/>');
-                          label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                          label.html('<label for="'+id+'"><span class="color">* </span> Partida presupuesaria:</label>');
-                          var aux = $('<div/>');
-                          aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                            var input = $('<input/>');
-                            input.attr('id', id);
-                            input.attr('name', id);
-                            input.attr('required', 'required');
-                            // input.attr('pattern', "^("+codigoCat[0]+")[0-9]{2,4}-[A-Z0-9]{1,10}");
-                            input.attr('title', "Código de la partida presupuesaria a la cual pertenece el artículo.");
-                            input.attr('placeholder', 'Código de la partida presupuestaria.');
-                            // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
-                            input.attr('style', "overflow:hidden");
-                            input.attr('class', "form-control  form-control-sm");
-                            input.attr('type', 'text');
-                            var errorlabel = $('<label/>');
-                            errorlabel.attr('id', id+'label');
-                            errorlabel.attr('class', "alert-danger");
-                            aux.append(input);
-                            aux.append(errorlabel);
-                          formgroup.append(label);
-                          formgroup.append(aux);
-                      form.append(formgroup);
-                    // }
-                    // else
-                    // {
-
-                    // }
-                  // var AddArtForm = '<form id="AddArtForm" name="AddArtForm" role="form" novalidate>';
-                  // AddArtForm += "<div class=\"form-group\">\
-                  //                 <div class=\"col-sm-2 col-md-2 col-lg-2 text-right\" style=\"padding-top:4px;\">\
-                  //                   <label for=\"cod_articulo\">Código:</label>\
-                  //                 </div>\
-                  //                 <div class=\"col-sm-10 col-md-10 col-lg-10\">\
-                  //                   <input id=\"cod_articulo\" required pattern=\"^("+codigoCat[0]+")[0-9]{2,4}-[A-Z0-9]{1,10}\" title=\"Ejemplo: "+codigoCat[0]+"34-AFC\" name=\"cod_articulo\" placeholder=\"Código del artículo\" data-special=\"undefined\" data-errormsg=\"* El formato debe ser: código de la categoria, seguido de dos a cuatro números, un guion (-), y letras y/o numeros relacionados con la descripción.\" style=\"overflow:hidden\" class=\"form-control  form-control-sm\" value=\""+codigoCat[0]+"\" type=\"text\">\
-                  //                   <label id=\"cod_articulolabel\" class=\"alert-danger\"></label>\
-                  //                 </div>\
-                  //                 <div style=\"clear:both;\">\
-                  //                 </div>\
-                  //               </div>";
-                  // AddArtForm += '</form>';
-
-                panelBody.append(form);
-                panel.append(panelBody);
-                //formgroup.append(inputgroup);
-          //Crea el botón de insertar para el submit del formulario
-                var button = $('<button/>');
-                //type='button' data-content='remove' class='btn btn-primary' 
-                button.attr('form', 'AddArtForm'+_instance);
-                button.attr('id', 'addFormButton'+_instance);
-                button.attr('type', 'button');
-                button.attr('data-content', 'remove');
-                button.attr('class', 'btn btn-xs btn-primary pull-right');
-                button.html('Agregar');
-                panelFoot.attr("class", "panel panel-footer");
-                panelFoot.append(button);
-          //Fin de Crea el botón de insertar para el submit del formulario
-
-                panel.append(panelFoot);
-                panel.after('<div style="clear:both;">');
-                // formgroup.append(panel);
-                // fullform.append(panel);
-          //input de 
-          
-          // formArt.append(panel);
-          // $('html, body').animate({
-          //   scrollTop: formArt.offset().top
-          // }, 1500, "swing");
-          
-          // formArt.append(fullform);
-          // console.log(formArt.html());
-          //formArt.append(button);
-          _instance++;
-          return(panel);
-        }
-        
+        //submit del formulario
         $(document).on('click', '#addFormButton'+_instance, function(e)
         {
             // console.log($('#cod_articulolabel.alert-danger').length);
             // $('#cod_articulolabel.alert-danger').html('hello!');
             // $('#cod_articulolabel.alert-danger').show();
-          console.log(this.form);
+          console.log(this);
           var form = this.form.id;
-          console.log(form);
+          // console.log(form);
           // if(form.formValidate()){
-          if(formValidate(form)){
+          if(formValidate(form))
+          {
             console.log('good!');
             e.preventDefault();
             e.stopPropagation();
-            // that._deleteRow();
+            //here goes the submit
           }
-          return(false);
-            // $(this).prop('disabled', true);
+          else
+          {
+            console.log('bad!');
+            return(false);
+          }
         });
 
         function formValidate(form)//para validar
