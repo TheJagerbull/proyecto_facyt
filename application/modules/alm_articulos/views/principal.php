@@ -1358,25 +1358,26 @@ $(document).ready(function() {
             data: function(term, page){
               // console.log("data "+term);
               // console.log("data "+page);
-              // return { 
-              //   q: term,
-              //   page: page
-              //  };
-               return {
-                q: term
+              return { 
+                q: term,
+                page: page
                };
+               // return {
+               //  q: term
+               // };
             },
             results: function(data, page){
-              // console.log("results ");
+              console.log("results ");
+              console.log(data);
               var newCat = { ID: "0", TIME: "0", cod_categoria: "0", descripcion: "", nombre: "Agregar Categoría nueva", cod_segmento: "0", segmento: "RECUERDE USAR EL CATALOGO DE LAS NACIONES UNIDAS COMO REFERENCIA", cod_familia: "0", familia: "VISITE EL CATALOGO EN LA PESTAÑA 'catálogo'" }
               data.push(newCat);
               // console.log(data);
               // console.log(data[0]);
               // console.log(page);
 
-              // var plus = (page * 30) < data.total_count;
-              // return { results: data, more: plus };
-              return { results: data };
+              var plus = (page * 30) < data.total_count;
+              return { results: data, more: plus };
+              // return { results: data, page: page };
             }
             // cache: true
           },
@@ -1408,7 +1409,8 @@ $(document).ready(function() {
             if(object.nombre.search(textpattern) !== -1 || object.cod_categoria.search(pattern) !== -1 || object.cod_segmento.search(pattern) !== -1 || object.cod_familia.search(pattern) !== -1 || object.familia.search(textpattern) !== -1 || object.segmento.search(textpattern) !== -1)
             {
               //parrafo
-              return('<strong> '+object.cod_categoria+'</strong> '+object.nombre+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p>');
+              return('<div><strong> '+object.cod_categoria+'</strong> '+object.nombre+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p></div>');
+              // return('<strong> '+object.cod_categoria+'</strong> ');
               //tabla
               // return('<table class="table table-bordered table-condensed" style="border: 1px solid black">\
               //           <tr><td><strong>Código:</strong> '+object.cod_categoria+'</td><td><strong>Categoria: </strong>'+object.nombre+'</td></tr>'+
@@ -1418,7 +1420,8 @@ $(document).ready(function() {
             {
               if(object.ID === "0")//para la opción de agregar una categoria nueva
               {
-                return('<strong> '+object.nombre+'</strong>  <p style="font-size:10px"><strong>|'+object.segmento+' | '+object.familia+'|</strong></p>');
+                return('<div><strong> '+object.nombre+'</strong>  <p style="font-size:10px"><strong>|'+object.segmento+' | '+object.familia+'|</strong></p></div>');
+                // return('<strong> '+object.nombre+'</strong>');
               }
             }
           },
@@ -1432,7 +1435,8 @@ $(document).ready(function() {
             // return(data);
             // console.log(container);
           },
-          // dropdownCssClass: "bigdropdown",
+          dropdownCssClass: "dropdown-menu",
+          loadMorePadding: 5,
           escapeMarkup: function(m) {
             // console.log('escapeMarkup:');
             // console.log(m);
@@ -1457,16 +1461,24 @@ $(document).ready(function() {
         var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm'+_instance+'" role="form" novalidate />');
         var catForm = $('<form id="AddCatForm'+_instance+'" name="AddCatForm'+_instance+'" role="form" novalidate />');
         var subform = $('<div/>');
-        $("#addArtcategoria").on("change clear select2-opening", function(){
-          panel.html("");
-          categoria = $("#addArtcategoria").select2("val");
+        $("#addArtcategoria").on("change clear select2-opening", function(){//evento para selector de categoria
+          panel.html("");//panel donde se ensambla los formularios y sus secciones
+          form.html("");//formulario completo de codigo, articulo y categoria
+          subform.html("");//subformulario para articulos
+          catForm.html("");//subformulario para categoria nueva
+          catForm.remove();
+          subform.remove();
+          form.remove();
+          panel.remove();
+
+          categoria = $("#addArtcategoria").select2("val");//toma del valor de categoria
           var codigoCat = categoria.split(' ');
-          console.log(codigoCat[0]);
-          if(categoria !== "")
+          console.log(codigoCat[0]);//toma solo el codigo del valor en categoria
+          if(categoria !== "")//si hay algun valor en el input...
           {
-            if(codigoCat[0] !== "0")
+            if(codigoCat[0] !== "0")//si el codigo dentro del valor, no es "0"
             {
-              panel = buildArtCode(codigoCat[0]);
+              panel = buildArtCode(codigoCat[0]);//construyo un formulario con selector de codigos de articulos derivados del codigo de categoria existente
               formArt.append(panel);
 
               $('html, body').animate({
@@ -1474,25 +1486,25 @@ $(document).ready(function() {
               }, 1500, "swing");
               panel.show();
               //código de articulo
-              $("#codArtExist").on("change clear", function(){
-                var codigoArt = [0];
-                articulo = $("#codArtExist").select2("val");
-                if(articulo !== '')
+              $("#codArtExist").on("change clear", function(){//evento para selector de articulos
+                var codigoArt = [0];//inicializa la variable para ser re-usada
+                articulo = $("#codArtExist").select2("val");//captura del valor del input
+                if(articulo !== '')//si hay valor en el input...
                 {
                   var codigoArt = articulo.split(' ');
-                  console.log(codigoArt[0]);
+                  // console.log(codigoArt[0]);
                   panelFoot.html('');
-                  if(codigoArt[0] !== "0")
+                  if(codigoArt[0] !== "0")//si el codigo del articulo no es "0"...
                   {
-                    subform.html('');
-                    panel.append(buildAddArtForm(codigoCat[0], codigoArt[0]));
+                    subform.html('');//inicia el sub-formulario...
+                    panel.append(buildAddArtForm(codigoCat[0], codigoArt[0]));//construyo un formulario para solo agregar la cantidad que se va a agregar al sistema
                   }
                   else
                   {
                     form.html('');
-                    panel.append(buildNewArtForm(codigoCat[0]));
-                    console.log(form);
-                    console.log(panel);
+                    panel.append(buildNewArtForm(codigoCat[0]));//construyo un formulario para llenar los datos basicos del articulo nuevo(sin pedir la cantidad)
+                    // console.log(form);
+                    // console.log(panel);
                   }
                   $('html, body').animate({
                       scrollTop: form.offset().top
