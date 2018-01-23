@@ -1367,8 +1367,8 @@ $(document).ready(function() {
                // };
             },
             results: function(data, page){
-              console.log("results ");
-              console.log(data);
+              // console.log("results ");
+              // console.log(data);
               var newCat = { ID: "0", TIME: "0", cod_categoria: "0", descripcion: "", nombre: "Agregar Categoría nueva", cod_segmento: "0", segmento: "RECUERDE USAR EL CATALOGO DE LAS NACIONES UNIDAS COMO REFERENCIA", cod_familia: "0", familia: "VISITE EL CATALOGO EN LA PESTAÑA 'catálogo'" }
               data.push(newCat);
               // console.log(data);
@@ -1435,8 +1435,8 @@ $(document).ready(function() {
             // return(data);
             // console.log(container);
           },
-          dropdownCssClass: "dropdown-menu",
-          loadMorePadding: 5,
+          // dropdownCssClass: "dropdown-menu",
+          // loadMorePadding: 5,
           escapeMarkup: function(m) {
             // console.log('escapeMarkup:');
             // console.log(m);
@@ -1463,17 +1463,19 @@ $(document).ready(function() {
         var subform = $('<div/>');
         $("#addArtcategoria").on("change clear select2-opening", function(){//evento para selector de categoria
           panel.html("");//panel donde se ensambla los formularios y sus secciones
+          panelFoot.html("");
           form.html("");//formulario completo de codigo, articulo y categoria
           subform.html("");//subformulario para articulos
           catForm.html("");//subformulario para categoria nueva
           catForm.remove();
           subform.remove();
           form.remove();
+          panelFoot.remove();
           panel.remove();
 
           categoria = $("#addArtcategoria").select2("val");//toma del valor de categoria
           var codigoCat = categoria.split(' ');
-          console.log(codigoCat[0]);//toma solo el codigo del valor en categoria
+          // console.log(codigoCat[0]);//toma solo el codigo del valor en categoria
           if(categoria !== "")//si hay algun valor en el input...
           {
             if(codigoCat[0] !== "0")//si el codigo dentro del valor, no es "0"
@@ -1562,12 +1564,14 @@ $(document).ready(function() {
             }, 200, "swing");
             setTimeout(function(){
               panel.html("");
+              panelFoot.html("");
               form.html("");
               subform.html("");
               catForm.html("");
               catForm.remove();
               subform.remove();
               form.remove();
+              panelFoot.remove();
               panel.remove();
             }, 300);
           }
@@ -2042,167 +2046,167 @@ $(document).ready(function() {
                     unidad = art.unidad;
                     cod_ubicacion = art.cod_ubicacion;
                     partida_presupuestaria = art.partida_presupuestaria;
-              //Codigo:
-              var id = "cod_articulo";
-              var formgroup = $('<div/>');
-              formgroup.attr('class', 'form-group');
-                var label = $('<div/>');
-                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                label.html('<label for="'+id+'"><span class="color">* </span> Código del artículo:</label>');
-                var aux = $('<div/>');
-                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                  var input = $('<input/>');
-                  input.attr('id', id);
-                  input.attr('name', id);
-                  input.attr('readonly', '');
-                  input.attr('value', cod_articulo);
-                  input.attr('style', "overflow:hidden");
-                  input.attr('class', "form-control  form-control-sm");
-                  input.attr('type', 'text');
-                  var errorlabel = $('<label/>');
-                  errorlabel.attr('id', id+'label');
-                  errorlabel.attr('class', "alert-danger");
-                  aux.append(input);
-                  aux.append(errorlabel);
-                formgroup.append(label);
-                formgroup.append(aux);
-            subform.append(formgroup);
-              //Descripción:
-              var id = "descripcion";
-              var formgroup = $('<div/>');
-              formgroup.attr('class', 'form-group');
-                var label = $('<div/>');
-                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                label.html('<label for="'+id+'"><span class="color">* </span> Descripción:</label>');
-                var aux = $('<div/>');
-                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                  var input = $('<input/>');
-                  input.attr('id', id);
-                  input.attr('name', id);
-                  input.attr('readonly', '');
-                  input.attr('value', descripcion);
-                  input.attr('style', "overflow:hidden");
-                  input.attr('class', "form-control  form-control-sm");
-                  input.attr('type', 'text');
-                  var errorlabel = $('<label/>');
-                  errorlabel.attr('id', id+'label');
-                  errorlabel.attr('class', "alert-danger");
-                  aux.append(input);
-                  aux.append(errorlabel);
-                formgroup.append(label);
-                formgroup.append(aux);
-            subform.append(formgroup);
+                    //Codigo:
+                    var id = "cod_articulo";
+                    var formgroup = $('<div/>');
+                    formgroup.attr('class', 'form-group');
+                      var label = $('<div/>');
+                      label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                      label.html('<label for="'+id+'"><span class="color">* </span> Código del artículo:</label>');
+                      var aux = $('<div/>');
+                      aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                        var input = $('<input/>');
+                        input.attr('id', id);
+                        input.attr('name', id);
+                        input.attr('readonly', '');
+                        input.attr('value', cod_articulo);
+                        input.attr('style', "overflow:hidden");
+                        input.attr('class', "form-control  form-control-sm");
+                        input.attr('type', 'text');
+                        var errorlabel = $('<label/>');
+                        errorlabel.attr('id', id+'label');
+                        errorlabel.attr('class', "alert-danger");
+                        aux.append(input);
+                        aux.append(errorlabel);
+                      formgroup.append(label);
+                      formgroup.append(aux);
+                  subform.append(formgroup);
+                    //Descripción:
+                    var id = "descripcion";
+                    var formgroup = $('<div/>');
+                    formgroup.attr('class', 'form-group');
+                      var label = $('<div/>');
+                      label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                      label.html('<label for="'+id+'"><span class="color">* </span> Descripción:</label>');
+                      var aux = $('<div/>');
+                      aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                        var input = $('<input/>');
+                        input.attr('id', id);
+                        input.attr('name', id);
+                        input.attr('readonly', '');
+                        input.attr('value', descripcion);
+                        input.attr('style', "overflow:hidden");
+                        input.attr('class', "form-control  form-control-sm");
+                        input.attr('type', 'text');
+                        var errorlabel = $('<label/>');
+                        errorlabel.attr('id', id+'label');
+                        errorlabel.attr('class', "alert-danger");
+                        aux.append(input);
+                        aux.append(errorlabel);
+                      formgroup.append(label);
+                      formgroup.append(aux);
+                  subform.append(formgroup);
 
-              //ubicacion:
-              var id = "cod_ubicacion";
-              var formgroup = $('<div/>');
-              formgroup.attr('class', 'form-group');
-                var label = $('<div/>');
-                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                label.html('<label for="'+id+'"><span class="color">* </span> Código de ubicación:</label>');
-                var aux = $('<div/>');
-                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                  var input = $('<input/>');
-                  input.attr('id', id);
-                  input.attr('name', id);
-                  input.attr('readonly', '');
-                  input.attr('value', cod_ubicacion);
-                  input.attr('style', "overflow:hidden");
-                  input.attr('class', "form-control  form-control-sm");
-                  input.attr('type', 'text');
-                  var errorlabel = $('<label/>');
-                  errorlabel.attr('id', id+'label');
-                  errorlabel.attr('class', "alert-danger");
-                  aux.append(input);
-                  aux.append(errorlabel);
-                formgroup.append(label);
-                formgroup.append(aux);
-            subform.append(formgroup);
+                    //ubicacion:
+                    var id = "cod_ubicacion";
+                    var formgroup = $('<div/>');
+                    formgroup.attr('class', 'form-group');
+                      var label = $('<div/>');
+                      label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                      label.html('<label for="'+id+'"><span class="color">* </span> Código de ubicación:</label>');
+                      var aux = $('<div/>');
+                      aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                        var input = $('<input/>');
+                        input.attr('id', id);
+                        input.attr('name', id);
+                        input.attr('readonly', '');
+                        input.attr('value', cod_ubicacion);
+                        input.attr('style', "overflow:hidden");
+                        input.attr('class', "form-control  form-control-sm");
+                        input.attr('type', 'text');
+                        var errorlabel = $('<label/>');
+                        errorlabel.attr('id', id+'label');
+                        errorlabel.attr('class', "alert-danger");
+                        aux.append(input);
+                        aux.append(errorlabel);
+                      formgroup.append(label);
+                      formgroup.append(aux);
+                  subform.append(formgroup);
 
-              //partida presupuestaria:
-              var id = "partida_presupuestaria";
-              var formgroup = $('<div/>');
-              formgroup.attr('class', 'form-group');
-                var label = $('<div/>');
-                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                label.html('<label for="'+id+'"><span class="color">* </span> Partida presupuestaria:</label>');
-                var aux = $('<div/>');
-                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                  var input = $('<input/>');
-                  input.attr('id', id);
-                  input.attr('name', id);
-                  input.attr('readonly', '');
-                  input.attr('value', partida_presupuestaria);
-                  input.attr('style', "overflow:hidden");
-                  input.attr('class', "form-control  form-control-sm");
-                  input.attr('type', 'text');
-                  var errorlabel = $('<label/>');
-                  errorlabel.attr('id', id+'label');
-                  errorlabel.attr('class', "alert-danger");
-                  aux.append(input);
-                  aux.append(errorlabel);
-                formgroup.append(label);
-                formgroup.append(aux);
-            subform.append(formgroup);
+                    //partida presupuestaria:
+                    var id = "partida_presupuestaria";
+                    var formgroup = $('<div/>');
+                    formgroup.attr('class', 'form-group');
+                      var label = $('<div/>');
+                      label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                      label.html('<label for="'+id+'"><span class="color">* </span> Partida presupuestaria:</label>');
+                      var aux = $('<div/>');
+                      aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                        var input = $('<input/>');
+                        input.attr('id', id);
+                        input.attr('name', id);
+                        input.attr('readonly', '');
+                        input.attr('value', partida_presupuestaria);
+                        input.attr('style', "overflow:hidden");
+                        input.attr('class', "form-control  form-control-sm");
+                        input.attr('type', 'text');
+                        var errorlabel = $('<label/>');
+                        errorlabel.attr('id', id+'label');
+                        errorlabel.attr('class', "alert-danger");
+                        aux.append(input);
+                        aux.append(errorlabel);
+                      formgroup.append(label);
+                      formgroup.append(aux);
+                  subform.append(formgroup);
 
-              // unidad:
-              var id = "unidad";
-              var formgroup = $('<div/>');
-              formgroup.attr('class', 'form-group');
-                var label = $('<div/>');
-                label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-                label.html('<label for="'+id+'"><span class="color">* </span> Unidad:</label>');
-                var aux = $('<div/>');
-                aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                  var input = $('<input/>');
-                  input.attr('id', id);
-                  input.attr('name', id);
-                  input.attr('readonly', '');
-                  input.attr('value', unidad);
-                  input.attr('style', "overflow:hidden");
-                  input.attr('class', "form-control  form-control-sm");
-                  input.attr('type', 'text');
-                  var errorlabel = $('<label/>');
-                  errorlabel.attr('id', id+'label');
-                  errorlabel.attr('class', "alert-danger");
-                  aux.append(input);
-                  aux.append(errorlabel);
-                formgroup.append(label);
-                formgroup.append(aux);
-            subform.append(formgroup);
+                    // unidad:
+                    var id = "unidad";
+                    var formgroup = $('<div/>');
+                    formgroup.attr('class', 'form-group');
+                      var label = $('<div/>');
+                      label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                      label.html('<label for="'+id+'"><span class="color">* </span> Unidad:</label>');
+                      var aux = $('<div/>');
+                      aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                        var input = $('<input/>');
+                        input.attr('id', id);
+                        input.attr('name', id);
+                        input.attr('readonly', '');
+                        input.attr('value', unidad);
+                        input.attr('style', "overflow:hidden");
+                        input.attr('class', "form-control  form-control-sm");
+                        input.attr('type', 'text');
+                        var errorlabel = $('<label/>');
+                        errorlabel.attr('id', id+'label');
+                        errorlabel.attr('class', "alert-danger");
+                        aux.append(input);
+                        aux.append(errorlabel);
+                      formgroup.append(label);
+                      formgroup.append(aux);
+                  subform.append(formgroup);
 
-            //cantidad
-            var id = "nuevos";
-            var formgroup = $('<div/>');
-            formgroup.attr('class', 'form-group');
-              var label = $('<div/>');
-              label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
-              label.html('<label for="'+id+'"><span class="color">* </span> Cantidad:</label>');
-              var aux = $('<div/>');
-              aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
-                var input = $('<input/>');
-                input.attr('id', id);
-                input.attr('name', id);
-                input.attr('required', 'required');
-                input.attr('pattern', "^[1-9][0-9]{0,4}");
-                input.attr('title', "Cantidad en proceso de recepción por almacén");
-                input.attr('placeholder', 'Cantidad a agregar en inventario (tome en cuenta la unidad).');
-                input.attr('data-errormsg', "* Debe ingresar un valor numerico, entero(que no empieze por '0', y sea menor a 99999).");
-                input.attr('style', "overflow:hidden");
-                input.attr('class', "form-control  form-control-sm");
-                input.attr('type', 'text');
-                var errorlabel = $('<label/>');
-                errorlabel.attr('id', id+'label');
-                errorlabel.attr('class', "alert-danger");
-                aux.append(input);
-                aux.append(errorlabel);
-              formgroup.append(label);
-              formgroup.append(aux);
-            subform.append(formgroup);
+                  //cantidad
+                  var id = "nuevos";
+                  var formgroup = $('<div/>');
+                  formgroup.attr('class', 'form-group');
+                    var label = $('<div/>');
+                    label.attr('class', 'col-sm-2 col-md-2 col-lg-2 text-right');
+                    label.html('<label for="'+id+'"><span class="color">* </span> Cantidad:</label>');
+                    var aux = $('<div/>');
+                    aux.attr('class', "col-xm-10 col-sm-10 col-md-10 col-lg-10");
+                      var input = $('<input/>');
+                      input.attr('id', id);
+                      input.attr('name', id);
+                      input.attr('required', 'required');
+                      input.attr('pattern', "^[1-9][0-9]{0,4}");
+                      input.attr('title', "Cantidad en proceso de recepción por almacén");
+                      input.attr('placeholder', 'Cantidad a agregar en inventario (tome en cuenta la unidad).');
+                      input.attr('data-errormsg', "* Debe ingresar un valor numerico, entero(que no empieze por '0', y sea menor a 99999).");
+                      input.attr('style', "overflow:hidden");
+                      input.attr('class', "form-control  form-control-sm");
+                      input.attr('type', 'text');
+                      var errorlabel = $('<label/>');
+                      errorlabel.attr('id', id+'label');
+                      errorlabel.attr('class', "alert-danger");
+                      aux.append(input);
+                      aux.append(errorlabel);
+                    formgroup.append(label);
+                    formgroup.append(aux);
+                  subform.append(formgroup);
 
-            form.append(subform);
-            panelBody.append(form);
-            return(panelBody);
+                  form.append(subform);
+                  panelBody.append(form);
+                  return(panelBody);
                 }
             });
             // console.log("end");
@@ -2223,6 +2227,16 @@ $(document).ready(function() {
             e.preventDefault();
             e.stopPropagation();
             //here goes the submit
+            console.log($("#"+form).serializeArray())
+            $.ajax({
+                url: "<?php echo base_url() ?>inventario/articulo/agregar",
+                type: 'POST',
+                dataType: "json",
+                data: {"form":$("#"+form).serializeArray()},
+                success: function (resp) {
+                  console.log(resp)
+                }
+            });
           }
           else
           {
