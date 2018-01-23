@@ -107,6 +107,10 @@ $route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_
 $route['inventario/articulo/categorias']						='alm_articulos/json_categories';
 $route['inventario/articulos/categoria/(.*)']					='alm_articulos/json_artFromCat/$1';
 $route['inventario/articulo']									='alm_articulos/json_articulo';
+$route['inventario/segmento']									='alm_articulos/ajax_segmento';
+$route['inventario/familia']									='alm_articulos/ajax_familia';
+$route['inventario/categoria']									='alm_articulos/ajax_categoria';
+
 		//Rutas para el proceso de cierre de inventario
 $route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
 $route['inventario/habilitarCierre']							='alm_articulos/enable_closure';
@@ -137,9 +141,11 @@ $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicit
 $route['solicitud/cancelar']									='alm_solicitudes/cancelar_solicitud';
 $route['solicitud/cancelar/sin_enviar']							='alm_solicitudes/cancelar_carrito';
 //Rutas para pruebas de solicitudes
+$route['relate_category']										='alm_articulos/category_relationship';
 // $route['testsql']												='alm_solicitudes/test_sql';
 $route['testsql']												='alm_articulos/test_sql';
-$route['relate_category']										='alm_articulos/test';
+$route['test']													='alm_articulos/test';
+$route['test/(.*)']												='alm_articulos/test/$1';
 //Rutas para migracion de sistema
 $route['migrarDB']												='alm_articulos/migrate';
 $route['alterDB/(.*)']											='alm_articulos/alterDB/$1';

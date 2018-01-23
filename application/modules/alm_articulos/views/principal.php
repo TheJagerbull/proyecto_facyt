@@ -1540,6 +1540,77 @@ $(document).ready(function() {
               $('html, body').animate({
                 scrollTop: formArt.offset().top
               }, 1500, "swing");
+
+              $("#cod_segmento").on('keyup', function(){
+                $(this).attr('value', this.value);
+                if(this.value.length ===2)
+                {
+                    $('#segmento').removeAttr('value');
+                    $('#segmento').removeAttr('readonly');
+                    $.ajax({
+                      url: "<?php echo base_url() ?>inventario/segmento",
+                      type: 'POST',
+                      dataType: "json",
+                      data: {"cod_segmento":this.value},
+                      success: function (data) {
+                        if(data.length>0)
+                        {
+                          art = data[0];
+                          $('#segmento').attr('value', art.segmento);
+                          $('#segmento').attr('readonly', 'readonly');
+                        }
+                      }
+                    });
+                }
+              });
+              $("#cod_familia").on('keyup', function(){
+                var seg = $("#cod_segmento").attr("value");
+                $(this).attr('value', this.value);
+                if(this.value.length ===4)
+                {
+                    $('#familia').removeAttr('value');
+                    $('#familia').removeAttr('readonly');
+                    $.ajax({
+                      url: "<?php echo base_url() ?>inventario/familia",
+                      type: 'POST',
+                      dataType: "json",
+                      data: {"cod_familia":this.value},
+                      success: function (data) {
+                        if(data.length>0)
+                        {
+                          art = data[0];
+                          $('#familia').attr('value', art.familia);
+                          $('#familia').attr('readonly', 'readonly');
+                        }
+                      }
+                    });
+                }
+                $(this).attr('pattern', "^("+seg+")[0-9]{2}");
+              });
+              $("#cod_categoria").on('keyup', function(){
+                var fam = $("#cod_familia").attr("value");
+                $(this).attr('pattern', "^("+fam+")[0-9]{2}");
+                if(this.value.length ===6)
+                {
+                  $('#nombre').removeAttr('value');
+                  $('#nombre').removeAttr('readonly');
+                    $.ajax({
+                      url: "<?php echo base_url() ?>inventario/categoria",
+                      type: 'POST',
+                      dataType: "json",
+                      data: {"cod_categoria":this.value},
+                      success: function (data) {
+                        if(data.length>0)
+                        {
+                          art = data[0];
+                          $('#nombre').attr('value', art.nombre);
+                          $('#nombre').attr('readonly', 'readonly');
+                        }
+                      }
+                    });
+                }
+              });
+
               //Crea el botón de insertar para el submit del formulario
                 var button = $('<button/>');
                 //type='button' data-content='remove' class='btn btn-primary' 
@@ -1662,10 +1733,11 @@ $(document).ready(function() {
                   input.attr('id', id);
                   input.attr('name', id);
                   input.attr('required', 'required');
-                  input.attr('pattern', "^[1-9][0-9]{3}");
+                  // input.attr('pattern', "^[1-9][0-9]{3}");
+                  input.attr('pattern', "^(document.getElementById('cod_segmento').value){3}");
                   input.attr('title', "Debe agregar la familia del artículo basado en el catálogo de las naciones unidas, que corresponda con la clase en el catálogo.");
                   input.attr('placeholder', 'Familia de la categoría (copiar del catálogo de las naciones unidas)');
-                  input.attr('data-errormsg', "* Es el valor de la \"Familia\" en el catálogo(son 4 dígitos).");
+                  input.attr('data-errormsg', "* Es el valor del código \"Familia\" en el catálogo(son 4 dígitos, donde los primeros 2 son el código del segmento).");
                   input.attr('style', "overflow:hidden");
                   input.attr('class', "form-control  form-control-sm");
                   input.attr('type', 'text');
@@ -1719,10 +1791,11 @@ $(document).ready(function() {
                   input.attr('id', id);
                   input.attr('name', id);
                   input.attr('required', 'required');
+                  // input.attr('pattern', "^[1-9][0-9]{5}");
                   input.attr('pattern', "^[1-9][0-9]{5}");
                   input.attr('title', "Debe agregar la categoría del artículo basado en el catálogo de las naciones unidas, que corresponda con la clase encontrada en el catálogo.");
                   input.attr('placeholder', 'Clase del artículo que vaya a agregar posteriormente (copiar del catálogo de las naciones unidas)');
-                  input.attr('data-errormsg', "* Es el valor de la \"Clase\" en el catálogo(son 6 dígitos).");
+                  input.attr('data-errormsg', "* Es el valor del código \"Clase\" en el catálogo(son 6 dígitos, donde los primeros 4 son el código de la familia).");
                   input.attr('style', "overflow:hidden");
                   input.attr('class', "form-control  form-control-sm");
                   input.attr('type', 'text');

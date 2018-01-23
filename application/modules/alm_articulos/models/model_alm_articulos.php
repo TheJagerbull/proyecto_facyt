@@ -54,6 +54,116 @@ class Model_alm_articulos extends CI_Model
 		return($query->result_array());
 	}
 
+	public function get_segmento($codigo='')
+	{
+		$this->db->distinct('cod_segmento');
+		$this->db->select('cod_segmento, segmento');
+		if(!empty($codigo))
+		{
+			$this->db->group_by('cod_segmento');
+			if(is_array($codigo))
+			{
+				if(isset($codigo['cod_segmento']))
+				{
+					$this->db->where('cod_segmento', $codigo['cod_segmento']);
+				}
+				else
+				{
+					if(isset($codigo['cod_categoria']))
+					{
+						$this->db->where('cod_categoria', $codigo['cod_categoria']);
+					}
+					else
+					{
+						if(isset($codigo['cod_familia']))
+						{
+							$aux = substr($codigo['cod_familia'], 0, 2);
+							$this->db->where('cod_categoria', $aux);
+						}
+						else
+						{
+							if(isset($codigo['cod_articulo']))
+							{
+								$aux = substr($codigo['cod_articulo'], 0, 2);
+								$this->db->where('cod_categoria', $aux);
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				$this->db->where('cod_segmento', $codigo);
+			}
+		}
+		return($this->db->get('alm_categoria')->result_array());
+	}
+	public function get_familia($codigo='')
+	{
+		$this->db->distinct('cod_familia');
+		$this->db->select('cod_familia, familia');
+		if(!empty($codigo))
+		{
+			$this->db->group_by('cod_familia');
+			if(is_array($codigo))
+			{
+				if(isset($codigo['cod_familia']))
+				{
+					$this->db->where('cod_familia', $codigo['cod_familia']);
+				}
+				else
+				{
+					if(isset($codigo['cod_categoria']))
+					{
+						$this->db->where('cod_categoria', $codigo['cod_categoria']);
+					}
+					else
+					{
+						if(isset($codigo['cod_articulo']))
+						{
+							$aux = substr($codigo['cod_articulo'], 0, 4);
+							$this->db->where('cod_categoria', $aux);
+						}
+					}
+				}
+			}
+			else
+			{
+				$this->db->where('cod_familia', $codigo);
+			}
+		}
+		return($this->db->get('alm_categoria')->result_array());
+	}
+	public function get_categoria($codigo='')
+	{
+		$this->db->distinct('cod_categoria');
+		$this->db->select('cod_categoria, nombre');
+		if(!empty($codigo))
+		{
+			$this->db->group_by('cod_categoria');
+			if(is_array($codigo))
+			{
+				if(isset($codigo['cod_categoria']))
+				{
+					$this->db->where('cod_categoria', $codigo['cod_categoria']);
+				}
+				else
+				{
+					if(isset($codigo['cod_articulo']))
+					{
+						$aux = substr($codigo['cod_articulo'], 0, 6);
+						$this->db->where('cod_categoria', $aux);
+					}
+				}
+			}
+			else
+			{
+				$this->db->where('cod_categoria', $codigo);
+			}
+		}
+		return($this->db->get('alm_categoria')->result_array());
+	}
+
 	public function get_activeArticulos($field='',$order='',$per_page='', $offset='')
 	{
 		$this->db->select('*');

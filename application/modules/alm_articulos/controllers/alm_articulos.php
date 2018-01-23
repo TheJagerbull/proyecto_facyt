@@ -322,8 +322,94 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-
-    public function insertar_articulo()
+    public function ajax_segmento()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // if($this->input->post())
+                // {
+                //     die(json_encode($this->input->post()));
+                    echo json_encode($this->model_alm_articulos->get_segmento($this->input->post()));
+                // }
+                // else
+                // {
+                //     die(json_encode($this->model_alm_articulos->get_segmento()));
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function ajax_familia()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // if($this->input->post())
+                // {
+                //     die(json_encode($this->input->post()));
+                    echo json_encode($this->model_alm_articulos->get_familia($this->input->post()));
+                // }
+                // else
+                // {
+                //     die(json_encode($this->model_alm_articulos->get_familia()));
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function ajax_categoria()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // if($this->input->post())
+                // {
+                //     die(json_encode($this->input->post()));
+                    echo json_encode($this->model_alm_articulos->get_categoria($this->input->post()));
+                // }
+                // else
+                // {
+                //     die(json_encode($this->model_alm_articulos->get_categoria()));
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function insertar_articulo()//poraqui
     {
         if($this->session->userdata('user'))
         {
@@ -2698,7 +2784,7 @@ class Alm_articulos extends MX_Controller
         echo json_encode($output);
 
     }
-     public function test()
+    public function category_relationship()
     {
         $this->model_alm_articulos->relate_categoria();
             //   // Load all views as normal
@@ -2712,6 +2798,12 @@ class Alm_articulos extends MX_Controller
             // $this->dompdf->load_html(utf8_decode($html));
             // $this->dompdf->render();
             // $this->dompdf->stream("asignaciones.pdf", array('Attachment' => 0));
+    }
+    public function test($flag='')
+    {
+        // echo_pre($this->model_alm_articulos->get_segmento($flag));
+        // echo_pre($this->model_alm_articulos->get_familia($flag));
+        echo_pre($this->model_alm_articulos->get_categoria($flag));
     }
     
     public function print_dataTable()
