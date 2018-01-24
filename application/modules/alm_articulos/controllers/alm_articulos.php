@@ -409,6 +409,52 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+    public function insertar_inventario()
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                if($this->input->post('action'))
+                {
+                    // $aux = array_keys($this->input->post());
+                    $aux = $this->input->post('action');
+                    die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                    switch ($aux)
+                    {
+                        case 'new_categoria':
+                            
+                            break;
+                        case 'new_item':
+                            
+                            break;
+                        case 'add_item':
+                            
+                            break;
+                        
+                        default:
+                            echo '<div class="alert alert-danger">
+                                Error al realizar operación.
+                            </div>';
+                            break;
+                    }
+                    die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
     public function insertar_articulo()//poraqui
     {
         if($this->session->userdata('user'))
@@ -418,7 +464,7 @@ class Alm_articulos extends MX_Controller
             {
                 if($this->input->post())
                 {
-                    die_pre($this->input->post(null, true));
+                    die_pre($this->input->post(null, true), __LINE__, __FILE__);
                 }
                 // if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
                 // {
@@ -511,19 +557,45 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function actualizar_articulo()
-    {
-
-    }
-
-
-    public function categoria_articulo()///todavia no
+    public function agregar_articulo()
     {
         if($this->session->userdata('user'))
         {
-            $this->load->view('template/header');
-            echo "evil, rule through the crazy";
-            $this->load->view('template/footer');
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+
+    public function agregar_categoria()///todavia no
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
         }
         else
         {

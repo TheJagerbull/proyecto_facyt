@@ -1461,6 +1461,7 @@ $(document).ready(function() {
         var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm'+_instance+'" role="form" novalidate />');
         var catForm = $('<form id="AddCatForm'+_instance+'" name="AddCatForm'+_instance+'" role="form" novalidate />');
         var subform = $('<div/>');
+        var insertion = '';
         $("#addArtcategoria").on("change clear select2-opening", function(){//evento para selector de categoria
           panel.html("");//panel donde se ensambla los formularios y sus secciones
           panelFoot.html("");
@@ -1500,11 +1501,13 @@ $(document).ready(function() {
                   {
                     subform.html('');//inicia el sub-formulario...
                     panel.append(buildAddArtForm(codigoCat[0], codigoArt[0]));//construyo un formulario para solo agregar la cantidad que se va a agregar al sistema
+                    insertion = {action:'add_item', value: 0};
                   }
                   else
                   {
                     form.html('');
                     panel.append(buildNewArtForm(codigoCat[0]));//construyo un formulario para llenar los datos basicos del articulo nuevo(sin pedir la cantidad)
+                    insertion = {action:'new_item', value: 0};
                     // console.log(form);
                     // console.log(panel);
                   }
@@ -1513,6 +1516,7 @@ $(document).ready(function() {
                       // scrollTop: $('#cod_articulo').offset().top
                       // scrollTop: $('#codArtExist').offset().top
                     }, 1500, "swing");
+
                     //Crea el botón de insertar para el submit del formulario
                       var button = $('<button/>');
                       //type='button' data-content='remove' class='btn btn-primary' 
@@ -1542,11 +1546,18 @@ $(document).ready(function() {
               }, 1500, "swing");
 
               $("#cod_segmento").on('keyup', function(){
-                $(this).attr('value', this.value);
+                $(this).val(this.value);
+                $("#cod_familia").val(this.value);
+                $("#cod_categoria").val(this.value);
+
+                $('#segmento').val('');
+                $('#segmento').removeAttr('readonly');
+                $('#familia').val('');
+                $('#familia').removeAttr('readonly');
+                $('#nombre').val('');
+                $('#nombre').removeAttr('readonly');
                 if(this.value.length ===2)
                 {
-                    $('#segmento').removeAttr('value');
-                    $('#segmento').removeAttr('readonly');
                     $.ajax({
                       url: "<?php echo base_url() ?>inventario/segmento",
                       type: 'POST',
@@ -1556,20 +1567,31 @@ $(document).ready(function() {
                         if(data.length>0)
                         {
                           art = data[0];
-                          $('#segmento').attr('value', art.segmento);
+                          $('#segmento').val(art.segmento);
                           $('#segmento').attr('readonly', 'readonly');
                         }
                       }
                     });
                 }
               });
-              $("#cod_familia").on('keyup', function(){
-                var seg = $("#cod_segmento").attr("value");
-                $(this).attr('value', this.value);
+              $("#cod_familia").on('keyup focus change', function(){
+                console.log(this.id);
+                // var seg = $("#cod_segmento").attr("value");
+                var seg = $("#cod_segmento").val();
+                // $(this).attr('value', this.value);
+                $("#cod_categoria").val(this.value);
+                // $("#cod_categoria").attr('value', this.value);
+                  // $('#familia').removeAttr('value');
+                  $('#familia').val('');
+                  $('#familia').removeAttr('readonly');
+                if(this.value.length ===2)
+                {
+                  $("#cod_segmento").val(this.value.slice(0, 2));
+                  $("#cod_segmento").trigger('keyup');
+                }
+
                 if(this.value.length ===4)
                 {
-                    $('#familia').removeAttr('value');
-                    $('#familia').removeAttr('readonly');
                     $.ajax({
                       url: "<?php echo base_url() ?>inventario/familia",
                       type: 'POST',
@@ -1579,7 +1601,8 @@ $(document).ready(function() {
                         if(data.length>0)
                         {
                           art = data[0];
-                          $('#familia').attr('value', art.familia);
+                          // $('#familia').attr('value', art.familia);
+                          $('#familia').val(art.familia);
                           $('#familia').attr('readonly', 'readonly');
                         }
                       }
@@ -1587,13 +1610,25 @@ $(document).ready(function() {
                 }
                 $(this).attr('pattern', "^("+seg+")[0-9]{2}");
               });
-              $("#cod_categoria").on('keyup', function(){
-                var fam = $("#cod_familia").attr("value");
+              $("#cod_categoria").on('keyup focus change', function(){
+                // var fam = $("#cod_familia").attr("value");
+                var fam = $("#cod_familia").val();
                 $(this).attr('pattern', "^("+fam+")[0-9]{2}");
+                // $('#nombre').removeAttr('value');
+                $('#nombre').val('');
+                $('#nombre').removeAttr('readonly');
+                if(this.value.length ===2)
+                {
+                  $("#cod_segmento").val(this.value.slice(0, 2));
+                  $("#cod_segmento").trigger('keyup');
+                }
+                if(this.value.length ===4)
+                {
+                  $("#cod_familia").val(this.value.slice(0, 4));
+                  $("#cod_familia").trigger('keyup');
+                }
                 if(this.value.length ===6)
                 {
-                  $('#nombre').removeAttr('value');
-                  $('#nombre').removeAttr('readonly');
                     $.ajax({
                       url: "<?php echo base_url() ?>inventario/categoria",
                       type: 'POST',
@@ -1603,14 +1638,15 @@ $(document).ready(function() {
                         if(data.length>0)
                         {
                           art = data[0];
-                          $('#nombre').attr('value', art.nombre);
+                          // $('#nombre').attr('value', art.nombre);
+                          $('#nombre').val(art.nombre);
                           $('#nombre').attr('readonly', 'readonly');
                         }
                       }
                     });
                 }
               });
-
+                insertion = {action:'new_categoria', form: 0};
               //Crea el botón de insertar para el submit del formulario
                 var button = $('<button/>');
                 //type='button' data-content='remove' class='btn btn-primary' 
@@ -2300,12 +2336,18 @@ $(document).ready(function() {
             e.preventDefault();
             e.stopPropagation();
             //here goes the submit
-            console.log($("#"+form).serializeArray())
+            insertion.form = ($("#"+form).serializeArray());
+            // insertion.form.push($("#"+form).serializeArray());
+            // console.log($("#"+form).serializeArray());
+            console.log(insertion);
             $.ajax({
-                url: "<?php echo base_url() ?>inventario/articulo/agregar",
+                url: "<?php echo base_url() ?>inventario/insertar",
                 type: 'POST',
                 dataType: "json",
-                data: {"form":$("#"+form).serializeArray()},
+                // data: {"form":$("#"+form).serializeArray()},
+                // data: [{form:$("#"+form).serializeArray()}],
+                // data: $("#"+form).serializeArray(),
+                data: insertion,
                 success: function (resp) {
                   console.log(resp)
                 }

@@ -106,6 +106,7 @@ $route['inventario/articulo/cambioCod_excel']					='alm_articulos/excel_code_swi
 $route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_input';
 $route['inventario/articulo/categorias']						='alm_articulos/json_categories';
 $route['inventario/articulos/categoria/(.*)']					='alm_articulos/json_artFromCat/$1';
+$route['inventario/insertar']									='alm_articulos/insertar_inventario';
 $route['inventario/articulo']									='alm_articulos/json_articulo';
 $route['inventario/segmento']									='alm_articulos/ajax_segmento';
 $route['inventario/familia']									='alm_articulos/ajax_familia';
