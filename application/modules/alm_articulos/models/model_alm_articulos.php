@@ -350,6 +350,7 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function add_newArticulo($articulo, $historial)
 	{
+		die_pre($articulo, __LINE__, __FILE__);
 		$this->db->insert('alm_articulo', $articulo);
 		$this->db->insert('alm_historial_a', $historial);
 		$link=array(
@@ -361,6 +362,7 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function add_articulo($articulo)
 	{
+		die_pre($articulo, __LINE__, __FILE__);
 		$cod['cod_articulo'] = $articulo['cod_articulo'];
 		if(!$this->exist($cod))
 		{
@@ -1901,16 +1903,23 @@ class Model_alm_articulos extends CI_Model
     }
     public function insert_categoria($categoria='')
     {
-    	// die_pre($categoria);
-    	if(is_array($categoria))
+    	// echo_pre($categoria, __LINE__, __FILE__);
+    	if(!empty($categoria))
     	{
-    		$this->db->insert_batch('alm_categoria', $categoria);
-    	}
-    	else
-    	{
-    		$this->db->insert('alm_categoria', $categoria);
-    	}
-
+    		if(is_array($categoria))
+    		{
+		    	if(isset($categoria[0]))
+		    	{
+    				// die_pre('BATCH!!!!', __LINE__, __FILE__);
+		    		$this->db->insert_batch('alm_categoria', $categoria);//insercion por archivo
+		    	}
+		    	else
+		    	{
+    				// die_pre('SINGLE!!!!!', __LINE__, __FILE__);
+		    		$this->db->insert('alm_categoria', $categoria);
+		    	}
+		    }
+	    }
     	if($this->db->affected_rows()>0)
     	{
     		return TRUE;
@@ -1920,7 +1929,7 @@ class Model_alm_articulos extends CI_Model
     		return FALSE;
     	}
     }
-    public function relate_categoria()
+    public function relate_categoria()//solo para archivo
     {
     	$this->db->select('cod_categoria');
     	$categorias = $this->db->get('alm_categoria')->result_array();

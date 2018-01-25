@@ -1342,7 +1342,7 @@ $(document).ready(function() {
       // $("#addArtcategoria").select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
       var selectCAT = $("#addArtcategoria").select2({
           placeholder:"Indique la categoría del articulo que va a insertar (basado en el catálogo de las naciones unidas)",
-          minimumInputLength: 2,
+          minimumInputLength: 1,
           maximumSelectionSize: 10,
           allowClear: true,
           id: function(e){
@@ -1501,13 +1501,13 @@ $(document).ready(function() {
                   {
                     subform.html('');//inicia el sub-formulario...
                     panel.append(buildAddArtForm(codigoCat[0], codigoArt[0]));//construyo un formulario para solo agregar la cantidad que se va a agregar al sistema
-                    insertion = {action:'add_item', value: 0};
+                    insertion = {action:'add_item', form: 0};
                   }
                   else
                   {
                     form.html('');
                     panel.append(buildNewArtForm(codigoCat[0]));//construyo un formulario para llenar los datos basicos del articulo nuevo(sin pedir la cantidad)
-                    insertion = {action:'new_item', value: 0};
+                    insertion = {action:'new_item', form: 0};
                     // console.log(form);
                     // console.log(panel);
                   }
@@ -1770,7 +1770,7 @@ $(document).ready(function() {
                   input.attr('name', id);
                   input.attr('required', 'required');
                   // input.attr('pattern', "^[1-9][0-9]{3}");
-                  input.attr('pattern', "^(document.getElementById('cod_segmento').value){3}");
+                  // input.attr('pattern', "^(document.getElementById('cod_segmento').value){3}");
                   input.attr('title', "Debe agregar la familia del artículo basado en el catálogo de las naciones unidas, que corresponda con la clase en el catálogo.");
                   input.attr('placeholder', 'Familia de la categoría (copiar del catálogo de las naciones unidas)');
                   input.attr('data-errormsg', "* Es el valor del código \"Familia\" en el catálogo(son 4 dígitos, donde los primeros 2 son el código del segmento).");
@@ -1892,7 +1892,7 @@ $(document).ready(function() {
                 panelBody.html('<i class="color" >'+categoria+'</i>');
                 // var form = $('<form id="AddArtForm'+_instance+'" name="AddArtForm" role="form" novalidate />');
                 
-          var artCodSelect = $('<input hidden id="codArtExist" class="form-control input-sm" name="categoria" type="text">');
+          var artCodSelect = $('<input hidden id="codArtExist" class="form-control input-sm" name="" type="text">');
               var formgroup = $('<div/>');
               formgroup.attr('class', 'form-group');
               var label = $('<div/>');
@@ -2339,7 +2339,7 @@ $(document).ready(function() {
             insertion.form = ($("#"+form).serializeArray());
             // insertion.form.push($("#"+form).serializeArray());
             // console.log($("#"+form).serializeArray());
-            console.log(insertion);
+            // console.log(insertion);
             $.ajax({
                 url: "<?php echo base_url() ?>inventario/insertar",
                 type: 'POST',
@@ -2348,8 +2348,37 @@ $(document).ready(function() {
                 // data: [{form:$("#"+form).serializeArray()}],
                 // data: $("#"+form).serializeArray(),
                 data: insertion,
-                success: function (resp) {
-                  console.log(resp)
+                success: function (resp) {//HILAZA, HILADO
+                  console.log(typeof resp);
+                  console.log(resp);
+                  // var response = $.parseJSON(resp);
+                  var response = resp;
+                  if(response === "success")
+                  {
+                    swal(
+                      'Éxito!',
+                      'Inserción del dato realizado de forma exitosa.',
+                      'success');
+                    $("#addArtcategoria").select2("val", '');
+                    $("#addArtcategoria").trigger('clear');
+                  }
+                  else
+                  {
+                    if(response === "exist")
+                    {
+                      swal(
+                        'Ya existe!',
+                        'La categoria ya existe',
+                        'info');
+                    }
+                    else
+                    {
+                      swal(
+                        'ERROR!',
+                        'Ha ocurrido un error inesperado, al intentar ingresar datos al sistema',
+                        'error');
+                    }
+                  }
                 }
             });
           }

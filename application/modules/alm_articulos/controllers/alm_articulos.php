@@ -420,17 +420,24 @@ class Alm_articulos extends MX_Controller
                 {
                     // $aux = array_keys($this->input->post());
                     $aux = $this->input->post('action');
-                    die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                    $arrayInputs = array();
+                    foreach ($this->input->post('form') as $key => $input)
+                    {
+                        $arrayInputs[$input['name']] = $input['value'];
+                    }
                     switch ($aux)
                     {
                         case 'new_categoria':
-                            
+                            $this->agregar_categoria($arrayInputs);
                             break;
                         case 'new_item':
-                            
+                            $this->agregar_articulo($arrayInputs);
                             break;
                         case 'add_item':
-                            
+                            $this->insertar_articulo($arrayInputs);
                             break;
                         
                         default:
@@ -439,7 +446,7 @@ class Alm_articulos extends MX_Controller
                             </div>';
                             break;
                     }
-                    die_pre($this->input->post(null, true), __LINE__, __FILE__);
+                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
                 }
             }
             else
@@ -455,17 +462,18 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function insertar_articulo()//poraqui
+    public function insertar_articulo($data)//poraqui
     {
         if($this->session->userdata('user'))
         {
             // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
             if($this->dec_permiso->has_permission('alm', 6))
             {
-                if($this->input->post())
-                {
-                    die_pre($this->input->post(null, true), __LINE__, __FILE__);
-                }
+                die(json_encode('success'));
+                die(json_encode('exist'));
+                die(json_encode('error'));
+                print_r($data);
+                die( json_encode($data));
                 // if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
                 // {
                 //     // die_pre($_POST, __LINE__, __FILE__);
@@ -557,14 +565,18 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function agregar_articulo()
+    public function agregar_articulo($data)
     {
         if($this->session->userdata('user'))
         {
             // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
             if($this->dec_permiso->has_permission('alm', 6))
             {
-                
+                die(json_encode('success'));
+                die(json_encode('exist'));
+                die(json_encode('error'));
+                print_r($data);
+                die( json_encode($data));
             }
             else
             {
@@ -579,16 +591,35 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-
-
-    public function agregar_categoria()///todavia no
+    public function agregar_categoria($data)///todavia no
     {
         if($this->session->userdata('user'))
         {
             // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
             if($this->dec_permiso->has_permission('alm', 6))
             {
-                
+                // print_r($data);
+                // die(json_encode('success'));
+                // die(json_encode('exist'));
+                // die(json_encode('error'));
+                //preguntar si existe la categoria
+                if(!$this->model_alm_articulos->get_categoria($data['cod_categoria']))
+                {
+                    //en caso que no exista, se agrega al sistema
+                    if($this->model_alm_articulos->insert_categoria($data))
+                    {
+                        //responder que la inserción fue exitosa
+                        echo json_encode('success');
+                    }
+                    else
+                    {
+                        echo json_encode('error');
+                    }
+                }
+                else
+                {
+                    echo json_encode('exist');
+                }
             }
             else
             {
