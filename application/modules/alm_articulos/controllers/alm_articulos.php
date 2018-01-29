@@ -560,7 +560,7 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function agregar_articulo($data)
+    public function agregar_articulo($data)//listo
     {
         if($this->session->userdata('user'))
         {

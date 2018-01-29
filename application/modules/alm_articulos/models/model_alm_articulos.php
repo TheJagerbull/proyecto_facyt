@@ -394,7 +394,8 @@ class Model_alm_articulos extends CI_Model
 					'id_articulo'=> $articulo['cod_articulo']
 					);
 					$this->db->insert('alm_genera_hist_a', $link);
-					$this->relate_categoria(true);
+					// $this->relate_categoria(true);
+					return true;
 	    		}
 	    		else
 	    		{

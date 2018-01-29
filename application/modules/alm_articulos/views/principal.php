@@ -2362,6 +2362,7 @@ $(document).ready(function() {
             console.log('good!');
             e.preventDefault();
             e.stopPropagation();
+            panel.hide();
             //here goes the submit
             insertion.form = ($("#"+form).serializeArray());
             // insertion.form.push($("#"+form).serializeArray());
@@ -2393,6 +2394,7 @@ $(document).ready(function() {
                   {
                     if(typeof response === "object")
                     {
+                      pane.show();
                       if(response.cat === 'exist')
                       {
                         swal(
@@ -2410,6 +2412,7 @@ $(document).ready(function() {
                     }
                     else
                     {
+                      pane.show();
                       swal(
                         'ERROR!',
                         'Ha ocurrido un error inesperado, al intentar ingresar datos al sistema',
