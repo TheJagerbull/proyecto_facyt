@@ -98,6 +98,7 @@
                                     </select>
                                     <small><p>Persona de contacto</p></small>
                                 </div>
+
                                 <!-- TELEFONO CONTACTO -->
                                 <!--<div class="col-md-1 text-center"></div>-->
                                 <div class="col-md-2 text-center">
@@ -106,6 +107,7 @@
                                            style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control input-sm text-center" id="telefono_contacto" name="telefono_contacto"></input>
                                     <small><p>Teléfono de contacto</p></small>
                                 </div>
+
                                 <!-- ASUNTO -->
                                 <div class="col-md-4 text-center">
                                     <label class="control-label" for="asunto"><i class="color">*  </i>Titulo:</label>
@@ -116,6 +118,7 @@
                                     </div>
                                 </div>
                                 <!--<div class="col-md-1"></div>-->
+
                                 <!-- SELECT TIPO DE ORDEN -->
                                 <div class="col-md-3 text-center">
                                     <label class="control-label" for = "id_tipo"><i class="color">*  </i>Tipo:</label>
@@ -131,14 +134,36 @@
                                         <small><p>Tipo de Solicitud</p></small>
                                     <!--</div>-->
                                 </div>
-                            </div>
-                            <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a href="#">Soporte Técnico</a></li>
-                                <li role="presentation"><a href="#">Desarrollo</a></li>
-                                <li role="presentation"><a href="#">Diseño Gráfico</a></li>
-                            </ul>
-                            <div class="jumbotron">
 
+                                <!-- SELECT DE DEPENDENCIA-->
+                                <div class="col-md-4 text-center">
+                                    <label class="control-label" for = "dependencia_label"><i class="color">*  </i>Dependencia:</label>
+                                    <select class="form-control input-sm select2" id = "dependencia_select" name="dependencia_select">
+                                        <option value=""></option>
+                                        <?php foreach ($dependencia as $ubi): ?>
+                                            <option value = "<?php echo $ubi->id_dependencia ?>"><?php echo $ubi->dependen ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <!-- SELECT DE UBICACION-->
+                                <div class="col-md-4 text-center">
+                                    <label class="control-label" for = "oficina"><i class="color">*  </i>Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
+                                    <select class="form-control input-sm" id = "oficina_select" name="oficina_select">
+                                            <option value="" class="">--SELECCIONE--</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- DESCRIPCION-->
+                                <div class="col-md-12 text-center">
+                                    <label class="control-label " for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
+                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 300);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 300);"
+                                              value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control text-center" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
+                                
+                                    <div class="col-sm-12 col-lg-12 text-right">
+                                        <small><p name="resta" id="resta" size="4">0/300</p></small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="panel-footer text-center">
@@ -241,18 +266,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-6"></div>
-                            <!-- DESCRIPCION-->
-                            <div class="form-group">
-                                <label class="control-label col-lg-2" for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
-                                <div class="col-lg-6">
-                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 300);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 300);"
-                                              value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
-                                </div>
-                                <div col-sm-4 col-lg-2>
-                                    <small><p name="resta" id="resta" size="4">0/300</p></small>
-
-                                </div>
-                            </div>
+                            
                             <!-- IMAGEN-->
                             <div class="form-group">
                                 <div class="col-xs-2"></div>
