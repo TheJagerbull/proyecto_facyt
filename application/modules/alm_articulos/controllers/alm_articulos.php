@@ -464,11 +464,56 @@ class Alm_articulos extends MX_Controller
             // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
             if($this->dec_permiso->has_permission('alm', 6))
             {
-                die(json_encode('success'));
-                die(json_encode('exist'));
-                die(json_encode('error'));
-                print_r($data);
-                die( json_encode($data));
+                // die(json_encode('success'));
+                // die(json_encode('exist'));
+                // die(json_encode('error'));add_articulo
+                // print_r($data);
+                // die( json_encode($data));
+                $articulo = $this->model_alm_articulos->exist(array('cod_articulo' => $data['cod_articulo']));
+                if($articulo)
+                {
+                    // die_pre($articulo, __LINE__, __FILE__);
+                    //en caso que exista, se alteran las cantidades y el estado de actividad
+                    $add = array();
+                    $add['cod_articulo'] = $articulo['cod_articulo'];
+                    if(isset($data['nuevos']) && !empty($data['nuevos']))
+                    {
+                        if($data['nuevos']>0)
+                        {
+                            $add['ACTIVE'] = 1;
+                        }
+                        $add['nuevos'] = $articulo['nuevos'] + $data['nuevos'];
+                    }
+                    else
+                    {
+                        if(isset($data['usados']) && !empty($data['usados']))
+                        {
+                            if($data['usados']>0)
+                            {
+                                $add['ACTIVE'] = 1;
+                            }
+                            $add['usados'] = $articulo['usados'] + $data['usados'];
+                        }
+                        else
+                        {
+                            echo json_encode('error');
+                        }
+                    }
+                    die_pre($add, __LINE__, __FILE__);
+                    if($this->model_alm_articulos->add_articulo($add))
+                    {
+                        //responder que la inserción fue exitosa
+                        echo json_encode('success');
+                    }
+                    else
+                    {
+                        echo json_encode('error');
+                    }
+                }
+                else
+                {
+                    echo json_encode('error');
+                }
                 // if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
                 // {
                 //     // die_pre($_POST, __LINE__, __FILE__);

@@ -2362,12 +2362,13 @@ $(document).ready(function() {
             console.log('good!');
             e.preventDefault();
             e.stopPropagation();
-            panel.hide();
+            // panel.hide();
             //here goes the submit
             insertion.form = ($("#"+form).serializeArray());
             // insertion.form.push($("#"+form).serializeArray());
             // console.log($("#"+form).serializeArray());
             // console.log(insertion);
+                      // pane.show();
             $.ajax({
                 url: "<?php echo base_url() ?>inventario/insertar",
                 type: 'POST',

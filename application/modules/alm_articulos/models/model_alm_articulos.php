@@ -409,14 +409,10 @@ class Model_alm_articulos extends CI_Model
 	    }
         return($this->db->insert_id());
 	}
-	public function add_articulo($articulo)
+	public function add_articulo($articulo)//voy por aquí
 	{
 		die_pre($articulo, __LINE__, __FILE__);
 		$cod['cod_articulo'] = $articulo['cod_articulo'];
-		if(!$this->exist($cod))
-		{
-			$new_articulo = $articulo;
-		}
 		if($articulo['nuevos'])
 		{
 			$cod_historial = $articulo['cod_articulo'].'1'.$this->get_lastHistoryID();
@@ -424,7 +420,7 @@ class Model_alm_articulos extends CI_Model
 	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
 	                    'entrada'=>$articulo['nuevos'],
 	                    'nuevo'=>1,
-	                    'observacion'=>'[insertado por lote, desde archivo de excel]',
+	                    'observacion'=>'usuario : '.$this->session->userdata('user')['id_usuario'].'agregó artículo al sistema',
 	                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 	                    );
 			$link=array(
