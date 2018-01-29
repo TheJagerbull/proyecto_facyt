@@ -269,18 +269,21 @@ $(document).ready(function() {
                     type: 'POST',
                     data: 'uri='+codeigniterPath,
                     success: function(data){
-                        var response = $.parseJSON(data);
-                        // console.log(response.cart);
-                        if(response.cart==='empty')
+                        console.log(typeof data);
+                        if(typeof data !== 'string')
                         {
-                            var head = $('#cartContent .dropdown-head');
-                            var body = $('#cartContent .dropdown-body');
-                            var foot = $('#cartContent .dropdown-foot');
-                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
-                            body.html('<div id="cart" class="alert alert-info well-xs" style="margin-bottom: 0px !important;"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
-                            if(response.permit)
+                            var response = $.parseJSON(data);
+                            if(response.cart==='empty')
                             {
-                                foot.html('<a href="<?php echo base_url() ?>solicitudes/usuario">Ver solicitudes</a>');
+                                var head = $('#cartContent .dropdown-head');
+                                var body = $('#cartContent .dropdown-body');
+                                var foot = $('#cartContent .dropdown-foot');
+                                head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
+                                body.html('<div id="cart" class="alert alert-info well-xs" style="margin-bottom: 0px !important;"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
+                                if(response.permit)
+                                {
+                                    foot.html('<a href="<?php echo base_url() ?>solicitudes/usuario">Ver solicitudes</a>');
+                                }
                             }
                         }
                     },

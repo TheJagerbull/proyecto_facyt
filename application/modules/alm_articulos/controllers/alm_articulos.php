@@ -418,11 +418,7 @@ class Alm_articulos extends MX_Controller
             {
                 if($this->input->post('action'))
                 {
-                    // $aux = array_keys($this->input->post());
                     $aux = $this->input->post('action');
-                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
-                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
-                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
                     $arrayInputs = array();
                     foreach ($this->input->post('form') as $key => $input)
                     {
@@ -446,13 +442,12 @@ class Alm_articulos extends MX_Controller
                             </div>';
                             break;
                     }
-                    // die_pre($this->input->post(null, true), __LINE__, __FILE__);
                 }
             }
             else
             {
                 echo '<div class="alert alert-danger">
-                        No tiene los permisos adecuados para guardar articulos.
+                        No tiene los permisos adecuados para agregar articulos a inventario.
                     </div>';
             }
         }
@@ -572,11 +567,50 @@ class Alm_articulos extends MX_Controller
             // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
             if($this->dec_permiso->has_permission('alm', 6))
             {
-                die(json_encode('success'));
-                die(json_encode('exist'));
-                die(json_encode('error'));
-                print_r($data);
-                die( json_encode($data));
+                // die(json_encode('success'));
+                // die(json_encode('exist'));
+                // die(json_encode('error'));
+                // print_r($data);
+                /*
+                action  new_item
+                form[0][name]   cod_articulo
+                form[0][value]  11151601-MF
+                form[1][name]   descripcion
+                form[1][value]  HEBRA+DE+ALGODÓN+DE+MICROFIBRA
+                form[2][name]   unidad
+                form[2][value]  UNIDAD
+                form[3][name]   cod_ubicacion
+                form[3][value]  
+                form[4][name]   partida_presupuestaria
+                form[4][value]  03428323421
+                */
+                if(!$this->model_alm_articulos->exist(array('cod_articulo' => $data['cod_articulo'])))
+                {
+                    //en caso que no exista, se agrega al sistema
+                    if($this->model_alm_articulos->add_newArticulo($data))
+                    {
+                        if($this->model_alm_articulos->relate_categoria(true))
+                        {
+                            //responder que la inserción fue exitosa
+                            echo json_encode('success');
+                        }
+                        else
+                        {
+                            echo json_encode('error');
+                        }
+                    }
+                    else
+                    {
+                        echo json_encode('error');
+                    }
+                }
+                else
+                {
+                    $resp = array('art' => 'exist');
+                    echo json_encode($resp);
+                    // echo json_encode('exist');
+                }
+                // die( json_encode($data));
             }
             else
             {
@@ -591,7 +625,7 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function agregar_categoria($data)///todavia no
+    public function agregar_categoria($data)///ya funciona
     {
         if($this->session->userdata('user'))
         {
@@ -618,7 +652,8 @@ class Alm_articulos extends MX_Controller
                 }
                 else
                 {
-                    echo json_encode('exist');
+                    $resp = array('cat' => 'exist');
+                    echo json_encode($resp);
                 }
             }
             else

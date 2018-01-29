@@ -304,7 +304,7 @@ $(document).ready(function() {
 										<?php if(!empty($alm[1])):?>
 										<div id="home" class="tab-pane fade in active">
                       <!-- <a class="button" href="http://compras.snc.gob.ve/aplicacion/catalogo/"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</a> -->
-                      <button id="callUN" class="btn btn-info"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
+                      <button class="btn btn-info callUN"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
                       <?php if(!empty($alm[6])):?>
                       <div hidden id="CatFile" class="form-group">
                           <label class="control-label" for="excelCAT">Insertar archivo de Excel con categorias(para usar solo una vez):</label>
@@ -391,8 +391,11 @@ $(document).ready(function() {
                     <div id="add" class="tab-pane fade">
                                     <div class="awidget-body">
                                       <?php if(!empty($alm[6])):?> <!-- agregar articulos de forma individual -->
-                                      <br><br><br>
+                                      <br>
+                                      <button class="btn btn-info callUN"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
+                                      <br><br>
                                       <form id="addArticulos" role="form">
+                                      <label class="control-label" for="addArtcategoria">Categoría del artículo:</label>
                                         <input hidden id="addArtcategoria" class="form-control input-sm" name="categoria" type="text">
                                         <!-- <select hidden id="addArtcategoria" class="form-control input-sm"  name="categoria" tabindex="-1">
                                           <option></option>
@@ -773,13 +776,37 @@ $(document).ready(function() {
         var input = $('#'+x);
         return false;
       }
+      // window.onbeforeunload = function()
+      // {
+      //   // 'usuario/cerrar-session';
+      // }
+      // window.onbeforeunload = function()
+      // {
+      //   console.log('wtf!!!');
+      //   // console.log(event.target);
+      //   log_out();
+      //     //if you return anything but null, it will warn the user.
+      //     //optionally you can return a string which most browsers show to the user as the warning message.
+      //   return true;
+      // }
+      // function log_out()
+      // {
+      //   console.log('log_out');
+      //   window.location = ('usuario/cerrar-session');
+      //   console.log('log_out done!');
+      // }
+        // $(window).bind("beforeunload", function(){
+          // window.location = ('usuario/cerrar-session');
+          // return true;
+        // });
 //////FIN de para validar la justificacion de la tabla de incongruencias
 <?php if(!empty($alm[1])):?>
 ///////Funciones de la pestana de catalogo
       $(function(){
-        $('#callUN').on('click', function(){
+        $('.callUN').on('click', function(){
           var iframe = $("<iframe/>");//construyo un iframe para mostrar la pagina del catalogo de las naciones unidas
-          var link = 'http://compras.snc.gob.ve/aplicacion/catalogo/';
+          // var link = 'http://compras.snc.gob.ve/aplicacion/catalogo/';
+          var link = 'http://200.57.3.89/PyS/catPyS.aspx';
           iframe.attr('src', link);
           iframe.attr("width", "100%");
           iframe.attr("height", "100%");
@@ -2029,7 +2056,7 @@ $(document).ready(function() {
                   input.attr('id', id);
                   input.attr('name', id);
                   input.attr('required', 'required');
-                  input.attr('title', "Debe insertar una descripción usando palabras formales de un lenguaje alejado de la jerga coloquial.");
+                  input.attr('title', "Debe insertar una descripción usando palabras alejadas del lenguaje informal.");
                   input.attr('placeholder', 'Descripción del artículo (revisar términos usados en el catálogo de las naciones unidas)');
                   // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
                   input.attr('style', "overflow:hidden");
@@ -2059,7 +2086,7 @@ $(document).ready(function() {
                   input.attr('required', 'required');
                   // input.attr('pattern', "^("+codigoCat[0]+")[0-9]{2,4}-[A-Z0-9]{1,10}");
                   input.attr('title', "Ejemplo: UNIDAD, CAJA, PAQUETE, BIDÓN, GARRAFA, etc.");
-                  input.attr('placeholder', 'Unidad de medida del artículo para la cantidad que habitualmente se despacha.');
+                  input.attr('placeholder', 'Unidad de medida del artículo, para la cantidad que habitualmente se despacha en las solicitudes internas.');
                   // input.attr('data-errormsg', "* El formato debe ser: código de la categoria, seguido de dos a cuatro números (relacionados con el catalogo de las naciones unidas), un guion (-), y letras y/o numeros relacionados con la descripción.");
                   input.attr('style', "overflow:hidden");
                   input.attr('class', "form-control  form-control-sm");
@@ -2350,7 +2377,7 @@ $(document).ready(function() {
                 data: insertion,
                 success: function (resp) {//HILAZA, HILADO
                   console.log(typeof resp);
-                  console.log(resp);
+                  console.log(resp.art);
                   // var response = $.parseJSON(resp);
                   var response = resp;
                   if(response === "success")
@@ -2364,12 +2391,22 @@ $(document).ready(function() {
                   }
                   else
                   {
-                    if(response === "exist")
+                    if(typeof response === "object")
                     {
-                      swal(
-                        'Ya existe!',
-                        'La categoria ya existe',
-                        'info');
+                      if(response.cat === 'exist')
+                      {
+                        swal(
+                          'Ya existe!',
+                          'La categoria ya existe',
+                          'info');
+                      }
+                      if(response.art === 'exist')
+                      {
+                        swal(
+                              'Ya existe!',
+                              'El código del artículo ya existe',
+                              'info');
+                      }
                     }
                     else
                     {

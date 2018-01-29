@@ -348,16 +348,64 @@ class Model_alm_articulos extends CI_Model
 		$row = $query->row();
 		return($row->ID);
 	}
-	public function add_newArticulo($articulo, $historial)
+	public function add_newArticulo($articulo, $historial='')
 	{
-		die_pre($articulo, __LINE__, __FILE__);
-		$this->db->insert('alm_articulo', $articulo);
-		$this->db->insert('alm_historial_a', $historial);
-		$link=array(
-        'id_historial_a'=>$historial['id_historial_a'],
-        'id_articulo'=> $articulo['cod_articulo']
-        );
-        $this->db->insert('alm_genera_hist_a', $link);
+		// die_pre($articulo, __LINE__, __FILE__);
+		if(!empty($articulo) && !empty($historial))
+		{
+			$this->db->insert('alm_articulo', $articulo);
+    		if($this->db->affected_rows()>0)
+    		{
+				$this->db->insert('alm_historial_a', $historial);
+				$link=array(
+		        'id_historial_a'=>$historial['id_historial_a'],
+		        'id_articulo'=> $articulo['cod_articulo']
+		        );
+		        $this->db->insert('alm_genera_hist_a', $link);
+
+		    }
+		    else
+		    {
+		    	return false;
+		    }
+	    }
+	    else
+	    {
+	    	if(!empty($articulo))
+	    	{
+				// die_pre($articulo, __LINE__, __FILE__);
+	    		$this->db->insert('alm_articulo', $articulo);
+	    		$articuloID = $this->db->insert_id();
+	    		if($this->db->affected_rows()>0)
+	    		{
+	    			$aux = '';
+	    			foreach ($articulo as $key => $value)
+			    	{
+			    		$aux.="|-|'".$key."':".$value;
+			    	}
+	    			$historial= array(
+		    		        'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+		    		        'observacion'=>strtoupper('articulo indexado al sistema')."ID=".$articuloID.$aux,
+		    		        'por_usuario'=>$this->session->userdata('user')['id_usuario']
+		    		        );
+		            $this->db->insert('alm_historial_a', $historial);
+					$link=array(
+					'id_historial_a'=>$historial['id_historial_a'],
+					'id_articulo'=> $articulo['cod_articulo']
+					);
+					$this->db->insert('alm_genera_hist_a', $link);
+					$this->relate_categoria(true);
+	    		}
+	    		else
+	    		{
+	    			return false;
+	    		}
+	    	}
+    		else
+    		{
+    			return false;
+    		}
+	    }
         return($this->db->insert_id());
 	}
 	public function add_articulo($articulo)
@@ -1929,25 +1977,44 @@ class Model_alm_articulos extends CI_Model
     		return FALSE;
     	}
     }
-    public function relate_categoria()//solo para archivo
+    public function relate_categoria($bool='')//solo para archivo//ahora tambien individual
     {
-    	$this->db->select('cod_categoria');
-    	$categorias = $this->db->get('alm_categoria')->result_array();
-    	$this->db->select('cod_articulo');
-    	$articulos = $this->db->get('alm_articulo')->result_array();
-    	
-    	foreach ($categorias as $key => $categoria)
+    	if(!$bool)
     	{
-    		foreach ($articulos as $key2 => $articulo)
-    		{
-    			if(strpos($articulo['cod_articulo'], $categoria['cod_categoria'])=== 0)
-    			{
-    				$this->db->insert('alm_pertenece', array_merge($articulo, $categoria));
-    				// echo 'articulo: '.($articulo['cod_articulo']).'<br>';
-    				// echo 'categoria: '.($categoria['cod_categoria']).'<br>';
-    			}
-    		}
-    	}
+	    	$this->db->select('cod_categoria');
+	    	$categorias = $this->db->get('alm_categoria')->result_array();
+	    	$this->db->select('cod_articulo');
+	    	$articulos = $this->db->get('alm_articulo')->result_array();
+	    	
+	    	foreach ($categorias as $key => $categoria)
+	    	{
+	    		foreach ($articulos as $key2 => $articulo)
+	    		{
+	    			if(strpos($articulo['cod_articulo'], $categoria['cod_categoria'])=== 0)
+	    			{
+	    				$this->db->insert('alm_pertenece', array_merge($articulo, $categoria));
+	    				// echo 'articulo: '.($articulo['cod_articulo']).'<br>';
+	    				// echo 'categoria: '.($categoria['cod_categoria']).'<br>';
+	    			}
+	    		}
+	    	}
+	    }
+	    else
+	    {
+	    	$this->db->select('cod_articulo')->order_by('id','desc')->limit(1);
+	    	$articulo = $this->db->get('alm_articulo')->row_array();
+	    	$cat = substr($articulo['cod_articulo'], 0, 6);
+	    	if(!empty($cat))
+	    	{
+		    	$this->db->select('cod_categoria')->where('cod_categoria', $cat);
+		    	$categoria = $this->db->get('alm_categoria')->row_array();
+		    	if(!empty($categoria))
+		    	{
+		    		$this->db->insert('alm_pertenece', array_merge($articulo, $categoria));
+		    		return($this->db->affected_rows());
+		    	}
+	    	}
+	    }
     }
     public function verify_closure()//esta mal, hay que redefinir el metodo para validar todo
     {
