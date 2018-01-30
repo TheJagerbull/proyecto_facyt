@@ -39,6 +39,7 @@
             maxImageWidth: 512,
             maxImageHeight: 512
         });
+        $("[name='otro']").bootstrapSwitch();
     });
 </script>
 <style type="text/css">
@@ -153,17 +154,53 @@
                                             <option value="" class="">--SELECCIONE--</option>
                                     </select>
                                 </div>
+
+                                <div class="col-md-4 text-center">
+                                    <label class="checkbox-inline"> <!-- se habilita el checkbox cuando el select se deshabilita -->
+                                        <input type="checkbox" name="otro" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
+                                    </label>
+                                    
+                                    <!-- NUEVA UBICACION -->
+
+                                    <input type="text" autocomplete="off" class="form-control input-sm" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">                           
+
+                                </div>
                                 
                                 <!-- DESCRIPCION-->
                                 <div class="col-md-12 text-center">
                                     <label class="control-label " for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
-                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 300);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 300);"
+                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 600);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 600);"
                                               value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control text-center" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                                 
                                     <div class="col-sm-12 col-lg-12 text-right">
-                                        <small><p name="resta" id="resta" size="4">0/300</p></small>
+                                        <small><p name="resta" id="resta" size="4">0/600</p></small>
                                     </div>
                                 </div>
+                                 <!-- IMAGEN-->
+                            <div class="form-group">
+                                <div class="col-xs-2"></div>
+                                <div class="row user-row">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <strong>Añadir imagen</strong><br>
+                                        <span class="text-muted"></span>
+                                    </div>
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
+                                        <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                    </div>
+                                </div>
+                                <div class="row user-infos uno">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><br></div>
+                                        <!--<div class=" col-md-12 col-lg-12">-->
+                                        <!--                                            <label class="control-label col-sm-2">Selecciona una imagen</label>-->
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-6">
+                                            <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
+                                        </div> 
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                         <div class="panel-footer text-center">
