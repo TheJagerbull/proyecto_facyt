@@ -478,6 +478,7 @@ class Alm_articulos extends MX_Controller
                     $add['cod_articulo'] = $articulo['cod_articulo'];
                     if(isset($data['nuevos']) && !empty($data['nuevos']))
                     {
+                        $add['cant'] = $data['nuevos'];
                         if($data['nuevos']>0)
                         {
                             $add['ACTIVE'] = 1;
@@ -488,6 +489,7 @@ class Alm_articulos extends MX_Controller
                     {
                         if(isset($data['usados']) && !empty($data['usados']))
                         {
+                            $add['cant'] = $data['usados'];
                             if($data['usados']>0)
                             {
                                 $add['ACTIVE'] = 1;
@@ -499,7 +501,7 @@ class Alm_articulos extends MX_Controller
                             echo json_encode('error');
                         }
                     }
-                    die_pre($add, __LINE__, __FILE__);
+                    // die_pre($add, __LINE__, __FILE__);
                     if($this->model_alm_articulos->add_articulo($add))
                     {
                         //responder que la inserción fue exitosa
@@ -631,6 +633,7 @@ class Alm_articulos extends MX_Controller
                 */
                 if(!$this->model_alm_articulos->exist(array('cod_articulo' => $data['cod_articulo'])))
                 {
+                    $data['cod_articulonu'] = substr($data['cod_articulo'], 0, strpos($data['cod_articulo'], '-'));
                     //en caso que no exista, se agrega al sistema
                     if($this->model_alm_articulos->add_newArticulo($data))
                     {

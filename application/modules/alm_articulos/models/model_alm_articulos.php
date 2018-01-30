@@ -384,7 +384,7 @@ class Model_alm_articulos extends CI_Model
 			    		$aux.="|-|'".$key."':".$value;
 			    	}
 	    			$historial= array(
-		    		        'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+		    		        'id_historial_a'=>$articuloID.'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
 		    		        'observacion'=>strtoupper('articulo indexado al sistema')."ID=".$articuloID.$aux,
 		    		        'por_usuario'=>$this->session->userdata('user')['id_usuario']
 		    		        );
@@ -409,18 +409,19 @@ class Model_alm_articulos extends CI_Model
 	    }
         return($this->db->insert_id());
 	}
-	public function add_articulo($articulo)//voy por aquí
+	public function add_articulo($articulo)//probando
 	{
-		die_pre($articulo, __LINE__, __FILE__);
+		// echo_pre($articulo, __LINE__, __FILE__);
 		$cod['cod_articulo'] = $articulo['cod_articulo'];
-		if($articulo['nuevos'])
+		$artID = $this->exist($cod)['ID'];
+		if(isset($articulo['nuevos']) && !empty($articulo['nuevos']))
 		{
-			$cod_historial = $articulo['cod_articulo'].'1'.$this->get_lastHistoryID();
+			$cod_historial = $artID.'1'.$this->get_lastHistoryID();
 			$historial= array(
 	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
-	                    'entrada'=>$articulo['nuevos'],
+	                    'entrada'=>$articulo['cant'],
 	                    'nuevo'=>1,
-	                    'observacion'=>'usuario : '.$this->session->userdata('user')['id_usuario'].'agregó artículo al sistema',
+	                    'observacion'=>'usuario: '.$this->session->userdata('user')['id_usuario'].' adicionó artículo al sistema',
 	                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 	                    );
 			$link=array(
@@ -428,14 +429,14 @@ class Model_alm_articulos extends CI_Model
 		        'id_articulo'=> $articulo['cod_articulo']
 		        );
 		}
-		if($articulo['usados'])
+		if(isset($articulo['usados']) && !empty($articulo['usados']))
 		{
-			$cod_historial = $articulo['cod_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
+			$cod_historial = $artID.'0'.$this->model_alm_articulos->get_lastHistoryID();
 			$historial= array(
 	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
-	                    'entrada'=>$articulo['usados'],
+	                    'entrada'=>$articulo['cant'],
 	                    'nuevo'=>0,
-	                    'observacion'=>'[insertado por lote, desde archivo de excel]',
+	                    'observacion'=>'usuario: '.$this->session->userdata('user')['id_usuario'].' adicionó artículo al sistema',
 	                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 	                    );	
 			$link=array(
@@ -443,23 +444,23 @@ class Model_alm_articulos extends CI_Model
 		        'id_articulo'=> $articulo['cod_articulo']
 		        );
 		}
-		// if(!($value['nuevos'] || $value['usados']))//ley de morgan (!$value['nuevos'] && !$value['usados']) para captar los articulos inactivos
-		// {
-		// 	// echo_pre($key.' activo = '.$value['ACTIVE']);
-			
-		// }
-		if(!empty($new_articulo))
-		{
-			$this->db->insert('alm_articulo', $new_articulo);
-		}
-		// $this->db->update('alm_articulo', $articulo, 'cod_articulo');
-		if(!empty($historial))
+		unset($articulo['cant']);
+		// echo_pre($articulo, __LINE__, __FILE__);
+		// echo_pre($historial, __LINE__, __FILE__);
+		// die_pre($link, __LINE__, __FILE__);
+
+		$this->db->where('cod_articulo', $articulo['cod_articulo']);
+		$this->db->update('alm_articulo', $articulo);
+		if($this->db->affected_rows()>0)
 		{
 			$this->db->insert('alm_historial_a', $historial);
 			$this->db->insert('alm_genera_hist_a', $link);
+			return( $this->db->insert_id());
 		}
-		return( $this->db->insert_id());
-		// return(0);
+		else
+		{
+			return false;
+		}
 	}
 //para insertar varios articulos nuevos y existentes// el add_batchArticulos se extinguira
 	public function add_batchArticulos($articulos='')//esta en la capacidad de cargar respectivamente a las tablas que debe tocar en funcion de actividad, o inactividad
@@ -1925,7 +1926,7 @@ class Model_alm_articulos extends CI_Model
     		$this->db->select('ID');
     		$articuloID = $this->db->get_where('alm_articulo', array('cod_artviejo'=>$cod_artviejo))->row_array()['ID'];
     		$historial= array(
-    		        'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+    		        'id_historial_a'=>$articuloID.'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
     		        'observacion'=>strtoupper('modificando articulo por archivo')."ID=".$articuloID.$aux,
     		        'por_usuario'=>$this->session->userdata('user')['id_usuario']
     		        );
