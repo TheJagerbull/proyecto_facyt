@@ -3701,6 +3701,7 @@ class Alm_solicitudes extends MX_Controller
                                                                         $auxModales.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
                                                                     break;
                                                                     case 'aprobado':
+                                                                        $record['fecha_ej'] = $record['TIME'];
                                                                         $auxModales.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
                                                                     break;
                                                                     case 'enviado':
