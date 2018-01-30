@@ -3,26 +3,34 @@
 function die_pre($array = array(), $line='', $file='')
 {
 	//header('Content-Type: text/html; charset=utf-8');
-	echo "<pre>die_pre:<br /><br />";
+	echo "<pre>die_pre:
+	<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
 
-		echo "linea: ".$line."<br />";
-		echo "archivo: ".$file."<br />";
+		echo "linea: ".$line."<br />
+		";
+		echo "archivo: ".$file."<br />
+		";
 	}
-    die(print_r($array, TRUE)."<br /><br />/die_pre</pre>");
+    die(print_r($array, TRUE)."<br /><br />
+    	/die_pre</pre>");
 }
 
 function echo_pre($array = array(), $line='', $file='')
 {
 	//header('Content-Type: text/html; charset=utf-8');
-	echo "<pre>echo_pre:<br /><br />";
+	echo "<pre>echo_pre:
+	<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
-		echo "linea: ".$line."<br />";
-		echo "archivo: ".$file."<br />";
+		echo "linea: ".$line."<br />
+		";
+		echo "archivo: ".$file."<br />
+		";
 	}
-    echo print_r($array, TRUE)."<br /><br />/echo_pre</pre>";
+    echo print_r($array, TRUE)."<br /><br />
+    /echo_pre</pre>";
 }
 
 function current_time()
@@ -166,6 +174,124 @@ function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arregl
 function sortByObservacion($a, $b)
 {
 	return(strcasecmp($a['observacion'], $b['observacion']));
+}
+function readNumber($num, $depth=0)
+{
+    $num = (int)$num;
+    $retval ="";
+    if ($num < 0) // if it's any other negative, just flip it and call again
+    {
+        return "negativo " + readNumber(-$num, 0);
+    }
+    if ($num > 99) // 100 and above
+    {
+        if ($num > 999) // 1000 and higher
+        {
+        	if($num < 2000) $retval.="mil ".readNumber($num%1000, 0);
+        	else
+        	{
+        		// echo $num/1000;
+        		$retval.=readNumber($num/1000, 0)." mil ";
+        	}
+            // $retval .= readNumber($num/1000, $depth+3);
+            // echo $num%1000;
+            // $retval.="mil".readNumber($num%1000, 0);
+        }
+
+        $num %= 1000; // now we just need the last three digits
+        if ($num > 99) // as long as the first digit is not zero
+        {
+        	
+        	if($num >= 900) $retval .= "novecientos ".readNumber($num%100, 2);
+        	else if($num >= 800) $retval .= "ochocientos ".readNumber($num%100, 2);
+        	else if($num >= 700) $retval .= "setescientos ".readNumber($num%100, 2);
+        	else if($num >= 600) $retval .= "seiscientos ".readNumber($num%100, 2);
+        	else if($num >= 500) $retval .= "quinientos ".readNumber($num%100, 2);
+        	else if($num >= 400) $retval .= "cuatrocientos ".readNumber($num%100, 2);
+        	else if($num >= 300) $retval .= "trescientos ".readNumber($num%100, 2);
+        	else if($num >= 200) $retval .= "doscientos ".readNumber($num%100, 2);
+        	else if($num > 100) $retval .= "ciento ".readNumber($num%100, 2);
+        	else if($num == 100) $retval .= "cien";
+        	// {
+        		// $retval.=readNumber($num/100, 0)."ciento";
+        	// }
+            // $retval .= readNumber($num/100, 2)." cien\n";
+            // $retval .= "ciento".readNumber($num%100, 2);
+        }
+        // $retval .=readNumber($num%100, 1); // our last two digits                       
+    }
+    else // from 0 to 99
+    {
+        $mod = floor($num / 10);
+        if ($mod == 0) // ones place
+        {
+            if ($num == 1) $retval.="uno";
+            else if ($num == 2) $retval.="dos";
+            else if ($num == 3) $retval.="tres";
+            else if ($num == 4) $retval.="cuatro";
+            else if ($num == 5) $retval.="cinco";
+            else if ($num == 6) $retval.="seis";
+            else if ($num == 7) $retval.="siete";
+            else if ($num == 8) $retval.="ocho";
+            else if ($num == 9) $retval.="nueve";
+        }
+        else if ($mod == 1) // if there's a one in the ten's place
+        {
+            if ($num == 10) $retval.="diez";
+            else if ($num == 11) $retval.="once";
+            else if ($num == 12) $retval.="doce";
+            else if ($num == 13) $retval.="trece";
+            else if ($num == 14) $retval.="catorce";
+            else if ($num == 15) $retval.="quince";
+            else if ($num == 16) $retval.="dieciséis";
+            else if ($num == 17) $retval.="diecisiete";
+            else if ($num == 18) $retval.="dieciocho";
+            else if ($num == 19) $retval.="diecinueve";
+        }
+        else // if there's a different number in the ten's place
+        {
+            if ($mod == 2)
+            {
+            	if ($num == 20) $retval.="veinte";
+            	else if ($num == 21) $retval.="veintiuno";
+            	else if ($num == 22) $retval.="veintidos";
+            	else if ($num == 23) $retval.="veintitrés";
+            	else if ($num == 24) $retval.="veinticuatro";
+            	else if ($num == 25) $retval.="veinticinco";
+            	else if ($num == 26) $retval.="veintiséis";
+            	else if ($num == 27) $retval.="veintisiete";
+            	else if ($num == 28) $retval.="veintiocho";
+            	else if ($num == 29) $retval.="veintinueve";
+            }
+            else
+            { 
+            	if ($mod == 3) $retval.="treinta ";
+	            else if ($mod == 4) $retval.="cuarenta ";
+	            else if ($mod == 5) $retval.="cincuenta ";
+	            else if ($mod == 6) $retval.="sesenta ";
+	            else if ($mod == 7) $retval.="setenta ";
+	            else if ($mod == 8) $retval.="ochenta ";
+	            else if ($mod == 9) $retval.="noventa ";
+	            if (($num % 10) != 0)
+	            {
+	                $retval = rtrim($retval); //get rid of space at end
+	                $retval .= " y ";
+	            }
+	            $retval.=readNumber($num % 10, 0);
+	        }
+        }
+    }
+
+    if ($num != 0)
+    {
+        if ($depth == 3)
+            $retval.=" mil\n";
+        else if ($depth == 6)
+            $retval.=" millón\n";
+        if ($depth == 9)
+            $retval.=" billón\n";
+    }
+    return $retval;
 }
 
 //Para revisar el contenido json de las transacciones de javascript

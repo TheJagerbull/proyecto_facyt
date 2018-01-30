@@ -21,7 +21,7 @@ Class Dec_permiso extends MX_Controller{
     public function load_vista() {
         if($this->session->userdata('user'))
         {
-            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $header['title'] = 'Asignación de Permisos de Usuarios';
             $this->load->view('template/header', $header);
             $this->load->view('dec_permiso/view_dec_permiso');
             $this->load->view('template/footer');
@@ -445,7 +445,7 @@ Class Dec_permiso extends MX_Controller{
             $view['id'] = $id;
             $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
             $header = $this->load_permissionsView();
-            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $header['title'] = 'Asignación de Permisos de Usuarios';
             $this->load->view('template/header', $header);
             $this->load->view('dec_permiso/asignar_permisos',$view);
             $this->load->view('template/footer');
@@ -456,7 +456,7 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
-    public function listUserByPermission($modulo='', $funcion='')
+    public function UserByPermission($modulo='', $funcion='')//dado un permiso, muestra a los usuarios que lo poseen
     {
         if($this->session->userdata('user'))
         {

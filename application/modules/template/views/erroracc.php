@@ -82,7 +82,7 @@
                            <div class="awidget-body">
                               <!-- Page title -->
                               <div class="page-title text-center">
-                                 <h2>404<span class="color">!!!</span></h2>
+                                 <h2>401<span class="color">!!!</span></h2>
                                  <hr />
                               </div>
                               <!-- Page title -->

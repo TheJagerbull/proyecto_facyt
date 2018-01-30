@@ -25,24 +25,110 @@ class Alm_articulos extends MX_Controller
     ////////seccion de banderas para filtrado de permisos sobre inventario
                 $view = $this->dec_permiso->parse_permission('', 'alm');
     ////////fin de seccion de banderas para filtrado de permisos sobre inventario
-                $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+                // $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
     //fecha temporal del ultimo reporte generado
                 $this->load->helper('date');
                 $datestring = "%d-%m-%Y";
-                $time = $this->model_alm_articulos->ult_cierre();
+                // $time = $this->model_alm_articulos->ult_cierre();
                  // = $aux['time'];
                 // die_pre($aux['pastYear'], __LINE__, __FILE__);
-                $view['cierres'] = $this->model_alm_articulos->todos_cierres();
-                $view['fecha_ultReporte'] = mdate($datestring, $time);
+                // $view['cierres'] = $this->model_alm_articulos->todos_cierres();
+                // $view['fecha_ultReporte'] = mdate($datestring, $time);
     //fecha temporal del ultimo reporte generado
                 $header = $this->dec_permiso->load_permissionsView();
                 $header['title'] = 'Articulos';
                 // echo_pre($view['alm'], __LINE__, __FILE__);
-    			$this->load->view('template/header', $header);
+    // declaracion de biblioteca de estilos para la vista
+                $header['link'] = '<!-- Bootstrap CSS -->
+                <link href="'.base_url().'assets/css/bootstrap.min.css" rel="stylesheet">
+                <link href="'.base_url().'assets/css/dataTables.bootstrap.css" rel="stylesheet">
+                <link href="'.base_url().'assets/css/responsive.bootstrap.css" rel="stylesheet">
+                <link href="'.base_url().'assets/css/buttons.bootstrap.min.css" rel="stylesheet">
+                <link href= "'.base_url().'assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
+                <!-- Bootstrap selectpicker -->
+                <!-- Select2 CSS -->
+                <link href= "'.base_url().'assets/css/select2.css" rel="stylesheet"/>
+                <link href="'.base_url().'assets/css/bootstrap-select.css" rel="stylesheet">
+                <link href= "'.base_url().'assets/css/select2-bootstrap.css" rel="stylesheet"/>
+                <!-- Sweet-alert 2 css -->
+                <link href="'.base_url().'assets/css/sweet-alert.css" rel="stylesheet">
+                <!-- Modal by jcparra css -->
+                <link href="'.base_url().'assets/css/modal.css" rel="stylesheet">
+                <!-- Animate css -->
+                <link href="'.base_url().'assets/css/animate.min.css" rel="stylesheet">
+                <!-- jQuery UI -->
+                <link href="'.base_url().'assets/css/jquery-ui.css" rel="stylesheet">
+                <!-- prettyPhoto -->
+                <link href="'.base_url().'assets/css/prettyPhoto.css" rel="stylesheet">
+                <!-- Font awesome CSS -->
+                <link href="'.base_url().'assets/css/font-awesome.min.css" rel="stylesheet">
+                <!--DateRangePicker -->
+                <link href="'.base_url().'assets/css/daterangepicker-bs3.css" rel="stylesheet">
+                <!-- FileInput -->
+                <link href= "'.base_url().'assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+                <!-- Custom CSS -->
+                <link href="'.base_url().'assets/css/style.css" rel="stylesheet">
+                <link rel="stylesheet" type="text/css" href="'.base_url().'assets/css/sweetalert2.min.css">
+                ';
+    // Fin de declaracion de biblioteca de estilos para la vista
+    // declaracion de biblioteca de scripts de javascripts
+                $footer['script'] = '<script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                <!-- jQuery -->
+                <script src="'.base_url().'assets/js/jquery-1.11.3.js"></script>      
+                <!-- Bootstrap JS -->
+                <script src="'.base_url().'assets/js/bootstrap.min.js"></script>
+                <!-- jQuery UI -->
+                <script src="'.base_url().'assets/js/jquery-ui.js"></script>      
+                <!--File input-->
+                <script src="'.base_url().'assets/js/fileinput.min.js" type="text/javascript"></script>
+                <script src="'.base_url().'assets/js/fileinput_locale_es.js" type="text/javascript"></script>
+                <script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                <!-- DataTables -->
+                <script src="'.base_url().'assets/js/jquery.dataTables.min.js"></script>
+                <script src="'.base_url().'assets/js/dataTables.responsive.js"></script>
+                <script src="'.base_url().'assets/js/dataTables.buttons.min.js"></script>
+                <script src="'.base_url().'assets/js/dataTables.select.min.js"></script>
+                <script src="'.base_url().'assets/js/dataTables_altEditor.js"></script>
+                <!-- Bootstrap DataTables -->
+                <script src="'.base_url().'assets/js/dataTables.bootstrap.js"></script>
+                <script src="'.base_url().'assets/js/responsive.bootstrap.js"></script>
+                <script src="'.base_url().'assets/js/buttons.bootstrap.min.js"></script>
+                <script src="'.base_url().'assets/js/buttons.html5.min.js"></script>
+                <!-- prettyPhoto -->
+                <script src="'.base_url().'assets/js/jquery.prettyPhoto.js"></script>
+                <!-- Select2 JS -->
+                <script src="'.base_url().'assets/js/select2.js"></script>
+                <!-- CLEditor -->
+                <script src="'.base_url().'assets/js/jquery.cleditor.min.js"></script> 
+                <!-- Bootstrap select js -->
+                <script src="'.base_url().'assets/js/bootstrap-select.min.js"></script>
+                <!-- Date and Time picker -->
+                <script src="'.base_url().'assets/js/bootstrap-datetimepicker.min.js"></script>
+                <script src="'.base_url().'assets/js/moment.js"></script>
+                <script src="'.base_url().'assets/js/daterangepicker.js"></script>      
+                <!-- Respond JS for IE8 -->
+                <script src="'.base_url().'assets/js/respond.min.js"></script>
+                <!-- HTML5 Support for IE -->
+                <script src="'.base_url().'assets/js/html5shiv.js"></script>
+                <!-- js de principal -->
+                <script src="'.base_url().'assets/js/alm/articulos/principal.js"></script>
+                <script src="'.base_url().'assets/js/allviews.js"></script>
+                      ';
+
+    // habilita el input de archivo para el reporte de articulos fisicos, que se muestra en la interfaz del cierre
+                // $view['RepInvFisico'] = $this->deploy_InvFisico();//habilita el input si hay algun articulo "por revisar" en la tabla reporte
+                $view['RepInvFisico'] = $this->model_alm_articulos->get_latestClosure();//habilita y revisa que parte del proceso de cierre de inventario lleva realizado (en caso de interrupcion inesperada del proceso)
+                // die_pre($view['RepInvFisico']);
+    // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
+                // echo_pre($this->session->all_userdata());
+    // Fin de declaracion de biblioteca de scripts de javascripts
+                $this->load->view('template/header', $header);
+    			// $this->load->view('template/header');
                 $this->load->view('principal', $view);
                 // $this->load->view('reportes', $view);
                 // $this->load->view('reportes3', $view);
-                $this->load->view('template/footer');
+                $this->load->view('template/footer', $footer);
+                // $this->load->view('template/footer');
             }
             else
             {
@@ -57,109 +143,573 @@ class Alm_articulos extends MX_Controller
         }
     }
 
-    public function insertar_articulo()
+    public function incongruencias_inv_reportado()//$this->dec_permiso->has_permission('alm', 8)
     {
-        // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
-        if($this->dec_permiso->has_permission('alm', 6))
+        if($this->session->userdata('user') && ($this->input->post('link') && $this->input->post('link')=='inventario'))
         {
-            if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
+            // die_pre($this->input->get('link'));
+            // $this->load->view('cierre/revision', $view);
+            echo $this->load->view('modal_incongruencias', '', TRUE);
+
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function tabla_incongruencias()//datatable de incongurencias
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            if($this->input->post())
             {
-                // die_pre($_POST, __LINE__, __FILE__);
-                $post=$_POST;
-                //carga para alm_articulos
-                $aux['cod_articulo'] = $post['cod_articulo'];
-                $new = !$this->model_alm_articulos->exist_articulo($aux);
-                if($new)
+                if($this->input->post('action')=='editRow')
                 {
-                    $articulo= array(
-                        'cod_articulo'=>$post['cod_articulo'],
-                        'unidad'=>$post['unidad'],
-                        'descripcion'=>strtoupper($post['descripcion']),
-                        'ACTIVE'=>1,
-                        'peso_kg'=>$post['peso_kg'],
-                        'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
-                        );
-                    if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                    $row = $this->input->post('raw')['data']['0'];
+                    // die_pre($row, __LINE__, __FILE__);
+                    $articuloID = $row['ID'];
+                    $justification = $row['justificacion'];
+                    // echo_pre($justification, __LINE__, __FILE__);
+                    if($justification)
                     {
-                        $articulo['imagen']= $post['imagen'];
-                    }
-
-                    if($post['nuevo'])
-                    {
-                        $articulo['nuevos'] = $post['cantidad'];
+                        if($this->model_alm_articulos->update_justificarItem($articuloID, $justification))
+                        {
+                            echo json_encode("true");
+                        }
+                        else
+                        {
+                            echo json_encode("unchanged");
+                        }
                     }
                     else
                     {
-                        $articulo['usados'] = $post['cantidad'];
+                        echo json_encode("false");
                     }
                 }
-                else
-                {
-                    $articulo = array(
-                        'cod_articulo' => $post['cod_articulo'],
-                        'ACTIVE'=>1
-                        );
-                    $exist=$this->model_alm_articulos->get_existencia($post['cod_articulo']);
+            }
+            else
+            {
 
-                    if($post['nuevo'])
-                    {
-                        $articulo['nuevos'] = $exist['nuevos']+$post['cantidad'];
-                    }
-                    else
-                    {
-                        $articulo['usados'] = $exist['usados']+$post['cantidad'];
-                    }
-                }
-                // die_pre($articulo, __LINE__, __FILE__);
-                $historial= array(
-                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
-                    'entrada'=>$post['cantidad'],
-                    'nuevo'=>$post['nuevo'],
-                    'observacion'=>strtoupper($post['observacion']),
-                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
-                    );
-                if($new)
-                {
-                    $success = $this->model_alm_articulos->add_newArticulo($articulo, $historial);
-                }
-                else
-                {
-                    $success = $this->model_alm_articulos->update_articulo($articulo, $historial);
-                }
-                if($success)
-                {
-                    echo '<div class="alert alert-success">
-                            El articulo fue agregado exitosamente.
-                        </div>';
-                }
-                else
-                {
-                    echo '<div class="alert alert-danger">
-                            Ocurri&oacute; un problema al insertar el articulo.
-                        </div>';
-                }
+                $table = $this->model_alm_articulos->get_reportedTable();
+                echo json_encode($table);
             }
         }
         else
         {
-            echo '<div class="alert alert-danger">
-                    No tiene los permisos adecuados para guardar articulos.
-                </div>';
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
     }
-    public function actualizar_articulo()
-    {
-
-    }
-
-
-    public function categoria_articulo()///todavia no
+    public function deploy_InvFisico()//postulado para retirar del sistema
     {
         if($this->session->userdata('user'))
         {
-            $this->load->view('template/header');
-            echo "evil, rule through the crazy";
-            $this->load->view('template/footer');
+            $aux = $this->model_alm_articulos->get_UnfinishedReporte();
+            if($aux)
+            {
+                return($aux);
+            }
+            else
+            {
+                return(false);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function enable_closure()//para habilitar cierre de inventario
+    {
+        if($this->session->userdata('user') && $this->hasPermissionClassA())
+        {
+            if(!$this->model_alm_articulos->closure_isStarted())
+            {
+                $this->model_alm_articulos->insert_closure();
+                echo json_encode(array('msg'=>"closure enabled"));
+            }
+            else
+            {
+                echo json_encode(array('msg'=>"closure allready enabled"));
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function inventory_closure()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            $this->backup_Inventory();
+            $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
+            // $this->pdf_ActaDeCierre();//(hace la llamada desde otro metodo del lado del cliente)
+            // $this->validar_reporte();//aqui termina(hace la llamada dentro de la creacion del pdf)
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function validar_reporte()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            if($this->model_alm_articulos->closure_isStarted()=='ACTAS')
+            {
+                $this->model_alm_articulos->close_reporte();
+            }
+            if($this->model_alm_articulos->closure_isStarted()=='CLOSEREP')
+            {
+                $this->model_alm_articulos->update_closure('COMPLETED');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function backup_Inventory()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            if($this->model_alm_articulos->closure_isStarted() == 'REPORTED')
+            {
+                // echo json_encode($this->model_alm_articulos->makeSQLBackup());
+                $this->model_alm_articulos->makeSQLBackup();
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function adjustRegister_Inventory()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            if($this->model_alm_articulos->closure_isStarted() == 'BACKUP')
+            {
+                // die_pre('HERE!', __LINE__, __FILE__);
+                $this->model_alm_articulos->insert_stockAdjustment();
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function print_closureReport()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            echo json_encode();
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function ajax_segmento()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // if($this->input->post())
+                // {
+                //     die(json_encode($this->input->post()));
+                    echo json_encode($this->model_alm_articulos->get_segmento($this->input->post()));
+                // }
+                // else
+                // {
+                //     die(json_encode($this->model_alm_articulos->get_segmento()));
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function ajax_familia()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // if($this->input->post())
+                // {
+                //     die(json_encode($this->input->post()));
+                    echo json_encode($this->model_alm_articulos->get_familia($this->input->post()));
+                // }
+                // else
+                // {
+                //     die(json_encode($this->model_alm_articulos->get_familia()));
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function ajax_categoria()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // if($this->input->post())
+                // {
+                //     die(json_encode($this->input->post()));
+                    echo json_encode($this->model_alm_articulos->get_categoria($this->input->post()));
+                // }
+                // else
+                // {
+                //     die(json_encode($this->model_alm_articulos->get_categoria()));
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function insertar_inventario()
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                if($this->input->post('action'))
+                {
+                    $aux = $this->input->post('action');
+                    $arrayInputs = array();
+                    foreach ($this->input->post('form') as $key => $input)
+                    {
+                        $arrayInputs[$input['name']] = $input['value'];
+                    }
+                    switch ($aux)
+                    {
+                        case 'new_categoria':
+                            $this->agregar_categoria($arrayInputs);
+                            break;
+                        case 'new_item':
+                            $this->agregar_articulo($arrayInputs);
+                            break;
+                        case 'add_item':
+                            $this->insertar_articulo($arrayInputs);
+                            break;
+                        
+                        default:
+                            echo '<div class="alert alert-danger">
+                                Error al realizar operación.
+                            </div>';
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para agregar articulos a inventario.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function insertar_articulo($data)//poraqui
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // die(json_encode('success'));
+                // die(json_encode('exist'));
+                // die(json_encode('error'));add_articulo
+                // print_r($data);
+                // die( json_encode($data));
+                $articulo = $this->model_alm_articulos->exist(array('cod_articulo' => $data['cod_articulo']));
+                if($articulo)
+                {
+                    // die_pre($articulo, __LINE__, __FILE__);
+                    //en caso que exista, se alteran las cantidades y el estado de actividad
+                    $add = array();
+                    $add['cod_articulo'] = $articulo['cod_articulo'];
+                    if(isset($data['nuevos']) && !empty($data['nuevos']))
+                    {
+                        $add['cant'] = $data['nuevos'];
+                        if($data['nuevos']>0)
+                        {
+                            $add['ACTIVE'] = 1;
+                        }
+                        $add['nuevos'] = $articulo['nuevos'] + $data['nuevos'];
+                    }
+                    else
+                    {
+                        if(isset($data['usados']) && !empty($data['usados']))
+                        {
+                            $add['cant'] = $data['usados'];
+                            if($data['usados']>0)
+                            {
+                                $add['ACTIVE'] = 1;
+                            }
+                            $add['usados'] = $articulo['usados'] + $data['usados'];
+                        }
+                        else
+                        {
+                            echo json_encode('error');
+                        }
+                    }
+                    // die_pre($add, __LINE__, __FILE__);
+                    if($this->model_alm_articulos->add_articulo($add))
+                    {
+                        //responder que la inserción fue exitosa
+                        echo json_encode('success');
+                    }
+                    else
+                    {
+                        echo json_encode('error');
+                    }
+                }
+                else
+                {
+                    echo json_encode('error');
+                }
+                // if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
+                // {
+                //     // die_pre($_POST, __LINE__, __FILE__);
+                //     $post=$_POST;
+                //     //carga para alm_articulos
+                //     $aux['cod_articulo'] = $post['cod_articulo'];
+                //     $new = !$this->model_alm_articulos->exist_articulo($aux);
+                //     if($new)
+                //     {
+                //         $articulo= array(
+                //             'cod_articulo'=>$post['cod_articulo'],
+                //             'unidad'=>$post['unidad'],
+                //             'descripcion'=>strtoupper($post['descripcion']),
+                //             'ACTIVE'=>1,
+                //             'peso_kg'=>$post['peso_kg'],
+                //             'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
+                //             );
+                //         if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                //         {
+                //             $articulo['imagen']= $post['imagen'];
+                //         }
+
+                //         if($post['nuevo'])
+                //         {
+                //             $articulo['nuevos'] = $post['cantidad'];
+                //         }
+                //         else
+                //         {
+                //             $articulo['usados'] = $post['cantidad'];
+                //         }
+                //     }
+                //     else
+                //     {
+                //         $articulo = array(
+                //             'cod_articulo' => $post['cod_articulo'],
+                //             'ACTIVE'=>1
+                //             );
+                //         $exist=$this->model_alm_articulos->get_existencia($post['cod_articulo']);
+
+                //         if($post['nuevo'])
+                //         {
+                //             $articulo['nuevos'] = $exist['nuevos']+$post['cantidad'];
+                //         }
+                //         else
+                //         {
+                //             $articulo['usados'] = $exist['usados']+$post['cantidad'];
+                //         }
+                //     }
+                //     // die_pre($articulo, __LINE__, __FILE__);
+                //     $historial= array(
+                //         'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                //         'entrada'=>$post['cantidad'],
+                //         'nuevo'=>$post['nuevo'],
+                //         'observacion'=>strtoupper($post['observacion']),
+                //         'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                //         );
+                //     if($new)
+                //     {
+                //         $success = $this->model_alm_articulos->add_newArticulo($articulo, $historial);
+                //     }
+                //     else
+                //     {
+                //         $success = $this->model_alm_articulos->update_articulo($articulo, $historial);
+                //     }
+                //     if($success)
+                //     {
+                //         echo '<div class="alert alert-success">
+                //                 El articulo fue agregado exitosamente.
+                //             </div>';
+                //     }
+                //     else
+                //     {
+                //         echo '<div class="alert alert-danger">
+                //                 Ocurri&oacute; un problema al insertar el articulo.
+                //             </div>';
+                //     }
+                // }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function agregar_articulo($data)//listo
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // die(json_encode('success'));
+                // die(json_encode('exist'));
+                // die(json_encode('error'));
+                // print_r($data);
+                /*
+                action  new_item
+                form[0][name]   cod_articulo
+                form[0][value]  11151601-MF
+                form[1][name]   descripcion
+                form[1][value]  HEBRA+DE+ALGODÓN+DE+MICROFIBRA
+                form[2][name]   unidad
+                form[2][value]  UNIDAD
+                form[3][name]   cod_ubicacion
+                form[3][value]  
+                form[4][name]   partida_presupuestaria
+                form[4][value]  03428323421
+                */
+                if(!$this->model_alm_articulos->exist(array('cod_articulo' => $data['cod_articulo'])))
+                {
+                    $data['cod_articulonu'] = substr($data['cod_articulo'], 0, strpos($data['cod_articulo'], '-'));
+                    //en caso que no exista, se agrega al sistema
+                    if($this->model_alm_articulos->add_newArticulo($data))
+                    {
+                        if($this->model_alm_articulos->relate_categoria(true))
+                        {
+                            //responder que la inserción fue exitosa
+                            echo json_encode('success');
+                        }
+                        else
+                        {
+                            echo json_encode('error');
+                        }
+                    }
+                    else
+                    {
+                        echo json_encode('error');
+                    }
+                }
+                else
+                {
+                    $resp = array('art' => 'exist');
+                    echo json_encode($resp);
+                    // echo json_encode('exist');
+                }
+                // die( json_encode($data));
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function agregar_categoria($data)///ya funciona
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                // print_r($data);
+                // die(json_encode('success'));
+                // die(json_encode('exist'));
+                // die(json_encode('error'));
+                //preguntar si existe la categoria
+                if(!$this->model_alm_articulos->get_categoria($data['cod_categoria']))
+                {
+                    //en caso que no exista, se agrega al sistema
+                    if($this->model_alm_articulos->insert_categoria($data))
+                    {
+                        //responder que la inserción fue exitosa
+                        echo json_encode('success');
+                    }
+                    else
+                    {
+                        echo json_encode('error');
+                    }
+                }
+                else
+                {
+                    $resp = array('cat' => 'exist');
+                    echo json_encode($resp);
+                }
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">
+                        No tiene los permisos adecuados para guardar articulos.
+                    </div>';
+            }
         }
         else
         {
@@ -170,7 +720,15 @@ class Alm_articulos extends MX_Controller
 
     public function get_artCount()
     {
-        return $this->model_alm_articulos->count_articulos();
+        if($this->session->userdata('user'))
+        {
+            return $this->model_alm_articulos->count_articulos();
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
     public function listar_articulos()
     {
@@ -190,425 +748,295 @@ class Alm_articulos extends MX_Controller
 
     public function buscar_articulos($field='',$order='', $per_page='', $offset='')
     {
-        if($this->session->userdata('query'))
+        if($this->session->userdata('user'))
         {
-            //
-            if($this->session->userdata('query')=='' ||$this->session->userdata('query')==' ')
+            if($this->session->userdata('query'))
             {
-                $this->session->unset_userdata('query');
+                //
+                if($this->session->userdata('query')=='' ||$this->session->userdata('query')==' ')
+                {
+                    $this->session->unset_userdata('query');
+                    
+                    redirect(base_url().'solicitud/inventario');
+                }
                 
-                redirect(base_url().'solicitud/inventario');
+                $header['title'] = 'Buscar articulos';
+                return($this->model_alm_articulos->find_articulo($this->session->userdata('query'), $field, $order, $per_page, $offset));
+                
             }
-            
-            $header['title'] = 'Buscar articulos';
-            return($this->model_alm_articulos->find_articulo($this->session->userdata('query'), $field, $order, $per_page, $offset));
-            
+            else
+            {
+                redirect('/solicitud/inventario');
+            }
         }
         else
         {
-            redirect('/solicitud/inventario');
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
     }
 
     public function ajax_likeArticulos()
     {
-        // error_log("Hello", 0);
-        $articulo = $this->input->post('articulos');
-        header('Content-type: application/json');
-        $query = $this->model_alm_articulos->ajax_likeArticulos($articulo);
-        $query = objectSQL_to_array($query);
-        echo json_encode($query);
+        if($this->session->userdata('user'))
+        {
+            // error_log("Hello", 0);
+            $articulo = $this->input->post('articulos');
+            header('Content-type: application/json');
+            $query = $this->model_alm_articulos->ajax_likeArticulos($articulo);
+            $query = objectSQL_to_array($query);
+            echo json_encode($query);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
 
     public function getSystemWideTable($active='')
     {
-        /* Array of database columns which should be read and sent back to DataTables. Use a space where
-         * you want to insert a non-database field (for example a counter or static image)
-         */
-        $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-        
-        // DB table to use
-        $sTable = 'alm_articulo';
-        //
-    
-        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
-        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
-        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
-        $iSortingCols = $this->input->get_post('iSortingCols', true);
-        $sSearch = $this->input->get_post('sSearch', true);
-        $sEcho = $this->input->get_post('sEcho', true);
-    
-        // Paging
-        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        if($this->session->userdata('user'))
         {
-            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
-        }
+            /* Array of database columns which should be read and sent back to DataTables. Use a space where
+             * you want to insert a non-database field (for example a counter or static image)
+             */
+            $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
+            
+            // DB table to use
+            $sTable = 'alm_articulo';
+            //
         
-        // Ordering
-        if(isset($iSortCol_0))
-        {
-            for($i=0; $i<intval($iSortingCols); $i++)
+            // die_pre($this->input->get_post(NULL, true));
+            $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+            $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+            $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+            $iSortingCols = $this->input->get_post('iSortingCols', true);
+            $sSearch = $this->input->get_post('sSearch', true);
+            $sEcho = $this->input->get_post('sEcho', true);
+        
+            // Paging
+            if(isset($iDisplayStart) && $iDisplayLength != '-1')
             {
-                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
-                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
-                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
-    
-                if($bSortable == 'true')
-                {
-                    $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
-                }
+                $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
             }
-        }
-        
-        /* 
-         * Filtering
-         * NOTE this does not match the built-in DataTables filtering which does it
-         * word by word on any field. It's possible to do here, but concerned about efficiency
-         * on very large tables, and MySQL's regex functionality is very limited
-         */
-        if(isset($sSearch) && !empty($sSearch))
-        {
-            for($i=0; $i<count($aColumns); $i++)
+            
+            // Ordering
+            if(isset($iSortCol_0))
             {
-                if($i!=0 && $i!=3 && $i!=5)//para no buscar en la columna exist y disp (arroja error si no la filtro)
-                {
-                    $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-                    
-                    // Individual column filtering
-                    if(isset($bSearchable) && $bSearchable == 'true')
-                    {
-                        $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
-                    }
-                }
-            }
-        }
-        
-        // Select Data
-        // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
-        // if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
-        // {
-        //     $this->db->where('ACTIVE', 1);
-        // }
-        $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
-        $rResult = $this->db->get($sTable);
-    
-        // Data set length after filtering
-        $this->db->select('FOUND_ROWS() AS found_rows');
-        $iFilteredTotal = $this->db->get()->row()->found_rows;
-    
-        // Total data set length
-        $iTotal = $this->db->count_all($sTable);
-    
-        // Output
-        $output = array(
-            'sEcho' => intval($sEcho),
-            'iTotalRecords' => $iTotal,
-            'iTotalDisplayRecords' => $iFilteredTotal,
-            'aaData' => array()
-        );
-        $i=1+$iDisplayStart;
-        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
-        {
-            $row = array();
-            $articulo['cod_articulo']=$aRow['cod_articulo'];
-            $hist = $this->model_alm_articulos->get_ArtHistory($articulo);
-            // foreach($aColumns as $col)
-            // {
-            //     $row[] = $aRow[$col];
-            // }
-            $row[]= $i;//primera columna
-            $i++;
-            $row[]= $aRow['cod_articulo'];//segunda columna
-            $row[]= $aRow['descripcion'];//tercera columna
-            $row[]= $aRow['exist'];//cuarta columna
-            $row[]= $aRow['reserv'];//quinta columna
-            // $row[]= $aRow['disp'];//sexta columna
-            // $row[]= 'nuevos: '.$aRow['nuevos'].' usados: '.$aRow['usados']; //sexta columna
-            $row[]= $aRow['nuevos'];//sexta columna
-            $row[]= $aRow['usados'];//septima columna
-            $row[]= $aRow['stock_min'];//octava columna
-            $aux = '<div id="art'.$aRow['cod_articulo'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>c&oacute;digo del articulo: 
-                                                 '.$aRow['cod_articulo'].'
-                                            </label></h4>
-                                            <h4><label>Historial del Articulo</label></h4>
-                                            <table id="hist_art'.$aRow['cod_articulo'].'" class="table" style="width:100%">
-                                                ';
-                                                $aux.='<thead>
-                                                                <tr>
-                                                                    <th><strong>Fecha de movimiento</strong></th>
-                                                                    <th><strong>Movimiento</strong></th>
-                                                                    <th><strong>Cantidad</strong></th>
-                                                                    <th><strong>Estado de articulo</strong></th>
-                                                                    <th><strong>Observacion</strong></th>';
-                                                $aux.='</thead>
-                                                <tbody>';
-                                                    // foreach ($hist as $key => $line)
-                                                    // {
-                                                    //     $aux.='<tr>
-                                                    //             <td>'.$line['TIME'].'</td>';
-                                                    //     if($line['entrada']!=0)
-                                                    //     {
-                                                    //         $aux.='<td>Entrada a inventario</td>
-                                                    //         <td>'.$line['entrada'].'</td>';
-                                                    //     }
-                                                    //     else
-                                                    //     {
-                                                    //         $aux.='<td>Salida de inventario</td>
-                                                    //         <td>'.$line['salida'].'</td>';
-                                                    //     }
-                                                    //     if($line['nuevo'])
-                                                    //     {
-                                                    //         $aux.='<td>Nuevo</td>';
-                                                    //     }
-                                                    //     else
-                                                    //     {
-                                                    //         $aux.='<td>Usado</td>';
-                                                    //     }
-                                                    //     $aux.='<td>'.$line['observacion'].'</td>';
-                                                    // }
-                                                    $aux=$aux.'</tbody>
-                                            </table>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
-            $row[]='<a href="#art'.$aRow['cod_articulo'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
-            $row['DT_RowId']='row_'.$aRow['cod_articulo'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
-            $output['aaData'][] = $row;
-        }
-    
-        echo json_encode($output);
-    }
-
-    public function getArticulosHist($cod_articulo)//hace compania al modal en la linea 320 de este archivo
-    {
-        //columnas en tabla: fecha de movimiento, movimiento, cantidad, estado del articulo y observacion
-        $aColumns = array('alm_genera_hist_a.TIME', 'nuevo', 'observacion', '', '');
-
-        $sTable = 'alm_historial_a';
-
-        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
-        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
-        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
-        $iSortingCols = $this->input->get_post('iSortingCols', true);
-        $sSearch = $this->input->get_post('sSearch', true);
-        $sEcho = $this->input->get_post('sEcho', true);
-        //paginacion
-        if(isset($iDisplayStart) && $iDisplayLength != '-1')
-        {
-            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
-        }
-        //ordenamiento
-        if(isset($iSortCol_0))
-        {
-            if($iSortCol_0!=1 && $iSortCol_0!=2)
-            {
-
                 for($i=0; $i<intval($iSortingCols); $i++)
                 {
                     $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
                     $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
                     $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
-                    
-                
+        
                     if($bSortable == 'true')
                     {
                         $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
                     }
                 }
             }
-            else
+            
+            /* 
+             * Filtering
+             * NOTE this does not match the built-in DataTables filtering which does it
+             * word by word on any field. It's possible to do here, but concerned about efficiency
+             * on very large tables, and MySQL's regex functionality is very limited
+             */
+            if(isset($sSearch) && !empty($sSearch))
             {
-                switch ($iSortCol_0)
+                for($i=0; $i<count($aColumns); $i++)
                 {
-                    case 1:
-                        $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
-                    break;
-                    case 2:
-                        $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
-                        $this->db->order_by('salida' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
-                    break;
-                }
-                // $mensaje = $this->input->get('sSortDir_0');
-            }
-        }
-        //filtrado para busqueda
-        if(isset($sSearch) && !empty($sSearch))
-        {
-            for($i=0; $i<count($aColumns); $i++)
-            {
-                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-                    
-                // Individual column filtering
-                if(isset($bSearchable) && $bSearchable == 'true')
-                {
-                    $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                    if($i!=0 && $i!=3 && $i!=5)//para no buscar en la columna exist y disp (arroja error si no la filtro)
+                    {
+                        $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                        
+                        // Individual column filtering
+                        if(isset($bSearchable) && $bSearchable == 'true')
+                        {
+                            $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                        }
+                    }
                 }
             }
-        }
-
-        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
-        // $this->db->where(array('id_articulo'=>$cod_articulo));
-        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_genera_hist_a.id_articulo ='.$cod_articulo);
-
-        $rResult = $this->db->get($sTable);
-
-        $this->db->select('FOUND_ROWS() AS found_rows');
-
-        $iFilteredTotal = $this->db->get()->row()->found_rows;
-
-        $iTotal = $this->db->count_all($sTable);
             
-                // Output
-                $output = array(
-                    'sEcho' => intval($sEcho),
-                    'iTotalRecords' => $iTotal,
-                    'iTotalDisplayRecords' => $iFilteredTotal,
-                    'aaData' => array()
-                );
-        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+            // Select Data
+            // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+            // if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
+            // {
+            //     $this->db->where('ACTIVE', 1);
+            // }
+            $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
+            $rResult = $this->db->get($sTable);
+        
+            // Data set length after filtering
+            $this->db->select('FOUND_ROWS() AS found_rows');
+            $iFilteredTotal = $this->db->get()->row()->found_rows;
+        
+            // Total data set length
+            $iTotal = $this->db->count_all($sTable);
+        
+            // Output
+            $output = array(
+                'sEcho' => intval($sEcho),
+                'iTotalRecords' => $iTotal,
+                'iTotalDisplayRecords' => $iFilteredTotal,
+                'aaData' => array()
+            );
+            $i=1+$iDisplayStart;
+            foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+            {
+                $row = array();
+                $articulo['cod_articulo']=$aRow['cod_articulo'];
+                $hist = $this->model_alm_articulos->get_ArtHistory($articulo);
+                // foreach($aColumns as $col)
+                // {
+                //     $row[] = $aRow[$col];
+                // }
+                $row[]= $i;//primera columna
+                $i++;
+                $row[]= $aRow['cod_articulo'];//segunda columna
+                $row[]= $aRow['descripcion'];//tercera columna
+                $row[]= $aRow['exist'];//cuarta columna
+                $row[]= $aRow['reserv'];//quinta columna
+                // $row[]= $aRow['disp'];//sexta columna
+                // $row[]= 'nuevos: '.$aRow['nuevos'].' usados: '.$aRow['usados']; //sexta columna
+                $row[]= $aRow['nuevos'];//sexta columna
+                $row[]= $aRow['usados'];//septima columna
+                $row[]= $aRow['stock_min'];//octava columna
+                $aux = '<div id="art'.$aRow['cod_articulo'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Detalles</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>
+                                            <h4><label>c&oacute;digo del articulo: 
+                                                     '.$aRow['cod_articulo'].'
+                                                </label></h4>
+                                                <h4><label>Historial del Articulo</label></h4>
+                                                <table id="hist_art'.$aRow['cod_articulo'].'" class="table" style="width:100%">
+                                                    ';
+                                                    $aux.='<thead>
+                                                                    <tr>
+                                                                        <th><strong>Fecha de movimiento</strong></th>
+                                                                        <th><strong>Movimiento</strong></th>
+                                                                        <th><strong>Cantidad</strong></th>
+                                                                        <th><strong>Estado de articulo</strong></th>
+                                                                        <th><strong>Observacion</strong></th>';
+                                                    $aux.='</thead>
+                                                    <tbody>';
+                                                        // foreach ($hist as $key => $line)
+                                                        // {
+                                                        //     $aux.='<tr>
+                                                        //             <td>'.$line['TIME'].'</td>';
+                                                        //     if($line['entrada']!=0)
+                                                        //     {
+                                                        //         $aux.='<td>Entrada a inventario</td>
+                                                        //         <td>'.$line['entrada'].'</td>';
+                                                        //     }
+                                                        //     else
+                                                        //     {
+                                                        //         $aux.='<td>Salida de inventario</td>
+                                                        //         <td>'.$line['salida'].'</td>';
+                                                        //     }
+                                                        //     if($line['nuevo'])
+                                                        //     {
+                                                        //         $aux.='<td>Nuevo</td>';
+                                                        //     }
+                                                        //     else
+                                                        //     {
+                                                        //         $aux.='<td>Usado</td>';
+                                                        //     }
+                                                        //     $aux.='<td>'.$line['observacion'].'</td>';
+                                                        // }
+                                                        $aux=$aux.'</tbody>
+                                                </table>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                             
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>';
+                $row[]='<a href="#art'.$aRow['cod_articulo'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
+                $row['DT_RowId']='row_'.$aRow['cod_articulo'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
+                $output['aaData'][] = $row;
+            }
+        
+            echo json_encode($output);
+        }
+        else
         {
-            $row = array();
-            $row[]=$aRow['tiempo'];
-            if($aRow['entrada']!=0)
-            {
-                $row[] = 'Entrada a inventario';
-                $row[] = $aRow['entrada'];
-            }
-            else
-            {
-                $row[] ='Salida de inventario';
-                $row[] = $aRow['salida'];
-            }
-            if($aRow['nuevo'])
-            {
-                $row[] = 'Nuevo';
-            }
-            else
-            {
-                $row[] = 'Usado';
-            }
-            // $aux ='';
-            //  $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            //             <div class="modal-dialog">
-            //                 <div class="modal-content">
-            //                     <div class="modal-header">
-            //                         <h4 class="modal-title">Detalles</h4>
-            //                     </div>
-            //                     <div class="modal-body">
-            //                         <div>
-            //                             <h4><label>Atributos de DataTable
-            //                                 </label></h4>
-            //                                 <table id="item'.$aRow['id'].'" class="table">
-            //                                     <thead>';
-            //                                         foreach ($this->input->get() as $key => $val)
-            //                                         {
-            //                                             $aux.='<tr>
-            //                                                         <th><strong>'.$key.'</strong></th>
-            //                                                         <th><strong>:</strong></th>
-            //                                                         <th><strong>'.$val.'</strong></th>
-            //                                                     </tr>';
-            //                                         }
-            //                                         if(isset($mensaje))
-            //                                         {
-            //                                             $aux.='<tr>
-            //                                                         <th><strong>mensaje</strong></th>
-            //                                                         <th><strong>:</strong></th>
-            //                                                         <th><strong>'.$mensaje.'</strong></th>
-            //                                                     </tr>';
-            //                                         }
-            //                                         $aux.='</thead>
-            //                                                 <tbody>';
-            //                                         $aux=$aux.'</tbody>
-            //                                 </table>
-            //                         </div>
-
-            //                         <div class="modal-footer">
-                                         
-            //                         </div>
-            //                     </div>
-            //                 </div>
-            //             </div> 
-            //         </div>';
-            //         $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
-            // $row[] = $aRow['observacion'].' '.$aux;
-            $row[] = $aRow['observacion'];
-            
-            $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
-            // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
-            $output['aaData'][] = $row;
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
-        echo json_encode($output);
     }
 
-    public function getInventoryTable($active='')
+    public function getArticulosHist($cod_articulo)//hace compania al modal en la linea 320 de este archivo
     {
-        
-        /* Array of database columns which should be read and sent back to DataTables. Use a space where
-         * you want to insert a non-database field (for example a counter or static image)
-         */
-        $aColumns = array('ID', 'cod_articulo', 'descripcion');
-        
-        // DB table to use
-        $sTable = 'alm_articulo';
-        //
-    
-        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
-        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
-        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
-        $iSortingCols = $this->input->get_post('iSortingCols', true);
-        $sSearch = $this->input->get_post('sSearch', true);
-        $sEcho = $this->input->get_post('sEcho', true);
-    
-        // Paging
-        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        if($this->session->userdata('user'))
         {
-            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
-        }
-        
-        // Ordering
-        if(isset($iSortCol_0))
-        {
-            for($i=0; $i<intval($iSortingCols); $i++)
+            //columnas en tabla: fecha de movimiento, movimiento, cantidad, estado del articulo y observacion
+            $aColumns = array('alm_genera_hist_a.TIME', 'nuevo', 'observacion', '', '');
+
+            $sTable = 'alm_historial_a';
+
+            $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+            $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+            $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+            $iSortingCols = $this->input->get_post('iSortingCols', true);
+            $sSearch = $this->input->get_post('sSearch', true);
+            $sEcho = $this->input->get_post('sEcho', true);
+            //paginacion
+            if(isset($iDisplayStart) && $iDisplayLength != '-1')
             {
-                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
-                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
-                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
-    
-                if($bSortable == 'true')
+                $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+            }
+            //ordenamiento
+            if(isset($iSortCol_0))
+            {
+                if($iSortCol_0!=1 && $iSortCol_0!=2)
                 {
-                    $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+
+                    for($i=0; $i<intval($iSortingCols); $i++)
+                    {
+                        $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                        $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                        $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                        
+                    
+                        if($bSortable == 'true')
+                        {
+                            $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                        }
+                    }
+                }
+                else
+                {
+                    switch ($iSortCol_0)
+                    {
+                        case 1:
+                            $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                        break;
+                        case 2:
+                            $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                            $this->db->order_by('salida' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                        break;
+                    }
+                    // $mensaje = $this->input->get('sSortDir_0');
                 }
             }
-        }
-        
-        /* 
-         * Filtering
-         * NOTE this does not match the built-in DataTables filtering which does it
-         * word by word on any field. It's possible to do here, but concerned about efficiency
-         * on very large tables, and MySQL's regex functionality is very limited
-         */
-        if(isset($sSearch) && !empty($sSearch))
-        {
-            for($i=0; $i<count($aColumns); $i++)
+            //filtrado para busqueda
+            if(isset($sSearch) && !empty($sSearch))
             {
-                if($i!=0 && $i!=3)//para no buscar en la columna exist y disp (arroja error si no la filtro)
+                for($i=0; $i<count($aColumns); $i++)
                 {
                     $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-                    
+                        
                     // Individual column filtering
                     if(isset($bSearchable) && $bSearchable == 'true')
                     {
@@ -616,421 +1044,617 @@ class Alm_articulos extends MX_Controller
                     }
                 }
             }
+
+            $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
+            // $this->db->where(array('id_articulo'=>$cod_articulo));
+            // $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_genera_hist_a.id_articulo ='.$cod_articulo);
+            $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+            $this->db->where('alm_genera_hist_a.id_articulo', $cod_articulo);
+
+            $rResult = $this->db->get($sTable);
+
+            $this->db->select('FOUND_ROWS() AS found_rows');
+
+            $iFilteredTotal = $this->db->get()->row()->found_rows;
+
+            $iTotal = $this->db->count_all($sTable);
+                
+                    // Output
+                    $output = array(
+                        'sEcho' => intval($sEcho),
+                        'iTotalRecords' => $iTotal,
+                        'iTotalDisplayRecords' => $iFilteredTotal,
+                        'aaData' => array()
+                    );
+            foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+            {
+                $row = array();
+                $row[]=$aRow['tiempo'];
+                if($aRow['entrada']!=0)
+                {
+                    $row[] = 'Entrada a inventario';
+                    $row[] = $aRow['entrada'];
+                }
+                else
+                {
+                    if($aRow['salida']!=0)
+                    {
+                        $row[] ='Salida de inventario';
+                        $row[] = $aRow['salida'];
+                    }
+                    else
+                    {
+                        $row[] ='Articulo Modificado';
+                        $row[] = 'Data en observación';
+                    }
+                }
+                if($aRow['nuevo'])
+                {
+                    $row[] = 'Nuevo';
+                }
+                else
+                {
+                    $row[] = 'Usado';
+                }
+                // $aux ='';
+                //  $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                //             <div class="modal-dialog">
+                //                 <div class="modal-content">
+                //                     <div class="modal-header">
+                //                         <h4 class="modal-title">Detalles</h4>
+                //                     </div>
+                //                     <div class="modal-body">
+                //                         <div>
+                //                             <h4><label>Atributos de DataTable
+                //                                 </label></h4>
+                //                                 <table id="item'.$aRow['id'].'" class="table">
+                //                                     <thead>';
+                //                                         foreach ($this->input->get() as $key => $val)
+                //                                         {
+                //                                             $aux.='<tr>
+                //                                                         <th><strong>'.$key.'</strong></th>
+                //                                                         <th><strong>:</strong></th>
+                //                                                         <th><strong>'.$val.'</strong></th>
+                //                                                     </tr>';
+                //                                         }
+                //                                         if(isset($mensaje))
+                //                                         {
+                //                                             $aux.='<tr>
+                //                                                         <th><strong>mensaje</strong></th>
+                //                                                         <th><strong>:</strong></th>
+                //                                                         <th><strong>'.$mensaje.'</strong></th>
+                //                                                     </tr>';
+                //                                         }
+                //                                         $aux.='</thead>
+                //                                                 <tbody>';
+                //                                         $aux=$aux.'</tbody>
+                //                                 </table>
+                //                         </div>
+
+                //                         <div class="modal-footer">
+                                             
+                //                         </div>
+                //                     </div>
+                //                 </div>
+                //             </div> 
+                //         </div>';
+                //         $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+                // $row[] = $aRow['observacion'].' '.$aux;
+                $row[] = $aRow['observacion'];
+                
+                $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
+                // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
+                $output['aaData'][] = $row;
+            }
+            echo json_encode($output);
         }
-        
-        // Select Data
-        // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
-        if($active==1)
+        else
         {
-            $this->db->where('ACTIVE', 1);
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
-        $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
-        $rResult = $this->db->get($sTable);
-    
-        // Data set length after filtering
-        $this->db->select('FOUND_ROWS() AS found_rows');
-        $iFilteredTotal = $this->db->get()->row()->found_rows;
-    
-        // Total data set length
-        $iTotal = $this->db->count_all($sTable);
-    
-        // Output
-        $output = array(
-            'sEcho' => intval($sEcho),
-            'iTotalRecords' => $iTotal,
-            'iTotalDisplayRecords' => $iFilteredTotal,
-            'aaData' => array()
-        );
-        // $i=1+$iDisplayStart;
-        $i=$iDisplayStart;
-        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
-        {
-            $row = array();
-            
-            // foreach($aColumns as $col)
-            // {
-            //     $row[] = $aRow[$col];
-            // }
-            $row[]= '<div align="center">'.$i.'</div>';//primera columna
-            $i++;
-            $row[]= '<div align="center">'.$aRow['cod_articulo'].'</div>';//segunda columna
-            $row[]= $aRow['descripcion'];//tercera columna
-            // if(!empty($this->session->userdata('articulos')) && in_array($aRow['ID'], $this->session->userdata('articulos')))
-            // {
-              // $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
-            // }
-            // else
-            // {
-                $row[]='<div align="center"><span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-plus color"></i></span></div>';
-            // }
-            $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
-            // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
-            $output['aaData'][] = $row;
-        }
-        // $row = array();
-        // $row[] = '<script type="text/javascript"> $(document).ready(function () {console.log($("i").length);});</script>';
-        // $output['aaData'][] = $row;
-        // $output['aaData'][] = '<script type="text/javascript"> $(document).ready(function () {console.log($("i").length);});</script>';
-        echo json_encode($output);
     }
 
-    public function ajax_formProcessing()//para agregar articulos
+    public function getInventoryTable($active='')
     {
-        if ($this->input->post())
+        if($this->session->userdata('user'))
         {
-            $aux = explode(" codigo=", $this->input->post('descripcion'));
-            if(is_numeric($aux[0]))//verifica si la primera ocurrencia del dato recibido, es un numero (para asociar con el codigo del articulo)
+            /* Array of database columns which should be read and sent back to DataTables. Use a space where
+             * you want to insert a non-database field (for example a counter or static image)
+             */
+            $aColumns = array('ID', 'cod_articulo', 'descripcion');
+            
+            // DB table to use
+            $sTable = 'alm_articulo';
+            //
+        
+            $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+            $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+            $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+            $iSortingCols = $this->input->get_post('iSortingCols', true);
+            $sSearch = $this->input->get_post('sSearch', true);
+            $sEcho = $this->input->get_post('sEcho', true);
+        
+            // Paging
+            if(isset($iDisplayStart) && $iDisplayLength != '-1')
             {
-                $articulo['cod_articulo']=$aux[0];
+                $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
             }
-            else
+            
+            // Ordering
+            if(isset($iSortCol_0))
             {
-                $articulo['descripcion']=$aux[0];
-                if(!empty($aux[1]))//verifica si al pasar la descripcion, viene en el formato del autocompletar
+                for($i=0; $i<intval($iSortingCols); $i++)
                 {
-                    $articulo['cod_articulo']=$aux[1];
+                    $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                    $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                    $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+        
+                    if($bSortable == 'true')
+                    {
+                        $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                    }
                 }
             }
-            if(!$this->model_alm_articulos->exist_articulo($articulo))//aqui construllo el formulario de articulo nuevo
+            
+            /* 
+             * Filtering
+             * NOTE this does not match the built-in DataTables filtering which does it
+             * word by word on any field. It's possible to do here, but concerned about efficiency
+             * on very large tables, and MySQL's regex functionality is very limited
+             */
+            if(isset($sSearch) && !empty($sSearch))
             {
-            ?>
-                </br>
-                <div id="inv">
-                    <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
-                    </br>
-                    Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
-                    </div>
-                    <div class="row">
-                        <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
-                    </div>
-                    <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
-                    </div>
-                    <form id="new_inv" class="form-horizontal">
-                        <!-- cod_articulo -->
-                        <div class="form-group">
-                            <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
-                            <div class="input-group col-md-5">
-                                <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)"><span id="loading"><img src="<?php echo base_url(); ?>assets/img/ajax-loader.gif" alt="Ajax Indicator" /></span>
-                                <span id="cod_articulo_msg" class="label label-danger"></span>
-                            </div>
-                        </div>
-                        
-                        <!-- unidad -->
-                        <div class="form-group">
-                            <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
-                            <div class="input-group col-md-5">
-                                <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
-                                <span id="unidad_msg" class="label label-danger"></span>
-                            </div>
-                        </div>
-                        
-                        <!-- descripcion -->
-                        <div class="form-group">
-                            <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
-                            <div class="input-group col-md-5">
-                                <input type="text" class="form-control" id="descripcion" name="descripcion">
-                            </div>
-                        </div>
-                        
-                        <!-- nuevo -->
-                        <div class="form-group" style="text-align: center">
-                            <label class="control-label" for="radio">Estado del art&iacute;culo</label>
-                            <label class="radio" for="radio-0">
-                                <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
-                                Nuevo
-                            </label>
-                            <label class="radio" for="radio-1">
-                                <input name="nuevo" id="radio-1" value="0" type="radio">
-                                Usado
-                            </label>
-                        </div>
-                        
-                        <!-- imagen -->
-                        
-                        <div class="form-group">
-                            <label class="control-label" for="imagen">Imagen del articulo:</label>
-                            <div class="input-group col-md-5">
-                                <input id="imagen" type="file" multiple="true">
-                            </div>
-                        </div>
-                        
-                        <!-- cantidad -->
-                        <div class="form-group">
-                            <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
-                            <div class="input-group col-md-1">
-                                <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
-                                <span id="cantidad_msg" class="label label-danger"></span>
-                            </div>
-                        </div>
-                        
-                        <!-- peso_kg -->
-                        <div class="form-group">
-                            <label class="control-label" for="peso_kg">Peso:</label>
-                            <div class="input-group col-md-5">
-                                <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
-                                <span id="peso_kg_msg" class="label label-danger"></span>
-                                <span class="input-group-addon">Kg</span>
-                            </div>
-                        </div>
-
-                        <!-- dimension_cm -->
-                        <div class="form-group">
-                            <label class="control-label" for="dimensiones">Dimensiones:</label>
-                            <div class="input-group col-md-6">
-                                <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
-                                <span class="input-group-addon"> cm x</span>
-                                <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
-                                <span class="input-group-addon"> cm x</span>
-                                <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
-                                <span class="input-group-addon"> cm</span>
-                            </div>
-                            <span id="alto_msg" class="label label-danger"></span>
-                            <span id="ancho_msg" class="label label-danger"></span>
-                            <span id="largo_msg" class="label label-danger"></span>
-                        </div>
-                        <!-- observacion -->
-                        <div class="form-group">
-                            <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
-                            <div class="input-group col-md-5">
-                                <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/> 
-                                <span id="observacion_msg" class="label label-danger"></span>
-                            </div>
-                        </div>
-
-                        <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
-                    </form>
-                </div>
-                <script type="text/javascript">
-                    $("#imagen").fileinput({
-                        showCaption: false,
-                        previewFileType: "image",
-                        browseLabel: " Examinar...",
-                        browseIcon: '<i class="glyphicon glyphicon-picture"></i>',
-                        removeClass: "btn btn-danger",
-                        removeLabel: "Delete",
-                        removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-                        showUpload: false
-                    });
-                    $(function()
+                for($i=0; $i<count($aColumns); $i++)
+                {
+                    if($i!=0 && $i!=3)//para no buscar en la columna exist y disp (arroja error si no la filtro)
                     {
-                        $("#new_inv_error").hide();
-                        $("#loading").hide();
-                        var flag=false;
-                        var valid =false;// auxiliar para validar on blur de la existencia del codigo
-                        $("#cod_articulo").keyup(function(){
-                            if($("#cod_articulo").val().length>3)
-                            {
-                                var codigo = $("#cod_articulo").val();
-                                $("#loading").show();
-                                $.post("inventario/articulo/check", {
-                                    codigo : codigo
-                                }, function(resp){
-                                    $("#loading").hide();
-                                    console.log(resp);
-                                    flag = resp.bool;
-                                    if(!resp.bool)
-                                    {
-                                        $("#cod_articulo").attr("style", "background-color: #F2DEDE");
-                                        $("#cod_articulo_msg").html(resp.message).show();
-                                        // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
-                                    }
-                                        return false;
-                                });
-                            }
-                        });
-                        $("#new_invSub").click(function()
+                        $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                        
+                        // Individual column filtering
+                        if(isset($bSearchable) && $bSearchable == 'true')
                         {
-                            $("#new_inv_error").hide();
-                            console.log(flag);
-                            if($("input#cod_articulo").val()=="")
-                            {
-                                $("#new_inv_error").html("el c&oacute;digo es obligatorio");
-                                $("#new_inv_error").show();
-                                $("input#cod_articulo").focus();
-                                return false;
-                            }
-                            if(!flag)
-                            {
-                                $("#new_inv_error").html("el c&oacute;digo ya esta usado");
-                                $("#new_inv_error").show();
-                                $("input#cod_articulo").focus();
-                                return false;
-                            }
-                            
-                            if($("input#unidad").val()=="")
-                            {
-                                $("#new_inv_error").html("La unidad es obligatorio");
-                                $("#new_inv_error").show();
-                                $("input#unidad").focus();
-                                return false;
-                            }
-                            if($("input#descripcion").val()=="")
-                            {
-                                $("#new_inv_error").html("La descripci&oacute;n es obligatorio");
-                                $("#new_inv_error").show();
-                                $("input#descripcion").focus();
-                                return false;
-                            }
-                            if($("input#cantidad").val()=="")
-                            {
-                                $("#new_inv_error").html("La cantidad es obligatorio");
-                                $("#new_inv_error").show();
-                                $("input#cantidad").focus();
-                                return false;
-                            }
-                            if($("textarea#observacion").val()=="")
-                            {
-                                $("#new_inv_error").html("Debe indicar la orden de compra en Observacion");
-                                $("#new_inv_error").show();
-                                $("textarea#observacion").focus();
-                                return false;
-                            }
-                            var aux = $("#new_inv").serializeArray();
-                            console.log($("#new_inv").serializeArray());
-                            $.ajax(
-                            {
-                                type: "POST",
-                                url: "inventario/articulo/agregar",
-                                data: aux,
-                                success: function(response)
-                                {
-                                    $("#inv").html(response);
-                                },
-                                error: function(jqXhr){
-                                    if(jqXhr.status == 400)
-                                    {
-                                        $("#inv").html(jqXhr.responseText);
-                                        // var json = $.parseJSON(jqXhr.responseText);
-                                    }
-                                        console.log(jqXhr);
-                                }
-                            });
-                            return(false);
-                        });
-                    });
-                </script>
-            <?php
+                            $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                        }
+                    }
+                }
             }
-            else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
+            
+            // Select Data
+            // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+            if($active==1)
             {
-                $art = $this->model_alm_articulos->exist_articulo($articulo);
-                // echo_pre($art, __LINE__, __FILE__);
-            ?>
-                </br>
-                <div id="inv">
-                    <div id="inv_error" class="alert alert-danger" style="text-align: center">
-                    </div>
-                    <div class="row">
-                        <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
-                    </div>
-                    <form id="add_inv" class="form-horizontal">
-                        <!-- nuevo -->
-                        <div class="form-group" style='text-align: center'>
-                            <label class="control-label" for="radio">Estado del art&iacute;culo</label>
-                            <label class="radio" for="radio-0">
-                                <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
-                                Nuevo
-                            </label>
-                            <label class="radio" for="radio-1">
-                                <input name="nuevo" id="radio-1" value="0" type="radio">
-                                Usado
-                            </label>
-                        </div>
-                        <!-- cantidad -->
-                        <div class="form-group">
-                            <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
-                            <div class="input-group col-md-8">
-                                <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
-                                <span id="cantidad_msg" class="label label-danger"></span>
-                                <span class="input-group-addon"><?php echo 'x 1 '.$art['unidad']; ?></span>
-                            </div>
-                        </div>
-                        <!-- observacion -->
-                        <div class="form-group">
-                            <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
-                            <div class="input-group">
-                                <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/>
-                                <span id="observacion_msg" class="label label-danger"></span>
-                            </div>
-                        </div>
-                                <input type="hidden" name="cod_articulo" value="<?php echo $art['cod_articulo'];?>"/>
-
-                        <button id="invSub" type="submit" class="btn btn-default">Agregar</button>
-                    </form>
-                </div>
-                <script type="text/javascript">
-                    $(function()
-                    {
-                        $("#inv_error").hide();
-                        $("#invSub").click(function()
-                        {
-                            $("#inv_error").hide();
-                            if($("input#cantidad").val()=="")
-                            {
-                                $("#inv_error").html("La cantidad es obligatorio");
-                                $("#inv_error").show();
-                                $("input#cantidad").focus();
-                                return false;
-                            }
-                            if($("textarea#observacion").val()=="")
-                            {
-                                $("#inv_error").html("Debe indicar la orden de compra en Observacion");
-                                $("#inv_error").show();
-                                $("textarea#observacion").focus();
-                                return false;
-                            }
-                            var aux = $("#add_inv").serializeArray();
-                            console.log($("#add_inv").serializeArray());
-                            $.ajax(
-                            {
-                                type: "POST",
-                                url: "inventario/articulo/agregar",
-                                data: aux,
-                                success: function(response)
-                                {
-                                    $("#inv").html(response);
-                                },
-                                error: function(jqXhr){
-                                    if(jqXhr.status == 400)
-                                    {
-                                        $("#inv").html(jqXhr.responseText);
-                                        // var json = $.parseJSON(jqXhr.responseText);
-                                    }
-                                        console.log(jqXhr);
-                                }
-                            });
-                            return(false);
-                        });
-                    });
-                </script>
-            <?php
-
-                // echo_pre($this->model_alm_articulos->get_ArtHistory($art), __LINE__, __FILE__);
+                $this->db->where('ACTIVE', 1);
             }
-        }
+            $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
+            $rResult = $this->db->get($sTable);
         
-    }
-    public function ajax_codeCheck()//verifica que el codigo de articulo exista o no
-    {
-        if($this->input->is_ajax_request())
-        {
-            $codigo = $this->input->post('codigo');
-            if(!$this->form_validation->is_unique($codigo, 'alm_articulo.cod_articulo'))
-            { 
-                $aux= array(
-                    'message' => 'El c&oacute;digo ya existe, elija otro', 
-                    'bool' => false);
-            }
-            else
+            // Data set length after filtering
+            $this->db->select('FOUND_ROWS() AS found_rows');
+            $iFilteredTotal = $this->db->get()->row()->found_rows;
+        
+            // Total data set length
+            $iTotal = $this->db->count_all($sTable);
+        
+            // Output
+            $output = array(
+                'sEcho' => intval($sEcho),
+                'iTotalRecords' => $iTotal,
+                'iTotalDisplayRecords' => $iFilteredTotal,
+                'aaData' => array()
+            );
+            // $i=1+$iDisplayStart;
+            $i=$iDisplayStart;
+            foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
             {
-                $aux= array(
-                    'message' => '', 
-                    'bool' =>true);
+                $row = array();
+                
+                // foreach($aColumns as $col)
+                // {
+                //     $row[] = $aRow[$col];
+                // }
+                $row[]= '<div align="center">'.$i.'</div>';//primera columna
+                $i++;
+                $row[]= '<div align="center">'.$aRow['cod_articulo'].'</div>';//segunda columna
+                $row[]= $aRow['descripcion'];//tercera columna
+                // if(!empty($this->session->userdata('articulos')) && in_array($aRow['ID'], $this->session->userdata('articulos')))
+                // {
+                  // $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
+                // }
+                // else
+                // {
+                    $row[]='<div align="center"><span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-plus color"></i></span></div>';
+                // }
+                $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
+                // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
+                $output['aaData'][] = $row;
             }
-            header('Content-type: application/json');
-            echo json_encode($aux);
+            // $row = array();
+            // $row[] = '<script type="text/javascript"> $(document).ready(function () {console.log($("i").length);});</script>';
+            // $output['aaData'][] = $row;
+            // $output['aaData'][] = '<script type="text/javascript"> $(document).ready(function () {console.log($("i").length);});</script>';
+            echo json_encode($output);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
     }
+
+    // public function ajax_formProcessing()//para agregar articulos
+    // {
+    //     if($this->session->userdata('user'))
+    //     {
+    //         if ($this->input->post())
+    //         {
+    //             $aux = explode(" codigo=", $this->input->post('descripcion'));
+    //             if(is_numeric($aux[0]))//verifica si la primera ocurrencia del dato recibido, es un numero (para asociar con el codigo del articulo)
+    //             {
+    //                 $articulo['cod_articulo']=$aux[0];
+    //             }
+    //             else
+    //             {
+    //                 $articulo['descripcion']=$aux[0];
+    //                 if(!empty($aux[1]))//verifica si al pasar la descripcion, viene en el formato del autocompletar
+    //                 {
+    //                     $articulo['cod_articulo']=$aux[1];
+    //                 }
+    //             }
+    //             if(!$this->model_alm_articulos->exist_articulo($articulo))//aqui construllo el formulario de articulo nuevo
+    //             {
+                // echo '
+                //     </br>
+                //     <div id="inv">
+                //         <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
+                //         </br>
+                //         Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
+                //         </div>
+                //         <div class="row">
+                //             <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                //         </div>
+                //         <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
+                //         </div>
+                //         <form id="new_inv" class="form-horizontal">
+                //             <!-- cod_articulo -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)"><span id="loading"><img src="'.base_url().'assets/img/ajax-loader.gif" alt="Ajax Indicator" /></span>
+                //                     <span id="cod_articulo_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
+                            
+                //             <!-- unidad -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
+                //                     <span id="unidad_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
+                            
+                //             <!-- descripcion -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="descripcion" name="descripcion">
+                //                 </div>
+                //             </div>
+                            
+                //             <!-- nuevo -->
+                //             <div class="form-group" style="text-align: center">
+                //                 <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                //                 <label class="radio" for="radio-0">
+                //                     <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                //                     Nuevo
+                //                 </label>
+                //                 <label class="radio" for="radio-1">
+                //                     <input name="nuevo" id="radio-1" value="0" type="radio">
+                //                     Usado
+                //                 </label>
+                //             </div>
+                            
+                //             <!-- imagen -->
+                            
+                //             <div class="form-group">
+                //                 <label class="control-label" for="imagen">Imagen del articulo:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input id="imagen" type="file" multiple="true">
+                //                 </div>
+                //             </div>
+                            
+                //             <!-- cantidad -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                //                 <div class="input-group col-md-1">
+                //                     <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                //                     <span id="cantidad_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
+                            
+                //             <!-- peso_kg -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="peso_kg">Peso:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
+                //                     <span id="peso_kg_msg" class="label label-danger"></span>
+                //                     <span class="input-group-addon">Kg</span>
+                //                 </div>
+                //             </div>
+
+                //             <!-- dimension_cm -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="dimensiones">Dimensiones:</label>
+                //                 <div class="input-group col-md-6">
+                //                     <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
+                //                     <span class="input-group-addon"> cm x</span>
+                //                     <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
+                //                     <span class="input-group-addon"> cm x</span>
+                //                     <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
+                //                     <span class="input-group-addon"> cm</span>
+                //                 </div>
+                //                 <span id="alto_msg" class="label label-danger"></span>
+                //                 <span id="ancho_msg" class="label label-danger"></span>
+                //                 <span id="largo_msg" class="label label-danger"></span>
+                //             </div>
+                //             <!-- observacion -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/> 
+                //                     <span id="observacion_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
+
+                //             <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
+                //         </form>
+                //     </div>
+                //     <script type="text/javascript">
+                //         $("#imagen").fileinput({
+                //             showCaption: false,
+                //             previewFileType: "image",
+                //             browseLabel: " Examinar...",
+                //             browseIcon: \'<i class="glyphicon glyphicon-picture"></i>\',
+                //             removeClass: "btn btn-danger",
+                //             removeLabel: "Delete",
+                //             removeIcon: \'<i class="glyphicon glyphicon-trash"></i>\',
+                //             showUpload: false
+                //         });
+                //         $(function()
+                //         {
+                //             $("#new_inv_error").hide();
+                //             $("#loading").hide();
+                //             var flag=false;
+                //             var valid =false;// auxiliar para validar on blur de la existencia del codigo
+                //             $("#cod_articulo").keyup(function(){
+                //                 if($("#cod_articulo").val().length>3)
+                //                 {
+                //                     var codigo = $("#cod_articulo").val();
+                //                     $("#loading").show();
+                //                     $.post("inventario/articulo/check", {
+                //                         codigo : codigo
+                //                     }, function(resp){
+                //                         $("#loading").hide();
+                //                         console.log(resp);
+                //                         flag = resp.bool;
+                //                         if(!resp.bool)
+                //                         {
+                //                             $("#cod_articulo").attr("style", "background-color: #F2DEDE");
+                //                             $("#cod_articulo_msg").html(resp.message).show();
+                //                             // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
+                //                         }
+                //                             return false;
+                //                     });
+                //                 }
+                //             });
+                //             $("#new_invSub").click(function()
+                //             {
+                //                 $("#new_inv_error").hide();
+                //                 console.log(flag);
+                //                 if($("input#cod_articulo").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("el c&oacute;digo es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#cod_articulo").focus();
+                //                     return false;
+                //                 }
+                //                 if(!flag)
+                //                 {
+                //                     $("#new_inv_error").html("el c&oacute;digo ya esta usado");
+                //                     $("#new_inv_error").show();
+                //                     $("input#cod_articulo").focus();
+                //                     return false;
+                //                 }
+                                
+                //                 if($("input#unidad").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("La unidad es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#unidad").focus();
+                //                     return false;
+                //                 }
+                //                 if($("input#descripcion").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("La descripci&oacute;n es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#descripcion").focus();
+                //                     return false;
+                //                 }
+                //                 if($("input#cantidad").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("La cantidad es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#cantidad").focus();
+                //                     return false;
+                //                 }
+                //                 if($("textarea#observacion").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("Debe indicar la orden de compra en Observacion");
+                //                     $("#new_inv_error").show();
+                //                     $("textarea#observacion").focus();
+                //                     return false;
+                //                 }
+                //                 var aux = $("#new_inv").serializeArray();
+                //                 console.log($("#new_inv").serializeArray());
+                //                 $.ajax(
+                //                 {
+                //                     type: "POST",
+                //                     url: "inventario/articulo/agregar",
+                //                     data: aux,
+                //                     success: function(response)
+                //                     {
+                //                         $("#inv").html(response);
+                //                     },
+                //                     error: function(jqXhr){
+                //                         if(jqXhr.status == 400)
+                //                         {
+                //                             $("#inv").html(jqXhr.responseText);
+                //                             // var json = $.parseJSON(jqXhr.responseText);
+                //                         }
+                //                             console.log(jqXhr);
+                //                     }
+                //                 });
+                //                 return(false);
+                //             });
+                //         });
+                //     </script>
+                // ';
+                // }
+                // else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
+                // {
+                //     $art = $this->model_alm_articulos->exist_articulo($articulo);
+                    // echo_pre($art, __LINE__, __FILE__);
+                // echo '
+                //     </br>
+                //     <div id="inv">
+                //         <div id="inv_error" class="alert alert-danger" style="text-align: center">
+                //         </div>
+                //         <div class="row">
+                //             <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                //         </div>
+                //         <form id="add_inv" class="form-horizontal">
+                //             <!-- nuevo -->
+                //             <div class="form-group" style="text-align: center">
+                //                 <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                //                 <label class="radio" for="radio-0">
+                //                     <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                //                     Nuevo
+                //                 </label>
+                //                 <label class="radio" for="radio-1">
+                //                     <input name="nuevo" id="radio-1" value="0" type="radio">
+                //                     Usado
+                //                 </label>
+                //             </div>
+                //             <!-- cantidad -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                //                 <div class="input-group col-md-8">
+                //                     <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                //                     <span id="cantidad_msg" class="label label-danger"></span>
+                                    // <span class="input-group-addon">x 1'.$art["unidad"].'</span>
+                //                 </div>
+                //             </div>
+                //             <!-- observacion -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
+                //                 <div class="input-group">
+                //                     <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/>
+                //                     <span id="observacion_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
+                //                     <input type="hidden" name="cod_articulo" value="'.$art['cod_articulo'].'"/>
+
+                //             <button id="invSub" type="submit" class="btn btn-default">Agregar</button>
+                //         </form>
+                //     </div>
+                //     <script type="text/javascript">
+                //         $(function()
+                //         {
+                //             $("#inv_error").hide();
+                //             $("#invSub").click(function()
+                //             {
+                //                 $("#inv_error").hide();
+                //                 if($("input#cantidad").val()=="")
+                //                 {
+                //                     $("#inv_error").html("La cantidad es obligatorio");
+                //                     $("#inv_error").show();
+                //                     $("input#cantidad").focus();
+                //                     return false;
+                //                 }
+                //                 if($("textarea#observacion").val()=="")
+                //                 {
+                //                     $("#inv_error").html("Debe indicar la orden de compra en Observacion");
+                //                     $("#inv_error").show();
+                //                     $("textarea#observacion").focus();
+                //                     return false;
+                //                 }
+                //                 var aux = $("#add_inv").serializeArray();
+                //                 console.log($("#add_inv").serializeArray());
+                //                 $.ajax(
+                //                 {
+                //                     type: "POST",
+                //                     url: "inventario/articulo/agregar",
+                //                     data: aux,
+                //                     success: function(response)
+                //                     {
+                //                         $("#inv").html(response);
+                //                     },
+                //                     error: function(jqXhr){
+                //                         if(jqXhr.status == 400)
+                //                         {
+                //                             $("#inv").html(jqXhr.responseText);
+                //                             // var json = $.parseJSON(jqXhr.responseText);
+                //                         }
+                //                             console.log(jqXhr);
+                //                     }
+                //                 });
+                //                 return(false);
+                //             });
+                //         });
+                //     </script>
+                // ';
+
+                    // echo_pre($this->model_alm_articulos->get_ArtHistory($art), __LINE__, __FILE__);
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         $header['title'] = 'Error de Acceso';
+    //         $this->load->view('template/erroracc',$header);
+    //     }
+        
+    // }
+    // public function ajax_codeCheck()//verifica que el codigo de articulo exista o no
+    // {
+    //     if($this->session->userdata('user'))
+    //     {
+    //         if($this->input->is_ajax_request())
+    //         {
+    //             $codigo = $this->input->post('codigo');
+    //             if(!$this->form_validation->is_unique($codigo, 'alm_articulo.cod_articulo'))
+    //             { 
+    //                 $aux= array(
+    //                     'message' => 'El c&oacute;digo ya existe, elija otro', 
+    //                     'bool' => false);
+    //             }
+    //             else
+    //             {
+    //                 $aux= array(
+    //                     'message' => '', 
+    //                     'bool' =>true);
+    //             }
+    //             header('Content-type: application/json');
+    //             echo json_encode($aux);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         $header['title'] = 'Error de Acceso';
+    //         $this->load->view('template/erroracc',$header);
+    //     }
+    // }
     // public function pdf_cierreInv($date='') //aqui quede //"disbanded"
     // {
     //     if(isset($date) && !empty($date))
@@ -1098,41 +1722,323 @@ class Alm_articulos extends MX_Controller
     // }
     public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
-        // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
-        $date = time();
-        $view['cabecera']="reporte del estado de inventario";//titulo acompanante de la cabecera del documento
-        $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
-        $view['fecha_cierre']=$date; //la fecha de hoy
-        $view['tabla'] = $this->model_alm_articulos->build_report($extra);//construccion de la tabla
+        if($this->session->userdata('user'))
+        {
+            // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
+            $date = time();
+            $view['cabecera']="reporte del estado de inventario";//titulo acompanante de la cabecera del documento
+            $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
+            $view['fecha_cierre']=$date; //la fecha de hoy
+            $view['tabla'] = $this->model_alm_articulos->build_report($extra);//construccion de la tabla
 
-        // $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
-        // $this->load->helper('file');
+            // $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+            // $this->load->helper('file');
 
-            // Load all views as normal
-            $this->load->view('reporte_pdf', $view);
-            // Get output html
-            $html = $this->output->get_output();
-            // Load library
-            $this->load->library('dompdf_gen');
+                // Load all views as normal
+                $this->load->view('reporte_pdf', $view);
+                // Get output html
+                $html = $this->output->get_output();
+                // Load library
+                $this->load->library('dompdf_gen');
 
-            // Convert to PDF
-            $this->dompdf->load_html(utf8_decode($html));
-            $this->dompdf->render();
-            // if(! write_file($file_to_save, $this->dompdf->output()))
-            // {
-                // echo 'error';
-            // }
+                // Convert to PDF
+                $this->dompdf->load_html(utf8_decode($html));
+                $this->dompdf->render();
+                // if(! write_file($file_to_save, $this->dompdf->output()))
+                // {
+                    // echo 'error';
+                // }
+                // else
+                // {
+                    $this->dompdf->stream("inventario.pdf", array('Attachment' => 0));
+                // }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function pdf_ActaDeCierre()
+    {
+        if($this->dec_permiso->has_permission('alm', 8))//permiso para insertar o hacer cierres de inventario, Y VERIFICA EL ESTADO ANTERIOR DEL CIERRE
+        {
+            if($this->model_alm_articulos->closure_isStarted() == 'ACTAS')//si ya el archivo .pdf fue generado...
+            {
+                // $this->load->helper('directory');
+                // if(is_dir("./uploads/cierres/actas/"))//
+                // {
+                    // $dir = directory_map("./uploads/cierres/actas");
+                    // sort($dir, SORT_STRING);
+                    // $lastfile = end($dir);
+                    // $filename = end($dir);//la ocurrencia mas reciente de las actas generadas
+                    // $file = "./uploads/cierres/actas/".$filename;
+                    $file = "./uploads/cierres/actas/".$this->model_alm_articulos->get_latestClosure()['acta'];
+                    //Trasnferencia de archivo de disco en servidor, a cache del cliente
+                      header('Content-type: application/pdf');
+                      header('Content-Disposition: inline; filename="'.$filename.'"');
+                      header('Content-Transfer-Encoding: binary');
+                      header('Accept-Ranges: bytes');
+                      echo file_get_contents($file);
+                    //FIN DE Trasnferencia de archivo de disco en servidor, a cache del cliente
+                // }
+                // else
+                // {
+                    // echo "ERROR: ha ocurrido un error de localización de directorio LINEA: ".__LINE__;
+                // }
+            }
+            else
+            {
+                if($this->model_alm_articulos->closure_isStarted() == 'ADJUSTED' || $this->model_alm_articulos->closure_isStarted() == 'NOADJUSTRQ')
+                {
+                    // die_pre($this->uri->uri_string(), __LINE__, __FILE__);
+                    /*
+                    Autores
+                        jefe de almacen
+                        jefe de compras
+                        coordinador administrativo
+                    fechas
+                        hora de inicio
+                        hora generado
+                    */
+
+                    $closeStart = strtotime($this->model_alm_articulos->get_latestClosure()['START']);
+                    $date = time();
+                    $done = date('h:i a',$date).' del '.readNumber(date('j',$date)).' ('.date('j',$date).')'.' de '.date('F',$date).' de '.date('Y',$date);
+                    $start = date('h:i a',$closeStart).' del '.readNumber(date('j',$closeStart)).' ('.date('j',$closeStart).')'.' de '.date('F',$closeStart).' de '.date('Y',$closeStart);
+                    $dateReport = $closeStart;
+                    $dateHistory = $date;
+                    // $aux = $dateHistory - $dateReport;//en segundos
+                    // $hours = intval($aux/3600);
+                    // $minutes = intval(($aux%3600)/60);
+                    // $seconds = (($aux%3600)%60);
+
+                    // $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+                    // $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+                    // $seconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
+
+                    // echo_pre(($hours).':'.($minutes).':'.($seconds));
+                    $distance = $date - $closeStart;
+                    // $days = ceil($distance/60/60/24);
+                    $days = ($distance/60/60/24);
+                    // die_pre($days);
+                    if($days<1)
+                    {
+
+                        $conclution = 'a las '.date('h:i a', $date).' del mismo día';
+                    }
+                    $vars = array(
+                        'authors' => array(
+                            'jefe_alm' => array(
+                                'titulo' => 'Sr.',
+                                'nombre' =>'Gabriel',
+                                'apellido' =>'Hernandez'),
+                            'jefe_comp'=> array(
+                                'titulo' => 'Lic.',
+                                'nombre' =>'Milennys',
+                                'apellido' =>'Gallardo'),
+                            'coord_adm'=> array(
+                                'titulo' => 'Lic.',
+                                'nombre' =>'Romali',
+                                'apellido' =>'Kolster'),
+                            'autoridad'=> array(
+                                'titulo' => 'Dr.',
+                                'nombre' =>'José Gregorio',
+                                'apellido' =>'Marcano'
+                                )
+                            ),
+                        'dates' => array(
+                            'start' => $start,
+                            'done' => $done
+                            )
+                        );
+                    $reporte = $this->model_alm_articulos->get_incongruencies();
+                    $this->load->library('Pdf');
+                    ob_start();
+                    // $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+                    $this->pdf = new Actaspdf('P', 'mm', 'A4', true, 'UTF-8', false);
+                    //PDF file properties
+                    $this->pdf->SetTitle('ActaCorrectiva');
+                    $this->pdf->SetHeaderMargin(70);
+                    $this->pdf->SetLeftMargin(24);
+                    $this->pdf->SetRightMargin(26);
+                    $this->pdf->setFooterMargin(30);
+                    $this->pdf->SetAutoPageBreak(true, 35);
+                    $this->pdf->SetAuthor('Sistema de SiSAI');
+                    $this->pdf->SetDisplayMode('real', 'default');
+                    //end PDF file properties
+                    if(!empty($reporte))
+                    {
+                        $this->pdf->AddPage();
+                        
+                            // $this->pdf->Ln(38);
+                            // set font
+                            $this->pdf->SetFont('helvetica', 'B', 14);
+
+                            $this->pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
+                            $this->pdf->Ln(3);
+                            // $this->pdf->SetMargins(23, 30, 35);
+                            // create some HTML content
+                            $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.
+                            <br><br>
+                            <strong>Artículos con cantidad errada en el sistema:</strong></p>';
+                            // set core font
+                            $this->pdf->SetFont('helvetica', '', 12);
+                            // output the HTML content
+                            $this->pdf->writeHTML($html, true, 0, true, true);
+                            $this->pdf->Ln();
+
+                            $this->pdf->table($reporte);
+                            $this->pdf->InventoryOfficials($vars);
+                    }
+                        // $html = '<span style="text-align:justify;">a <u>abc</u> abcdefghijkl (abcdef) abcdefg <b>abcdefghi</b> a ((abc)) abcd <img src="assets/img/FACYT.png" border="0" height="41" width="41" /> <img src="assets/img/FACYT.png" alt="test alt attribute" width="80" height="60" border="0" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc \(abcd\) abcdef abcdefg <b>abcdefghi</b> a abc \\\(abcd\\\) abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href="http://tcpdf.org">abcdef abcdefg</a> start a abc before <span style="background-color:yellow">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>';
+                        // set UTF-8 Unicode font
+                        // $this->pdf->SetFont('helvetica', '', 10);
+
+                        // output the HTML content
+                        // $this->pdf->writeHTML($html, true, 0, true, true);
+                    $this->pdf->AddPage();
+                        $this->pdf->SetFont('helvetica', 'B', 14);
+
+                        $this->pdf->Write(0, 'ACTA DE INVENTARIO', '', 0, 'C', true, 0, false, false, 0);
+                        $this->pdf->Ln(3);
+                        $text = 'con presencia de la máxima autoridad de la Facultad Experimental de Ciencias y Tecnología: '.$vars['authors']['autoridad']['titulo'].' '.$vars['authors']['autoridad']['nombre'].' <strong>'.strtoupper($vars['authors']['autoridad']['apellido']).'</strong>, la jefe de sección de compras: '.$vars['authors']['jefe_comp']['titulo'].' '.$vars['authors']['jefe_comp']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong>, y el jefe (Encargado) de Almacén de la FaCyT Sr. '.$vars['authors']['jefe_alm']['titulo'].' '.$vars['authors']['jefe_alm']['nombre'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong>, se dio inicio al levantamiento de inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología. El inventario que fue efectuado por el '.$vars['authors']['jefe_alm']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_alm']['apellido']).'</strong> ya identificado, y revisado por '.$vars['authors']['jefe_comp']['titulo'].' <strong>'.strtoupper($vars['authors']['jefe_comp']['apellido']).'</strong> y aprobado por'.$vars['authors']['coord_adm']['titulo'].' '.$vars['authors']['coord_adm']['nombre'].' <strong>'.strtoupper($vars['authors']['coord_adm']['apellido']).'</strong> de la FACYT, concluyó '.$conclution.'.';
+                        $text .='<br><br><br>EL RESULTADO DEL INVENTARIO FÍSICO PRACTICADO A ESTE ALMACÉN Es el que acompaña a la presente que, se presenta en versión escrita con fecha de impresión arrojada por el sistema, sin embargo, la fecha de levantamiento del inventario es la supra indicada, vale decir '.date('d/m/Y', $closeStart);
+                        $html = '<p style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$start.'</b>, '.$text.'</p><br><br><br><br><br>';
+                        // set core font
+                        $this->pdf->SetFont('helvetica', '', 12);
+                        // output the HTML content
+                        $this->pdf->writeHTML($html, true, 0, true, true);
+                        $this->pdf->InventoryOfficials($vars);
+                        $this->pdf->Ln();
+                    // reset pointer to the last page
+                    $this->pdf->lastPage();
+
+                        // ---------------------------------------------------------
+                        //Close and output PDF document
+                        // if($this->uri->uri_string()=='inventario/generar/acta')
+                        // {
+                    $file_to_save = $_SERVER['DOCUMENT_ROOT'].'proyecto_facyt/uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
+                    $filename = 'Actas_'.date('Y-m-d',$date).'.pdf';
+                    // $this->pdf->Output($file_to_save, 'I');
+                    // $this->pdf->Output($file_to_save, 'D');
+                    ob_clean();
+                    if(is_dir("./uploads/cierres/actas/"))//
+                    {
+                        chmod("./uploads/cierres/actas/", 0777); //Para cambiar el permiso de la carpeta en caso de error de permisologia
+                    }
+                    else
+                    {
+                        mkdir("./uploads/cierres/actas/", 0777);
+                    }
+                    $this->pdf->Output($file_to_save, 'F');//guarda en el servidor
+                    
+                    
+                    $data = array(
+                                'acta' => $filename,
+                                'FILE_DIR' => './uploads/cierres/actas/',
+                                'completed'=> 'ACTAS');
+                    $this->model_alm_articulos->update_closure($data);//actualizo en la BD del cierre
+
+                    $this->pdf->Output('Actas_'.date('Y-m-d',$date).'.pdf', 'I');//envia al browser
+                    $this->validar_reporte();//culmina el cierre
+                    // if( ! $this->upload->do_upload())//si ocurre un error en la subida...
+                    // {
+                    //     $error = array('error' => $this->upload->display_errors());
+                    //     print_r($error);
+                    //     // echo(octal_permissions(fileperms($config['upload_path']));
+                    //     // $this->load->view('upload_form', $error);
+                    // }
+
+                            // $this->pdf->Output('Actas_'.date('Y-m-d',$date).'.pdf', 'I');
+
+                        //     $data = array('acta' => $file_to_save,
+                        //         'FILE_DIR' => './uploads/cierres/actas',
+                        //         'completed'=> 'COMPLETED');
+
+                        // $this->model_alm_articulos->update_closure($data);
+                        // }
+                        // if($this->uri->uri_string()=='inventario/cerrar')
+                        // {
+                        //     $pdf->Output('example_039.pdf', 'I');
+
+                        // }
+                    // $pdf->Write(20, 'Some sample text');
+                    // $pdf->Output('My-File-Name.pdf', 'I');
+                    // readNumber();
+                    // for ($i=1; $i <=31 ; $i++)
+                    // {
+                    //     echo $i.': '.readNumber($i).'<br>';
+                    // }
+                    // die();
+                    // $this->pdf->AddActaPage();
+                    // $this->pdf->ActaCorrectiva($vars);
+                    // // $this->pdf->ActaHeader();
+                    // // $this->pdf->ActaFooter();
+                    // $this->pdf->SetDisplayMode(100,'default');
+
+                    // $this->pdf->AliasNbPages();
+
+                    // $this->pdf->SetMargins(8, 8 , 8);
+
+                    // $this->pdf->SetAutoPageBreak(true,15);
+                    
+                    // $this->pdf->SetTitle("Cierre de Inventario");
+
+                    // $this->pdf->Ln(7);
+                    // // $this->pdf->sumary($txt);
+
+                    // // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
+                    // $date = time();
+                    // // $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
+                    // // $this->pdf->Output($file_to_save, 'F');
+                    // // $this->pdf->Output($file_to_save);
+                    // $this->pdf->CloseActaPage();
+                    // $this->pdf->Output();
+                    // echo $file_to_save;
+                }
+                else
+                {
+                    // die_pre($this->model_alm_articulos->closure_isStarted(), __LINE__, __FILE__);
+                    $file = "./uploads/cierres/actas/".$this->model_alm_articulos->get_latestClosure()['acta'];
+                    //Trasnferencia de archivo de disco en servidor, a cache del cliente
+                    header('Content-type: application/pdf');
+                    header('Content-Disposition: inline; filename="'.$filename.'"');
+                    header('Content-Transfer-Encoding: binary');
+                    header('Accept-Ranges: bytes');
+                    echo file_get_contents($file);
+                }
             // else
             // {
-                $this->dompdf->stream("inventario.pdf", array('Attachment' => 0));
+                // $this->load->helper('directory');
+                // $aux['actDeCierres']="
+                // <div class='form-group'>
+                //     <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                //     <div class='col-sm-9'>
+                //         <select id='actDeCierres' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
+                // $aux['actDeCierres'].= "<option value='' selected >--SELECCIONE--</option>";
+                // foreach (directory_map('./uploads/cierres/actas') as $file)
+                // {
+                //     $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                //     $aux['actDeCierres'].= "<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                // }
+                // $aux['actDeCierres'].= "</select></div></div>";
+                // return $aux;
             // }
+            }
+        }
+        else
+        {
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
+        }
     }
-
     public function pdf_cierreFinal($array='')
     {
         // echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
         if($this->dec_permiso->has_permission('alm', 13))
         {
+            // $array =
             // echo('BOOM! goes the dynamite');
             // die_pre($array);
             $date = time();
@@ -1272,14 +2178,21 @@ class Alm_articulos extends MX_Controller
 
     }
 
-    public function upload_excel()//para subir un archivo de lista de inventario fisico
+    public function upload_excel($option='')//para subir un archivo de lista de inventario fisico
     {
         $date = time();
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
         // $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';//esta linea da conflictos en centos 7
         $config['allowed_types'] = '*';
-        $config['file_name']= 'inv_fisico'.date('Y-m',$date);
+        if($option)
+        {
+            $config['filename']= $option.'_'.date('Y-m', $date);
+        }
+        else
+        {
+            $config['file_name']= 'inv_fisico'.date('Y-m',$date);
+        }
         // $config['file_name']= 'inv_fisico'.date('Y-m',$date);
         $config['overwrite']= true;
         $config['max_size'] = '2048';
@@ -1298,188 +2211,175 @@ class Alm_articulos extends MX_Controller
         }
     }
     public function read_excel()//para leer un archivo de excel o compatible con excel y genera los datos para el reporte a partir de 2 funciones de BD
-    {//lee un excell para cierre de inventario
-        // echo $this->input->post("file");
-        if($this->input->post("file"))
+    {
+        if($this->session->userdata('user'))
         {
-            $file = $this->input->post("file");
-            $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
-            //get only the Cell Collection
-            $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
-            //extract to a PHP readable array format
-
-            $arraycod=array();
-            foreach ($cell_collection as $cell) //para cada celda
+            //lee un excell para cierre de inventario
+            // echo $this->input->post("file");
+            if($this->input->post("file") && $this->model_alm_articulos->closure_isStarted()=='BEGINING')
             {
-                $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
-                $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
-                $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
-                //header will/should be in row 1 only. of course this can be modified to suit your need.
-                // if($row <= 2)//en el recorrido, aparto las primeras 2 filas
-                // {
-                //     $header[$row][$column] = $data_value;
-                // }
-                // else//a partir de la 3 fila empiezan los datos de articulos y cantidades
-                // {
-                //     if($column == 'A')//codigo del articulo
-                //     {
-                //         // $arr_data[$row][$column] = $data_value;
-                //         $aux['linea'] = $row;
-                //         $aux['cod_articulo'] = $data_value;
-                //     }
-                //     if($column == 'B')//cantidad en existencia (tambien es la ultima columna a leer)
-                //     {
-                //         // $arr_data[$row][$column] = $data_value;
-                //         $aux['existencia'] = $data_value;
-                //         //a partir de aqui se puede mandar $aux completa para procesar en modelo
-                //         // echo_pre($aux);
-                //         $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
-                //     }
-                // }
-                if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
+                $file = $this->input->post("file");
+                $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+
+            ////version actual
+                $verifica = true;
+            ////version actual
+                $arraycod=array();
+                foreach ($cell_collection as $cell) //para cada celda
                 {
-                    if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
+                    
+                    if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                     {
-                        $col_articulo = $column;
+                        if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
+                        {
+                            $col_articulo = $column;
+                        }
+                        if($data_value=='cantidad_existencia' || $data_value=='Cantidad en existencia')
+                        {
+                            $col_exist = $column;
+                        }
+                        if($data_value == 'descripcion' || $data_value == 'Descripción')
+                        {
+                            $col_descripcion = $column;
+                        }
                     }
-                    if($data_value=='cantidad_existencia' || $data_value=='Cantidad en existencia')
+                    else
                     {
-                        $col_exist = $column;
+                        if($column == $col_articulo)//codigo del articulo
+                        {
+                            // $arr_data[$row][$column] = $data_value;
+                            // $aux['linea'] = $row;
+                            $array[$row-2]['linea'] = $row;
+                            $array[$row-2]['cod_articulo'] = $data_value;
+                            $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                        }
+                        if($column == $col_descripcion)
+                        {
+                            $array[$row-2]['linea'] = $row;
+                            if(!isset($array[$row-2]['cod_articulo']))
+                            {
+                                $array[$row-2]['cod_articulo'] = ' ';
+                            }
+                            // $aux['descripcion'] = $data_value;
+                            $array[$row-2]['descripcion'] = $data_value;
+                            // $aux['existencia'] = 'X';
+                            $array[$row-2]['existencia'] = 'sin reportar';
+                            $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                        }
+                        if($column == $col_exist)//cantidad en existencia (tambien es la ultima columna a leer)
+                        {
+                            $array[$row-2]['linea'] = $row;
+                            if(!isset($array[$row-2]['cod_articulo']))
+                            {
+                                $array[$row-2]['cod_articulo'] = ' ';
+                            }
+                            // $array[$row-2]['existencia'] = $data_value;
+                            $array[$row-2]['existencia'] = number_format($data_value);
+                            $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                            
+                        }
+                        //inserto la data en la tabla alm_reporte
+                        if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
+                        {
+                            // $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                            // $verifica *=true;
+                            // $verifica *= $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                            $batch[] = $array[$row-2];
+                        }
+
                     }
-                    if($data_value == 'descripcion')
-                    {
-                        $col_descripcion = $column;
-                    }
+                }
+
+                $verifica = $this->model_alm_articulos->insert_reporte($batch);
+            ////version actual
+                if($verifica)
+                {
+                    $success['status']='success';
+                    echo json_encode($success);
                 }
                 else
                 {
-                    if($column == $col_articulo)//codigo del articulo
-                    {
-                        // $arr_data[$row][$column] = $data_value;
-                        // $aux['linea'] = $row;
-                        $array[$row-2]['linea'] = $row;
-                        $array[$row-2]['cod_articulo'] = $data_value;
-                        $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
-                    }
-                    if($column == $col_descripcion)
-                    {
-                        $array[$row-2]['linea'] = $row;
-                        if(!isset($array[$row-2]['cod_articulo']))
-                        {
-                            $array[$row-2]['cod_articulo'] = ' ';
-                        }
-                        // $aux['descripcion'] = $data_value;
-                        $array[$row-2]['descripcion'] = $data_value;
-                        // $aux['existencia'] = 'X';
-                        $array[$row-2]['existencia'] = 'sin reportar';
-                        $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
-                    }
-                    if($column == $col_exist)//cantidad en existencia (tambien es la ultima columna a leer)
-                    {
-                        $array[$row-2]['linea'] = $row;
-                        if(!isset($array[$row-2]['cod_articulo']))
-                        {
-                            $array[$row-2]['cod_articulo'] = ' ';
-                        }
-                        $array[$row-2]['existencia'] = $data_value;
-                        $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
-                        // $arr_data[$row][$column] = $data_value;
-                        // if(is_numeric($data_value))
-                        // {
-                        //     $aux['existencia'] = $data_value;
-                        // }
-                        // else
-                        // {
-                        //     // echo($row).'<br>';
-                        // }
-
-                        // $aux['existencia'] = $data_value;
-                        //a partir de aqui se puede mandar $aux completa para procesar en modelo
-                        // print_r($aux);
-                        // $array[] = $aux;
-                        // $arr_data[$row-2] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
-                        // $aux['linea'] = $row+1;
-                        // $aux['cod_articulo'] = ' ';
-                        // $array[$row-2]['cod_articulo'] = ' ';
-                    }
-
+                    $error['status']='error';
+                    echo json_encode($error);
                 }
-            }
-            // die('FIN!!!');
-            // die_pre($array, __LINE__, __FILE__);
-            $arr_data = $this->model_alm_articulos->verif_arts($array, $arraycod);
-            // usort($arr_data, 'sortByObservacion');//para ordenar por observacion
-            //send the data in an array format
-            // die_pre($arr_data);
-            $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
-            $sumary['sinRegistrar'] = 0;
-            $sumary['sobrante'] = 0;
-            $sumary['faltante'] = 0;
-            $sumary['sinReportar'] = 0;
-            $sumary['sinProblemas'] = 0;
-            $sumary['sobranteGlobal'] = 0;
-            $sumary['faltanteGlobal'] = 0;
 
-            foreach ($arr_data as $key => $value)
-            {
-                // if(isset($value['sinRegistrar']))
+            ////version actual
+            ////version anterior
+                // $arr_data = $this->model_alm_articulos->verif_arts($array, $arraycod);
+                
+                // $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
+                // $sumary['sinRegistrar'] = 0;
+                // $sumary['sobrante'] = 0;
+                // $sumary['faltante'] = 0;
+                // $sumary['sinReportar'] = 0;
+                // $sumary['sinProblemas'] = 0;
+                // $sumary['sobranteGlobal'] = 0;
+                // $sumary['faltanteGlobal'] = 0;
+
+                // foreach ($arr_data as $key => $value)
                 // {
-                    $sumary['sinRegistrar'] = $sumary['sinRegistrar'] + $value['sinRegistrar'];
-                    unset($value['sinRegistrar']);
+                //     // if(isset($value['sinRegistrar']))
+                //     // {
+                //         $sumary['sinRegistrar'] = $sumary['sinRegistrar'] + $value['sinRegistrar'];
+                //         unset($value['sinRegistrar']);
+                //     // }
+                //     // if(isset($value['sobrante']))
+                //     // {
+                //         $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
+                //         unset($value['sobrante']);
+                //     // }
+                //     // if(isset($value['sobranteGlobal']))
+                //     // {
+                //         $sumary['sobranteGlobal'] = $sumary['sobranteGlobal'] + $value['sobranteGlobal'];
+                //         unset($value['sobranteGlobal']);
+                //     // }
+                //     // if(isset($value['faltante']))
+                //     // {
+                //         $sumary['faltante'] = $sumary['faltante'] + $value['faltante'];
+                //         unset($value['faltante']);
+                //     // }
+                //     // if(isset($value['faltanteGlobal']))
+                //     // {
+                //         $sumary['faltanteGlobal'] = $sumary['faltanteGlobal'] + $value['faltanteGlobal'];
+                //         unset($value['faltanteGlobal']);
+                //     // }
+                //     // if(isset($value['sinReportar']))
+                //     // {
+                //         $sumary['sinReportar'] = $sumary['sinReportar'] + $value['sinReportar'];
+                //         unset($value['sinReportar']);
+                //     // }
+                //     // if(isset($value['sinProblemas']))
+                //     // {
+                //         $sumary['sinProblemas'] = $sumary['sinProblemas'] + $value['sinProblemas'];
+                //         unset($value['sinProblemas']);
+                //     // }
                 // }
-                // if(isset($value['sobrante']))
-                // {
-                    $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
-                    unset($value['sobrante']);
-                // }
-                // if(isset($value['sobranteGlobal']))
-                // {
-                    $sumary['sobranteGlobal'] = $sumary['sobranteGlobal'] + $value['sobranteGlobal'];
-                    unset($value['sobranteGlobal']);
-                // }
-                // if(isset($value['faltante']))
-                // {
-                    $sumary['faltante'] = $sumary['faltante'] + $value['faltante'];
-                    unset($value['faltante']);
-                // }
-                // if(isset($value['faltanteGlobal']))
-                // {
-                    $sumary['faltanteGlobal'] = $sumary['faltanteGlobal'] + $value['faltanteGlobal'];
-                    unset($value['faltanteGlobal']);
-                // }
-                // if(isset($value['sinReportar']))
-                // {
-                    $sumary['sinReportar'] = $sumary['sinReportar'] + $value['sinReportar'];
-                    unset($value['sinReportar']);
-                // }
-                // if(isset($value['sinProblemas']))
-                // {
-                    $sumary['sinProblemas'] = $sumary['sinProblemas'] + $value['sinProblemas'];
-                    unset($value['sinProblemas']);
-                // }
+                // $arr_data['sumary'] = $sumary;
+                
+                // $aux = $this->pdf_cierreFinal($arr_data);
+            ////FIN de version anterior
+                
             }
-            $arr_data['sumary'] = $sumary;
-            // die_pre($sumary, __LINE__, __FILE__);
-            // $data['header'] = $header;
-            // $data['values'] = $arr_data;
-            // return($data);
-            // echo_pre($data['values']);
-            // $this->pdf_cierreFinal($data['values']);
-            // echo json_encode($this->pdf_cierreFinal($data['values']));
-            $aux = $this->pdf_cierreFinal($arr_data);
-            // echo $aux;
-            // $this->pdf_cierreFinal($data['values']);
+            else
+            {
+                return(false);
+            }
         }
         else
         {
-            return(false);
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
     }
 
     public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
         // echo_pre('permiso para agregar articulos desde archivo', __LINE__, __FILE__);
-        if($this->dec_permiso->has_permission('alm', 7))
+        if($this->dec_permiso->has_permission('alm', 8))
         {
     ////////defino los parametros de la configuracion para la subida del archivo
             $config['upload_path'] = './uploads/';
@@ -2070,19 +2970,26 @@ class Alm_articulos extends MX_Controller
         echo json_encode($output);
 
     }
-     public function test()
+    public function category_relationship()
     {
-              // Load all views as normal
-            $this->load->view('reporte_pdf_1');
-            // Get output html
-            $html = $this->output->get_output();
-            // Load library
-            $this->load->library('dompdf_gen');
+        $this->model_alm_articulos->relate_categoria();
+            //   // Load all views as normal
+            // $this->load->view('reporte_pdf_1');
+            // // Get output html
+            // $html = $this->output->get_output();
+            // // Load library
+            // $this->load->library('dompdf_gen');
 
-            // Convert to PDF
-            $this->dompdf->load_html(utf8_decode($html));
-            $this->dompdf->render();
-            $this->dompdf->stream("asignaciones.pdf", array('Attachment' => 0));
+            // // Convert to PDF
+            // $this->dompdf->load_html(utf8_decode($html));
+            // $this->dompdf->render();
+            // $this->dompdf->stream("asignaciones.pdf", array('Attachment' => 0));
+    }
+    public function test($flag='')
+    {
+        // echo_pre($this->model_alm_articulos->get_segmento($flag));
+        // echo_pre($this->model_alm_articulos->get_familia($flag));
+        echo_pre($this->model_alm_articulos->get_categoria($flag));
     }
     
     public function print_dataTable()
@@ -2560,18 +3467,50 @@ class Alm_articulos extends MX_Controller
             if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
             {
                 $this->load->helper('directory');
+                $dir = directory_map('./uploads/cierres', 2);
+                // array_multisort($dir, SORT_ASC, SORT_STRING);
                 $aux['actDeIni']="
                 <div class='form-group'>
-                    <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                    <label class='col-sm-3 control-label text-center'>Actas</label>
                     <div class='col-sm-9'>
                         <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
                 $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
-                foreach (directory_map('./uploads/cierres') as $file)
+                // echo_pre(directory_map('./uploads/cierres', 2), __LINE__, __FILE__);
+                $optgroup = array();
+                $optgroup['root'] = '<optgroup label="Reportes y respaldos">';
+                foreach ($dir as $filepos => $file)
                 {
-                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
-                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                    if(is_array($file))
+                    {
+                        $optgroup[$filepos] = '';
+                        // echo $filepos;
+                        // echo "<br><br>";
+                        $optgroup[$filepos].='<optgroup label="'.strtoupper($filepos).'">';
+                        foreach ($file as $key => $value)
+                        {
+                            $fly = str_replace('.pdf', '', $value);
+                            $HN = str_replace('_', ' del ', $fly);
+
+                            // echo $value.'<br>';
+                            $optgroup[$filepos].="<option value = '".base_url()."uploads/cierres/".$filepos."/".$value."#zoom=page-width'>".$HN."</option>";
+                        }
+                        $optgroup[$filepos].='</optgroup >';
+                        // echo '<br><br>';
+                    }
+                    else
+                    {
+                        // echo $filepos.'  '.$file.'<br>';
+                        $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                        $optgroup['root'].="<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";   
+                    }
                 }
-                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
+                $optgroup['root'].='</optgroup >';
+                foreach ($optgroup as $key => $value)
+                {
+                    $aux['actDeIni'].=$value;
+                }
+                // die_pre($aux['actDeIni']);
+                $aux['actDeIni'].="</select></div></div>";
                 return $aux;
             }
             else
@@ -2586,14 +3525,28 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function alterDB()
+
+    public function get_cierresNEW()//para traer un arreglo de cierres de inventario del servidor de la carpeta "uploads"
     {
         if($this->session->userdata('user'))//valida que haya una session iniciada
         {
-            if($this->session->userdata('user')['id_usuario'] == '18781981' || $this->session->userdata('user')['id_usuario']=='14713134')
+            if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
             {
-                $this->model_alm_articulos->alterarAlmacen();
-                die_pre("Listo!", __LINE__, __FILE__);
+                $this->load->helper('directory');
+                $aux['actDeIni']="
+                <div class='form-group'>
+                    <label class='col-sm-3 control-label text-center'>Actas</label>
+                    <div class='col-sm-9'>
+                        <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
+                foreach (directory_map('./uploads/cierres') as $file)
+                {
+                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                }
+                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
+                // return $aux;
+                print_r($aux);
             }
             else
             {
@@ -2607,24 +3560,113 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+
+    public function migrate()//migracion para version del 21/07/2016
+    {
+        if($this->session->userdata('user')&& ($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'))
+        {
+            $this->model_alm_articulos->rename_oldVersionTables();
+            $this->model_alm_articulos->create_newVersionTables();
+            $this->model_alm_articulos->migrate_ver1point3();
+            // $this->model_alm_articulos->delete_oldVersionTables();
+            die_pre("Listo!", __LINE__, __FILE__);
+        }
+    }
+
+    public function alterDB($fecha)
+    {
+        // die_pre($fecha);
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->session->userdata('user')['id_usuario'] == '18781981' || $this->session->userdata('user')['id_usuario']=='14713134')
+            {
+                $this->model_alm_articulos->alterarAlmacen($fecha);
+                echo_pre("Listo!", __LINE__, __FILE__);
+                $this->session->set_flashdata('mod_DB', 'success');
+                redirect('inicio');
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+//////Sub_modulo de cierre de inventario
+    public function form_excelDL()
+    {
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $rowCount = 2;
+        $array = $this->model_alm_articulos->get_allArticulos();
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo de ubicacion');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Codigo del articulo');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Descripción');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Cantidad en existencia');
+        foreach ($array as $key => $row)
+        {
+            $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['cod_ubicacion']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['cod_articulo']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, $row['descripcion']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, '');
+            $rowCount++;
+        }
+        $objPHPExcel->getActiveSheet()->getColumnDimension("A")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("C")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("D")->setAutoSize(true);
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        ob_end_clean();
+        $objWriter->setOffice2003Compatibility(true);
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="ExistDeArticulos.xlsx"');
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+        $objWriter->save("php://output");
+
+    }
+    public function alm_reporte()//para construir la tabla en la base de datos
+    {
+
+    }
+//////Fin de Sub_modulo de cierre de inventario
+
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de modificar el cod del articulo
-    public function mod_cod_art(){
-        if($_POST){
-//            die_pre($_POST);
+    public function mod_cod_art()
+    {
+        if($_POST)
+        {
+            // die_pre(json_encode("unchanged"));
+            $articuloID = $_POST['raw']['data']['0']['ID'];
+            $campo1 = $_POST['raw']['data']['0']['descripcion'];
+            $campo2 = $_POST['raw']['data']['0']['cod_articulo'];
+            $campo3 = $_POST['raw']['data']['0']['cod_ubicacion'];
+            $aux = $this->model_alm_articulos->get_articulo($articuloID, true);
             $historial= array(
                     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
-                    'observacion'=>strtoupper('modificando cod_articulo'),
+                    'observacion'=>strtoupper('modificando articulo')."ID=".$articuloID." from:|".$aux['descripcion']."|-|".$aux['cod_articulo']."|-|".$aux['cod_ubicacion']." to:|".$campo1."|-|".$campo2."|-|".$campo3,
                     'por_usuario'=>$this->session->userdata('user')['id_usuario']
                     );
             switch($_POST['action']):
                 case 'editRow':
-//                    echo_pre($_POST['raw']['data']['0']);
-                    if(!$this->model_alm_articulos->consul_cod($_POST['raw']['data']['0'])){
-                        $this->model_alm_articulos->update_cod_articulo($_POST['raw']['data']['0'], $historial);
-                        echo json_encode("true");
-                    }else{
-                        echo json_encode("false");
-                        
+                    // echo_pre($_POST['raw']['data']['0']);
+                    if($this->model_alm_articulos->consul_cod($_POST['raw']['data']['0'])){
+                        if($this->model_alm_articulos->update_cod_articulo($_POST['raw']['data']['0'], $historial))
+                        {
+                            echo json_encode("true");
+                        }
+                        else
+                        {
+                            echo json_encode("false");
+                        }
+                    }
+                    else
+                    {
+                        echo json_encode("unchanged");
                     }
                     break;
             endswitch;
@@ -2635,7 +3677,6 @@ class Alm_articulos extends MX_Controller
             $results = $this->model_alm_articulos->get_art();//Va al modelo para tomar los datos para llenar el datatable
             echo json_encode($results); //genera la salida de datos
         }
-        
     }
     
     public function tmp_mod_arti()
@@ -2653,6 +3694,331 @@ class Alm_articulos extends MX_Controller
         {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc');
+        }
+    }
+
+    //Nueva funcion temporal
+    public function excel_code_switch()//para cambiar los códigos de los articulos por otros, suministrado por un archivo de excel predeterminado
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo $this->input->post("file");
+            if($this->input->post("file"))
+            {
+                $file = $this->input->post("file");
+                $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+
+            ////version actual
+                $verifica = true;
+            ////version actual
+                $arraycod=array();
+                $errores=array();
+                $affected=array();
+                foreach ($cell_collection as $cell) //para cada celda
+                {
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila de la celda
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la celda
+                    
+                    if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
+                    {
+                        if($data_value=='cod_articulo')
+                        {
+                            $col_articulo = $column;
+                        }
+                        if($data_value=='codigo_NU')
+                        {
+                            $col_articuloNU = $column;
+                        }
+                        if($data_value == 'descripcion')
+                        {
+                            $col_descripcion = $column;
+                        }
+                        if($data_value == 'descripcion_NU')
+                        {
+                            $col_descripcionNU = $column;
+                        }
+                    }
+                    else
+                    {
+                        if($column == $col_articulo)//codigo viejo del articulo
+                        {
+                            $i=$row;
+                            $array[$i]['linea']=$row;
+                            if(!empty($data_value))
+                            {
+                                $array[$i]['cod_artviejo'] = $data_value;
+                                // $array[$i]['cod_artviejo'] = preg_replace('/\s+/', '', $data_value);
+                            }
+                        }
+                        else
+                        {
+                            if(isset($i) && isset($array[$i]['cod_artviejo']) && $i==$row)
+                            {
+                                if($column == $col_articuloNU)//codigo del articulo basado en las naciones unidas
+                                {
+                                    $array[$i]['cod_articulo'] = $data_value;
+                                }
+                                else
+                                {
+                                    if($column == $col_descripcionNU)//descripcion correcta, basado en las naciones unidas
+                                    {
+                                        $array[$i]['descripcion'] = $data_value;
+                                        if(isset($array[$i]['cod_artviejo']) && isset($array[$i]['cod_articulo']) && isset($array[$i]['descripcion']))
+                                        {
+                                            $aux['cod_articulo'] = $array[$i]['cod_articulo'];
+                                            $aux['descripcion'] = $array[$i]['descripcion'];
+                                            $cod_NU = preg_split("/[-]+/", $array[$i]['cod_articulo']);
+                                            $aux['cod_articulonu'] = $cod_NU[0];
+                                            // $cod['cod_artviejo'] = $array[$i]['cod_artviejo'];
+                                            // if($this->model_alm_articulos->exist($cod))
+                                            if($this->model_alm_articulos->edit_artCod($array[$i]['cod_artviejo'], $aux))
+                                            {
+                                                $affected[]=$row;
+                                                $verifica *= 1;
+                                            }
+                                            else
+                                            {
+                                                $errores[]=$row;
+                                                $verifica *= 0;
+                                            }
+                                            $arraycod[$i]['cod_artviejo'] = $array[$i]['cod_artviejo'];
+                                            $arraycod[$i]['cod_articulo'] = $array[$i]['cod_articulo'];
+                                            $arraycod[$i]['descripcion'] = $array[$i]['descripcion'];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // die_pre($errores, __LINE__, __FILE__);
+            ////version actual
+                if($verifica)
+                {
+                    $this->model_alm_articulos->relate_categoria();
+                    $success['status']='success';
+                    $success['goodLines']= $affected;
+                    echo json_encode($success);
+                }
+                else
+                {
+                    $error['status']='error';
+                    $error['goodLines']= $affected;
+                    $error['badLines']= $errores;
+                    echo json_encode($error);
+                }
+            }
+            else
+            {
+                return(false);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function excel_category_input()//para cambiar los códigos de los articulos por otros, suministrado por un archivo de excel predeterminado
+    {
+        if($this->session->userdata('user'))
+        {
+            // echo $this->input->post("file");
+            if($this->input->post("file"))
+            {
+                $file = $this->input->post("file");
+                $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+
+            ////version actual
+                $verifica = true;
+            ////version actual
+                $categoria = array();//'cod_categoria'=>array(), 'nombre'=>array());
+                $familia = array();//'familia'=>array(), 'cod_familia'=>array());
+                $segmento = array();//'segmento'=>array(), 'cod_segmento'=>array());
+                $flag = '';
+                $i=0;
+                $j=0;
+                $k=0;
+                $arrayCat=array();
+                $errores=array();
+                $affected=array();
+                $lines =0;
+                foreach ($cell_collection as $cell) //para cada celda
+                {
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila de la celda
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la celda
+                    
+                    if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
+                    {
+                        if($data_value=='CODIGO')
+                        {
+                            $col_codigo = $column;
+                        }
+                        if($data_value=='DESCRIPCION')
+                        {
+                            $col_descripcion = $column;
+                        }
+                    }
+                    else
+                    {
+                        if($column == $col_codigo)
+                        {
+                            if(strlen($data_value) == 2)
+                            {
+                                $flag = 'segmento';
+                                $segmento[$i]['cod_segmento'] = $data_value;
+                                $affected['Linea: '.$row] = '';
+                                $affected['Linea: '.$row] .= 'cod_segmento: '.$data_value;
+                            }
+                            if(strlen($data_value) == 4)
+                            {
+                                $flag = 'familia';
+                                $familia[$j]['cod_familia'] = $data_value;
+                                $affected['Linea: '.$row] = '';
+                                $affected['Linea: '.$row] .= 'cod_familia: '.$data_value;
+                            }
+                            if(strlen($data_value) == 6)
+                            {
+                                $flag = 'categoria';
+                                $categoria[$k]['cod_categoria'] = $data_value;
+                                $affected['Linea: '.$row] = '';
+                                $affected['Linea: '.$row] .= 'cod_categoria: '.$data_value;
+                            }
+                        }
+                        if($column == $col_descripcion)
+                        {
+                            if($flag == 'segmento')
+                            {
+                                $segmento[$i]['segmento'] = $data_value;
+                                $affected['Linea: '.$row] .= ' segmento: '.$data_value;
+                                $i++;
+                            }
+                            if($flag == 'familia')
+                            {
+                                $familia[$j]['familia'] = $data_value;
+                                $affected['Linea: '.$row] .= ' familia: '.$data_value;
+                                $j++;
+                            }
+                            if($flag == 'categoria')
+                            {
+                                $categoria[$k]['nombre'] = $data_value;
+                                $affected['Linea: '.$row] .= ' nombre: '.$data_value;
+                                $k++;
+                            }
+                            $flag = '';
+                        }
+                    }
+                }
+                // echo_pre(sizeof($segmento), __LINE__, __FILE__);
+                // echo_pre(sizeof($familia), __LINE__, __FILE__);
+                // echo_pre(sizeof($categoria), __LINE__, __FILE__);
+                $aux = array();
+                $piece1 = '';
+                $piece2 = '';
+                foreach ($categoria as $key => $value)
+                {
+                    $aux[$key] = array();
+                    foreach ($familia as $key2 => $value2)
+                    {
+                        foreach ($segmento as $key3 => $value3)
+                        {
+                            $piece1 = substr($value['cod_categoria'], 0, 4);
+                            $piece2 = substr($value2['cod_familia'], 0, 2);
+                            if($piece1 == $value2['cod_familia'])
+                            {
+                                if($piece2==$value3['cod_segmento'])
+                                {
+                                    $aux[$key]['nombre'] = $value['nombre'];
+                                    $aux[$key]['cod_categoria'] = $value['cod_categoria'];
+                                    $aux[$key]['familia'] = $value2['familia'];
+                                    $aux[$key]['cod_familia'] = $value2['cod_familia'];
+                                    $aux[$key]['segmento'] = $value3['segmento'];
+                                    $aux[$key]['cod_segmento'] = $value3['cod_segmento'];
+                                }
+                            }
+                        }
+                    }
+                }
+                // die_pre($aux);
+                $verifica = $this->model_alm_articulos->insert_categoria($aux);
+                $this->model_alm_articulos->relate_categoria();
+                if($verifica)
+                {
+                    $success['status']='success';
+                    $success['goodLines']= $affected;
+                    echo json_encode($success);
+                }
+                else
+                {
+                    $error['status']='error';
+                    $error['goodLines']= $affected;
+                    $error['badLines']= $errores;
+                    echo json_encode($error);
+                }
+            }
+            else
+            {
+                return(false);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function json_categories()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($_POST)
+            {
+                die_pre($_POST);
+            }
+            // echo_pre('helloWorld!');
+            $categorias = $this->model_alm_articulos->get_allCategorias();
+            // echo_pre($categorias);
+            echo json_encode($categorias);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+
+    }
+    public function json_artFromCat($categoria="")
+    {
+        if($this->session->userdata('user'))
+        {
+            if($_POST)
+            {
+                die_pre($_POST);
+            }
+            // echo_pre('helloWorld!');
+            $articulos = $this->model_alm_articulos->get_catArticulos($categoria);
+            // echo_pre($categorias);
+            echo json_encode($articulos);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function json_articulo()
+    {
+        if($this->input->post())
+        {
+            $cod_articulo = $this->input->post();
+            $articulo = $this->model_alm_articulos->exist_articulo($cod_articulo);
+            echo json_encode($articulo);
         }
     }
 }
