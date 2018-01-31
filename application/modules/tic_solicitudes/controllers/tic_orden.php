@@ -22,6 +22,7 @@ class Tic_orden extends MX_Controller {
         $this->load->model('tic_estatus_orden/model_tic_estatus_orden', 'model_estatus_orde');
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('tic_cuadrilla/model_tic_cuadrilla', 'model_cuadrilla');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_mnt_cuadrilla');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
@@ -151,7 +152,7 @@ class Tic_orden extends MX_Controller {
                         $dir = './uploads/tic/solicitudes'; //para enviar a la funcion de guardar imagen
                         $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                         $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
-                        if($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
+                        if($this->model_mnt_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
                             // AQUI TERMINA
                             $ext = ($this->upload->data());
                             $ruta = 'uploads/tic/solicitudes/'.$ext['file_name'];//para guardar en la base de datos
@@ -160,7 +161,7 @@ class Tic_orden extends MX_Controller {
                             );
                             $this->model_sol->actualizar_orden($datos,$orden2);//actualiza en la base de datos este campo
                         }else{
-                            $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
+                            $view['error'] = ($this->model_mnt_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
                         }
                     }    
                     
@@ -291,7 +292,7 @@ class Tic_orden extends MX_Controller {
                         $dir = './uploads/tic/solicitudes'; //para enviar a la funcion de guardar imagen
                         $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                         $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
-                        if($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
+                        if($this->model_mnt_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
                             // AQUI TERMINA
                             $ext = ($this->upload->data());
                             $ruta = 'uploads/tic/solicitudes/'.$ext['file_name'];//para guardar en la base de datos
@@ -300,7 +301,7 @@ class Tic_orden extends MX_Controller {
                             );
                             $this->model_sol->actualizar_orden($datos,$orden2);//actualiza en la base de datos este campo
                         }else{
-                            $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
+                            $view['error'] = ($this->model_mnt_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
                         }
                     }
                     $data4 = array(

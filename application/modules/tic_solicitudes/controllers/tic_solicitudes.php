@@ -26,6 +26,7 @@ class Tic_solicitudes extends MX_Controller {
         $this->load->model('tic_responsable_orden/model_tic_responsable_orden','model_responsable');
         $this->load->model('dec_permiso/model_dec_permiso','dec_permiso');
         $this->load->module('dec_permiso/dec_permiso');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_mnt_cuadrilla');
     }
 
     //funcion que devuelve la cantidad de solicitudes en la tabla
@@ -452,7 +453,7 @@ public function tic_detalle($id = '') // funcion para ver el detalle de una soli
                 $dir = './uploads/tic/solicitudes'; //para enviar a la funcion de guardar imagen
                 $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
-                if ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen) == 'exito') {
+                if ($this->model_mnt_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen) == 'exito') {
                     $ext = ($this->upload->data());
                     $ruta = 'uploads/tic/solicitudes/' . $ext['file_name']; //para guardar en la base de datos
                     $datos = array(//Guarda la ruta en la tabla respectiva ----
@@ -460,7 +461,7 @@ public function tic_detalle($id = '') // funcion para ver el detalle de una soli
                     );
                     $this->model_tic_solicitudes->actualizar_orden($datos, $_POST['id']); //actualiza en la base de datos este campo
                 } else {
-                    $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen));
+                    $view['error'] = ($this->model_mnt_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen));
                 }
                 
                 if ($solic != FALSE) 
@@ -579,7 +580,7 @@ public function tic_detalle($id = '') // funcion para ver el detalle de una soli
         $view['creada'] = $this->model_tic_estatus_orden->get_first_fecha($id);
         $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
        // $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
-//      echo_pre($view);
+        //die_pre($view);
         $final_ayudantes=array();
         $miembros = array();
         $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);

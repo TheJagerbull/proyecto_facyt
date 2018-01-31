@@ -402,7 +402,7 @@ if ($asig_per) {
 
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <table id="solicitudes" class="table table-hover table-bordered table-condensed dt-responsive nowrap" cellspacing="0" align="center" width="100%">
+                <table id="solicitudes" class="table table-hover table-bordered table-condensed nowrap" cellspacing="0" align="center" width="100%">
                     <thead>
                         <tr>
                             <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
