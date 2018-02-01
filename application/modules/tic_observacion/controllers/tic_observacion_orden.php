@@ -28,12 +28,13 @@ class Tic_observacion_orden extends MX_Controller {
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $i=>$observ):
-            $no++;
-//            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
+            $fnomb = explode(" " , $observ->nombre);
+            $fapell = explode(" ", $observ->apellido);
             $row = array();
-//            $row[] = $dos;
-            $row[] = $observ->nombre.' '.$observ->apellido;
+            $row[] = $fnomb['0'].' '.$fapell['0'];
             $row[] = $observ->observac;
+            $row[] = date("d/m/Y", strtotime($observ->fecha_observacion));//Para mostrar la fecha
+            $row[] = date("h:i a", strtotime($observ->fecha_observacion));//Para mostrar la hora
             $data[] = $row;
         endforeach;
 

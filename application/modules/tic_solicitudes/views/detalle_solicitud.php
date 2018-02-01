@@ -1258,44 +1258,42 @@
                 </div>
             <form class="form" action="<?php echo base_url() ?>tic_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
-            <div class="modal-body">
-                <div class="well well-sm">
-                <?php if($agre_observa){?>
-                    <div class="form-group">
-                        <label class="control-label" for="observac">Observación</label>
-                            <div class="col-lg-20">
-                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);"
+                <div class="modal-body">
+                    <div class="well well-sm">
+                    <?php if($agre_observa){?>
+                        <div class="form-group">
+                            <label class="control-label" for="observac">Observación</label>
+                                <div class="col-lg-20">
+                                    <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac<?php echo $tipo['id_orden'] ?>" name="observac" placeholder='Escriba aqui la observación...'></textarea>
-                            </div>
-                             <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
+                                </div>
+                                <small><p align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
+                        </div>
+                    <?php }?>
                     </div>
-                <?php }?>
-                </div>
-                    <div class="modal-footer">
+                <div class="modal-footer">
                     <?php if($agre_observa){?>
                         <button class="btn btn-primary" type="submit">Enviar</button>
-                         <hr>
+                        <hr>
                     <?php }?>
-                       
-                        <div class="col-md-12">
-                      
-                    <table id="example" class="table table-hover table-bordered table-condensed"  width="100%">
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>Observacion</th>
-                            </tr>
-                        </thead>
-                        <tfoot></tfoot>
-                        <tbody></tbody>
-                    </table>
+                        <table id="example" class="table table-hover table-bordered table-condensed nowrap" cellspacing="0"  width="100%">
+                            <thead class="alert">
+                                <tr class="active" >
+                                    <th><div align="center">Usuario</div></th>
+                                    <th><div align="center">Observacion</div></th>
+                                    <th><div align="center">Fecha</div></th>
+                                    <th><div align="center">Hora</div></th>
+                                </tr>
+                            </thead>
+                            <tfoot></tfoot>
+                            <tbody></tbody>
+                        </table>
                 </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button></div>
-                
-                 </div>
+                <div class="modal-footer">
+                    <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                </div>
+            </div>
             </form>
         </div>
     </div>

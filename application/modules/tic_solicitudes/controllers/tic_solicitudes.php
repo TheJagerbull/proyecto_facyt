@@ -673,11 +673,17 @@ public function tic_detalle($id = '') // funcion para ver el detalle de una soli
         $uri=$_POST['uri'];
         $usu =($this->session->userdata('user')['id_usuario']);
         $numsol = $_POST['numsol'];
+        //me devuelve la fecha actual
+        $this->load->helper('date');
+        $datestring = "%Y-%m-%d %h:%i:%s";
+        $time = time();
+        $fecha = mdate($datestring, $time);
         if (isset($_POST['observac'])):
             $datos = array(
             'id_usuario' => $usu,
             'id_orden_trabajo' => $numsol,
-            'observac' => strtoupper($_POST['observac']));
+            'observac' => strtoupper($_POST['observac']),
+            'fecha_observacion' => $fecha);
             $this->tic_observacion->insert_orden($datos);
             $this->session->set_flashdata('observacion', 'success');
         else:

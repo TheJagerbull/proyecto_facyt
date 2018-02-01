@@ -52,7 +52,7 @@ class Model_tic_observacion_orden extends CI_Model
 	//}
   //para trabajar con el datatable por ajax
 private function _get_datatables_query() {
-        $this->db->select('nombre,apellido,observac');
+        $this->db->select('nombre,apellido,observac,fecha_observacion');
         $this->db->join('tic_observacion_orden', 'tic_observacion_orden.id_usuario = dec_usuario.id_usuario', 'INNER');
         $this->db->from($this->table2);
         $i = 0;
