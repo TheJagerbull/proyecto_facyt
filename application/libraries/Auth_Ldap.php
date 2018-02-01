@@ -192,7 +192,7 @@ class Auth_Ldap {
                 log_message('info', 'Error connecting to '.$uri);
             }
         }
-        print_r($this->ldapconn);
+        //print_r($this->ldapconn);
         if ($this->ldapconn) {
             // realizando la autenticación
             ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);

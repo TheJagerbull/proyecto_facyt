@@ -10,6 +10,9 @@ class Alfa_master extends MX_Controller
         $this->load->library('auth_ldap');
         $this->load->helper('url');
         $this->load->library('table');
+        
+       
+           
     }
 
     function index() {
@@ -37,9 +40,14 @@ class Alfa_master extends MX_Controller
             if($rules->run() && $this->auth_ldap->login($rules->set_value('username'),$rules->set_value('password'))){
                 // Login WIN!
                 if($this->session->userdata('username')){
-                    echo_pre($this->session->all_userdata());
+                    //echo_pre($this->session->all_userdata()); imprime el array de la data
                    // $this->load->view('template/header');
-                    $this->load->view('auth/header');
+                  
+                  $user = $this->model_usuario_alfa->existe('username');
+                 
+                  echo $user;
+           
+                  $this->load->view('auth/header');
                   $this->load->view('auth/home');
                   $this->load->view('auth/footer');
                    // $this->load->view('template/footer');

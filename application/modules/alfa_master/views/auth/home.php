@@ -11,7 +11,10 @@
                   <div class="logo text-center">
                      <!--<img src="[mfassetpath]/Logo FACYT.png" style="width: 77px; height: 60px; top: 5px;"></img>-->
                      <h1><a href="">Servicios de Intranet</a></h1>
+
+
                   </div>
+
                </div>
             </div>
          </div>
@@ -25,10 +28,13 @@
       
       <div class="page-content blocky">
          <div class="container">
-
+                  <div class="navbar">
+                  <ul class="nav navbar-nav">
+                    
+                  </ul>
+                  <div>
                   <div class="sidebar-dropdown"><a href="index.html#">MENU</a></div>
                   <div class="sidey" style="">
-                 
                  
                      <div class="side-cont">
                         <ul class="nav">

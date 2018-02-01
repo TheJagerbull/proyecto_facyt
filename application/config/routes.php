@@ -50,7 +50,11 @@ $route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre 
 $route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
 $route['alm_articulos/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 //inicio
+//Nuevo inicio a travez de Serv. Alfa
 $route['inicio'] 												= 'user/usuario';
+// Rutas para formularios de inicio de session
+$route['login_alfa'] 											= 'alfa_master/login';
+
 // Rutas de Usuario
 $route['login']													= 'user/usuario/login';
 $route['usuario'] 												= 'user/usuario';
