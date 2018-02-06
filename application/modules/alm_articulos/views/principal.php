@@ -2413,7 +2413,7 @@ $(document).ready(function() {
                     }
                     else
                     {
-                      pane.show();
+                      panel.show();
                       swal(
                         'ERROR!',
                         'Ha ocurrido un error inesperado, al intentar ingresar datos al sistema',
