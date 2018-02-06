@@ -2395,7 +2395,7 @@ $(document).ready(function() {
                   {
                     if(typeof response === "object")
                     {
-                      pane.show();
+                      panel.show();
                       if(response.cat === 'exist')
                       {
                         swal(
