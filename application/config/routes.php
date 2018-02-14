@@ -77,6 +77,8 @@ $route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_de
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 $route['inventario/cierres']									= 'alm_articulos/opciones_cierres';
+$route['inventario/test']										= 'alm_articulos/get_cierres';
+$route['cierre/revision']										= 'alm_articulos/incongruencias_inv_reportado';
 		//Rutas de Datatables
 $route['tablas/inventario']										='alm_articulos/getSystemWideTable';
 $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';
@@ -85,7 +87,10 @@ $route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTabl
 $route['tablas/inventario/reportes']							='alm_articulos/build_report';
 $route['tablas/inventario/editar']                              ='alm_articulos/mod_cod_art';
 $route['tablas/inventario/modificar']                           ='alm_articulos/tmp_mod_arti';
+$route['tablas/inventario/reportado']							='alm_articulos/tabla_incongruencias';
+$route['tablas']												='template/DataTable';
 		//Rutas de inputs y formularios
+$route['inventario/cierre/formato']								='alm_articulos/form_excelDL';
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
 $route['inventario/cierre/readExcelFile']						='alm_articulos/read_excel';
@@ -96,6 +101,23 @@ $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
 $route['inventario/articulo/autocompletar']						='alm_articulos/ajax_likeArticulos';
 $route['inventario/tabla_config']								='alm_articulos/build_dtConfig';
 $route['inventario/imprimir']									='alm_articulos/print_dataTable';
+$route['inventario/articulo/fromExcelFile/(.*)']				='alm_articulos/upload_excel/$1';
+$route['inventario/articulo/cambioCod_excel']					='alm_articulos/excel_code_switch';
+$route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_input';
+$route['inventario/articulo/categorias']						='alm_articulos/json_categories';
+$route['inventario/articulos/categoria/(.*)']					='alm_articulos/json_artFromCat/$1';
+$route['inventario/insertar']									='alm_articulos/insertar_inventario';
+$route['inventario/articulo']									='alm_articulos/json_articulo';
+$route['inventario/segmento']									='alm_articulos/ajax_segmento';
+$route['inventario/familia']									='alm_articulos/ajax_familia';
+$route['inventario/categoria']									='alm_articulos/ajax_categoria';
+
+		//Rutas para el proceso de cierre de inventario
+$route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
+$route['inventario/habilitarCierre']							='alm_articulos/enable_closure';
+$route['inventario/generarRespaldo']							='alm_articulos/backup_Inventory';
+$route['inventario/cerrar']										='alm_articulos/inventory_closure';
+
 
 // Rutas de solicitudes de almacen
 $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';
@@ -120,11 +142,14 @@ $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicit
 $route['solicitud/cancelar']									='alm_solicitudes/cancelar_solicitud';
 $route['solicitud/cancelar/sin_enviar']							='alm_solicitudes/cancelar_carrito';
 //Rutas para pruebas de solicitudes
+$route['relate_category']										='alm_articulos/category_relationship';
 // $route['testsql']												='alm_solicitudes/test_sql';
 $route['testsql']												='alm_articulos/test_sql';
+$route['test']													='alm_articulos/test';
+$route['test/(.*)']												='alm_articulos/test/$1';
 //Rutas para migracion de sistema
-$route['migrarDB']												='alm_datamining/migrate';
-$route['alterDB']												='alm_articulos/alterDB';
+$route['migrarDB']												='alm_articulos/migrate';
+$route['alterDB/(.*)']											='alm_articulos/alterDB/$1';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
@@ -190,6 +215,7 @@ $route['tic_solicitudes/lista_solicitudes']				        = 'tic_solicitudes/tic_so
 $route['tic_solicitudes/solicitudes']						= 'tic_solicitudes/tic_solicitudes/list_sol';
 $route['tic_solicitudes/detalle/(:num)']					= 'tic_solicitudes/tic_solicitudes/tic_detalle/$1';
 $route['tic_solicitudes/detalles/(:num)']	    		                = 'tic_solicitudes/tic_solicitudes/tic_detalle_dep/$1';
+$route['tic_solicitudes/cerrada']                        			= 'tic_solicitudes/tic_solicitudes/listado_close';
 
 //Routes para tic_cuadrillas
 $route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';

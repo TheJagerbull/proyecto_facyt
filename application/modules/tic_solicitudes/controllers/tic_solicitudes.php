@@ -684,4 +684,5 @@ public function tic_detalle($id = '') // funcion para ver el detalle de una soli
         endif;
             redirect($uri);
     }
+
 }

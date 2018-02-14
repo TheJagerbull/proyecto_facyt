@@ -201,7 +201,7 @@ class Tic_ayudante extends MX_Controller {
 
             <?php if (!empty($ayudantes)) : ?>
                 <!--<h4> Lista de ayudantes disponibles </h4>-->
-                <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
+                <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed" width="100%">
                     <thead>
                         <tr>
                             <th><div align="center">Trabajador</div></th>
@@ -238,7 +238,7 @@ class Tic_ayudante extends MX_Controller {
             <?php if (!empty($ayudantes)) : ?>
                 <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>tic/desasignar/ayudante" method="post">
                     <!--<h4>Lista de ayudantes asignados </h4>-->
-                    <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
+                    <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed" width="100%">
                         <thead>
                             <tr>
                                 <th><div align="center">Trabajador</div></th>
