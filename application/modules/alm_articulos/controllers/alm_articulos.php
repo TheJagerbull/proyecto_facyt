@@ -2234,6 +2234,10 @@ class Alm_articulos extends MX_Controller
                     
                     if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                     {
+                        if($data_value=='cod_ubicacion' || $data_value=='Codigo de ubicacion')
+                        {
+                            $col_ubicacion = $column;
+                        }
                         if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
                         {
                             $col_articulo = $column;
@@ -2256,6 +2260,12 @@ class Alm_articulos extends MX_Controller
                             $array[$row-2]['linea'] = $row;
                             $array[$row-2]['cod_articulo'] = $data_value;
                             $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                        }
+                        if($column == $col_ubicacion)//codigo de ubicacion
+                        {
+                            $array[$row-2]['linea'] = $row;
+                            $array[$row-2]['cod_ubicacion'] = $data_value;
+                            // $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                         }
                         if($column == $col_descripcion)
                         {
@@ -2282,6 +2292,16 @@ class Alm_articulos extends MX_Controller
                             $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                             
                         }
+                        if(isset($array[$row-2]['cod_ubicacion']) && isset($array[$row-2]['cod_articulo']) && !isset($array[$row-2]['existencia']) && !isset($array[$row-2]['descripcion']))//solo para editar los codigos de ubicación
+                        {
+                            // echo_pre($array[$row-2]);
+                            $historial= array(
+                                'id_historial_a'=>$array[$row-2]['cod_articulo'].'0'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                                'observacion'=>strtoupper('modificando articulo por archivo')."cod_ubicacion=".$array[$row-2]['cod_ubicacion'],
+                                'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                                );
+                            // $this->model_alm_articulos->update_articulo($array[$row-2], $historial);
+                        }
                         //inserto la data en la tabla alm_reporte
                         if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
                         {
@@ -2293,7 +2313,7 @@ class Alm_articulos extends MX_Controller
 
                     }
                 }
-
+                // die_pre($batch, __LINE__, __FILE__);
                 $verifica = $this->model_alm_articulos->insert_reporte($batch);
             ////version actual
                 if($verifica)
@@ -3715,15 +3735,21 @@ class Alm_articulos extends MX_Controller
                 $arraycod=array();
                 $errores=array();
                 $affected=array();
+                $array=array();
+                $array2=array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
                     $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila de la celda
                     $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la celda
-                    
+
                     if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                     {
-                        if($data_value=='cod_articulo')
+                        if($data_value=='cod_ubicacion' || $data_value=='Codigo de ubicacion')
+                        {
+                            $col_ubicacion = $column;
+                        }
+                        if($data_value=='cod_articulo'  || $data_value=='Codigo del articulo')
                         {
                             $col_articulo = $column;
                         }
@@ -3742,8 +3768,19 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
+                        if($column == $col_ubicacion)//codigo de ubicacion
+                        {
+                            $array2[$row-2]['linea'] = $row;
+                            $array2[$row-2]['cod_ubicacion'] = $data_value;
+                            // $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                        }
                         if($column == $col_articulo)//codigo viejo del articulo
                         {
+                            //----
+                            $array2[$row-2]['linea'] = $row;
+                            $array2[$row-2]['cod_articulo'] = $data_value;
+                            // $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                            //----
                             $i=$row;
                             $array[$i]['linea']=$row;
                             if(!empty($data_value))
@@ -3752,9 +3789,28 @@ class Alm_articulos extends MX_Controller
                                 // $array[$i]['cod_artviejo'] = preg_replace('/\s+/', '', $data_value);
                             }
                         }
+                        if(isset($array2[$row-2]['cod_ubicacion']) && isset($array2[$row-2]['cod_articulo']))//solo para editar los codigos de ubicación
+                        {
+                            // die_pre($array2[$row-2]);
+                            $historial= array(
+                                'id_historial_a'=>$array2[$row-2]['cod_articulo'].'0'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                                'observacion'=>strtoupper('modificando articulo por archivo')."cod_ubicacion=".$array2[$row-2]['cod_ubicacion'],
+                                'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                                );
+                            if($this->model_alm_articulos->update_articulo($array2[$row-2], $historial))
+                            {
+                                $affected[]=$row;
+                                $verifica *= 1;
+                            }
+                            else
+                            {
+                                $errores[]=$row;
+                                $verifica *= 0;
+                            }
+                        }
                         else
                         {
-                            if(isset($i) && isset($array[$i]['cod_artviejo']) && $i==$row)
+                            if(isset($i) && isset($array[$i]['cod_artviejo']) && $i==$row && (isset($col_articuloNU) || isset($col_descripcionNU)))
                             {
                                 if($column == $col_articuloNU)//codigo del articulo basado en las naciones unidas
                                 {
@@ -3793,7 +3849,7 @@ class Alm_articulos extends MX_Controller
                         }
                     }
                 }
-                // die_pre($errores, __LINE__, __FILE__);
+                // die_pre($array2, __LINE__, __FILE__);
             ////version actual
                 if($verifica)
                 {
