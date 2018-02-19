@@ -1924,14 +1924,14 @@ class Alm_articulos extends MX_Controller
                     // $this->pdf->Output($file_to_save, 'I');
                     // $this->pdf->Output($file_to_save, 'D');
                     ob_clean();
-                    // if(is_dir("./uploads/cierres/actas/"))//
-                    // {
-                    //     chmod("./uploads/cierres/actas/", 0777); //Para cambiar el permiso de la carpeta en caso de error de permisologia
-                    // }
-                    // else
-                    // {
-                    //     mkdir("./uploads/cierres/actas/", 0777);
-                    // }
+                    if(is_dir("./uploads/cierres/actas/"))//
+                    {
+                        chmod("./uploads/cierres/actas/", 0755); //Para cambiar el permiso de la carpeta en caso de error de permisologia
+                    }
+                    else
+                    {
+                        mkdir("./uploads/cierres/actas/", 0755);
+                    }
                     $this->pdf->Output($file_to_save, 'F');//guarda en el servidor
                     
                     
@@ -2004,7 +2004,7 @@ class Alm_articulos extends MX_Controller
                     $file = "./uploads/cierres/actas/".$this->model_alm_articulos->get_latestClosure()['acta'];
                     //Trasnferencia de archivo de disco en servidor, a cache del cliente
                     header('Content-type: application/pdf');
-                    header('Content-Disposition: inline; filename="'.$filename.'"');
+                    header('Content-Disposition: inline; filename="'.$file.'"');
                     header('Content-Transfer-Encoding: binary');
                     header('Accept-Ranges: bytes');
                     echo file_get_contents($file);
