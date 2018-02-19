@@ -1834,13 +1834,13 @@ class Alm_articulos extends MX_Controller
                                 'nombre' =>'Gabriel',
                                 'apellido' =>'Hernandez'),
                             'jefe_comp'=> array(
-                                'titulo' => 'Lic.',
+                                'titulo' => 'Tsu.',
                                 'nombre' =>'Milennys',
                                 'apellido' =>'Gallardo'),
                             'coord_adm'=> array(
                                 'titulo' => 'Lic.',
-                                'nombre' =>'Romali',
-                                'apellido' =>'Kolster'),
+                                'nombre' =>'Jorge',
+                                'apellido' =>'Marval'),
                             'autoridad'=> array(
                                 'titulo' => 'Dr.',
                                 'nombre' =>'José Gregorio',
@@ -2303,7 +2303,7 @@ class Alm_articulos extends MX_Controller
                         //         );
                         //     // $this->model_alm_articulos->update_articulo($array[$row-2], $historial);
                         // }
-                        //FIN DE para modificar codigo de ubicacion
+                        //FIN De para modificar codigo de ubicacion
                         //inserto la data en la tabla alm_reporte
                         if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
                         {
