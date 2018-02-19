@@ -152,7 +152,7 @@ class Actaspdf extends TCPDF
                     Revisado por:<br>'.$array['authors']['jefe_comp']['titulo'].' '.$array['authors']['jefe_comp']['nombre'].' '.$array['authors']['jefe_comp']['apellido'].'<br>Jefe de Compras.
                     </td>';
         $table.= '<td>
-                    Aprobado por:<br>'.$array['authors']['coord_adm']['titulo'].' '.$array['authors']['coord_adm']['nombre'].' '.$array['authors']['coord_adm']['apellido'].'<br>Coordinadora Administrativa.
+                    Aprobado por:<br>'.$array['authors']['coord_adm']['titulo'].' '.$array['authors']['coord_adm']['nombre'].' '.$array['authors']['coord_adm']['apellido'].'<br>Coordinador Administrativo.
                     </td>';
         $table.= '</tr>';
         $table.= '</tbody>';
