@@ -2292,16 +2292,18 @@ class Alm_articulos extends MX_Controller
                             $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                             
                         }
-                        if(isset($array[$row-2]['cod_ubicacion']) && isset($array[$row-2]['cod_articulo']) && !isset($array[$row-2]['existencia']) && !isset($array[$row-2]['descripcion']))//solo para editar los codigos de ubicación
-                        {
-                            // echo_pre($array[$row-2]);
-                            $historial= array(
-                                'id_historial_a'=>$array[$row-2]['cod_articulo'].'0'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
-                                'observacion'=>strtoupper('modificando articulo por archivo')."cod_ubicacion=".$array[$row-2]['cod_ubicacion'],
-                                'por_usuario'=>$this->session->userdata('user')['id_usuario']
-                                );
-                            // $this->model_alm_articulos->update_articulo($array[$row-2], $historial);
-                        }
+                        //para modificar codigo de ubicacion
+                        // if(isset($array[$row-2]['cod_ubicacion']) && isset($array[$row-2]['cod_articulo']) && !isset($array[$row-2]['existencia']) && !isset($array[$row-2]['descripcion']))//solo para editar los codigos de ubicación
+                        // {
+                        //     // echo_pre($array[$row-2]);
+                        //     $historial= array(
+                        //         'id_historial_a'=>$array[$row-2]['cod_articulo'].'0'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                        //         'observacion'=>strtoupper('modificando articulo por archivo')."cod_ubicacion=".$array[$row-2]['cod_ubicacion'],
+                        //         'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                        //         );
+                        //     // $this->model_alm_articulos->update_articulo($array[$row-2], $historial);
+                        // }
+                        //FIN DE para modificar codigo de ubicacion
                         //inserto la data en la tabla alm_reporte
                         if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
                         {
