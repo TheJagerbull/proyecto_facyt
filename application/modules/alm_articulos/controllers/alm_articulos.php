@@ -1918,7 +1918,8 @@ class Alm_articulos extends MX_Controller
                         //Close and output PDF document
                         // if($this->uri->uri_string()=='inventario/generar/acta')
                         // {
-                    $file_to_save = $_SERVER['DOCUMENT_ROOT'].'proyecto_facyt/uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
+                    // $file_to_save = $_SERVER['DOCUMENT_ROOT'].'proyecto_facyt/uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
+                    $file_to_save = $_SERVER['DOCUMENT_ROOT'].'uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
                     $filename = 'Actas_'.date('Y-m-d',$date).'.pdf';
                     // $this->pdf->Output($file_to_save, 'I');
                     // $this->pdf->Output($file_to_save, 'D');
