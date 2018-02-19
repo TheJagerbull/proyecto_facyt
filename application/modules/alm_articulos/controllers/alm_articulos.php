@@ -1925,11 +1925,11 @@ class Alm_articulos extends MX_Controller
                     ob_clean();
                     if(is_dir("./uploads/cierres/actas/"))//
                     {
-                        chmod("./uploads/cierres/actas/", 0755); //Para cambiar el permiso de la carpeta en caso de error de permisologia
+                        chmod("./uploads/cierres/actas/", 0777); //Para cambiar el permiso de la carpeta en caso de error de permisologia
                     }
                     else
                     {
-                        mkdir("./uploads/cierres/actas/", 0755);
+                        mkdir("./uploads/cierres/actas/", 0777);
                     }
                     $this->pdf->Output($file_to_save, 'F');//guarda en el servidor
                     
