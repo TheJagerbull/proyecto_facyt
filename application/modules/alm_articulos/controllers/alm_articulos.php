@@ -8,7 +8,7 @@ class Alm_articulos extends MX_Controller
         $this->load->library('form_validation');
         $this->load->library('excel');
         $this->load->model('model_alm_articulos');
-        $this->load->model('model_alm_solicitudes');
+        $this->load->model('alm_solicitudes/model_alm_solicitudes');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
