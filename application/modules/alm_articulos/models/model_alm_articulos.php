@@ -530,7 +530,12 @@ class Model_alm_articulos extends CI_Model
 //fin de insertar varios articulos nuevos
 	public function update_articulo($articulo, $historial)
 	{
-//		 die_pre($articulo, __LINE__, __FILE__);
+		if(isset($articulo['linea']))
+		{
+			unset($articulo['linea']);
+		}
+		// echo_pre($historial, __LINE__, __FILE__);
+		// die_pre($articulo, __LINE__, __FILE__);
 		$this->db->where('cod_articulo', $articulo['cod_articulo']);
 		$this->db->update('alm_articulo', $articulo);
 		$this->db->insert('alm_historial_a', $historial);
@@ -2120,6 +2125,11 @@ class Model_alm_articulos extends CI_Model
 			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $articulo['cod_articulo']
 			        );
+				///Articulos en reserva de solicitudes no despachadas
+					$articulo['nuevos'] += $articulo['reserv'];
+					$articulo['reserv'] = 0;
+				///hay que hacer una funcion que cierre las solicitudes que no fueron despachadaz
+				
 				if($obj['exist_reportada'] > $obj['exist_sistema'])
 				{
 					$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];

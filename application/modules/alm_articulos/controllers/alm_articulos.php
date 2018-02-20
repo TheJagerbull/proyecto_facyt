@@ -8,6 +8,7 @@ class Alm_articulos extends MX_Controller
         $this->load->library('form_validation');
         $this->load->library('excel');
         $this->load->model('model_alm_articulos');
+        $this->load->model('alm_solicitudes/model_alm_solicitudes');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
@@ -247,7 +248,8 @@ class Alm_articulos extends MX_Controller
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             $this->backup_Inventory();
-            $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
+            $this->adjustRegister_InventoryPart1();//completo, falta validar cuando ya el cierre fué realizado
+            $this->adjustRegister_InventoryPart2();//completo, falta validar cuando ya el cierre fué realizado
             // $this->pdf_ActaDeCierre();//(hace la llamada desde otro metodo del lado del cliente)
             // $this->validar_reporte();//aqui termina(hace la llamada dentro de la creacion del pdf)
         }
@@ -294,13 +296,30 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function adjustRegister_Inventory()
+    public function adjustRegister_InventoryPart1()
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             if($this->model_alm_articulos->closure_isStarted() == 'BACKUP')
             {
-                // die_pre('HERE!', __LINE__, __FILE__);
+                if($this->close_requests())
+                {
+                    $this->model_alm_articulos->update_closure('CLOSEREQUESTS');
+                }
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function adjustRegister_InventoryPart2()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            if($this->model_alm_articulos->closure_isStarted() == 'CLOSEREQUESTS');
+            {
                 $this->model_alm_articulos->insert_stockAdjustment();
             }
         }
@@ -309,6 +328,18 @@ class Alm_articulos extends MX_Controller
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc',$header);
         }
+    }
+    public function close_requests()
+    {
+        $solicitudesAp = $this->model_alm_solicitudes->get_solicitudes(array('status' => 'aprobado'));
+        $valid = 1;
+        foreach ($solicitudesAp as $key => $value)
+        {
+            $anula['motivo'] = '[Anulado por no retirar los articulos (anulado por cierre de inventario)].';
+            $anula['nr_solicitud'] = $value['nr_solicitud'];
+            $valid *= $this->model_alm_solicitudes->anular_solicitud($anula);   
+        }
+        return ($valid);
     }
     public function print_closureReport()
     {
@@ -1834,13 +1865,13 @@ class Alm_articulos extends MX_Controller
                                 'nombre' =>'Gabriel',
                                 'apellido' =>'Hernandez'),
                             'jefe_comp'=> array(
-                                'titulo' => 'Lic.',
+                                'titulo' => 'Tsu.',
                                 'nombre' =>'Milennys',
                                 'apellido' =>'Gallardo'),
                             'coord_adm'=> array(
                                 'titulo' => 'Lic.',
-                                'nombre' =>'Romali',
-                                'apellido' =>'Kolster'),
+                                'nombre' =>'Jorge',
+                                'apellido' =>'Marval'),
                             'autoridad'=> array(
                                 'titulo' => 'Dr.',
                                 'nombre' =>'José Gregorio',
@@ -1918,18 +1949,19 @@ class Alm_articulos extends MX_Controller
                         //Close and output PDF document
                         // if($this->uri->uri_string()=='inventario/generar/acta')
                         // {
-                    $file_to_save = $_SERVER['DOCUMENT_ROOT'].'proyecto_facyt/uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
+                    // $file_to_save = $_SERVER['DOCUMENT_ROOT'].'proyecto_facyt/uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
+                    $file_to_save = $_SERVER['DOCUMENT_ROOT'].'uploads/cierres/actas/Actas_'.date('Y-m-d',$date).'.pdf';
                     $filename = 'Actas_'.date('Y-m-d',$date).'.pdf';
                     // $this->pdf->Output($file_to_save, 'I');
                     // $this->pdf->Output($file_to_save, 'D');
                     ob_clean();
                     if(is_dir("./uploads/cierres/actas/"))//
                     {
-                        chmod("./uploads/cierres/actas/", 0777); //Para cambiar el permiso de la carpeta en caso de error de permisologia
+                        chmod("./uploads/cierres/actas/", 0755); //Para cambiar el permiso de la carpeta en caso de error de permisologia
                     }
                     else
                     {
-                        mkdir("./uploads/cierres/actas/", 0777);
+                        mkdir("./uploads/cierres/actas/", 0755);
                     }
                     $this->pdf->Output($file_to_save, 'F');//guarda en el servidor
                     
@@ -2003,7 +2035,7 @@ class Alm_articulos extends MX_Controller
                     $file = "./uploads/cierres/actas/".$this->model_alm_articulos->get_latestClosure()['acta'];
                     //Trasnferencia de archivo de disco en servidor, a cache del cliente
                     header('Content-type: application/pdf');
-                    header('Content-Disposition: inline; filename="'.$filename.'"');
+                    header('Content-Disposition: inline; filename="'.$file.'"');
                     header('Content-Transfer-Encoding: binary');
                     header('Accept-Ranges: bytes');
                     echo file_get_contents($file);
@@ -2234,6 +2266,10 @@ class Alm_articulos extends MX_Controller
                     
                     if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                     {
+                        if($data_value=='cod_ubicacion' || $data_value=='Codigo de ubicacion')
+                        {
+                            $col_ubicacion = $column;
+                        }
                         if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
                         {
                             $col_articulo = $column;
@@ -2256,6 +2292,12 @@ class Alm_articulos extends MX_Controller
                             $array[$row-2]['linea'] = $row;
                             $array[$row-2]['cod_articulo'] = $data_value;
                             $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                        }
+                        if($column == $col_ubicacion)//codigo de ubicacion
+                        {
+                            $array[$row-2]['linea'] = $row;
+                            $array[$row-2]['cod_ubicacion'] = $data_value;
+                            // $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                         }
                         if($column == $col_descripcion)
                         {
@@ -2282,6 +2324,18 @@ class Alm_articulos extends MX_Controller
                             $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                             
                         }
+                        //para modificar codigo de ubicacion
+                        // if(isset($array[$row-2]['cod_ubicacion']) && isset($array[$row-2]['cod_articulo']) && !isset($array[$row-2]['existencia']) && !isset($array[$row-2]['descripcion']))//solo para editar los codigos de ubicación
+                        // {
+                        //     // echo_pre($array[$row-2]);
+                        //     $historial= array(
+                        //         'id_historial_a'=>$array[$row-2]['cod_articulo'].'0'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                        //         'observacion'=>strtoupper('modificando articulo por archivo')."cod_ubicacion=".$array[$row-2]['cod_ubicacion'],
+                        //         'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                        //         );
+                        //     // $this->model_alm_articulos->update_articulo($array[$row-2], $historial);
+                        // }
+                        //FIN De para modificar codigo de ubicacion
                         //inserto la data en la tabla alm_reporte
                         if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
                         {
@@ -2293,7 +2347,7 @@ class Alm_articulos extends MX_Controller
 
                     }
                 }
-
+                // die_pre($batch, __LINE__, __FILE__);
                 $verifica = $this->model_alm_articulos->insert_reporte($batch);
             ////version actual
                 if($verifica)
@@ -3715,15 +3769,21 @@ class Alm_articulos extends MX_Controller
                 $arraycod=array();
                 $errores=array();
                 $affected=array();
+                $array=array();
+                $array2=array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
                     $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila de la celda
                     $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la celda
-                    
+
                     if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                     {
-                        if($data_value=='cod_articulo')
+                        if($data_value=='cod_ubicacion' || $data_value=='Codigo de ubicacion')
+                        {
+                            $col_ubicacion = $column;
+                        }
+                        if($data_value=='cod_articulo'  || $data_value=='Codigo del articulo')
                         {
                             $col_articulo = $column;
                         }
@@ -3742,8 +3802,19 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
+                        if($column == $col_ubicacion)//codigo de ubicacion
+                        {
+                            $array2[$row-2]['linea'] = $row;
+                            $array2[$row-2]['cod_ubicacion'] = $data_value;
+                            // $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                        }
                         if($column == $col_articulo)//codigo viejo del articulo
                         {
+                            //----
+                            $array2[$row-2]['linea'] = $row;
+                            $array2[$row-2]['cod_articulo'] = $data_value;
+                            // $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
+                            //----
                             $i=$row;
                             $array[$i]['linea']=$row;
                             if(!empty($data_value))
@@ -3752,9 +3823,28 @@ class Alm_articulos extends MX_Controller
                                 // $array[$i]['cod_artviejo'] = preg_replace('/\s+/', '', $data_value);
                             }
                         }
+                        if(isset($array2[$row-2]['cod_ubicacion']) && isset($array2[$row-2]['cod_articulo']))//solo para editar los codigos de ubicación
+                        {
+                            // die_pre($array2[$row-2]);
+                            $historial= array(
+                                'id_historial_a'=>$array2[$row-2]['cod_articulo'].'0'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                                'observacion'=>strtoupper('modificando articulo por archivo')."cod_ubicacion=".$array2[$row-2]['cod_ubicacion'],
+                                'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                                );
+                            if($this->model_alm_articulos->update_articulo($array2[$row-2], $historial))
+                            {
+                                $affected[]=$row;
+                                $verifica *= 1;
+                            }
+                            else
+                            {
+                                $errores[]=$row;
+                                $verifica *= 0;
+                            }
+                        }
                         else
                         {
-                            if(isset($i) && isset($array[$i]['cod_artviejo']) && $i==$row)
+                            if(isset($i) && isset($array[$i]['cod_artviejo']) && $i==$row && (isset($col_articuloNU) || isset($col_descripcionNU)))
                             {
                                 if($column == $col_articuloNU)//codigo del articulo basado en las naciones unidas
                                 {
@@ -3793,7 +3883,7 @@ class Alm_articulos extends MX_Controller
                         }
                     }
                 }
-                // die_pre($errores, __LINE__, __FILE__);
+                // die_pre($array2, __LINE__, __FILE__);
             ////version actual
                 if($verifica)
                 {
