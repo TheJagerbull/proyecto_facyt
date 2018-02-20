@@ -8,6 +8,7 @@ class Alm_articulos extends MX_Controller
         $this->load->library('form_validation');
         $this->load->library('excel');
         $this->load->model('model_alm_articulos');
+        $this->load->model('model_alm_solicitudes');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
@@ -247,7 +248,8 @@ class Alm_articulos extends MX_Controller
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             $this->backup_Inventory();
-            $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
+            $this->adjustRegister_InventoryPart1();//completo, falta validar cuando ya el cierre fué realizado
+            $this->adjustRegister_InventoryPart2();//completo, falta validar cuando ya el cierre fué realizado
             // $this->pdf_ActaDeCierre();//(hace la llamada desde otro metodo del lado del cliente)
             // $this->validar_reporte();//aqui termina(hace la llamada dentro de la creacion del pdf)
         }
@@ -294,13 +296,30 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function adjustRegister_Inventory()
+    public function adjustRegister_InventoryPart1()
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             if($this->model_alm_articulos->closure_isStarted() == 'BACKUP')
             {
-                // die_pre('HERE!', __LINE__, __FILE__);
+                if($this->close_requests())
+                {
+                    $this->model_alm_articulos->update_closure('CLOSEREQUESTS');
+                }
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function adjustRegister_InventoryPart2()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            if($this->model_alm_articulos->closure_isStarted() == 'CLOSEREQUESTS');
+            {
                 $this->model_alm_articulos->insert_stockAdjustment();
             }
         }
@@ -309,6 +328,18 @@ class Alm_articulos extends MX_Controller
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc',$header);
         }
+    }
+    public function close_requests()
+    {
+        $solicitudesAp = $this->model_alm_solicitudes->get_solicitudes(array('status' => 'aprobado'));
+        $valid = 1;
+        foreach ($solicitudesAp as $key => $value)
+        {
+            $anula['motivo'] = '[Anulado por no retirar los articulos (anulado por cierre de inventario)].';
+            $anula['nr_solicitud'] = $value['nr_solicitud'];
+            $valid *= $this->model_alm_solicitudes->anular_solicitud($anula);   
+        }
+        return ($valid);
     }
     public function print_closureReport()
     {

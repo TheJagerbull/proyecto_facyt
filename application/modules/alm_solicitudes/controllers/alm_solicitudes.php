@@ -3906,8 +3906,4 @@ class Alm_solicitudes extends MX_Controller
 
     }
 
-    public function closure_solicitudes()
-    {
-        
-    }
 }

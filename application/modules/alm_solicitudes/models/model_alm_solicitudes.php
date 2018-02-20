@@ -199,6 +199,15 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		die_pre($array, __LINE__, __FILE__);
 	}
+	public function get_solicitudes($attr='')
+	{
+		if(isset($attr) && !empty($attr))
+		{
+			$this->db->where($attr);
+		}
+		return($this->db->get('alm_solicitud')->result_array());
+	}
+
 	public function update_alm_solicitud($where, $update)
 	{
 		$this->db->where($where);
