@@ -2125,6 +2125,11 @@ class Model_alm_articulos extends CI_Model
 			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $articulo['cod_articulo']
 			        );
+				///Articulos en reserva de solicitudes no despachadas
+					$articulo['nuevos'] += $articulo['reserv'];
+					$articulo['reserv'] = 0;
+				///hay que hacer una funcion que cierre las solicitudes que no fueron despachadaz
+				
 				if($obj['exist_reportada'] > $obj['exist_sistema'])
 				{
 					$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
