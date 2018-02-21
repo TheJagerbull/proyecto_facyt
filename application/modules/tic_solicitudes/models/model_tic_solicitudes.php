@@ -268,23 +268,23 @@ class Model_tic_solicitudes extends CI_Model {
                                                 break;
                                             default:
                                             case 'PENDIENTE POR PERSONAL':
-                                                $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
-                                                $cuerpo1.="<select onmousemove=\'sel(this.form.select_estado)\' class=\'form-control\' id = \'sel".$sol['id_orden']."\' name=\'select_estado\'>"
-                                                    ."<option value=\'\'><\/option>";
-                                                foreach ($estatus_change as $es){ 
-                                                    $cuerpo1.="<option value = \'".$es->id_estado."\'>".$es->descripcion."<\/option>";                                                   
-                                                };
-                                                $cuerpo1.= "<\/select><div id=\'".$sol['id_orden']."\' name= \'observacion\'>"
-                                                ."<label class=\'control-label\' for=\'observacion\'>Motivo:<\/label>"
-                                                    ."<div class=\'control-label col-md-12\'>"
-                                                        ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.motivo,($(\"#quitar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160);"
-                                                        ."value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'motivo".$sol['id_orden']."\' name=\'motivo\' placeholder=\'Indique el motivo...\'><\/textarea>"
-                                                    ."<\/div>" 
-                                                    ."<small><p align=\'right\' name=\'quitar\' id=\'quitar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
-                                                    ."<\/div>";
-                                                break;
+                                               $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
+                                               $cuerpo1.="<select onmousemove=\'sel(this.form.select_estado)\' //class=\'form-control\' id = \'sel".$sol['id_orden']."\' //name=\'select_estado\'>"
+                                                   ."<option value=\'\'><\/option>";
+                                               foreach ($estatus_change as $es){ 
+                                                   $cuerpo1.="<option value = \'".$es->id_estado."\'>".$es->descripcion."<\/option>";                                                   
+                                               };
+                                               $cuerpo1.= "<\/select><div id=\'".$sol['id_orden']."\' name= \'observacion\'>"
+                                               ."<label class=\'control-label\' for=\'observacion\'>Motivo:<\/label>"
+                                                   ."<div class=\'control-label col-md-12\'>"
+                                                       ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); value=\' \'"
+                                                      ."style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'motivo".$sol['id_orden']."\' name=\'motivo\' placeholder=\'Indique el motivo...\'><\/textarea>"
+                                                  ."<\/div>" 
+                                                  ."<small><p align=\'right\' name=\'quitar\' id=\'quitar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                                  ."<\/div>";
+                                              break;
                                             default:    
-                                            if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
+                                            if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') )
                                             {
                                                 $cuerpo1.="<div class=\'alert alert-warning\' align=\'center\'><strong>¡La solicitud está abierta. Debe asignar un personal!<\/strong><\/div>";
                                             }else{
@@ -301,7 +301,7 @@ class Model_tic_solicitudes extends CI_Model {
                                                 ."<div id=\'".$sol['id_orden']."\' name= \'observacion\'>"
                                                     ."<label class=\'control-label\' for=\'observacion\'>Motivo:<\/label>"
                                                     ."<div class=\'control-label col-md-12\'>"
-                                                        ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); value=\'\'"
+                                                        ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); value=\' \'"
                                                         ."style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'motivo".$sol['id_orden']."\' name=\'motivo\' placeholder=\'Indique el motivo...\'><\/textarea>"
                                                             ."<small><p align=\'right\' name=\'quitar\' id=\'quitar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
                                                     ."<\/div>"
