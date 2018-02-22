@@ -805,7 +805,7 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
     	if($this->session->userdata('user'))
 		{
-            if($this->dec_permiso->has_permission('alm', 14))
+            if($this->dec_permiso->has_permission('alm', 14))//el permiso de enviar, aplica para completar
             {
     			if($_POST)
     			{
