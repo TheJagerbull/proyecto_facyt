@@ -2858,9 +2858,18 @@ class Alm_articulos extends MX_Controller
                 $this->db->order_by('cod_articulo, entrada');
                 break;
             default:
+                $needles = array('entradas', 'salidas', 'fechaU');
+                // die_pre();
                 $flag = '';
-                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
-                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                if(array_intersect($needles, $aColumns))
+                {
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                    $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                }
+                else
+                {
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist', false);
+                }
                 if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
                 {
                     $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
@@ -2873,7 +2882,10 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                        if(in_array('fechaU', $aColumns))
+                        {
+                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                        }
                     }
                 }
                 // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
@@ -2886,7 +2898,7 @@ class Alm_articulos extends MX_Controller
 
         $rResult = $this->db->get($sTable);
         $this->db->select('FOUND_ROWS() AS found_rows');
-
+        // die_pre($this->db->last_query());
         $iFilteredTotal = $this->db->get()->row()->found_rows;
 
         $iTotal = $this->db->count_all($sTable);
