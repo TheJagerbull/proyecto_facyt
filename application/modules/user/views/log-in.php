@@ -192,7 +192,18 @@
 			      // console.log();
 			      if(key[77] && key[81])//teclas "q" y "m"
 			      {
+
+
+			      	var Title = $("<h1/>");
+	            Title.attr("class","panel-title text-center");
+	            Title.html("Datos del administrador:");
+	            head = $("<div/>");
+	            head.append(Title);
+			      	var body = $("<div/>");
+							body.append(head);
+
 			        console.log('abrir modal para instalar base de datos!');
+			        buildModal('install', 'Instalación de la base de datos', body, '', 'lg', '500');
 			        // console.log($('#home').attr('class'));
 			        // $('#CatFile').toggle();
 			      }
