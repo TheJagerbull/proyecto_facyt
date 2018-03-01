@@ -19,6 +19,14 @@ class Template extends MX_Controller
         $this->load->view('template/testjson',$header);
     }
 
+    public function FSM_install()//faculty system manager instalador de bd para sisai    
+    {
+        if($this->session->userdata('user'))
+        {
+            
+        }
+    }
+
     public function under_construction()
     {
         $this->load->view('template/mantenimiento2');

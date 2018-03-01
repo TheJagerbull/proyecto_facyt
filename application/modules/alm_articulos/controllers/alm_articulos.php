@@ -2858,9 +2858,18 @@ class Alm_articulos extends MX_Controller
                 $this->db->order_by('cod_articulo, entrada');
                 break;
             default:
+                $needles = array('entradas', 'salidas', 'fechaU');
+                // die_pre();
                 $flag = '';
-                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
-                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                if(array_intersect($needles, $aColumns))
+                {
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                    $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                }
+                else
+                {
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist', false);
+                }
                 if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
                 {
                     $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
@@ -2873,7 +2882,10 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                        if(in_array('fechaU', $aColumns))
+                        {
+                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                        }
                     }
                 }
                 // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
@@ -2886,7 +2898,7 @@ class Alm_articulos extends MX_Controller
 
         $rResult = $this->db->get($sTable);
         $this->db->select('FOUND_ROWS() AS found_rows');
-
+        // die_pre($this->db->last_query());
         $iFilteredTotal = $this->db->get()->row()->found_rows;
 
         $iTotal = $this->db->count_all($sTable);
@@ -3055,7 +3067,7 @@ class Alm_articulos extends MX_Controller
         $orden = $data['orderState'];
         $columns = $data['columnas'];
         $buscador = $this->input->get_post('search');
-//                echo_pre($data);
+               // die_pre($data);
 //consultas adicionales
         if(!empty($buscador))
         {
@@ -3182,15 +3194,38 @@ class Alm_articulos extends MX_Controller
                 $view['title']='Reporte estatus de Almacén';
                 $view['tipo']='predeterminado';
                 $flag = '';
-                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
-                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
-                if (in_array('salidas', $columns) && !in_array('entradas', $columns)) {
+                $needles = array('entradas', 'salidas', 'fechaU');
+                $hay = array();
+                foreach ($columns as $key => $value)
+                {
+                    $hay[] = $value['sName'];
+                }
+                // die_pre($columns);
+                if(array_intersect($needles, $hay))
+                {
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                    $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                }
+                else
+                {
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist', false);
+                }
+                if(in_array('salidas', $columns) && !in_array('entradas', $columns))
+                {
                     $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
-                } else {
-                    if (in_array('entradas', $columns) && !in_array('salidas', $columns)) {
+                }
+                else
+                {
+                    if(in_array('entradas', $columns) && !in_array('salidas', $columns))
+                    {
                         $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
-                    } else {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                    }
+                    else
+                    {
+                        if(in_array('fechaU', $columns))
+                        {
+                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                        }
                     }
                 }
                 // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
@@ -3304,42 +3339,42 @@ class Alm_articulos extends MX_Controller
             break; 
             case '':
 //                die_pre($columns);
-                foreach ($columns as $c => $valor){
-                    foreach ($valor as $r => $v){
-                        if ($r == 'sName'){
-                            switch ($v){
-                                case 'cod_articulo':
-                                    $column = (object)array('sName' =>$v,'column'=>'Código');
-                                    $columns[$c]=$column;
-                                break;
-                                case 'descripcion':
-                                    $column = (object)array('sName' =>$v,'column'=>'Descripción');
-                                    $columns[$c]=$column;
-                                break;
-                                case 'entradas':
-                                    $column = (object)array('sName' =>$v,'column'=>'Entradas');
-                                    $columns[$c]=$column;
-                                break;
-                                case 'exist':
-                                    $column = (object)array('sName' =>$v,'column'=>'Existencia');
-                                    $columns[$c]=$column;
-                                break;
-                                case 'salidas':
-                                    $column = (object)array('sName' =>$v,'column'=>'Salidas');
-                                    $columns[$c]=$column;
-                                break;
-                                case 'fechaU':
-                                    $column = (object)array('sName' =>$v,'column'=>'Último movimiento');
-                                    $columns[$c]=$column;
-                                break;
-                                case 'unidad':
-                                    $column = (object)array('sName' =>$v,'column'=>'Unidad');
-                                    $columns[$c]=$column;
-                                break;
-                            }
-                        }
-                    }
-                }
+                // foreach ($columns as $c => $valor){
+                //     foreach ($valor as $r => $v){
+                //         if ($r == 'sName'){
+                //             switch ($v){
+                //                 case 'cod_articulo':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Código');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //                 case 'descripcion':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Descripción');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //                 case 'entradas':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Entradas');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //                 case 'exist':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Existencia');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //                 case 'salidas':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Salidas');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //                 case 'fechaU':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Último movimiento');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //                 case 'unidad':
+                //                     $column = (object)array('sName' =>$v,'column'=>'Unidad');
+                //                     $columns[$c]=$column;
+                //                 break;
+                //             }
+                //         }
+                //     }
+                // }
 //                die_pre($columns);
             break;
         }

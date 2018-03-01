@@ -954,6 +954,7 @@ $(document).ready(function() {
 							{
 								table.append('<th>'+$(selectedSelects[i]).text()+'</th>');
 								columnas[i] = selectedSelects[i].value;//la variable columnas para cargar los nombres de las columnas en la base de datos
+                nombres[i] = $(selectedSelects[i]).text();
 							}
 							console.log("columnas: ");
 							console.log(flag);
