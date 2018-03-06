@@ -471,6 +471,57 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
+    public function testCrypt()
+    {
+        $original = $this->model_permisos->get_permission();
+        $crypt = $this->model_permisos->cript($original);
+        $decrypt = $this->model_permisos->translate($crypt);
+        echo '<br><br>'.$original.'<br>'.$decrypt;
+    }
+    public function col18Tocol30()//para agrandar la tabla de permisos a 30 columnas(modulos), en lugar de 18
+    {
+        //matriz 18x18 = 324, ahora 31x18 = 558
+        $original = $this->model_permisos->get_permission();
+        $newM = '0';
+        echo 'length: '.strlen($original).'<br>';
+        $j=0;
+        for ($i=1; $i < strlen($original); $i++)
+        {
+            echo $original[$i];
+            $newM.=$original[$i];
+            $j++;
+            if($j==18)
+            {
+                if($i==18)
+                {
+                    $newM.= '1111111111110';
+                }
+                else
+                {
+                    $newM.= '0000000000000';
+                }
+                echo '<br>';
+                $j=0;
+
+            }
+        }
+        $newM.= '0000000000000';
+        echo '<br>';
+        echo '<br>';
+        echo 'length: '.strlen($newM).'<br>';
+        $j=0;
+        for ($i=0; $i < strlen($newM); $i++)
+        {
+            echo $newM[$i];
+            $j++;
+            if($j==31)
+            {
+                echo '<br>';
+                $j=0;
+                
+            }
+        }
+    }
 }
 //Design By Luigi:
     ////////////////////////Instrucciones///////////////////////////////
@@ -482,25 +533,25 @@ Class Dec_permiso extends MX_Controller{
     // cada fila es una funcionalidad del modulo, e indica 1 si tiene permiso, y 0 si no.
     ////////////////////FIN DE Instrucciones////////////////////////////
     //////////////////////Permisos//////////////////////////////////////////////////
-    //mod//Air Alm Mnt Usr Mnt2 Rhh ___ ___ Alm ___ ___ ___ ___ ___ ___ ___ per//
-    //0  // 1   0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 //
-    //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20:[1] ver catalogo                  alm27: reportar art    mnt21: ver solicitudes de dependencia
-    //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38:[2] ver solicitud                 alm45:                 mnt39: ver solicitudes de todas las dependencias
-    //55 // 0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm56:[3] ver solicitud de departamento                        mnt57: ver solicitudes de todos los estatus
-    //73 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm74:[4] ver historial/reportes                               mnt75: ver solicitudes en proceso
-    //91 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm92:[5] ver inventario                                       mnt93: ver solicitudes cerradas/anuladas
-    //109// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm110:[6] agregar inventario                                  mnt111: ver personal asignado
-    //127// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm128:[7] agregar por archivo                                 mnt129: ver detalle de solicitud de dependencia
-    //145// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm146:[8] generar cierre                                      mnt147: ver detalle de solicitud adm
-    //163// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm164:[9] editar articulo                                     mnt165: agregar cuadrilla
-    //181// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm182:[10] editar solicitud                                    mnt183: agregar ubicacion
-    //199// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm200:[11] aprobar solicitud                                   mnt201: crear solicitud de dependencia
-    //217// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm218:[12] despachar solicitud                                 mnt219: crear solicitud adm
-    //235// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm236:[13] generar solicitud                                   mnt237: editar solicitudes abiertas
-    //253// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm254:[14] enviar solicitud                                    mnt255: cambiar estatus de solicitudes
-    //271// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm272:[15] anular solicitud                                    mnt273: asignar personal
-    //289// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm290:[16] cancelar solicitud                                  mnt291: editar cuadrilla
-    //307// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm308:[17] retirar solicitud                                   mnt309: eliminar miembros de cuadrilla
+    //mod//    Air Alm Mnt Usr Mnt2 Rhh Tic Tic Alm ___ ___ ___ ___ ___ ___ ___ ___  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___//
+    //0  // 0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   0    1   1   1   1   1   1   1   1   1   1   1   1   1   1  //
+    //19 //     0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm20:[1] ver catalogo                  alm27: reportar art    mnt21: ver solicitudes de dependencia
+    //37 //     0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm38:[2] ver solicitud                 alm45:                 mnt39: ver solicitudes de todas las dependencias
+    //55 //     0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm56:[3] ver solicitud de departamento                        mnt57: ver solicitudes de todos los estatus
+    //73 //     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm74:[4] ver historial/reportes                               mnt75: ver solicitudes en proceso
+    //91 //     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm92:[5] ver inventario                                       mnt93: ver solicitudes cerradas/anuladas
+    //109//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm110:[6] agregar inventario                                  mnt111: ver personal asignado
+    //127//     0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm128:[7] agregar por archivo                                 mnt129: ver detalle de solicitud de dependencia
+    //145//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm146:[8] generar cierre                                      mnt147: ver detalle de solicitud adm
+    //163//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm164:[9] editar articulo                                     mnt165: agregar cuadrilla
+    //181//     0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm182:[10] editar solicitud                                    mnt183: agregar ubicacion
+    //199//     0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm200:[11] aprobar solicitud                                   mnt201: crear solicitud de dependencia
+    //217//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm218:[12] despachar solicitud                                 mnt219: crear solicitud adm
+    //235//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm236:[13] generar solicitud                                   mnt237: editar solicitudes abiertas
+    //253//     0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm254:[14] enviar solicitud                                    mnt255: cambiar estatus de solicitudes
+    //271//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm272:[15] anular solicitud                                    mnt273: asignar personal
+    //289//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm290:[16] cancelar solicitud                                  mnt291: editar cuadrilla
+    //307//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm308:[17] retirar solicitud                                   mnt309: eliminar miembros de cuadrilla
     ///////////////////FIN DE Permisos//////////////////////////////////////////////
 
 /////Instrucciones para usar parse_permission($id_usuario='', $modulo='')
