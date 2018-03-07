@@ -358,6 +358,7 @@ Class Dec_permiso extends MX_Controller{
     public function load_permissionsView()
     {
         $aux = $this->parse_permission($this->session->userdata('user')['id_usuario']);//retorna los permisos de los modulos solicitados
+        //die_pre($this->parse_permission($this->session->userdata('user')['id_usuario']));
         // echo_pre($aux, __LINE__, __FILE__);
 //////////filtro para menu de almacen
         if(!empty($aux['alm'][1])||!empty($aux['alm'][4])||!empty($aux['alm'][5])||!empty($aux['alm'][6])||!empty($aux['alm'][7])||!empty($aux['alm'][8])||!empty($aux['alm'][10]))
@@ -400,19 +401,19 @@ Class Dec_permiso extends MX_Controller{
 //////////fin de filtro para menu de mantenimiento
 //////////filtro para menu tic
         if((!empty($aux['tic'][1]) || !empty($aux['tic'][2]))):
-            $view['ticGenerarSolicitud']=1;//mnt
+            $view['TicGenerarSolicitud']=1;//tic
         endif;  
         if((!empty($aux['tic'][3]) || !empty($aux['tic'][6]) || !empty($aux['tic2'][1]) || !empty($aux['tic2'][2]))):
-            $view['AdministrarTicCuadrilla']=1;//mnt 3, 6, y mnt2 1,2
+            $view['TicAdministrarCuadrilla']=1;//tic 3, 6, y tic2 1,2
         endif;
         if((!empty($aux['tic'][4]))):
-            $view['agregarUbicacionesTic']=1;//mnt 4
+            $view['TicAgregarUbicaciones']=1;//tic 4
         endif; 
         if((!empty($aux['tic'][5]) || !empty($aux['tic'][7]) || !empty($aux['tic'][9]) || !empty($aux['tic'][10]) || !empty($aux['tic'][11]) || !empty($aux['tic'][12]) || !empty($aux['tic'][13]) || !empty($aux['tic'][14]) || !empty($aux['tic'][16]) || !empty($aux['tic'][17]) || !empty($aux['tic2'][3]))):
-            $view['consultarSolicitudTic']=1;//mnt 5,7,9, 10, 11, 12, 13, 14,16,17 //mnt2 3
+            $view['TicConsultarSolicitud']=1;//tic 5,7,9, 10, 11, 12, 13, 14,16,17 //tic2 3
         endif;
         if((!empty($aux['tic'][15]))):
-            $view['reportesTic']=1;//mnt 15
+            $view['TicReportes']=1;//tic 15
         endif; 
 //////////fin de filtro para menu tic
 //////////filtro para menu de aires

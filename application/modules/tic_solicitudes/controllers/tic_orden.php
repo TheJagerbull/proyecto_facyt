@@ -187,7 +187,7 @@ class Tic_orden extends MX_Controller {
 
             $header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);
-            $this->load->view('tic_solicitudes/nueva_orden_dep', $view);
+            $this->load->view('tic_solicitudes/nueva_orden_dep_mod', $view);
             $this->load->view('template/footer');
         } else {
             $this->session->set_flashdata('permission', 'error');

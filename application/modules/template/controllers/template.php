@@ -7,6 +7,7 @@ class Template extends MX_Controller
         parent::__construct();
         $this->load->model("alm_solicitudes/model_alm_solicitudes");
         $this->load->model("mnt_solicitudes/model_mnt_solicitudes");
+        $this->load->model("tic_solicitudes/model_tic_solicitudes");
         $this->load->module('dec_permiso/dec_permiso');
         $this->load->module('alm_solicitudes/alm_solicitudes');
     }
