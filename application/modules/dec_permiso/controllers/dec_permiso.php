@@ -471,50 +471,81 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
-    public function testCrypt($original='')
+    public function addModuleMatrix($original, $modules='')//funcion para agregar un modulo de 17 permisos a la estructura
     {
-        if(!isset($original) || $original=='')
-        {
-            $original = $this->model_permisos->get_permission('10131920');
-        }
-        $crypt = $this->model_permisos->crypt($original);
-        $decrypt = $this->model_permisos->translate($crypt);
-        echo '<br><br>original: '.$original.'<br>decrypt:  '.$decrypt;
-        $this->showMatrix($original);
-        $this->showMatrix($decrypt);
-    }
-    public function col18Tocol30()//para agrandar la tabla de permisos a 30 columnas(modulos), en lugar de 18
-    {
-        //matriz 18x18 = 324, ahora 31x18 = 558
-        $original = $this->model_permisos->get_permission('10131920');
         $newM = '';
-        echo 'length: '.strlen($original).'<br>';
+        // echo strlen($original)/18;
+        if(!isset($modules) || $modules==0)
+        {
+            $modules=1;
+        }
+        $tope = strlen($original)/18;
         $j=0;
         for ($i=0; $i < strlen($original); $i++)
         {
-            echo $original[$i];
             $newM.=$original[$i];
             $j++;
-            if($j==18)
+            if($j==$tope)
             {
-                if($i==17)
+                if($i==$tope-1)
                 {
-                    $newM.= '1111111111111';
+                    // $newM.= '1';
+                    $newM.= str_repeat("1",$modules);
                 }
                 else
                 {
-                    $newM.= '0000000000000';
+                    // $newM.= '0';
+                    $newM.= str_repeat("0",$modules);
                 }
-                echo '<br>';
                 $j=0;
 
             }
         }
-        echo "<br> nuevo:";
-        $this->showMatrix($newM);
-        $this->testCrypt($newM);
-
+        return($newM);
+    }
+    private function Crypt($original='')//para encriptar
+    {
+        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        return($this->model_permisos->crypt($original, $dominio));
+    }
+    private function deCrypt($crypted)//para desencriptar
+    {
+        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        return($this->model_permisos->translate($crypted, $dominio));
+    }
+    public function testCrypt($original='')
+    {
+        if(!isset($original) || $original=='')
+        {
+            // $original = $this->model_permisos->get_permission('10131920');
+            $original = $this->model_permisos->get_permission();
+            // $original = str_repeat("1", 558);
+        }
+        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        $crypt = $this->Crypt($original);
+        $decrypt = $this->deCrypt($crypt);
+        if(strcmp($original, $decrypt)==0)
+        {
+            echo "<br>crypt length: ".strlen($crypt);
+            echo '<br>crypt: '.$crypt;
+        }
+        // echo '<br>original: '.$original;
+        // echo '<br>decrypt:  '.$decrypt;
+        $this->showMatrix($original);
+        // $this->showMatrix($decrypt);
+    }
+    public function col18Tocol31()//para agrandar la tabla de permisos a 30 columnas(modulos), en lugar de 18
+    {
+        //matriz 18x18 = 324, ahora 31x18 = 558
+        $original = $this->model_permisos->get_permission();
         // $this->showMatrix($original);
+        // $newM =$this->addModuleMatrix($original, 13);
+        for ($i=1; $i < 14; $i++)
+        {
+            $newM =$this->addModuleMatrix($original, $i);
+            $this->showMatrix($newM);
+        }
+
     }
     private function showMatrix($string)
     {

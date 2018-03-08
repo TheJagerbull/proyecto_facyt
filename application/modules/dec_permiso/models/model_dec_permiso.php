@@ -238,89 +238,73 @@ class Model_dec_permiso extends CI_Model
 //////extra security by Luigi Palacios.
     public function crypt($string, $chunk='')//encripta el string de permisos
     {
-        echo"before: <br>";
-        echo_pre($string, __LINE__, __FILE__);
-        if(!isset($chunk) || empty($chunk) || $chunk=='')
+        if(!isset($chunk)|| empty($chunk) || $chunk == '')
         {
-            if(is_array($chunk))
-            {
-                $dom = count($chunk);
-            }
-            else
-            {
-                $dom=strlen($chunk);
-            }
+            // $chunk = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
+            $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
         }
-        // $Block = (strlen($string)/18);
-        // echo "blocksize= ".$Block."<br>";
+        
+        if(is_array($chunk))
+        {
+            $dom = count($chunk);
+        }
+        else
+        {
+            $dom=strlen($chunk);
+        }
         $j=0;
         $octadec='';
-        // for ($i=(strlen($string)); $i >= 0; $i--)
         for ($i=0; $i < (strlen($string)); $i++)
         {
-            // echo $aux.'<br>';
-            // echo substr($string, $i, 18).'<br>';
-            // echo bindec(substr($string, $aux, 8)).'<br>';
-
             $dec = bindec(substr($string, $i, $dom));
-            echo substr($string, $i, $dom).'<br>';
-            $octadec.= $this->dec2Chunk($dec).'L';
+            $octadec.= $this->dec2Chunk($dec, $chunk).'I';
             $j++;
-            $i+=17;
+            $i+=$dom-1;
         }
         $octadec = substr($octadec, 0, strlen($octadec)-1);
-        echo "<br>after: <br>";
-        print_r($octadec);
-        echo "<br>";
         return($octadec);
-        // $this->translate($octadec);
-        // die_pre($string, __LINE__, __FILE__);
     }
     public function translate($string, $chunk='')//desencripta el string de permisos
     {
-        echo"before: <br>";
-        echo_pre($string, __LINE__, __FILE__);
-        if(!isset($chunk) || empty($chunk) || $chunk=='')
+        if(!isset($chunk)|| empty($chunk) || $chunk == '')
         {
-            if(is_array($chunk))
-            {
-                $dom = count($chunk);
-            }
-            else
-            {
-                $dom=strlen($chunk);
-            }
+            // $chunk = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
+            $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+        }
+        
+        if(is_array($chunk))
+        {
+            $dom = count($chunk);
+        }
+        else
+        {
+            $dom=strlen($chunk);
         }
 
-        $array = preg_split("/['L']+/", $string);
+        $array = preg_split("/['I']+/", $string);
         $translation = '';
         foreach ($array as $key => $value)
         {
             if($value != '0')
             {
-                $dec = $this->chunk2Dec($value);
+                $dec = $this->chunk2Dec($value, $chunk);
                 // $translation.= decbin($dec);
-                $translation.= str_pad(decbin($dec), 18, '0', STR_PAD_LEFT);
+                $translation.= str_pad(decbin($dec), $dom, '0', STR_PAD_LEFT);
             }
             else
             {
-                $translation.= '000000000000000000';
+                // $translation.= '000000000000000000';
+                $translation.= str_pad('', $dom, '0', STR_PAD_LEFT);;
             }
         }
         $translation = substr($translation, 0, strlen($translation));
-        echo "<br>after: <br>";
-        // echo "<br>".strlen($translation)."<br>";
-        print_r($translation);
         return($translation);
-        // die_pre($array);
     }
-    public function dec2Chunk($int)//el valor pasa de binario a decimal y luego a octadecimal
+    public function dec2Chunk($int, $dominio='')//el valor pasa de binario a decimal y luego a octadecimal
     {
         ////para octadec
         // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro 5dominio para el arreglo
-        $dominio = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
         // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
-        echo'dominio: '.count($dominio);
         $dom = count($dominio);
         $indice = $int;
         $octadec = '';
@@ -341,12 +325,11 @@ class Model_dec_permiso extends CI_Model
         return (strrev($octadec));
         //fin de octadec
     }
-    public function chunk2Dec($OcD)//el valor pasa de octadecimal a decimal y luego a binario
+    public function chunk2Dec($OcD, $dominio='')//el valor pasa de octadecimal a decimal y luego a binario
     {
         //decimal
         // echo 'Begining:<br>  '.$OcD.'<br>';
         // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro 5dominio para el arreglo
-        $dominio = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
         // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
         $dom = count($dominio);
         $n = strlen($OcD);
