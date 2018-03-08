@@ -236,24 +236,35 @@ class Model_dec_permiso extends CI_Model
         return ($this->db->get('dec_permiso')->result_array());
     }
 //////extra security by Luigi Palacios.
-    public function cript($string)//encripta el string de permisos
+    public function crypt($string, $chunk='')//encripta el string de permisos
     {
         echo"before: <br>";
         echo_pre($string, __LINE__, __FILE__);
+        if(!isset($chunk) || empty($chunk) || $chunk=='')
+        {
+            if(is_array($chunk))
+            {
+                $dom = count($chunk);
+            }
+            else
+            {
+                $dom=strlen($chunk);
+            }
+        }
         // $Block = (strlen($string)/18);
         // echo "blocksize= ".$Block."<br>";
         $j=0;
         $octadec='';
         // for ($i=(strlen($string)); $i >= 0; $i--)
-        for ($i=1; $i < (strlen($string)); $i++)
+        for ($i=0; $i < (strlen($string)); $i++)
         {
             // echo $aux.'<br>';
             // echo substr($string, $i, 18).'<br>';
             // echo bindec(substr($string, $aux, 8)).'<br>';
 
-            $dec = bindec(substr($string, $i, 18));
-            // $octadec.= $this->dec2octaDec($dec);
-            $octadec.= $this->dec2octaDec($dec).'L';
+            $dec = bindec(substr($string, $i, $dom));
+            echo substr($string, $i, $dom).'<br>';
+            $octadec.= $this->dec2Chunk($dec).'L';
             $j++;
             $i+=17;
         }
@@ -265,18 +276,29 @@ class Model_dec_permiso extends CI_Model
         // $this->translate($octadec);
         // die_pre($string, __LINE__, __FILE__);
     }
-    public function translate($string)//desencripta el string de permisos
+    public function translate($string, $chunk='')//desencripta el string de permisos
     {
         echo"before: <br>";
         echo_pre($string, __LINE__, __FILE__);
+        if(!isset($chunk) || empty($chunk) || $chunk=='')
+        {
+            if(is_array($chunk))
+            {
+                $dom = count($chunk);
+            }
+            else
+            {
+                $dom=strlen($chunk);
+            }
+        }
 
         $array = preg_split("/['L']+/", $string);
-        $translation = '0';
+        $translation = '';
         foreach ($array as $key => $value)
         {
             if($value != '0')
             {
-                $dec = $this->octaDec2dec($value);
+                $dec = $this->chunk2Dec($value);
                 // $translation.= decbin($dec);
                 $translation.= str_pad(decbin($dec), 18, '0', STR_PAD_LEFT);
             }
@@ -285,42 +307,46 @@ class Model_dec_permiso extends CI_Model
                 $translation.= '000000000000000000';
             }
         }
-        $translation = substr($translation, 0, strlen($translation)-1);
+        $translation = substr($translation, 0, strlen($translation));
         echo "<br>after: <br>";
         // echo "<br>".strlen($translation)."<br>";
         print_r($translation);
         return($translation);
         // die_pre($array);
     }
-    public function dec2octaDec($int)
+    public function dec2Chunk($int)//el valor pasa de binario a decimal y luego a octadecimal
     {
         ////para octadec
-        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro 5dominio para el arreglo
+        $dominio = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
         // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
+        echo'dominio: '.count($dominio);
+        $dom = count($dominio);
         $indice = $int;
         $octadec = '';
-        // echo "dec= ".$indice.'<br>';
-        if($int > 17)
+        if($int > $dom-1)
         {
             while ($indice>1)
             {
-                $aux = $indice%18;
+                $aux = $indice%$dom;
                 $octadec .=$dominio[$aux];
-                $indice/=18;
+                $indice/=$dom;
             }
         }
         else
         {
-            $aux = $indice%18;
+            $aux = $indice%$dom;
             $octadec = $dominio[$aux];
         }
         return (strrev($octadec));
         //fin de octadec
     }
-    public function octaDec2dec($OcD)
+    public function chunk2Dec($OcD)//el valor pasa de octadecimal a decimal y luego a binario
     {
+        //decimal
         // echo 'Begining:<br>  '.$OcD.'<br>';
-        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro 5dominio para el arreglo
+        $dominio = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
         // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
         $dom = count($dominio);
         $n = strlen($OcD);
@@ -328,17 +354,14 @@ class Model_dec_permiso extends CI_Model
         $sum = 0;
         while($n > 0)
         {
-            // echo (array_search($OcD[$n-1], $dominio)).'<br>';
             $aux = (array_search($OcD[$n-1], $dominio));
             $sum+= $aux * pow($dom, $i);
             $OcD = substr($OcD, 0, $n-1);
-            // echo $OcD.'<br>';
             $n--;
             $i++;
         }
         return($sum);
-        // die_pre($sum, __LINE__, __FILE__);
-
+        //fin de decimal
     }
 /////FIN de extra security by Luigi Palacios.
     public function usersXpermission($array='')//acepta ...usersXpermission(array[MODULO][FUNCION])

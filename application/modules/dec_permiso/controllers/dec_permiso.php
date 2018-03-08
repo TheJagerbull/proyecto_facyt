@@ -471,30 +471,35 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
-    public function testCrypt()
+    public function testCrypt($original='')
     {
-        $original = $this->model_permisos->get_permission();
-        $crypt = $this->model_permisos->cript($original);
+        if(!isset($original) || $original=='')
+        {
+            $original = $this->model_permisos->get_permission('10131920');
+        }
+        $crypt = $this->model_permisos->crypt($original);
         $decrypt = $this->model_permisos->translate($crypt);
-        echo '<br><br>'.$original.'<br>'.$decrypt;
+        echo '<br><br>original: '.$original.'<br>decrypt:  '.$decrypt;
+        $this->showMatrix($original);
+        $this->showMatrix($decrypt);
     }
     public function col18Tocol30()//para agrandar la tabla de permisos a 30 columnas(modulos), en lugar de 18
     {
         //matriz 18x18 = 324, ahora 31x18 = 558
-        $original = $this->model_permisos->get_permission();
-        $newM = '0';
+        $original = $this->model_permisos->get_permission('10131920');
+        $newM = '';
         echo 'length: '.strlen($original).'<br>';
         $j=0;
-        for ($i=1; $i < strlen($original); $i++)
+        for ($i=0; $i < strlen($original); $i++)
         {
             echo $original[$i];
             $newM.=$original[$i];
             $j++;
             if($j==18)
             {
-                if($i==18)
+                if($i==17)
                 {
-                    $newM.= '1111111111110';
+                    $newM.= '1111111111111';
                 }
                 else
                 {
@@ -505,22 +510,30 @@ Class Dec_permiso extends MX_Controller{
 
             }
         }
-        $newM.= '0000000000000';
+        echo "<br> nuevo:";
+        $this->showMatrix($newM);
+        $this->testCrypt($newM);
+
+        // $this->showMatrix($original);
+    }
+    private function showMatrix($string)
+    {
         echo '<br>';
-        echo '<br>';
-        echo 'length: '.strlen($newM).'<br>';
+        echo 'length: '.strlen($string).'<br>';
+        $m = strlen($string)/18;
+        echo 'modules: '.$m.'<br><br>';
         $j=0;
-        for ($i=0; $i < strlen($newM); $i++)
+        for ($i=0; $i < strlen($string); $i++)
         {
-            echo $newM[$i];
+            echo $string[$i];
             $j++;
-            if($j==31)
+            if($j==$m)
             {
-                echo '<br>';
+                echo "<br>";
                 $j=0;
-                
             }
         }
+        echo "<br><br>";
     }
 }
 //Design By Luigi:
