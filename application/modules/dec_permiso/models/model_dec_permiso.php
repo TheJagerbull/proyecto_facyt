@@ -7,9 +7,9 @@ class Model_dec_permiso extends CI_Model
 	{
 		parent::__construct();
 	}
-     var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
-   //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
-    function get_list()
+    var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
+   //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable
+    function get_list($dominio)
     {
         ////para busqueda de usuarios de acuerdo a permisos asignados
         //Por: Luigi Palacios
@@ -27,7 +27,7 @@ class Model_dec_permiso extends CI_Model
                 }
                 array_push($permits[$item[0]], $item[1]);
             }
-            $users_id = $this->usersXpermission($permits);
+            $users_id = $this->usersXpermission($permits, $dominio);
         }
         ////Fin de preparacion de los datos para busqueda
 
@@ -188,14 +188,22 @@ class Model_dec_permiso extends CI_Model
         return $output;// Para retornar los datos al controlador
     }
 
-    public function get_permission($usuario='')
+    public function get_permission($usuario='', $bool=false)
     {
         if(empty($usuario))
         {
             $usuario = $this->session->userdata('user')['id_usuario'];
         }
         $this->db->select('nivel');
-        $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array();
+        if(!$bool)
+        {
+            $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array();
+        }
+        else
+        {
+            $query = $this->db->get('dec_permiso')->row_array();
+        }
+
         if(isset($query['nivel']))
         {
             return($query['nivel']);
@@ -205,6 +213,22 @@ class Model_dec_permiso extends CI_Model
             return(0);
         }
 
+    }
+    public function edit_dec_permiso($original='', $nuevo='')
+    {
+        if($this->session->userdata('user')['id_usuario']=='18781981')
+        {
+            $this->db->where($original);
+            $this->db->update('dec_permiso',$nuevo);
+            return($this->db->affected_rows());
+        }
+    }
+    public function get_dec_permiso()
+    {
+        if($this->session->userdata('user')['id_usuario']=='18781981')
+        {
+            return $this->db->get('dec_permiso')->result_array();
+        }
     }
     public function set_permission($usuario)
     {
@@ -347,7 +371,7 @@ class Model_dec_permiso extends CI_Model
         //fin de decimal
     }
 /////FIN de extra security by Luigi Palacios.
-    public function usersXpermission($array='')//acepta ...usersXpermission(array[MODULO][FUNCION])
+    public function usersXpermission($array='', $dominio)//acepta ...usersXpermission(array[MODULO][FUNCION])
     {
         if(isset($array) && !empty($array))
         {
@@ -364,14 +388,14 @@ class Model_dec_permiso extends CI_Model
                 {
                     for ($i=0; $i < sizeof($function); $i++)//recorre cada funcion del modulo de los permisos que pregunto
                     {
-                        if($this->check_permit($value['nivel'], $module, $function[$i])=='flagged')//no tiene ninung permiso en ese modulo
+                        if($this->check_permit($this->translate($value['nivel'],$dominio), $module, $function[$i])=='flagged')//no tiene ninung permiso en ese modulo
                         {
                             $flag *= 0;//falso
                             continue;//paso al siguiente modulo del listado de permisos (reduce tiempo de ejecucion al recorrer los arreglos)
                         }
                         else
                         {
-                            $flag*=$this->check_permit($value['nivel'], $module, $function[$i]);
+                            $flag*=$this->check_permit($this->translate($value['nivel'],$dominio), $module, $function[$i]);
                         }
                     }
                 }
@@ -396,6 +420,16 @@ class Model_dec_permiso extends CI_Model
             switch ($module)//pueden haber un maximo de 18 modulos a verificar por permisologia
             {
                 case 'air':
+                    if($mat[0]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18);//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'alm':
                     if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 1;//localizo la casilla del permiso correspondiente
@@ -405,7 +439,7 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'alm':
+                case 'mnt':
                     if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 2;//localizo la casilla del permiso correspondiente
@@ -415,7 +449,7 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'mnt':
+                case 'usr':
                     if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 3;//localizo la casilla del permiso correspondiente
@@ -425,20 +459,10 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'usr':
-                    if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($function * 18) + 4;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 'flagged';
-                    }
-                break;
                 case 'mnt2':
-                if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                 {
-                    $permiso = ($function * 18) + 5;//localizo la casilla del permiso correspondiente
+                    $permiso = ($function * 18) + 4;//localizo la casilla del permiso correspondiente
                 }
                 else
                     {
@@ -446,6 +470,16 @@ class Model_dec_permiso extends CI_Model
                     }
                 break;
                 case 'rhh':
+                    if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 5;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'tic':
                     if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 6;//localizo la casilla del permiso correspondiente
@@ -455,7 +489,7 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'tic':
+                case 'tic2':
                     if($mat[7]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 7;//localizo la casilla del permiso correspondiente
@@ -465,20 +499,10 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'tic2':
+                case 'alm2':
                     if($mat[8]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 8;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 'flagged';
-                    }
-                break;
-                case 'alm2':
-                    if($mat[9]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($function * 18) + 9;//localizo la casilla del permiso correspondiente
                     }
                     else
                     {
