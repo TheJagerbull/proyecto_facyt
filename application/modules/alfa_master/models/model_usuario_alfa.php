@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Model_dec_usuario extends CI_Model
+class Model_usuario_alfa extends CI_Model
 {
 	//constructor predeterminado del modelo
 	function __construct()
@@ -39,7 +39,8 @@ class Model_dec_usuario extends CI_Model
 		$query = $this->db->get_where('dec_usuario',$username);
 		if($query->num_rows() == 1)
 		{
-			return TRUE;
+			echo "exite";
+			//return TRUE;
 			//$query->row();
 		}
 		else

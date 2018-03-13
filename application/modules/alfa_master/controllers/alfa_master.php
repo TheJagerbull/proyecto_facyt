@@ -11,6 +11,7 @@ class Alfa_master extends MX_Controller
         $this->load->helper('url');
         $this->load->library('table');
         
+        $this->load->model('Model_usuario_alfa');
        
            
     }
@@ -39,16 +40,23 @@ class Alfa_master extends MX_Controller
             // Do the login...
             if($rules->run() && $this->auth_ldap->login($rules->set_value('username'),$rules->set_value('password'))){
                 // Login WIN!
+
                 if($this->session->userdata('username')){
-                    //echo_pre($this->session->all_userdata()); imprime el array de la data
+                    //echo_pre($this->session->all_userdata()); //imprime el array de la data
                    // $this->load->view('template/header');
-                  
-                  $user = $this->model_usuario_alfa->existe('username');
+                  $user = $this->input->post('username');
                  
                   echo $user;
-           
+                  //consulta que exitan en bd
+                  $user = $this->model_usuario_alfa->existe_user($user);
+                  if($user){
+                   // permisos en la bd
+                    
+                  }else{
+                   // registrarlo
+                  }
                   $this->load->view('auth/header');
-                  $this->load->view('auth/home');
+                  $this->load->view('auth/home', $user);
                   $this->load->view('auth/footer');
                    // $this->load->view('template/footer');
                     //redirect('welcome_message');
@@ -63,6 +71,8 @@ class Alfa_master extends MX_Controller
         }else {
                 // Already logged in...
                 //echo "ya estas registrado";
+          $user = $this->input->post('username');
+          $user = $this->input->post('username');
                   $this->load->view('auth/header');
                   $this->load->view('auth/home');
                   $this->load->view('auth/footer');
