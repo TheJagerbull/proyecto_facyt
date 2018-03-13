@@ -26,6 +26,25 @@ Class Dec_permiso extends MX_Controller{
         }
         return($modules);
     }
+    private function initString()//inicia el string para asignar permisos, a partir de la cantidad de modulos definidos en la permisologia
+    {
+        $string='';
+        $mods=$this->modules();
+        for ($i=0; $i < ($mods*18); $i++)
+        {
+            if($i>=0 && $i<$mods)
+            {
+                $string.='1';
+            }
+            else
+            {
+                $string.='0';
+            }
+        }
+        // $this->showMatrix($string);
+        // die_pre($string);
+        return($string);
+    }
     private function addModuleMatrix($original, $modules='')//funcion para agregar un modulo de permisos a la estructura
     {
         $newM = '';
@@ -57,25 +76,6 @@ Class Dec_permiso extends MX_Controller{
             }
         }
         return($newM);
-    }
-    private function initString()//inicia el string para asignar permisos, a partir de la cantidad de modulos definidos en la permisologia
-    {
-        $string='';
-        $mods=$this->modules();
-        for ($i=0; $i < ($mods*18); $i++)
-        {
-            if($i>=0 && $i<$mods)
-            {
-                $string.='1';
-            }
-            else
-            {
-                $string.='0';
-            }
-        }
-        // $this->showMatrix($string);
-        // die_pre($string);
-        return($string);
     }
     private function Crypt($original='')//para encriptar
     {
@@ -632,11 +632,11 @@ Class Dec_permiso extends MX_Controller{
     public function testCrypt($original='')
     {
         // die_pre($this->dominio);
-        $this->initString();
+        // $this->initString();
         if(!isset($original) || $original=='')
         {
             // $original = $this->model_permisos->get_permission('10131920');
-            $original = $this->model_permisos->get_permission();
+            $original = $this->deCrypt($this->model_permisos->get_permission());
             // $original = str_repeat("1", 558);
         }
         // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
