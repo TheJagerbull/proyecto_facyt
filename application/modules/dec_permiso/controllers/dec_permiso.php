@@ -109,54 +109,63 @@ Class Dec_permiso extends MX_Controller{
 
     private function update_permits($int='', $how='')//para actualizar los permisos que ya fueron asignados en el sistema
     {
-        if($this->session->userdata('user')['id_usuario']=='18781981')
+        $permit = $this->model_permisos->get_permission('', true);
+        if(strlen($permit)<324)
         {
-            if(isset($int) && !empty($int) && $int!=0)//define el punto fijo de modulos en uso, a conciencia del programador del sistema
+            $this->session->set_flashdata('set_permission','success');
+            redirect('usuarios/permisos');
+        }
+        else
+        {
+            if($this->session->userdata('user')['id_usuario']=='18781981')
             {
-
-            }
-            else
-            {
-                if($how=='Adjust&Crypt')
+                if(isset($int) && !empty($int) && $int!=0)//define el punto fijo de modulos en uso, a conciencia del programador del sistema
                 {
-                    $flag = 1;
-                    $users = $this->model_permisos->get_dec_permiso();
-                    foreach ($users as $key => $value)
+
+                }
+                else
+                {
+                    if($how=='Adjust&Crypt')
                     {
-                        $original = $value['nivel'];
-                        $new = '';
-                        for ($i=0; $i < strlen($original); $i++)//me salto las primeras $max_mod casillas del string
+                        $flag = 1;
+                        $users = $this->model_permisos->get_dec_permiso();
+                        foreach ($users as $key => $value)
                         {
-                            if(isset($original[$i+1]))
+                            $original = $value['nivel'];
+                            $new = '';
+                            for ($i=0; $i < strlen($original); $i++)//me salto las primeras $max_mod casillas del string
                             {
-                                $new .= $original[$i+1];
+                                if(isset($original[$i+1]))
+                                {
+                                    $new .= $original[$i+1];
+                                }
+                                else
+                                {
+                                    $new.='0';
+                                }
                             }
-                            else
-                            {
-                                $new.='0';
-                            }
+                            // $resultante['nivel'] = $new;
+                            $aux = $this->Crypt($new);
+                            $resultante['nivel'] = $aux;
+                            $resultante['TIME'] = $value['TIME'];
+
+                            // $this->showMatrix($original);
+                            // $this->showMatrix($new);
+                            // echo "crypted:<br>".$aux;
+                            // $this->showMatrix($this->deCrypt($aux));
+                            $flag*=$this->model_permisos->edit_dec_permiso($value, $resultante);
                         }
-                        // $resultante['nivel'] = $new;
-                        $aux = $this->Crypt($new);
-                        $resultante['nivel'] = $aux;
-                        $resultante['TIME'] = $value['TIME'];
+                        if($flag)
+                        {
+                            $this->session->set_flashdata('set_permission','success');
+                            redirect('usuarios/permisos');
+                        }
+                        else
+                        {
 
-                        // $this->showMatrix($original);
-                        // $this->showMatrix($new);
-                        // echo "crypted:<br>".$aux;
-                        // $this->showMatrix($this->deCrypt($aux));
-                        $flag*=$this->model_permisos->edit_dec_permiso($value, $resultante);
-                    }
-                    if($flag)
-                    {
-                        $this->session->set_flashdata('set_permission','success');
-                        redirect('usuarios/permisos');
-                    }
-                    else
-                    {
-
-                        $this->session->set_flashdata('set_permission','error');
-                        redirect('usuarios/permisos');
+                            $this->session->set_flashdata('set_permission','error');
+                            redirect('usuarios/permisos');
+                        }
                     }
                 }
             }

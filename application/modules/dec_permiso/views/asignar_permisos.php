@@ -98,7 +98,7 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><label class="control-label"><?php echo $title?>: <strong class="text-info"><?php echo $nombre; ?></strong></label></div> 
-		<form class="form" action="<?php echo base_url() ?>dec_permiso/dec_permiso/asignar_permiso" method="post" name="permiso" id="permiso">   
+		<form class="form" action="<?php echo base_url() ?>permisos/asignar" method="post" name="permiso" id="permiso">   
 			<input type="hidden" name="id_usuario" value="<?php echo $id ?>">
 			<div class="panel-body">
 

@@ -49,6 +49,8 @@ $route['alm_solicitudes']										= 'template/not_found';//seguridad sobre los 
 $route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 $route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
 $route['alm_articulos/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['dec_permiso/']											= 'template/not_found';//seguridad sobre los controladores
+$route['dec_permiso/(.*)']										= 'template/not_found';//seguridad sobre los controladores
 //inicio
 $route['inicio'] 												= 'user/usuario';
 // Rutas de Usuario
@@ -71,8 +73,14 @@ $route['usuario/orden/(.*)/(.*)']								= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/orden/(.*)/(.*)/(:num)']						= 'user/usuario/lista_usuarios/$1/$2/$3';
 $route['usuario/orden/buscar/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuarios/$1/$2/$3';
+// Rutas para permisos, para uso interno y externo
+//formulario para asignar permiso
+$route['permisos/asignar'] 										= 'dec_permiso/asignar_permiso';
+//consulta una lista de ususarios con permisos asignados en el sistema(DataTables.net -> JSON)
+$route['permisos/listar'] 										= 'dec_permiso/list_user';
+
 //Ruta de dependencia
-$route['dependencia/listar']					   	        	= 'user/usuario/dependencia';
+$route['dependencia/listar']									= 'user/usuario/dependencia';
 $route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_dependen';
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
@@ -85,8 +93,8 @@ $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1'
 $route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
 $route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTable/$1';
 $route['tablas/inventario/reportes']							='alm_articulos/build_report';
-$route['tablas/inventario/editar']                              ='alm_articulos/mod_cod_art';
-$route['tablas/inventario/modificar']                           ='alm_articulos/tmp_mod_arti';
+$route['tablas/inventario/editar']								='alm_articulos/mod_cod_art';
+$route['tablas/inventario/modificar']							='alm_articulos/tmp_mod_arti';
 $route['tablas/inventario/reportado']							='alm_articulos/tabla_incongruencias';
 $route['tablas']												='template/DataTable';
 		//Rutas de inputs y formularios
@@ -150,11 +158,18 @@ $route['test/(.*)']												='alm_articulos/test/$1';
 //Rutas para migracion de sistema
 $route['migrarDB']												='alm_articulos/migrate';
 $route['alterDB/(.*)']											='alm_articulos/alterDB/$1';
+//Rutas para actualizar el sistema
+$route['alterS/(.*)']											='dec_permiso/test';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/ver_solicitud']								='alm_solicitudes/consultar_UsrSolicitudes';
+
+// Routes for permits
+//vistas
+$route['permisos/asignar'] 										= 'dec_permiso/asignar_permiso';
+$route['permisos/listar'] 										= 'dec_permiso/list_user';
 
 // Routes para Mantenimiento
 //$route['mnt_solicitudes/listar']				        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';

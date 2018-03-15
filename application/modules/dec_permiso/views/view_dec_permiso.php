@@ -17,7 +17,7 @@
                     "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
                     "aoColumnDefs": [{"orderable": false, "targets": [-1]}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
-                        "url": "<?php echo site_url('dec_permiso/dec_permiso/list_user') ?>",
+                        "url": "<?php echo site_url('permisos/listar') ?>",
                         "type": "GET",
                         "data": function(d)
                         {
