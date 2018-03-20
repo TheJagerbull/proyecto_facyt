@@ -150,6 +150,7 @@
         _setup: function()
         {
          // console.log('Setup');
+         // console.log(this.s.dt.tables());
 
          var that = this;
          var dt = this.s.dt;
@@ -178,6 +179,8 @@
          // add Edit Button
          if( this.s.dt.button('edit:name') )
          {
+            // console.log('line 182 file dataTables_altEditor.js: this.s.dt.ajax.url()');
+            // console.log(this.s.dt.ajax.url());
           this.s.dt.button('edit:name').action( function(e, dt, node, config) {
             var rows = dt.rows({
               selected: true
@@ -186,7 +189,7 @@
             that._openEditModal();
           });
 
-          $(document).on('click', '#editRowBtn', function(e)
+          $(document).on('click', '#editRow'+_instance+'Btn', function(e)
           {
             if(initValidation()){
               e.preventDefault();
@@ -208,7 +211,7 @@
             that._openDeleteModal();
           });
 
-          $(document).on('click', '#deleteRowBtn', function(e)
+          $(document).on('click', '#deleteRowBtn'+_instance, function(e)
           {
             e.preventDefault();
             e.stopPropagation();
@@ -228,7 +231,7 @@
             that._openAddModal();
           });
 
-          $(document).on('click', '#addRowBtn', function(e)
+          $(document).on('click', '#addRowBtn'+_instance, function(e)
           {
             if(initValidation()){
               e.preventDefault();
@@ -272,35 +275,54 @@
         */
         _openEditModal: function ( )
         {
-         var that = this;
-         var dt = this.s.dt;
-         var columnDefs = [];
+          var that = this;
+          var dt = this.s.dt;
+          var columnDefs = [];
 
-    //Adding column attributes to object.
-    //Assuming that the first defined column is ID - Therefore skipping that
-    //and starting at index 1, because we dont wanna be able to change the ID.
-   for( var i = 1; i < dt.context[0].aoColumns.length; i++ )
-   {
-    columnDefs.push({ title: dt.context[0].aoColumns[i].sTitle,
-      name: dt.context[0].aoColumns[i].data,
-      type: dt.context[0].aoColumns[i].type,
-      options: dt.context[0].aoColumns[i].options,
-      msg: dt.context[0].aoColumns[i].errorMsg,
-      hoverMsg: dt.context[0].aoColumns[i].hoverMsg,
-      pattern: dt.context[0].aoColumns[i].pattern,
-      special: dt.context[0].aoColumns[i].special
-    });
-  }
-  var adata = dt.rows({
-    selected: true
-  });
+          //Adding column attributes to object.
+          //Assuming that the first defined column is ID - Therefore skipping that
+          //and starting at index 1, because we dont wanna be able to change the ID.
+          for( var i = 1; i < dt.context[0].aoColumns.length; i++ )
+          {
+            columnDefs.push({ title: dt.context[0].aoColumns[i].sTitle,
+              name: dt.context[0].aoColumns[i].data,
+              type: dt.context[0].aoColumns[i].type,
+              options: dt.context[0].aoColumns[i].options,
+              msg: dt.context[0].aoColumns[i].errorMsg,
+              hoverMsg: dt.context[0].aoColumns[i].hoverMsg,
+              pattern: dt.context[0].aoColumns[i].pattern,
+              special: dt.context[0].aoColumns[i].special,
+              placeholder:dt.context[0].aoColumns[i].placeholder,
+              required:dt.context[0].aoColumns[i].required
+            });
+          }
+          var adata = dt.rows({
+            selected: true
+          });
 
           //Building edit-form
           var data = "";
-
           data += "<form name='altEditor-form' role='form'>";
 
           for(var j = 0; j < columnDefs.length; j++){
+            if(typeof columnDefs[j].hoverMsg !== 'undefined')
+            {
+              var hoverMsg = columnDefs[j].hoverMsg;
+              var otherDATAmsg = hoverMsg.match(/(\/\((.*)\)\/)/);
+              if(typeof otherDATAmsg !== 'undefined' && otherDATAmsg !== null)
+              {
+                columnDefs[j].hoverMsg = hoverMsg.replace(/(\/\((.*)\)\/)/, adata.data()[0][otherDATAmsg[2]]);
+              }
+            }
+            if(typeof columnDefs[j].pattern !== 'undefined')
+            {
+              var pattern = columnDefs[j].pattern;
+              var otherDATApat = pattern.match(/(\/\((.*)\)\/)/);
+              if(typeof otherDATApat !== 'undefined' && otherDATApat !== null)
+              {
+                columnDefs[j].pattern = pattern.replace(/(\/\((.*)\)\/)/, adata.data()[0][otherDATApat[2]]);
+              }
+            }
             data += "<div class='form-group'>";
             data += "<div class='col-sm-2 col-md-2 col-lg-2 text-right' style='padding-top:4px;'>";
             data += "<label for='" + columnDefs[j].title + "'>" + columnDefs[j].title + ":</label></div>";
@@ -309,17 +331,36 @@
             //Adding labels
             if(columnDefs[j].type.includes("label")){
               data += "<label id='" + columnDefs[j].type + "'>" + adata.data()[0][columnDefs[j].name] + "</label>";
-//              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
+          //              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
             }
             
-            if(columnDefs[j].type.includes("text")){
-              data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].title + "' placeholder='" + columnDefs[j].title + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
-              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
+            if(columnDefs[j].type.includes("textarea"))
+            {
+              var aux = '';
+              if(adata.data()[0][columnDefs[j].name]!==null)
+              {
+                aux = adata.data()[0][columnDefs[j].name];
+              }
+              data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' required='"+columnDefs[j].required+"' >"+(aux? aux : "" )+"</textarea>";
+              // data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' "+(aux? "value='"+aux : "" )+"' "+(columnDefs[j].required? "required='true'" : "" )+" ></textarea>";
+              data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
             }
-
+            else
+            {
+              if(columnDefs[j].type.includes("text"))
+              {
+                var aux = '';
+                if(adata.data()[0][columnDefs[j].name]!==null)
+                {
+                  aux = adata.data()[0][columnDefs[j].name];
+                }
+                data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + aux + "' "+(columnDefs[j].required? "required" : "" )+">";
+                data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
+              }
+            }
             //Adding readonly-fields
             if(columnDefs[j].type.includes("readonly")){
-              data += "<input type='text' readonly  id='" + columnDefs[j].title + "' name='" + columnDefs[j].title + "' placeholder='" + columnDefs[j].title + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
+              data += "<input type='text' readonly  id='" + columnDefs[j].name + "' name='" + columnDefs[j].name + "' placeholder='" + columnDefs[j].name + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
             }
 
             //Adding select-fields
@@ -345,7 +386,7 @@
             $('#altEditor-modal').find('.modal-title').html('<i class="fa fa-pencil"></i>');
             $('#altEditor-modal').find('.modal-body').html(data);
             $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Cerrar</button>\
-             <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn'>Guardar</button>");
+             <button type='button' data-content='remove' class='btn btn-primary' id='editRow"+_instance+"Btn'>Guardar</button>");
 
           });
 
@@ -359,6 +400,8 @@
           var that = this;
           var dt = this.s.dt;
 
+          // console.log('that.s.dt.ajax.url()');
+          // console.log(that.s.dt.ajax.url());
         //Data from table columns
         var columnIds = [];
         //Data from input-fields
@@ -374,12 +417,14 @@
         var adata = dt.rows({
           selected: true
         });
-
+        // console.log(adata);
         //Getting the IDs and Values of the tablerow
         for( var i = 0; i < dt.context[0].aoColumns.length; i++ )
         {
+          // console.log(dt.context[0].aoColumns[i].data);
+          // console.log(adata.data());
           columnIds.push({ id: dt.context[0].aoColumns[i].id,
-            dataSet: adata.data()[0][dt.context[0].aoColumns[i].data]
+            dataSet: adata.data()[0][dt.context[0].aoColumns[i].data]//aqui da error cuando hay más de una datatable editable en la misma vista
           }); 
         }
 
@@ -400,8 +445,8 @@
 
 
         //Calling AJAX with data, tableObject, command.
-        updateJSON(comepleteJsonData, that, "editRow");   
-  },
+        updateJSON(comepleteJsonData, that, ("editRow"+_instance));   
+        },
 
 
        /**
@@ -439,7 +484,7 @@
           $('#altEditor-modal').find('.modal-title').html('Delete Record');
           $('#altEditor-modal').find('.modal-body').html(data);
           $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Close</button>\
-           <button type='button'  data-content='remove' class='btn btn-danger' id='deleteRowBtn'>Delete</button>");
+           <button type='button'  data-content='remove' class='btn btn-danger' id='deleteRowBtn"+_instance+"'>Delete</button>");
         });
 
         $('#altEditor-modal').modal('show');
@@ -473,7 +518,7 @@
         comepleteJsonData.data.push(jsonDataArray);
 
         //Calling AJAX with data, tableObject, command.
-        updateJSON(comepleteJsonData, that, "deleteRow");
+        updateJSON(comepleteJsonData, that, ("deleteRow"+_instance));
 
  },
 
@@ -536,7 +581,7 @@
           $('#altEditor-modal').find('.modal-title').html('Add Record');
           $('#altEditor-modal').find('.modal-body').html(data);
           $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Close</button>\
-           <input type='submit'  data-content='remove' class='btn btn-primary' id='addRowBtn'></input>");
+           <input type='submit'  data-content='remove' class='btn btn-primary' id='addRowBtn"+_instance+"'></input>");
         });
 
         $('#altEditor-modal').modal('show');
@@ -582,7 +627,7 @@
 
 
         //Calling AJAX with data, tableObject, command.
-        updateJSON(comepleteJsonData, that, "addRow");
+        updateJSON(comepleteJsonData, that, ("addRow"+_instance));
 
         
 
@@ -680,69 +725,88 @@ var initValidation = function(){
   var errorcount = 0;
 
   //Looping through all text fields
-  $('form[name="altEditor-form"] *').filter(':text').each(function( i ){
+  $('form[name="altEditor-form"] *').filter(':input').each(function( i ){
     var errorLabel = "#"+ $(this).attr("id") + "label";
-    
     //Inputvalidation for port range
-    if($(this).attr("data-special") === "portRange"){
+    if($(this).attr("data-special") === "portRange")
+    {
       var ports;
-      if($(this).val().includes(":")){
+      if($(this).val().includes(":"))
+      {
         ports = $(this).val().split(":");
 
         var num1 = parseInt(ports[0]);
         var num2 = parseInt(ports[1]);
 
-        if(num1 < num2){
-          if(ports[0].match($(this).attr("pattern")) && ports[1].match($(this).attr("pattern"))){
+        if(num1 < num2)
+        {
+          if(ports[0].match($(this).attr("pattern")) && ports[1].match($(this).attr("pattern")))
+          {
             $(errorLabel).hide();
             $(errorLabel).empty();
-          }else{
+          }
+          else
+          {
             $(errorLabel).html($(this).attr("data-errorMsg"));
             $(errorLabel).show();
             errorcount++;
           }
-        }else{
+        }
+        else
+        {
           $(errorLabel).html($(this).attr("data-errorMsg"));
           $(errorLabel).show();
           errorcount++;
         }
 
       //If the port isnt a range
-      }else if (!$(this).val().match($(this).attr("pattern"))){
+      }
+      else
+      {
+        if (!$(this).val().match($(this).attr("pattern")))
+        {
            $(errorLabel).html($(this).attr("data-errorMsg"));
            $(errorLabel).show();
            errorcount++;
-         }else{
+        }
+        else
+        {
 
           //If no error
           $(errorLabel).hide();
           $(errorLabel).empty();
         }
-
-    //All other text-inputs    
-    }else if($(this).attr("id") === "descripcion"){
-        $(errorLabel).hide();
-        $(errorLabel).empty();
       }
-    else if($(this).attr("data-special") !== "portRange" && !$(this).context.checkValidity()){
+    //All other text-inputs
+    }
+    else
+    {
+      // console.log($(this));
+      // console.log($(this).context.checkValidity());
+      // console.log($(this).context);
+      if(!$(this).context.checkValidity())
+      {
         $(errorLabel).html($(this).attr("data-errorMsg"));
         $(errorLabel).show();
         errorcount++;
 
       //If no error
-      }else{
+      }
+      else
+      {
         $(errorLabel).hide();
         $(errorLabel).empty();
 
       }
-      
-    });
+    }
+  });
 
-if(errorcount === 0){
-  isValid = true;
-}
+  if(errorcount === 0)
+  {
+    isValid = true;
+  }
 
-return isValid;
+  return isValid;
 };
 
 //AJAX function - will reload table if succesfull
@@ -751,6 +815,7 @@ var updateJSON = function(data, tableObj, act){
   var dt = tableObj.s.dt;
 //  console.log(dt);
 //  console.log(dt.context[0].ajax.url);
+  var aux = act.slice(0, act.search('/[0-9]*/'));
   var jqxhr =
   $.ajax({
     url: dt.context[0].ajax.url,
@@ -758,12 +823,12 @@ var updateJSON = function(data, tableObj, act){
     cache: false,
     data: {
       raw: data,
-      action: act
+      action: aux
     }
   })
     .done (function(data) {
         var bien = JSON.parse(data);
-//        console.log('in library: '+JSON.parse(data));
+       // console.log('in library: '+bien);
     //If data = false, then data is already present
     //Server doesn't allow duplicate data.
 //    console.log(bien);
@@ -771,25 +836,35 @@ var updateJSON = function(data, tableObj, act){
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br>\
-      <strong>Error!</strong> el artículo ya esta registrado en el sistema.\
+      <strong>Error!</strong> Ha ocurrido un error al editar.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
-    }else{
-//        console.log(data);
-      $('#altEditor-modal .modal-body .alert').remove();
+    }
+    else
+    {
+      if(bien === 'unchanged')
+      {
+        var message = '<div class="alert alert-info" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
+        <strong>No hubo cambios</strong>\
+        </div>';
+        $('#altEditor-modal .modal-body').append(message);
+      }
+      else
+      {
+        $('#altEditor-modal .modal-body .alert').remove();
 
-      var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
-      <strong>Artículo modificado con éxito!</strong>\
-      </div>';
-      $('#altEditor-modal .modal-body').append(message); 
-      
-      //Draw on false to rewrite the field whitout lost pagination and filter data from server on the table
-//      console.log(dt.draw);
-      dt.draw(false);
+        var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
+        <strong>Edición realizada con éxito!</strong>\
+        </div>';
+        $('#altEditor-modal .modal-body').append(message); 
+        
+        //Draw on false to rewrite the field whitout lost pagination and filter data from server on the table
+  //      console.log(dt.draw);
+        dt.draw(false);
+        //Disabling submit button
+        $("#"+act+"Btn").prop('disabled', true);
 
-      //Disabling submit button
-       $("#"+act+"Btn").prop('disabled', true);
-  
+      }
     }
   })
   .fail (function(error)  { 

@@ -194,17 +194,6 @@ class Alm_datamining extends MX_Controller
         echo $string;
     }
 
-    public function migrate()
-    {
-        if($this->session->userdata('user')&& ($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'))
-        {
-            $this->model_alm_datamining->rename_oldVersionTables();
-            $this->model_alm_datamining->create_newVersionTables();
-            $this->model_alm_datamining->migrate_ver1point3();
-            // $this->model_alm_datamining->delete_oldVersionTables();
-            die_pre("Listo!", __LINE__, __FILE__);
-        }
-    }
 
     public function dataPrep()//preparacion de los datos (agarra los datos relevantes que ubican los articulos en posiciones en un espacio dimensional cartesiano)
     {

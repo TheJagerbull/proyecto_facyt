@@ -199,6 +199,15 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		die_pre($array, __LINE__, __FILE__);
 	}
+	public function get_solicitudes($attr='')
+	{
+		if(isset($attr) && !empty($attr))
+		{
+			$this->db->where($attr);
+		}
+		return($this->db->get('alm_solicitud')->result_array());
+	}
+
 	public function update_alm_solicitud($where, $update)
 	{
 		$this->db->where($where);
@@ -613,12 +622,11 @@ class Model_alm_solicitudes extends CI_Model
 		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
 		$this->db->select('alm_historial_s.usuario_ej, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
-		$this->db->where('alm_solicitud.status', 'aprobada');
-		$this->db->where('alm_historial_s.status_ej', 'carrito');
+		$this->db->where('alm_solicitud.status', 'aprobado');
 		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->from('dec_usuario');
 		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "carrito"');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_historial_s.nr_solicitud');
+		$this->db->from('dec_usuario');
 		$aux = $this->db->get()->result_array();
 		// die_pre($aux, __LINE__, __FILE__);
 		return($aux);
@@ -629,11 +637,10 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_historial_s.usuario_ej, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status', 'enviado');
-		$this->db->where('alm_historial_s.status_ej', 'carrito');
 		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "carrito"');
+		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "retirado"');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_historial_s.nr_solicitud');
+		$this->db->from('dec_usuario');
 		$aux = $this->db->get()->result_array();
 		// die_pre($aux, __LINE__, __FILE__);
 		return($aux);
@@ -1028,14 +1035,14 @@ class Model_alm_solicitudes extends CI_Model
 					$art['ID'] = $value['id_articulo'];
 					$this->db->where($art);
 					$articulo = $this->db->get('alm_articulo')->row_array();
-					$articulo['reserv'] = $articulo['reserv']-$despachado;
+					$articulo['reserv'] = $despachado - $articulo['reserv'];
 					if(($articulo['nuevos']+$articulo['usados']+$articulo['reserv'])==0)//desactiva el articulo, si se agoto la existencia
 					{
 						$articulo['ACTIVE'] = 0;
 					}
+					// die_pre($articulo, __LINE__, __FILE__);
 					$this->db->where($art);
 					$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
-					// echo_pre($articulo, __LINE__, __FILE__);
 				}
 
 				if($value['cant_nuevos'] > 0 && $value['cant_usados'] > 0)
@@ -1154,13 +1161,13 @@ class Model_alm_solicitudes extends CI_Model
 			return(FALSE);
 		}
 	}
-	public function aprobar_solicitud($nr_solicitud, $solicitud)
+	public function aprobar_solicitud($nr_solicitud, $contenido)
 	{
-		// echo_pre($solicitud);
+		// echo_pre($contenido);
 		// die_pre($nr_solicitud, __LINE__, __FILE__);
 		$estado = 0;//variable auxiliar acumulativa, para cambiar el estado de la solicitud de 'aprobado'...
 		//A 'en_proceso' de forma automatica, si se aprueban todas las cantidades aprobadas en 
-		foreach ($solicitud as $key => $value)//para recorrer los renglones de articulos de la solicitud
+		foreach ($contenido as $key => $value)//para recorrer los renglones de articulos de la solicitud
 		{
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
 				'id_articulo' => $value['id_articulo']);
@@ -1196,7 +1203,7 @@ class Model_alm_solicitudes extends CI_Model
 					// echo_pre($value['cant_aprobada']);
 					// echo_pre('anterior: '.$aprob_anterior);
 					
-					if($value['cant_aprobada'] != $aprob_anterior)//si la cantidad aprobada antes, es diferente a la cantidad aprobada antes
+					if($value['cant_aprobada'] != $aprob_anterior)//si la cantidad aprobada nueva, es diferente a la cantidad aprobada antes
 					{
 						if($value['cant_aprobada'] > $aprob_anterior)//si la cantidad aprobada, es mayor que la cantidad aprobada antes(si se aprueba por primera vez, vale 0)
 						{
@@ -1241,14 +1248,22 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		if($estado>0)//si la solicitud NO fue aprobada en 0
 		{
+			$this->load->helper('date');
+			$datestring = "%Y-%m-%d %H:%i:%s";
+			$time = time();
 			// $aprueba = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
 			// 				'nr_solicitud' =>$value['nr_solicitud']);
 			// $test = $this->db->get_where('alm_efectua', $aprueba)->result_array();
+
+			$this->load->helper('date');
+			$datestring = "%Y-%m-%d %h:%i:%s";
+			$time = time();
 			$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
 							'nr_solicitud' =>$value['nr_solicitud']);
 			$aprueba = array('usuario_ej' => $this->session->userdata('user')['id_usuario'],
 							'nr_solicitud' => $value['nr_solicitud'],
-							'status_ej' => 'aprobado');
+							'status_ej' => 'aprobado',
+							'fecha_ej' => mdate($datestring, $time));
 			// if($estado == 0) //si la solicitud queda vacia
 			// {
 			// 	$aprueba['status_ej'] = 'en_proceso';//pasa a estar anulado

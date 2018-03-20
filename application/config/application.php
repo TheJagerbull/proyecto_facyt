@@ -14,6 +14,6 @@
  * '190.170.87.6' Luis Palacios
 */
  
-$config['is_offline'] = FALSE;
+$config['is_offline'] = TRUE;
 $config['offline_allowed_ips'] = array('127.0.0.1','190.170.87.3','190.170.87.4','190.170.87.6');
 

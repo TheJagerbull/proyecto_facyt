@@ -324,7 +324,7 @@ class Tic_cuadrilla extends MX_Controller {
                 </style>-->
                 
                 <label class="control-label" for = "responsable">Asignar ayudantes</label>
-                <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed" width="100%">
                     <thead>
                         <tr> 
                             <th><div align="center">Seleccione</div></th>

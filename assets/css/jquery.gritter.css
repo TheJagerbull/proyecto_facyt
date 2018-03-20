@@ -48,7 +48,7 @@
 	color:#eee;
 	padding:2px 11px 8px 11px;
 	font-size: 11px;
-	font-family:verdana;
+	font-family: 'Open Sans', sans-serif;
 }
 .hover .gritter-item {
 	background-position:right -40px;
@@ -57,6 +57,7 @@
 	padding:0;
 	margin:0;
 	word-wrap:break-word;
+	font-family: 'Open Sans', sans-serif;
 }
 .gritter-close {
 	display:none;
@@ -73,6 +74,7 @@
 	font-weight:bold;
 	padding:0 0 7px 0;
 	display:block;
+	font-family: 'Open Sans', sans-serif;
 	text-shadow:1px 1px 0 #000; /* Not supported by IE :( */
 }
 .gritter-image {

@@ -98,7 +98,7 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><label class="control-label"><?php echo $title?>: <strong class="text-info"><?php echo $nombre; ?></strong></label></div> 
-		<form class="form" action="<?php echo base_url() ?>dec_permiso/dec_permiso/asignar_permiso" method="post" name="permiso" id="permiso">   
+		<form class="form" action="<?php echo base_url() ?>permisos/asignar" method="post" name="permiso" id="permiso">   
 			<input type="hidden" name="id_usuario" value="<?php echo $id ?>">
 			<div class="panel-body">
 
@@ -127,7 +127,7 @@
 											<tr class="active">
 												<th valign="middle"><div align="center">Artículo</div></th>
 												<th valign="middle"><div align="center">Solicitud</div></th>
-												<th valign="middle"><div align="center">Inventario por archivo</div></th>
+												<th valign="middle"><div align="center">Reporte de existencia</div></th>
 												<th valign="middle"><div align="center">Cierre Inventario</div></th>
 												<th valign="middle"><div align="center">Todos</div></th>
 											</tr>
@@ -733,12 +733,12 @@
 		row2.append('<td><p>Permite al usuario realizar solicitudes de almacén, desde el departamento que se encuentra registrado</p></td>');
 
 		var row3 = $('<tr/>');
-		row3.append('<td><strong>Inventario por archivo</strong>(Insertar):</td>');
-		row3.append('<td><p>Permite al usuario añadir artículos al inventario desde un archivo de excel u hoja de cálculo (formato .xls)</p></td>');
+		row3.append('<td><strong class="color">(Solo para el jefe de almacén)</strong><br><strong>Reporte de existencia</strong>(Insertar):</td>');
+		row3.append('<td><p>Permite al jefe de almacén suministrar un archivo de excel (con formato predeterminado), donde indica la existencia física de todos los articulos de inventario, para posteriormente realizar el cierre y actas de inventario</p></td>');
 
 		var row4 = $('<tr/>');
 		row4.append('<td><strong>Cierre de inventario</strong>(Generar):</td>');
-		row4.append('<td><p>Permite al usuario generar un reporte de cierre de inventario</p></td>');
+		row4.append('<td><p>Permite al usuario, participar en la revisión de incongruencias y generar las actas: correctiva(cuando aplique) y de cierre de inventario</p></td>');
 
 		tableBody.append(row1);
 		tableBody.append(row2);
