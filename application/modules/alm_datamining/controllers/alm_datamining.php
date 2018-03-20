@@ -14,9 +14,82 @@ class Alm_datamining extends MX_Controller
     //acento &acute;
     public function index()
     {
+        // declaracion de biblioteca de estilos para la vista
+                    $libs['header'] = '<!-- Bootstrap CSS -->
+                    <link href="'.base_url().'assets/css/bootstrap.min.css" rel="stylesheet">
+                    <link href="'.base_url().'assets/css/dataTables.bootstrap.css" rel="stylesheet">
+                    <link href="'.base_url().'assets/css/responsive.bootstrap.css" rel="stylesheet">
+                    <link href="'.base_url().'assets/css/buttons.bootstrap.min.css" rel="stylesheet">
+                    <link href= "'.base_url().'assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
+                    <!-- Bootstrap selectpicker -->
+                    <!-- Select2 CSS -->
+                    <link href= "'.base_url().'assets/css/select2.css" rel="stylesheet"/>
+                    <link href="'.base_url().'assets/css/bootstrap-select.css" rel="stylesheet">
+                    <link href= "'.base_url().'assets/css/select2-bootstrap.css" rel="stylesheet"/>
+                    <!-- Sweet-alert 2 css -->
+                    <link href="'.base_url().'assets/css/sweet-alert.css" rel="stylesheet">
+                    <!-- Modal by jcparra css -->
+                    <link href="'.base_url().'assets/css/modal.css" rel="stylesheet">
+                    <!-- Animate css -->
+                    <link href="'.base_url().'assets/css/animate.min.css" rel="stylesheet">
+                    <!-- jQuery UI -->
+                    <link href="'.base_url().'assets/css/jquery-ui.css" rel="stylesheet">
+                    <!-- prettyPhoto -->
+                    <link href="'.base_url().'assets/css/prettyPhoto.css" rel="stylesheet">
+                    <!-- Font awesome CSS -->
+                    <link href="'.base_url().'assets/css/font-awesome.min.css" rel="stylesheet">
+                    <!--DateRangePicker -->
+                    <link href="'.base_url().'assets/css/daterangepicker-bs3.css" rel="stylesheet">
+                    <!-- FileInput -->
+                    <link href= "'.base_url().'assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+                    <!-- Custom CSS -->
+                    <link href="'.base_url().'assets/css/style.css" rel="stylesheet">
+                    <link rel="stylesheet" type="text/css" href="'.base_url().'assets/css/sweetalert2.min.css">
+                    ';
+        // Fin de declaracion de biblioteca de estilos para la vista
+        // declaracion de biblioteca de scripts de javascripts
+                    $libs['footer'] = '<script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                    <!-- jQuery -->
+                    <script src="'.base_url().'assets/js/jquery-1.11.3.js"></script>      
+                    <!-- Bootstrap JS -->
+                    <script src="'.base_url().'assets/js/bootstrap.min.js"></script>
+                    <!-- jQuery UI -->
+                    <script src="'.base_url().'assets/js/jquery-ui.js"></script>      
+                    <!--File input-->
+                    <script src="'.base_url().'assets/js/fileinput.min.js" type="text/javascript"></script>
+                    <script src="'.base_url().'assets/js/fileinput_locale_es.js" type="text/javascript"></script>
+                    <script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                    <!-- DataTables -->
+                    <script src="'.base_url().'assets/js/jquery.dataTables.min.js"></script>
+                    <script src="'.base_url().'assets/js/dataTables.responsive.js"></script>
+                    <script src="'.base_url().'assets/js/dataTables.buttons.min.js"></script>
+                    <script src="'.base_url().'assets/js/dataTables.select.min.js"></script>
+                    <script src="'.base_url().'assets/js/dataTables_altEditor.js"></script>
+                    <!-- Bootstrap DataTables -->
+                    <script src="'.base_url().'assets/js/dataTables.bootstrap.js"></script>
+                    <script src="'.base_url().'assets/js/responsive.bootstrap.js"></script>
+                    <script src="'.base_url().'assets/js/buttons.bootstrap.min.js"></script>
+                    <script src="'.base_url().'assets/js/buttons.html5.min.js"></script>
+                    <!-- prettyPhoto -->
+                    <script src="'.base_url().'assets/js/jquery.prettyPhoto.js"></script>
+                    <!-- Select2 JS -->
+                    <script src="'.base_url().'assets/js/select2.js"></script>
+                    <!-- CLEditor -->
+                    <script src="'.base_url().'assets/js/jquery.cleditor.min.js"></script> 
+                    <!-- Bootstrap select js -->
+                    <script src="'.base_url().'assets/js/bootstrap-select.min.js"></script>
+                    <!-- Date and Time picker -->
+                    <script src="'.base_url().'assets/js/bootstrap-datetimepicker.min.js"></script>
+                    <script src="'.base_url().'assets/js/moment.js"></script>
+                    <script src="'.base_url().'assets/js/daterangepicker.js"></script>      
+                    <!-- Respond JS for IE8 -->
+                    <script src="'.base_url().'assets/js/respond.min.js"></script>
+                    <!-- HTML5 Support for IE -->
+                    <script src="'.base_url().'assets/js/html5shiv.js"></script>
+                          ';
         // $this->load->view('template/header');
         // $this->load->view('DynamicQueryResponse');
-        $this->load->view('fuzzyTableView');
+        $this->load->view('fuzzyTableView', $libs);
         // $this->load->view('template/footer');
     }
 
@@ -385,6 +458,7 @@ class Alm_datamining extends MX_Controller
     }
     public function fcm($m='', $P='')//new version
     {
+        die_pre("HELLO");
         /*Explicacion basica del objetivo de la funcion
         [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
         El algoritmo es un metodo de agrupacion, que permite a un Trozo de dato, pertenecer a uno o mas grupos
@@ -532,10 +606,10 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
         }
         //Variable a travez de BD
         $dimentions = array('n' => $n, 'c'=>$c);
-        $this->model_alm_datamining->build_centroidsTable($features);
-        $this->model_alm_datamining->set_centroids($centroids);
-        $this->model_alm_datamining->build_distanceTable($features);
-        $this->model_alm_datamining->build_membershipTable($features);
+        // $this->model_alm_datamining->build_centroidsTable($features);
+        // $this->model_alm_datamining->set_centroids($centroids);
+        // $this->model_alm_datamining->build_distanceTable($features);
+        // $this->model_alm_datamining->build_membershipTable($features);
 
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
@@ -595,7 +669,7 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
             }
             // echo_pre($u, __LINE__, __FILE__);
             $membershipMatrix = $u;
-            $newCentroids=array();
+            $newCentroids = array();
 
             for ($i=0; $i < $c; $i++)//para los nuevos centroides
             {
