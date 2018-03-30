@@ -86,6 +86,7 @@ class Alm_datamining extends MX_Controller
                     <script src="'.base_url().'assets/js/respond.min.js"></script>
                     <!-- HTML5 Support for IE -->
                     <script src="'.base_url().'assets/js/html5shiv.js"></script>
+                    <script src="'.base_url().'assets/js/allviews.js"></script>
                           ';
         // $this->load->view('template/header');
         // $this->load->view('DynamicQueryResponse');
@@ -96,6 +97,8 @@ class Alm_datamining extends MX_Controller
     public function validation_index($u, $centroids, $n)//$u matriz de membrecia, $centroids centroides, $n cantidad de puntos de la muestra
     {//extraido de: http://www.engineeringletters.com/issues_v20/issue_1/EL_20_1_08.pdf
     // - http://www2.math.cycu.edu.tw/TEACHER/MSYANG/yang-pdf/yang-n-28-cluster-validity.pdf
+        $string='archivo: '.__FILE__.'<br>';
+        $string.='Linea: '.__LINE__.'<br>';
         $c = count($centroids);
         $Impe=0;//primer termino para el indice de validacion de clusters del algoritmo (indice de la entropia de la particion)
         for ($i=0; $i < $c; $i++)
@@ -108,8 +111,8 @@ class Alm_datamining extends MX_Controller
             }
         }
         $Impe = -1*($Impe/$n);
-        echo_pre($Impe, __LINE__, __FILE__.'<br>Partition Entropy: ');//termino (13) del articulo EL_20_1_08.pdf pagina 2
-
+        // echo_pre($Impe, __LINE__, __FILE__.'<br>Partition Entropy: ');//termino (13) del articulo EL_20_1_08.pdf pagina 2
+        $string.='<br>Partition Entropy: '.$Impe;
         $M = array();//media de las particiones generadas por el algoritmo difuzo
 
         for ($k=0; $k < $c; $k++)
@@ -123,31 +126,43 @@ class Alm_datamining extends MX_Controller
                 }//aqui quede
             }
         }
-        echo_pre($M, __LINE__, __FILE__);
+        // echo_pre($M, __LINE__, __FILE__);
+
+        foreach ($M as $key => $value)
+        {
+            $string.='<pre>['.$key.'] =>'.$value.'<pre>';
+        }
         $DM = 0;//segundo termino para el indice de validacion de clusters del algoritmo (la suma de las distancias entre las medias de las particiones difuzas o coeficiente de la particion)
         for ($k=0; $k < $c; $k++)
         {
-            echo '<br><strong>'.$k.'</strong>';
+            // echo '<br><strong>'.$k.'</strong>';
+            // $string.= '<br><strong>'.$k.'</strong>';
             for ($i=0; $i <= $k; $i++)
             {
-                echo '<br> i= '.$i;
+                // echo '<br> i= '.$i;
+                // $string.= '<br> i= '.$i;
                 for ($j=0; $j < $k; $j++)
                 {
-                    echo '<br> j= '.$j;
+                    // echo '<br> j= '.$j;
+                    // $string.= '<br> j= '.$j;
                     if($i!=$j)
                     {
-                        echo '<br>'.$DM.'<br>';
+                        // echo '<br>'.$DM.'<br>';
+                        // $string.= '<br>'.$DM.'<br>';
                         //pow(euclidean_distance($M[$i], $M[$j]), 2);
                         $DM+=pow(($M[$i]-$M[$j]), 2);
                     }
                 }
             }
         }
-        echo_pre($DM, __LINE__, __FILE__.'<br>Partition Coefficient: ');//termino (14) del articulo EL_20_1_08.pdf pagina 2
+        // echo_pre($DM, __LINE__, __FILE__.'<br>Partition Coefficient: ');//termino (14) del articulo EL_20_1_08.pdf pagina 2
+        $string.=('<br>Partition Coefficient: '.$DM);//termino (14) del articulo EL_20_1_08.pdf pagina 2
 
         $Impe_dmfp = $Impe+$DM;
-        echo_pre($Impe_dmfp, __LINE__, __FILE__.'<br>Validation Index: ');//indice de validacion del algoritmo
-        return($Impe_dmfp);
+        // echo_pre($Impe_dmfp, __LINE__, __FILE__.'<br>Validation Index: ');//indice de validacion del algoritmo
+        $string.=('<br>Validation Index: '.$Impe_dmfp);//indice de validacion del algoritmo
+        // return($Impe_dmfp);
+        return($string);
     }
 
     public function Jm($objects, $u, $centroids, $m)//aqui se evalua la funcion objetivo, suministrando los datos de muestra, la matriz de pertenencia, los centroides, y el nivel de difuzidad
@@ -164,8 +179,9 @@ class Alm_datamining extends MX_Controller
                 $SUM+=($aux*$auxmbrsqr);
             }
         }
-        echo "<br>funci&oacute;n objetivo:<br>Jm=";
-        echo_pre($SUM, __LINE__, __FILE__);
+        // echo "<br>funci&oacute;n objetivo:<br>Jm=";
+        // echo_pre($SUM, __LINE__, __FILE__);
+        return($SUM);
     }
 
     public function optimal_test($u, $centroids, $n)
@@ -361,37 +377,46 @@ class Alm_datamining extends MX_Controller
     }
     public function print_multidimentional_array($array, $percent='')
     {
+        $MDarray = '';
         $keys = array_keys($array[0]);
         // echo strlen($keys[0]).'<br>';
-        echo '<pre>      ';
+        // echo '<pre>      ';
+        $MDarray .= '<pre>      ';
         foreach ($keys as $key => $value)
         {
-            echo $value.'| ';
+            // echo $value.'| ';
+            $MDarray .= $value.'| ';
         }
         foreach ($array as $key => $value)
         {
-            echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
+            // echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
+            $MDarray .= '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
             foreach ($value as $column => $data)
             {
                 if($percent)
                 {
-                    echo str_pad(($data*100).'%', strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    // echo str_pad(($data*100).'%', strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    $MDarray .= str_pad(($data*100).'%', strlen($column)+1, ' ', STR_PAD_LEFT).'|';
                 }
                 else
                 {
                     if($column=='fecha_solicitado' || $column=='fecha_retirado')
                     {
-                        echo str_pad(date("Y-m-d H:i:s", intval($data)), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                        // echo str_pad(date("Y-m-d H:i:s", intval($data)), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                        $MDarray .= str_pad(date("Y-m-d H:i:s", intval($data)), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
                     }
                     else
                     {
-                        echo str_pad(intval($data), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                        // echo str_pad(intval($data), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                        $MDarray .= str_pad(intval($data), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
                     }
                 }
                 // echo $data.' ';
             }
         }
-        echo "</pre>";
+        // echo "</pre>";
+        $MDarray .= "</pre>";
+        return ($MDarray);
     }
     public function print_membershipColumns($array, $columns)
     {
@@ -458,7 +483,7 @@ class Alm_datamining extends MX_Controller
     }
     public function fcm($m='', $P='')//new version
     {
-        die_pre("HELLO");
+        // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
         [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
         El algoritmo es un metodo de agrupacion, que permite a un Trozo de dato, pertenecer a uno o mas grupos
@@ -495,8 +520,11 @@ class Alm_datamining extends MX_Controller
 
 
         /*U se compone de cada iteracion de $distanceMatrix, es decir U[m]= a la m-esimo iteracion de $distance Matrix*/
-        echo "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
-        echo "<h3> Fuzzy C-Means:</h3><br>";
+        $msg = '';
+        // echo "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
+        $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
+        // echo "<h3> Fuzzy C-Means:</h3><br>";
+        $msg .= "<h3> Fuzzy C-Means:</h3><br>";
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
@@ -541,7 +569,7 @@ class Alm_datamining extends MX_Controller
         // $centroids = array(array('x' => 0, 'y' => 4354.0, 'z'=>16),
         //                     array('x' => 16.0, 'y' => 0, 'z'=>16),
         //                     array('x' => 16.0, 'y' => 817.00, 'z'=> 0));
-$centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
+        $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
                             array('x' => 0, 'y' => 4354.0, 'z'=>0),
                             array('x' => 0, 'y' => 0, 'z'=> 15),
                             array('x' => 0, 'y' => 4354.0, 'z'=> 15),
@@ -610,7 +638,6 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
         // $this->model_alm_datamining->set_centroids($centroids);
         // $this->model_alm_datamining->build_distanceTable($features);
         // $this->model_alm_datamining->build_membershipTable($features);
-
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
             if(isset($newCentroids) && !empty($newCentroids))
@@ -708,17 +735,24 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
             }
             $uk = $u;
             $iterations++;
-            $this->Jm($objects, $u, $centroids, $m);
+            $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
         }
-        echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
+        $json['iterations'] = $iterations;
+        // echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
+        $msg.="<br><strong>iteraciones: ".$iterations."</strong><br>";
         // echo_pre($centroids, __LINE__, __FILE__);
-        echo "<br><strong>centroids:</strong><br>";
-        $this->print_multidimentional_array($centroids);
+        $msg.="<br><strong>centroids:</strong><br>";
+        // $this->print_multidimentional_array($centroids);
+        $json['centroides'] = $centroids;
+        $msg.=$this->print_multidimentional_array($centroids);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
         // echo_pre($membershipMatrix, __LINE__, __FILE__);
-        echo "<br><strong>Membership Matrix:</strong><br>";
-        $this->print_multidimentional_array($membershipMatrix, TRUE);
+        // echo "<br><strong>Membership Matrix:</strong><br>";
+        $msg.= "<br><strong>Membership Matrix:</strong><br>";
+        // $this->print_multidimentional_array($membershipMatrix, TRUE);
+        $json['membershipMatrix'] = $membershipMatrix;
+        $msg.=$this->print_multidimentional_array($membershipMatrix, TRUE);
 
         // $this->print_multidimentional_array($membershipMatrix);
 
@@ -735,17 +769,60 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
             }
             $BS[]=$aux;
         }
-        echo "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
+        // echo "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
+        $msg.= "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
         // echo_pre($pack['reference'], __LINE__, __FILE__);
         // echo"<strong>Probando que las membrecias no excedan el 100%</strong><br>";
         // echo_pre($BS, __LINE__, __FILE__);
         //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"
 
-        $Impe_dmfp = $this->validation_index($u, $centroids, $n);
-        die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
+        // $Impe_dmfp = $this->validation_index($u, $centroids, $n);
+        // $msg.= 'validation index: ';//indice de validacion del algoritmo
+        $json['validation_index'] = $this->validation_index($u, $centroids, $n);
+        $msg.=$json['validation_index'];
+        // die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
+        // echo $msg;
+        $json['msg'] = $msg;
+        $json['pattern'] = $this->pattern_story($membershipMatrix, $centroids);
+        echo json_encode($json);
     }
 
+    public function pattern_story($memMat, $Cntrs)
+    {
+        $pattern = array();
+        foreach ($memMat as $key => $value)
+        {
+            foreach ($value as $probe => $percent)
+            {
+
+                if(!isset($pattern[$probe]))
+                {
+                    $pattern[$probe] = array();
+                }
+                if(($percent*100)>1)
+                {
+                    $pattern[$probe][$key] = ($percent*100);
+                    // array_push($pattern[$probe], $key);
+                }
+            }
+        }
+        // $message=print_r($pattern, TRUE);
+        // $message = '';
+        foreach ($Cntrs as $key => $value)
+        {
+            // $message.='<br>'.$key;
+            $pattern[$key]['centroid'] = $value;
+            foreach ($value as $data => $score)
+            {
+                // $message.='<br> '.$data;
+                // $message.=' = '.$score;
+            }
+        }
+        // die_pre($pattern);
+        // return $message;
+        return $pattern;
+    }
     public function fcmbad()
     {
         $m=1.25;//parametro de fuzzificacion

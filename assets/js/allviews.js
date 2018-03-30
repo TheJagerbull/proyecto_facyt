@@ -657,3 +657,65 @@ function buildEdiTable(config)
     }
 }
 
+function buildObjectTable(objectArray, floatValues=false, multipleTables=false)
+{
+    // <table id="almacen" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+    //     <thead>
+    //         <tr class="active">
+    //             <th>ID</th>
+    //             <th>Descripción</th>
+    //             <th>Código</th>
+    //             <th>Código de Categoria</th>
+    //             <th>Categoria</th>
+    //             <th>Ubicación</th>
+    //         </tr>
+    //     </thead>
+    //     <tbody></tbody>
+    // </table>
+    var table = $('<table>');
+    var tableHead = $('<thead>');
+    var tableBody = $('<tbody>');
+    var tableFoot = $('<tfoot>');
+    var trHead = $('<tr>');
+    // console.log(objectArray);
+    if(multipleTables)
+    {
+        console.log("no errors!!");
+    }
+    else
+    {
+        for (var i = 0; i < objectArray.length; i++)
+        {
+            var attrArray = Object.keys(objectArray[i]);
+            var trBody = $('<tr>');
+            for (var j = 0; j < attrArray.length; j++)
+            {
+                if(i==0)//table header
+                {
+                    var th = $('<th>');
+                    th.html(attrArray[j]);
+                    // console.log(attrArray[j]);
+                    trHead.append(th);
+                }
+                var td = $('<td>');
+                if(floatValues)
+                {
+                    td.html(parseFloat(objectArray[i][attrArray[j]]).toFixed(4));
+                }
+                else
+                {
+                    td.html(objectArray[i][attrArray[j]]);
+                }
+                trBody.append(td);
+            }
+            tableBody.append(trBody);
+        }
+        tableHead.append(trHead);
+        table.append(tableHead);
+        table.append(tableBody);
+        table.append(tableFoot);
+    }
+    // console.log(table);
+    return table;
+}
+

@@ -69,7 +69,8 @@
 										<div class="awidget-body">
 											<ul id="myTab" class="nav nav-tabs nav-justified">
 												<li class="active"><a href="#home" data-toggle="tab">Pruebas</a></li>
-												<li><a href="#Matrix" data-toggle="tab">Matriz de distancia</a></li>
+												<li><a href="#MatrixD" data-toggle="tab">Matriz de distancia</a></li>
+												<li><a href="#MatrixM" data-toggle="tab">Matriz de pertenencia</a></li>
 												<li><a href="#Centers" data-toggle="tab">Centroides</a></li>
 												<li><a href="#Patterns" data-toggle="tab">Patrones</a></li>
 												<li><a href="#rep" data-toggle="tab">Reportes</a></li>
@@ -78,33 +79,38 @@
 											<div class="space-5px"></div>
 											<div id="myTabContent" class="tab-content">
 												<div id="home" class="tab-pane fade in active">
-													<div class="awidget-body">
-													Pruebas, hello!
+													<div id="homeContent" class="awidget-body">
+													Pruebas.
 													</div>
 												</div>
-												<div id="Matrix" class="tab-pane fade">
-													<div class="awidget-body">
-													Matriz de distancia, hello!
+												<div id="MatrixD" class="tab-pane fade">
+													<div id="MatrixDContent" class="awidget-body">
+													Matriz de distancia.
+													</div>
+												</div>
+												<div id="MatrixM" class="tab-pane fade">
+													<div id="MatrixMContent" class="awidget-body">
+													Matriz de pertenencia.
 													</div>
 												</div>
 												<div id="Centers" class="tab-pane fade">
-													<div class="awidget-body">
-													Centroides, hello!
+													<div id="CentersContent" class="awidget-body">
+													Centroides.
 													</div>
 							                    </div>
 												<div id="Patterns" class="tab-pane fade">
-													<div class="awidget-body">
-													Patrones, hello!
+													<div id="PatternsContent" class="awidget-body">
+													Patrones.
 													</div>
 												</div>
 												<div id="rep" class="tab-pane fade">
-													<div class="awidget-body">
-													Reportes, hello!
+													<div id="repContent" class="awidget-body">
+													Reportes.
 													</div>
 												</div>
 												<div id="Info" class="tab-pane fade">
-													<div class="awidget-body">
-													Informe, hello!
+													<div id="InfoContent" class="awidget-body">
+													Informe.
 													</div>
 																						
 												</div>
@@ -120,63 +126,14 @@
 				</div>
 			</div>
 		</div>
-		<script>
-		$(document).ready(function()
-		{
-			var base_url = '<? echo base_url(); ?>';
-			$('#fuzzytable').dataTable({
-										"language": {
-												"url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-										},
-				"bProcessing": true,
-							"bServerSide": true,
-							"sServerMethod": "GET",
-							"sAjaxSource": "<?php echo base_url() ?>alm_datamining/fcm",
-							"iDisplayLength": 10,
-							"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-							"aaSorting": [[0, 'asc']],
-							"aoColumns": [
-					{ "bVisible": true, "bSearchable": true, "bSortable": true },
-					{ "bVisible": true, "bSearchable": true, "bSortable": true },
-					{ "bVisible": true, "bSearchable": true, "bSortable": true },
-					{ "bVisible": false, "bSearchable": false, "bSortable": true },
-					{ "bVisible": false, "bSearchable": false, "bSortable": true },
-					{ "bVisible": false, "bSearchable": false, "bSortable": true },
-					{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
-							]
-			});
-
-			$.ajax({
-			  url: "<?php echo base_url() ?>alm_datamining/fcm",
-			  type: 'POST',
-			  dataType: "json",
-			  data: {"cod_segmento":this.value},
-			  success: function (data) {
-			  	console.log(data);
-			    if(data.length>0)
-			    {
-					var errorlog = '<div class="error-log"><ul>';
-					for (var i = 0; i < data.response.length; i++)
-					{
-						// console.log(data.response[i]);
-						// var aux = data.response[i];
-						errorlog += '<li>';
-						// errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
-						// errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
-						errorlog += aux.descripcion;
-						errorlog +='</li>';
-
-					}
-					errorlog += '</ul></div>';
-
-					var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
-					buildModal('log', title, errorlog);
-			    }
-			  }
-			});
-		});
-		</script>
-
+		
+      <!-- Footer ends -->
+      
+      <!-- Scroll to top -->
+      <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+      
+      <!-- Javascript files -->
+	</body>	
 <!-- Footer starts -->
       <footer>
          <div class="container">
@@ -186,13 +143,79 @@
             </div>
             <!--Formato para versiones: http://semver.org/  -->
          </div>
-      </footer>
-      <!-- Footer ends -->
-      
-      <!-- Scroll to top -->
-      <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
-      
-      <!-- Javascript files -->
+     <script type="text/javascript" >
+	      	var base_url = '<? echo base_url(); ?>';
+      </script>
       <?php echo $footer; ?>
-	</body>	
+      <script type="text/javascript" >
+      $(document).ready(function()
+      {
+      	// $('#fuzzytable').dataTable({
+      	// 							"language": {
+      	// 									"url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      	// 							},
+      	// 	"bProcessing": true,
+      	// 				"bServerSide": true,
+      	// 				"sServerMethod": "GET",
+      	// 				"sAjaxSource": "<?php echo base_url() ?>alm_datamining/fcm",
+      	// 				"iDisplayLength": 10,
+      	// 				"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      	// 				"aaSorting": [[0, 'asc']],
+      	// 				"aoColumns": [
+      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": true },
+      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": true },
+      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": true },
+      	// 		{ "bVisible": false, "bSearchable": false, "bSortable": true },
+      	// 		{ "bVisible": false, "bSearchable": false, "bSortable": true },
+      	// 		{ "bVisible": false, "bSearchable": false, "bSortable": true },
+      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
+      	// 				]
+      	// });
+
+      	$.ajax({
+      	  url: "<?php echo base_url() ?>alm_datamining/fcm",
+      	  type: 'POST',
+      	  dataType: "json",
+      	  // data: {"cod_segmento":this.value},
+      	  success: function (data) {
+      	  	var msglines = data.msg.split('<br>');
+      	  	console.log(data);
+      	  	var table = buildObjectTable(data.centroides);
+      	  	$('#CentersContent').append(table);
+      	  	var table2 = buildObjectTable(data.membershipMatrix, true);
+      	  	$('#MatrixMContent').append(table2);
+      	  	var table3 = buildObjectTable(data.pattern, true, true);
+			$('#PatternsContent').append(table3);
+      	  	table.attr('class', 'table table-hover table-bordered dataTable');
+      	  	table2.attr('class', 'table table-hover table-bordered dataTable');
+			table3.attr('class', 'table table-hover table-bordered dataTable');
+
+
+      	    if(msglines.length>0)
+      	    {
+      			var errorlog = '<div class="error-log"><ul>';
+      			for (var i = 0; i < msglines.length; i++)
+      			{
+      				// console.log(data.response[i]);
+      				// var aux = data.response[i];
+      				errorlog += '<li>';
+      				// errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+      				// errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+      				errorlog += msglines[i];
+      				errorlog +='</li>';
+
+      			}
+      			errorlog += '</ul></div>';
+
+      			var title = "INFO:  <span class='badge badge-info'>"+msglines.length+"</span>";
+      			$('#homeContent').append(title);
+      			$('#homeContent').append(errorlog);
+      			// buildModal('log', title, errorlog, '', 'lg', '');
+      			//id, title, content, footer, size, height
+      	    }
+      	  }
+      	});
+      });
+      </script>
+      </footer>
 </html>
