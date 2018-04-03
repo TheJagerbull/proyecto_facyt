@@ -579,9 +579,9 @@ class Alm_datamining extends MX_Controller
                             array('x' => 0, 'y' => 0, 'z'=> 0));
 
 
-        // $pack = $this->model_alm_datamining->get_data();
-        // $objects = $pack['data'];
-        // $centroids = $this->notSoRandom_centroids($objects);
+        $pack = $this->model_alm_datamining->get_data();
+        $objects = $pack['data'];
+        $centroids = $this->notSoRandom_centroids($objects);
 
 
         // $objects = array(array('x' =>0.58, 'y' =>0.33),
@@ -631,6 +631,7 @@ class Alm_datamining extends MX_Controller
             constantes o exponenciales en la BD es más lento que en archivo, así que se
             elige re-diseñar las operaciones para leer y escribir los resultados en archivo
         */
+        $json['sample'] = $objects;
         $c = count($centroids);//numero de centroides
         $n = count($objects);
         $error = 1;
@@ -794,44 +795,71 @@ class Alm_datamining extends MX_Controller
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
         $json['msg'] = $msg;
-        $json['pattern'] = $this->pattern_story($membershipMatrix, $centroids);
+        $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
+        $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
         echo json_encode($json);
+    }
+    public function patter_translator($patter, $Cntrs)//no es generico, se basa al objeto de muestra del proyecto
+    {
+
     }
 
     public function pattern_story($memMat, $Cntrs)
     {
         $pattern = array();
+        foreach ($Cntrs as $key => $value)
+        {
+            $pattern[$key]['coords'] = $value;
+        }
         foreach ($memMat as $key => $value)
         {
             foreach ($value as $probe => $percent)
             {
 
-                if(!isset($pattern[$probe]))
-                {
-                    $pattern[$probe] = array();
-                }
+                // if(!isset($pattern[$probe]))
+                // {
+                //     $pattern[$probe] = array();
+                // }
                 if(($percent*100)>1)
                 {
-                    $pattern[$probe][$key] = ($percent*100);
+                    $pattern[$probe][$key+1] = ($percent*100)."%";
                     // array_push($pattern[$probe], $key);
                 }
             }
         }
         // $message=print_r($pattern, TRUE);
         // $message = '';
-        foreach ($Cntrs as $key => $value)
-        {
+        // foreach ($Cntrs as $key => $value)
+        // {
             // $message.='<br>'.$key;
-            $pattern[$key]['centroid'] = $value;
-            foreach ($value as $data => $score)
-            {
-                // $message.='<br> '.$data;
-                // $message.=' = '.$score;
-            }
-        }
+            // $pattern[$key]['coords'] = $value;
+            // foreach ($value as $data => $score)
+            // {
+            //     // $message.='<br> '.$data;
+            //     // $message.=' = '.$score;
+            // }
+        // }
         // die_pre($pattern);
         // return $message;
         return $pattern;
+    }
+
+    public function pattern_results($memMat, $Cntrs)
+    {
+        foreach ($memMat as $key => $value)
+        {
+            foreach ($value as $probe => $percent)
+            {
+                if(($percent*100)>1)
+                {
+                    $memMat[$key]['centroide: '.($probe+1)] = ($percent*100)."%";
+                    // $pattern[$probe][$key+1] = ($percent*100);
+                    // array_push($pattern[$probe], $key);
+                }
+                unset($memMat[$key][$probe]);
+            }
+        }
+        return $memMat;
     }
     public function fcmbad()
     {

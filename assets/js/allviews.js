@@ -707,7 +707,7 @@ function buildObjectArrayTable(objectArray, floatValues=false, dynamicTables=fal
     // </table>
     if(dynamicTables)//asimetric object array(all objects in the array have diferent properties)
     {
-        var ul = $('<ul>');
+        var ul = $('<ol>');
         for (var i = 0; i < objectArray.length; i++)//simetric object array(all objects in the array have the same properties)
         {
             var li = $('<li>');

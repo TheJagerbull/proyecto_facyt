@@ -69,6 +69,7 @@
 										<div class="awidget-body">
 											<ul id="myTab" class="nav nav-tabs nav-justified">
 												<li class="active"><a href="#home" data-toggle="tab">Pruebas</a></li>
+												<li><a href="#Sample" data-toggle="tab">Muestra</a></li>
 												<li><a href="#MatrixD" data-toggle="tab">Matriz de distancia</a></li>
 												<li><a href="#MatrixM" data-toggle="tab">Matriz de pertenencia</a></li>
 												<li><a href="#Centers" data-toggle="tab">Centroides</a></li>
@@ -81,6 +82,11 @@
 												<div id="home" class="tab-pane fade in active">
 													<div id="homeContent" class="awidget-body">
 													Pruebas.
+													</div>
+												</div>
+												<div id="Sample" class="tab-pane fade">
+													<div id="SampleContent" class="awidget-body">
+													Muestra.
 													</div>
 												</div>
 												<div id="MatrixD" class="tab-pane fade">
@@ -180,17 +186,24 @@
       	  success: function (data) {
       	  	var msglines = data.msg.split('<br>');
       	  	console.log(data);
-      	  	var table = buildObjectArrayTable(data.centroides);
+      	  	var table = buildObjectArrayTable(data.centroides, false, true);
       	  	$('#CentersContent').append(table);
       	  	var table2 = buildObjectArrayTable(data.membershipMatrix, true);
       	  	$('#MatrixMContent').append(table2);
 			var table3 = buildObjectArrayTable(data.distanceMatrix, true);
 			$('#MatrixDContent').append(table3);
-      	  	var table4 = buildObjectArrayTable(data.pattern, true, true);
-			$('#PatternsContent').append(table4);
+			var table4 = buildObjectArrayTable(data.sample, true, true);
+			$('#SampleContent').append(table4);
+			$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
+      	  	var table5 = buildObjectArrayTable(data.pattern1, false, true);
+			$('#PatternsContent').append(table5);
+			$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
+      	  	var table6 = buildObjectArrayTable(data.pattern2, false, true);
+			$('#PatternsContent').append(table6);
       	  	table.attr('class', 'table table-hover table-bordered dataTable');
       	  	table2.attr('class', 'table table-hover table-bordered dataTable');
 			table3.attr('class', 'table table-hover table-bordered dataTable');
+			table4.attr('class', 'table table-hover table-bordered dataTable');
 
 
       	    if(msglines.length>0)

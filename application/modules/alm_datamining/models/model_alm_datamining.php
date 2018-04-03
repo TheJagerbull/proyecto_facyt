@@ -338,11 +338,7 @@ class Model_alm_datamining extends CI_Model
 	}
 	public function update_table()
 	{
-		if($this->db->table_exists('alm_datamining_src'))
-		{
-
-		}
-		else
+		if(!$this->db->table_exists('alm_datamining_src'))
 		{
 			$this->fill_table();
 		}
@@ -351,8 +347,9 @@ class Model_alm_datamining extends CI_Model
 	{
 		$this->dbforge->drop_table('alm_datamining_src');
 	}
-	Public function get_data()
+	Public function get_data()//cambiar a archivo JSON!!!!
 	{
+		$this->update_table();
 		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
 		$query = $this->db->get('alm_datamining_src')->result_array();
 		$reference = array();
