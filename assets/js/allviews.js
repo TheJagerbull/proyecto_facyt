@@ -657,7 +657,40 @@ function buildEdiTable(config)
     }
 }
 
-function buildObjectTable(objectArray, floatValues=false, multipleTables=false)
+function objectTable(object, floatValues=false)
+{
+    var table = $('<table>');
+    table.attr('class', 'table table-hover table-bordered dataTable');
+    var tableHead = $('<thead>');
+    var tableBody = $('<tbody>');
+    var trHead = $('<tr>');
+    var tr = $('<tr>');
+    var attrArray = Object.keys(object);
+    for (var i = 0; i < attrArray.length; i++)
+    {
+        var th = $('<th>');
+        var td = $('<td>');
+        th.html(attrArray[i]);
+        if(floatValues)
+        {
+            td.html(parseFloat(object[attrArray[i]]).toFixed(2));
+        }
+        else
+        {
+            td.html(object[attrArray[i]]);
+        }
+        tr.append(td);
+        trHead.append(th);
+
+    }
+    tableBody.append(tr);
+    tableHead.append(trHead);
+    table.append(tableHead);
+    table.append(tableBody);
+    return(table);
+}
+
+function buildObjectArrayTable(objectArray, floatValues=false, dynamicTables=false)
 {
     // <table id="almacen" class="table table-hover table-bordered table-condensed" align="center" width="100%">
     //     <thead>
@@ -672,19 +705,64 @@ function buildObjectTable(objectArray, floatValues=false, multipleTables=false)
     //     </thead>
     //     <tbody></tbody>
     // </table>
-    var table = $('<table>');
-    var tableHead = $('<thead>');
-    var tableBody = $('<tbody>');
-    var tableFoot = $('<tfoot>');
-    var trHead = $('<tr>');
-    // console.log(objectArray);
-    if(multipleTables)
+    if(dynamicTables)//asimetric object array(all objects in the array have diferent properties)
     {
-        console.log("no errors!!");
+        var ul = $('<ul>');
+        for (var i = 0; i < objectArray.length; i++)//simetric object array(all objects in the array have the same properties)
+        {
+            var li = $('<li>');
+
+            var table = $('<table>');
+            table.attr('class', 'table table-hover table-bordered dataTable');
+            var tableHead = $('<thead>');
+            var tableBody = $('<tbody>');
+
+            var attrArray = Object.keys(objectArray[i]);
+            var trHead = $('<tr>');
+            var tr = $('<tr>');
+            for (var j = 0; j < attrArray.length; j++)
+            {
+                var th = $('<th>');
+                var td = $('<td>');
+                th.html(attrArray[j]);
+                if(typeof objectArray[i][attrArray[j]] === 'object')
+                {
+                    var aux = objectTable(objectArray[i][attrArray[j]], floatValues);
+                    td.append(aux);
+                    tr.append(td);
+                }
+                else
+                {
+                    if(floatValues)
+                    {
+                        td.html(parseFloat(objectArray[i][attrArray[j]]).toFixed(4));
+                    }
+                    else
+                    {
+                        td.html(objectArray[i][attrArray[j]]);
+                    }
+                    tr.append(td);
+                }
+
+                trHead.append(th);
+            }
+            tableBody.append(tr);
+            tableHead.append(trHead);
+            table.append(tableHead);
+            table.append(tableBody);
+            li.append(table);
+            ul.append(li);
+        }
+        return(ul);
     }
     else
     {
-        for (var i = 0; i < objectArray.length; i++)
+        var table = $('<table>');
+        var tableHead = $('<thead>');
+        var tableBody = $('<tbody>');
+        var tableFoot = $('<tfoot>');
+        var trHead = $('<tr>');
+        for (var i = 0; i < objectArray.length; i++)//simetric object array(all objects in the array have the same properties)
         {
             var attrArray = Object.keys(objectArray[i]);
             var trBody = $('<tr>');
@@ -714,8 +792,8 @@ function buildObjectTable(objectArray, floatValues=false, multipleTables=false)
         table.append(tableHead);
         table.append(tableBody);
         table.append(tableFoot);
+        return table;
     }
     // console.log(table);
-    return table;
 }
 

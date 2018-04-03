@@ -622,6 +622,15 @@ class Alm_datamining extends MX_Controller
 
         // $centroids = array(array('x' => 14.298538741182, 'y' => 2760.5969177144),
         //                         array('x' => 9.9986937825316, 'y' => 3835.5030603179));//se elijen de forma aleatoria
+        /*
+            Por motivos de desempeño, hay un problema, al tener una muestra de mas de 1000 registros, el algoritmo se
+            bloquea por el tiempo de espera para contrarestar esto, es necesario guardar todas las
+            variables en disco-duro, y no en RAM; Entre las opciones para escribir los
+            resultados de las operaciones, y luego consultarlas, están: SQ (leer y escribir en BD);
+            Y Archivo (I/O en Discoduro), y se ha determinado que lecturas y escrituras
+            constantes o exponenciales en la BD es más lento que en archivo, así que se
+            elige re-diseñar las operaciones para leer y escribir los resultados en archivo
+        */
         $c = count($centroids);//numero de centroides
         $n = count($objects);
         $error = 1;
@@ -642,7 +651,7 @@ class Alm_datamining extends MX_Controller
         {
             if(isset($newCentroids) && !empty($newCentroids))
             {
-                $centroids = $newCentroids;
+                $centroids = $newCentroids;//READ
             }
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             $d=array();
@@ -651,7 +660,7 @@ class Alm_datamining extends MX_Controller
                 $d[$k]=array();
                 for ($i=0; $i < $c; $i++)//recorre centroides
                 {
-                    $d[$k][$i] = $this->d($objects[$k], $centroids[$i]);
+                    $d[$k][$i] = $this->d($objects[$k], $centroids[$i]);//WRITE
                 }
             }
             // die_pre($d, __LINE__, __FILE__);
@@ -665,7 +674,7 @@ class Alm_datamining extends MX_Controller
                 {
                     if($d[$k][$i]==0)//de acuerdo a la funcion definida a trozos
                     {
-                        $u[$k][$i] = 1;
+                        $u[$k][$i] = 1;//WRITE
                     }
                     else
                     {
@@ -680,16 +689,16 @@ class Alm_datamining extends MX_Controller
                             }
                             else
                             {
-                                $aux+= pow($d[$k][$i]/$d[$k][$j], $exp);
+                                $aux+= pow($d[$k][$i]/$d[$k][$j], $exp);//READ
                             }
                         }
                         if($flag==1)
                         {
-                            $u[$k][$i] = 0;
+                            $u[$k][$i] = 0;//WRITE
                         }
                         else
                         {
-                            $u[$k][$i] = 1/$aux;
+                            $u[$k][$i] = 1/$aux;//WRITE
                         }
                     }
                 }
@@ -709,8 +718,8 @@ class Alm_datamining extends MX_Controller
                 {
                     // echo($u[$k][$i])."<br>";
                     // echo()."<br>";
-                    $aux = pow($u[$k][$i], $m);
-                    $auxVector = $this->multiply_vectors($objects[$k], $aux);
+                    $aux = pow($u[$k][$i], $m);//READ
+                    $auxVector = $this->multiply_vectors($objects[$k], $aux);//READ
                     $membsumX = add_vectors($membsumX, $auxVector);
                     $membSum += $aux;
                 }
@@ -751,6 +760,7 @@ class Alm_datamining extends MX_Controller
         // echo "<br><strong>Membership Matrix:</strong><br>";
         $msg.= "<br><strong>Membership Matrix:</strong><br>";
         // $this->print_multidimentional_array($membershipMatrix, TRUE);
+        $json['distanceMatrix'] = $d;
         $json['membershipMatrix'] = $membershipMatrix;
         $msg.=$this->print_multidimentional_array($membershipMatrix, TRUE);
 

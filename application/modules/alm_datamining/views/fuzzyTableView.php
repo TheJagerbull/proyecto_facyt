@@ -180,12 +180,14 @@
       	  success: function (data) {
       	  	var msglines = data.msg.split('<br>');
       	  	console.log(data);
-      	  	var table = buildObjectTable(data.centroides);
+      	  	var table = buildObjectArrayTable(data.centroides);
       	  	$('#CentersContent').append(table);
-      	  	var table2 = buildObjectTable(data.membershipMatrix, true);
+      	  	var table2 = buildObjectArrayTable(data.membershipMatrix, true);
       	  	$('#MatrixMContent').append(table2);
-      	  	var table3 = buildObjectTable(data.pattern, true, true);
-			$('#PatternsContent').append(table3);
+			var table3 = buildObjectArrayTable(data.distanceMatrix, true);
+			$('#MatrixDContent').append(table3);
+      	  	var table4 = buildObjectArrayTable(data.pattern, true, true);
+			$('#PatternsContent').append(table4);
       	  	table.attr('class', 'table table-hover table-bordered dataTable');
       	  	table2.attr('class', 'table table-hover table-bordered dataTable');
 			table3.attr('class', 'table table-hover table-bordered dataTable');
