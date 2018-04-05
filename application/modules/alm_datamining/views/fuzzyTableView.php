@@ -151,11 +151,11 @@
          </div>
      <script type="text/javascript" >
 	      	var base_url = '<? echo base_url(); ?>';
-      </script>
-      <?php echo $footer; ?>
-      <script type="text/javascript" >
-      $(document).ready(function()
-      {
+    </script>
+    <?php echo $footer; ?>
+    <script type="text/javascript" >
+    $(document).ready(function()
+    {
       	// $('#fuzzytable').dataTable({
       	// 							"language": {
       	// 									"url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
@@ -179,58 +179,110 @@
       	// });
 
       	$.ajax({
-      	  url: "<?php echo base_url() ?>alm_datamining/fcm",
-      	  type: 'POST',
-      	  dataType: "json",
-      	  // data: {"cod_segmento":this.value},
-      	  success: function (data) {
-      	  	var msglines = data.msg.split('<br>');
-      	  	console.log(data);
-      	  	var table = buildObjectArrayTable(data.centroides, false, true);
-      	  	$('#CentersContent').append(table);
-      	  	var table2 = buildObjectArrayTable(data.membershipMatrix, true);
-      	  	$('#MatrixMContent').append(table2);
-			var table3 = buildObjectArrayTable(data.distanceMatrix, true);
-			$('#MatrixDContent').append(table3);
-			var table4 = buildObjectArrayTable(data.sample, true, true);
-			$('#SampleContent').append(table4);
-			$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
-      	  	var table5 = buildObjectArrayTable(data.pattern1, false, true);
-			$('#PatternsContent').append(table5);
-			$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
-      	  	var table6 = buildObjectArrayTable(data.pattern2, false, true);
-			$('#PatternsContent').append(table6);
-      	  	table.attr('class', 'table table-hover table-bordered dataTable');
-      	  	table2.attr('class', 'table table-hover table-bordered dataTable');
-			table3.attr('class', 'table table-hover table-bordered dataTable');
-			table4.attr('class', 'table table-hover table-bordered dataTable');
+			url: "<?php echo base_url() ?>alm_datamining/fcm",
+			type: 'POST',
+			dataType: "json",
+			// data: {"cod_segmento":this.value},
+			success: function (data) {
+				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+					var target = $(e.target).attr("href"); // activated tab
+					console.log(target);
+					$('html, body').animate({
+						scrollTop: $('div.panel-body').offset().top
+					}, 1500, "swing");
+					// if(target ==='#Sample')
+					// {
+
+					// }
+					// if(target ==='#MatrixD')
+					// {
+
+					// }
+					// if(target ==='#MatrixM')
+					// {
+
+					// }
+					// if(target ==='#Centers')
+					// {
+
+					// }
+					// if(target ==='#Patterns')
+					// {
+
+					// }
+					// if(target ==='#rep')
+					// {
+
+					// }
+					// if(target ==='#Info')
+					// {
+
+					// }
+					// if(target ==='#home')
+					// {
+
+					// }
+				});
+				var msglines = data.msg.split('<br>');
+				console.log(data);
+				var table = buildObjectArrayTable(data.centroides, false, true);
+				$('#CentersContent').html('');
+				$('#CentersContent').append(table);
+				var table2 = buildObjectArrayTable(data.membershipMatrix, true);
+				$('#MatrixMContent').html('');
+				$('#MatrixMContent').append(table2);
+				var table3 = buildObjectArrayTable(data.distanceMatrix, true);
+				$('#MatrixDContent').html('');
+				$('#MatrixDContent').append(table3);
+				var table4 = buildObjectArrayTable(data.sample, true, true);
+				$('#SampleContent').html('');
+				$('#SampleContent').append(table4);
+				$('#PatternsContent').html('');
+				$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
+				var table5 = buildObjectArrayTable(data.pattern1, false, true);
+				$('#PatternsContent').append(table5);
+				$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
+				var table6 = buildObjectArrayTable(data.pattern2, false, true);
+				$('#PatternsContent').append(table6);
+				table.attr('class', 'table table-hover table-bordered dataTable');
+				table2.attr('class', 'table table-hover table-bordered dataTable');
+				table3.attr('class', 'table table-hover table-bordered dataTable');
+				table4.attr('class', 'table table-hover table-bordered dataTable');
 
 
-      	    if(msglines.length>0)
-      	    {
-      			var errorlog = '<div class="error-log"><ul>';
-      			for (var i = 0; i < msglines.length; i++)
-      			{
-      				// console.log(data.response[i]);
-      				// var aux = data.response[i];
-      				errorlog += '<li>';
-      				// errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
-      				// errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
-      				errorlog += msglines[i];
-      				errorlog +='</li>';
+				if(msglines.length>0)
+				{
+					var errorlog = '<div class="error-log"><ul>';
+					for (var i = 0; i < msglines.length; i++)
+					{
+						// console.log(data.response[i]);
+						// var aux = data.response[i];
+						errorlog += '<li>';
+						// errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+						// errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+						errorlog += msglines[i];
+						errorlog +='</li>';
 
-      			}
-      			errorlog += '</ul></div>';
+					}
+					errorlog += '</ul></div>';
 
-      			var title = "INFO:  <span class='badge badge-info'>"+msglines.length+"</span>";
-      			$('#homeContent').append(title);
-      			$('#homeContent').append(errorlog);
-      			// buildModal('log', title, errorlog, '', 'lg', '');
-      			//id, title, content, footer, size, height
-      	    }
-      	  }
+					var title = "INFO:  <span class='badge badge-info'>"+msglines.length+"</span>";
+					$('#homeContent').html('');
+					$('#homeContent').append(title);
+					$('#homeContent').append(errorlog);
+					// buildModal('log', title, errorlog, '', 'lg', '');
+					//id, title, content, footer, size, height
+				}
+			}
       	});
-      });
-      </script>
-      </footer>
+
+		// $('#reset').click(function()
+		// {
+		// 	$('html, body').animate({
+		// 		scrollTop: $('.header').offset().top
+		// 	}, 1500, "swing");
+		// });
+    });
+    </script>
+    </footer>
 </html>

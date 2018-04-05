@@ -579,9 +579,9 @@ class Alm_datamining extends MX_Controller
                             array('x' => 0, 'y' => 0, 'z'=> 0));
 
 
-        $pack = $this->model_alm_datamining->get_data();
-        $objects = $pack['data'];
-        $centroids = $this->notSoRandom_centroids($objects);
+        // $pack = $this->model_alm_datamining->get_data();
+        // $objects = $pack['data'];
+        // $centroids = $this->notSoRandom_centroids($objects);
 
 
         // $objects = array(array('x' =>0.58, 'y' =>0.33),
