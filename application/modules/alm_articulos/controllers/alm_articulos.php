@@ -2882,13 +2882,9 @@ class Alm_articulos extends MX_Controller
                     $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist'.$selectString, false);
                     $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                     
-                    if(array_intersect(array('salidas', 'entradas'), $aColumns))
+                    if(array_intersect($needles, $aColumns))
                     {
                         $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a'.$joinString);
-                    }
-                    if(array_intersect(array('fechaU'), $aColumns))
-                    {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
                     }
                     
                 }
@@ -3230,13 +3226,9 @@ class Alm_articulos extends MX_Controller
                     $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist'.$selectString, false);
                     $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                     
-                    if(array_intersect(array('salidas', 'entradas'), $hay))
+                    if(array_intersect($needles, $hay))
                     {
                         $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a'.$joinString);
-                    }
-                    if(array_intersect(array('fechaU'), $hay))
-                    {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
                     }
                 }
                 else
