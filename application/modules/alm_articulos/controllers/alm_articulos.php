@@ -2863,30 +2863,38 @@ class Alm_articulos extends MX_Controller
                 $flag = '';
                 if(array_intersect($needles, $aColumns))
                 {
-                    $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                    $selectString = '';
+                    $joinString = '';
+                    if(array_intersect(array('entradas'), $aColumns))
+                    {
+                        $selectString.=', SUM(historial.entrada) as entradas';
+                        $joinString.=' AND historial.entrada > 0';
+                    }
+                    if(array_intersect(array('salidas'), $aColumns))
+                    {
+                        $selectString.=', SUM(historial.salida) as salidas';
+                        $joinString.=' AND historial.salida > 0';
+                    }
+                    if(array_intersect(array('fechaU'), $aColumns))
+                    {
+                        $selectString.=', MAX(historial.TIME) as fechaU';
+                    }
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist'.$selectString, false);
                     $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                    
+                    if(array_intersect(array('salidas', 'entradas'), $aColumns))
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a'.$joinString);
+                    }
+                    if(array_intersect(array('fechaU'), $aColumns))
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                    }
+                    
                 }
                 else
                 {
                     $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist', false);
-                }
-                if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
-                {
-                    $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
-                }
-                else
-                {
-                    if(in_array('entradas', $aColumns) && !in_array('salidas', $aColumns))
-                    {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
-                    }
-                    else
-                    {
-                        if(in_array('fechaU', $aColumns))
-                        {
-                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
-                        }
-                    }
                 }
                 // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
                 // $this->db->join('alm_historial_a AS alm_entradas', 'alm_genera_hist_a.id_historial_a = alm_entradas.id_historial_a AND alm_entradas.entrada > 0');
@@ -3203,30 +3211,37 @@ class Alm_articulos extends MX_Controller
                 // die_pre($columns);
                 if(array_intersect($needles, $hay))
                 {
-                    $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                    $selectString = '';
+                    $joinString = '';
+                    if(array_intersect(array('entradas'), $hay))
+                    {
+                        $selectString.=', SUM(historial.entrada) as entradas';
+                        $joinString.=' AND historial.entrada > 0';
+                    }
+                    if(array_intersect(array('salidas'), $hay))
+                    {
+                        $selectString.=', SUM(historial.salida) as salidas';
+                        $joinString.=' AND historial.salida > 0';
+                    }
+                    if(array_intersect(array('fechaU'), $hay))
+                    {
+                        $selectString.=', MAX(historial.TIME) as fechaU';
+                    }
+                    $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist'.$selectString, false);
                     $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                    
+                    if(array_intersect(array('salidas', 'entradas'), $hay))
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a'.$joinString);
+                    }
+                    if(array_intersect(array('fechaU'), $hay))
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                    }
                 }
                 else
                 {
                     $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist', false);
-                }
-                if(in_array('salidas', $columns) && !in_array('entradas', $columns))
-                {
-                    $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
-                }
-                else
-                {
-                    if(in_array('entradas', $columns) && !in_array('salidas', $columns))
-                    {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
-                    }
-                    else
-                    {
-                        if(in_array('fechaU', $columns))
-                        {
-                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
-                        }
-                    }
                 }
                 // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
                 // $this->db->join('alm_historial_a AS alm_entradas', 'alm_genera_hist_a.id_historial_a = alm_entradas.id_historial_a AND alm_entradas.entrada > 0');
