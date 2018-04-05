@@ -64,6 +64,7 @@
 								<div class="panel" style="border-radius: 10px;">
 							            <div class="panel-heading">
 							                <h3>Operaciones sobre inventario de almacén</h3>
+							                <h4>Memory usage: {memory_usage}</h4>
 							            </div>
 									<div class="panel-body">
 										<div class="awidget-body">
@@ -183,7 +184,8 @@
 			type: 'POST',
 			dataType: "json",
 			// data: {"cod_segmento":this.value},
-			success: function (data) {
+			success: function (data)
+			{
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					var target = $(e.target).attr("href"); // activated tab
 					console.log(target);
@@ -273,9 +275,23 @@
 					// buildModal('log', title, errorlog, '', 'lg', '');
 					//id, title, content, footer, size, height
 				}
+			},
+			error: function(a)
+			{
+				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
+				// body...
 			}
       	});
 
+      	$.ajax({
+      		dataType:"json",
+      		url: "<?php echo base_url() ?>/uploads/testFiles/citylots.json",
+      		success: function(data)
+      		{
+      			console.log(data);
+      			$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
+      		}
+      	});
 		// $('#reset').click(function()
 		// {
 		// 	$('html, body').animate({

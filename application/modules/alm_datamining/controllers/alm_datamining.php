@@ -794,7 +794,8 @@ class Alm_datamining extends MX_Controller
         // die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
-        $json['msg'] = $msg;
+        // $json['msg'] = $msg;
+        $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
         $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
         $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
         echo json_encode($json);

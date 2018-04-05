@@ -93,7 +93,7 @@ class Model_alm_datamining extends CI_Model
 
 
 
-	public function create_newVersionTables()
+	public function create_newVersionTables()//deprecated
 	{
 		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_historial_s` (
 				  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -149,14 +149,14 @@ class Model_alm_datamining extends CI_Model
 		  		  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
 	}
 
-	public function rename_oldVersionTables()
+	public function rename_oldVersionTables()//deprecated
 	{
 		$this->load->dbforge();
 		$this->dbforge->rename_table('alm_historial_s', 'alm_old_tablehistorial_s');
 		$this->dbforge->rename_table('alm_solicitud', 'alm_old_tablesolicitud');
 	}
 
-	public function delete_oldVersionTables()
+	public function delete_oldVersionTables()//deprecated
 	{
 		$this->load->dbforge();
 		$this->dbforge->drop_table('alm_old_tablehistorial_s');
@@ -168,7 +168,7 @@ class Model_alm_datamining extends CI_Model
 	}
 
 
-	public function migrate_ver1point3()
+	public function migrate_ver1point3()//deprecated
 	{
 		//creating the new tables
 		$this->db->order_by('ID');
@@ -280,7 +280,7 @@ class Model_alm_datamining extends CI_Model
 		// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	}
 
-	public function create_new_table()
+	public function create_new_table()//deprecated
 	{
 		if(!$this->db->table_exists('alm_datamining_src'))
 		{
@@ -306,7 +306,7 @@ class Model_alm_datamining extends CI_Model
 
 		}
 	}
-	public function fill_table()
+	public function fill_table()//deprecated
 	{
 		if($this->db->table_exists('alm_datamining_src'))
 		{
@@ -336,39 +336,102 @@ class Model_alm_datamining extends CI_Model
 			$this->fill_table();
 		}
 	}
-	public function update_table()
+	public function update_table()//deprecated
 	{
 		if(!$this->db->table_exists('alm_datamining_src'))
 		{
 			$this->fill_table();
 		}
 	}
-	public function delete_table()
+	public function delete_table()//deprecated
 	{
 		$this->dbforge->drop_table('alm_datamining_src');
 	}
-	Public function get_data()//cambiar a archivo JSON!!!!
+	// Public function get_data()//cambiar a archivo JSON!!!!
+	// {
+	// 	$this->update_table();
+	// 	$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
+	// 	$query = $this->db->get('alm_datamining_src')->result_array();
+	// 	$reference = array();
+	// 	$data = array();
+	// 	$columns = array_keys($query[0]);
+	// 	foreach ($query as $key => $value)
+	// 	{
+	// 		$reference[$key]['nr_solicitud'] = $value['nr_solicitud'];
+	// 		$reference[$key]['id_articulo'] = $value['id_articulo'];
+	// 		// $data[$key]['demanda'] = $value['demanda'];
+	// 		// $data[$key]['consumo'] = $value['consumo'];
+	// 		// $data[$key]['fecha_solicitado'] = $value['fecha_solicitado'];
+	// 		// $data[$key]['fecha_retirado'] = $value['fecha_retirado'];
+	// 	}
+	// 	$package['reference'] = $reference;
+	// 	$package['columns'] = $columns;
+	// 	// $package['data'] = $data;
+	// 	$package['data'] = $query;
+	// 	return($package);
+	// }
+	public function get_data()
 	{
-		$this->update_table();
-		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
-		$query = $this->db->get('alm_datamining_src')->result_array();
-		$reference = array();
-		$data = array();
-		$columns = array_keys($query[0]);
-		foreach ($query as $key => $value)
+		$this->load->helper('file');
+		$samples = get_filenames('./uploads/testFiles/');
+		foreach ($samples as $key => $value)
 		{
-			$reference[$key]['nr_solicitud'] = $value['nr_solicitud'];
-			$reference[$key]['id_articulo'] = $value['id_articulo'];
-			// $data[$key]['demanda'] = $value['demanda'];
-			// $data[$key]['consumo'] = $value['consumo'];
-			// $data[$key]['fecha_solicitado'] = $value['fecha_solicitado'];
-			// $data[$key]['fecha_retirado'] = $value['fecha_retirado'];
+			//aqui leo cada archivo
 		}
-		$package['reference'] = $reference;
-		$package['columns'] = $columns;
-		// $package['data'] = $data;
-		$package['data'] = $query;
-		return($package);
+
+	}
+	public function write_data($pointer='')
+	{
+		$this->load->helper('file');
+		
+	}
+	public function read_data($pointer='')
+	{
+		//Allowed memory size of 134217728 bytes exhausted (tried to allocate 189786412 bytes)
+		$this->load->helper('file');
+		
+		// $myFile = "data.json";
+		$myFile = './uploads/testFiles/'.$pointer;
+		$arr_data = array(); // create empty array
+
+		try
+		{
+			//Get form data
+			// $formdata = array(
+			// 'firstName'=> $_POST['firstName'],
+			// 'lastName'=> $_POST['lastName'],
+			// 'email'=>$_POST['email'],
+			// 'mobile'=> $_POST['mobile']
+			// );
+
+			//Get data from existing json file
+			// $jsondata = file_get_contents($myFile);
+			return file_get_contents($myFile);
+
+			// converts json data into array
+			// $arr_data = json_decode($jsondata, true);
+
+			// Push user data to array
+			// array_push($arr_data,$formdata);
+
+			//Convert updated array to JSON
+			// $jsondata = json_encode($arr_data, JSON_PRETTY_PRINT);
+			// echo json_encode($arr_data, JSON_PRETTY_PRINT);
+
+			//write json data into data.json file
+			// if(file_put_contents($myFile, $jsondata))
+			// {
+			// 	echo 'Data successfully saved';
+			// }
+			// else
+			// {
+			// 	echo "error";
+			// }
+		}
+		catch (Exception $e)
+		{
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}
 	}
 	function build_centroidsTable($array='')
 	{
