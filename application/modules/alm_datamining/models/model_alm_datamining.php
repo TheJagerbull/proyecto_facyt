@@ -370,22 +370,62 @@ class Model_alm_datamining extends CI_Model
 	// 	$package['data'] = $query;
 	// 	return($package);
 	// }
-	public function get_data()
+	public function get_allData()
 	{
 		$this->load->helper('file');
 		$samples = get_filenames('./uploads/testFiles/');
 		foreach ($samples as $key => $value)
 		{
 			//aqui leo cada archivo
+			// try
+			// {
+			
+			// }
+			// catch (Exception $e)
+			// {
+			// 	echo 'Caught exception: ',  $e->getMessage(), "\n";
+			// }
 		}
 
 	}
-	public function write_data($pointer='')
+	public function save_data($pointer='', $value='')
 	{
 		$this->load->helper('file');
-		
+		$myFile = './uploads/testFiles/'.$pointer;//este presentara un problema expandible
+		if(!is_dir("./uploads/testFiles"))//en caso que el directorio no existe
+		{
+		    mkdir("./uploads/testFiles", 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistma
+		}
+
+		try
+		{
+
+			//Convert updated array to JSON
+			$jsondata = json_encode($value, JSON_PRETTY_PRINT);
+			//write json data into data.json file
+			if ( ! write_file($myFile, $jsondata))
+			{
+		        return('Unable to write the file');
+			}
+			else
+			{
+		        return('File written!');
+			}
+			// if(write_data($myFile, $jsondata))
+			// {
+			// 	return('Data successfully saved');
+			// }
+			// else
+			// {
+			// 	return("error");
+			// }
+		}
+		catch (Exception $e)
+		{
+			return('Caught exception: '.$e->getMessage()."\n");
+		}
 	}
-	public function read_data($pointer='')
+	public function get_data($pointer='')
 	{
 		//Allowed memory size of 134217728 bytes exhausted (tried to allocate 189786412 bytes)
 		$this->load->helper('file');

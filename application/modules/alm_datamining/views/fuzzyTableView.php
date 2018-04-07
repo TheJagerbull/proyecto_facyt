@@ -283,15 +283,15 @@
 			}
       	});
 
-      	$.ajax({
-      		dataType:"json",
-      		url: "<?php echo base_url() ?>/uploads/testFiles/citylots.json",
-      		success: function(data)
-      		{
-      			console.log(data);
-      			$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
-      		}
-      	});
+      	// $.ajax({//doesnt work, so, this will not be used
+      	// 	dataType:"json",
+      	// 	url: "<?php echo base_url() ?>/uploads/testFiles/citylots.json",
+      	// 	success: function(data)
+      	// 	{
+      	// 		console.log(data);
+      	// 		$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
+      	// 	}
+      	// });
 		// $('#reset').click(function()
 		// {
 		// 	$('html, body').animate({

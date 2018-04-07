@@ -795,7 +795,10 @@ class Alm_datamining extends MX_Controller
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
         // $json['msg'] = $msg;
-        $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
+        // $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
+        $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been written' => 'go fuck yourself!'));
+        $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been overwritten' => 'go fuck yourself!'));
+        $json['msg'] = $this->model_alm_datamining->get_data('['.$i.']['.$k.'].json');
         $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
         $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
         echo json_encode($json);
