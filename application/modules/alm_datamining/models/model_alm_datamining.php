@@ -370,12 +370,34 @@ class Model_alm_datamining extends CI_Model
 	// 	$package['data'] = $query;
 	// 	return($package);
 	// }
+	private function get_dirOrFile($pointer)//limpia la "variable" suministrada, para tratar arreglos como directorios llenos de archivos, y variables como archivos
+	{
+		$dirAndFile = array();
+		if(preg_match('/\[/', $pointer))
+		{
+			$subdirAndFile = preg_split('/\[/', $pointer);
+			$var = $subdirAndFile[0];
+			$auxPointer = '';
+			for ($i=1; $i < sizeof($subdirAndFile); $i++)
+			{
+				$auxPointer.='['.$subdirAndFile[$i];
+			}
+			$dirAndFile['pointer'] = $auxPointer;
+		}
+		$dirAndFile['subDir'] = (isset($var)) ? '/'.$var : '' ;
+		return ($dirAndFile);
+	}
 	public function get_allData()
 	{
+		$this->load->helper('directory');
 		$this->load->helper('file');
-		$samples = get_filenames('./uploads/testFiles/');
-		foreach ($samples as $key => $value)
+		$dir = directory_map('./uploads/engine/fuzzyPatterns/', 2);
+		$samples = get_filenames('./uploads/engine/fuzzyPatterns/');
+		die_pre($samples, __LINE__, __FILE__);
+		foreach ($dir as $key => $value)
 		{
+			echo 'key: '.$key.'<br>';
+			echo 'value: '.$value.'<br>';
 			//aqui leo cada archivo
 			// try
 			// {
@@ -388,13 +410,117 @@ class Model_alm_datamining extends CI_Model
 		}
 
 	}
-	public function save_data($pointer='', $value='')
+	public function var_exist($variable)
 	{
-		$this->load->helper('file');
-		$myFile = './uploads/testFiles/'.$pointer;//este presentara un problema expandible
-		if(!is_dir("./uploads/testFiles"))//en caso que el directorio no existe
+		$this->load->helper('directory');
+		echo !is_dir("./uploads/engine/fuzzyPatterns/vars/".$variable);
+		if(!is_dir("./uploads/engine/fuzzyPatterns/vars/".$variable))
 		{
-		    mkdir("./uploads/testFiles", 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistma
+			// $aux = 
+			if(file_get_contents("./uploads/engine/fuzzyPatterns/vars/".$variable))
+			{
+				return (true);
+			}
+			else
+			{
+				return(false);
+			}
+		}
+		else
+		{
+			$dir = directory_map('./uploads/engine/fuzzyPatterns/vars'.$variable.'/', 1);
+			die_pre($dir);
+			return ($dir);
+		}
+	}
+	public function unset_var($variable)//la variable debe ser un directorio de archivos, para que funcione
+	{
+		$this->load->helper('directory');
+		$this->load->helper('file');
+		return(delete_files("./uploads/engine/fuzzyPatterns/vars/".$variable));
+	}
+	public function copy_data($original='', $copy='')//$original debe ser un directorio existente
+	{
+		$this->load->helper('directory');
+		$this->load->helper('file');
+		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/', 2);
+		// echo $original.'<br>';
+		if(isset($copy) && !is_dir("./uploads/engine/fuzzyPatterns/vars/".$copy))
+		{
+			mkdir("./uploads/engine/fuzzyPatterns/vars/".$copy, 0755);
+		}
+		// else
+		// {
+			$msg = '';
+		// }
+		foreach ($dir as $key => $value)
+		{
+			if($key == $original)
+			{
+				foreach ($value as $num => $file)
+				{
+					$myFile='./uploads/engine/fuzzyPatterns/vars/'.$key.'/'.$file;
+					$aux = file_get_contents($myFile);
+					if(isset($msg))
+					{
+						$msg .= $aux;
+							$msg .= '<br>';
+					}
+					// else
+					// {
+						$myCopy='./uploads/engine/fuzzyPatterns/vars/'.$copy.'/'.$file;
+						if ( ! write_file($myCopy, $aux))
+						{
+					        die('Unable to write the file: '.$myCopy);
+						}
+					// }
+
+				}
+			}
+		}
+		return ($msg);
+	}
+	public function save_data($pointer='', $value='', $calledFrom='')
+	{
+		//preg_match('/^en\s(proceso)?/', $sSearch)
+		$this->load->helper('file');
+		// if(preg_match('/\[/', $pointer))
+		// {
+		// 	$subdirAndFile = preg_split('/\[/', $pointer);
+		// 	$var = $subdirAndFile[0];
+		// 	$auxPointer = '';
+		// 	for ($i=1; $i < sizeof($subdirAndFile); $i++)
+		// 	{
+		// 		$auxPointer.='['.$subdirAndFile[$i];
+		// 	}
+		// 	$pointer = $auxPointer;
+		// }
+		// $subDir = (isset($var)) ? '/'.$var : '' ;
+		$dof = $this->get_dirOrFile($pointer);
+		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
+
+		if(preg_match('/^u/', $dof['pointer']))///cazando errores
+		{
+			die($myFile.'<br>');
+		}
+		if(!is_dir("./uploads/engine/fuzzyPatterns/vars".$dof['subDir']))//en caso que el directorio no existe
+		{
+		    if(!is_dir("./uploads/engine"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine", 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns", 0755);
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns/vars"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns/vars", 0755);
+		    }
+		    if(isset($dof['subDir']) && !is_dir("./uploads/engine/fuzzyPatterns/vars".$dof['subDir']))
+		    {
+		    	mkdir("./uploads/engine/fuzzyPatterns/vars".$dof['subDir'], 0755);
+		    }
 		}
 
 		try
@@ -405,11 +531,11 @@ class Model_alm_datamining extends CI_Model
 			//write json data into data.json file
 			if ( ! write_file($myFile, $jsondata))
 			{
-		        return('Unable to write the file');
+		        die('Unable to write the file: '.$myFile);
 			}
 			else
 			{
-		        return('File written!');
+		        return(true);
 			}
 			// if(write_data($myFile, $jsondata))
 			// {
@@ -425,17 +551,36 @@ class Model_alm_datamining extends CI_Model
 			return('Caught exception: '.$e->getMessage()."\n");
 		}
 	}
-	public function get_data($pointer='')
+	public function get_data($pointer='', $calledFrom='')
 	{
 		//Allowed memory size of 134217728 bytes exhausted (tried to allocate 189786412 bytes)
 		$this->load->helper('file');
-		
+	///
 		// $myFile = "data.json";
-		$myFile = './uploads/testFiles/'.$pointer;
-		$arr_data = array(); // create empty array
+		// if(preg_match('/\[8\]/', $pointer))
+		// {
+		// 	echo $calledFrom.'<br>';
+		// }
+		// if(preg_match('/\[/', $pointer))
+		// {
+		// 	$subdirAndFile = preg_split('/\[/', $pointer);
+		// 	$var = $subdirAndFile[0];
+		// 	$auxPointer = '';
+		// 	for ($i=1; $i < sizeof($subdirAndFile); $i++)
+		// 	{
+		// 		$auxPointer.='['.$subdirAndFile[$i];
+		// 	}
+		// 	$pointer = $auxPointer;
+		// }
+		// $subDir = (isset($var)) ? '/'.$var : '' ;
+	///
+		$dof = $this->get_dirOrFile($pointer);
+		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
+		// $arr_data = array(); // create empty array
 
 		try
 		{
+		///
 			//Get form data
 			// $formdata = array(
 			// 'firstName'=> $_POST['firstName'],
@@ -446,8 +591,9 @@ class Model_alm_datamining extends CI_Model
 
 			//Get data from existing json file
 			// $jsondata = file_get_contents($myFile);
+		///
 			return file_get_contents($myFile);
-
+		///
 			// converts json data into array
 			// $arr_data = json_decode($jsondata, true);
 
@@ -467,6 +613,7 @@ class Model_alm_datamining extends CI_Model
 			// {
 			// 	echo "error";
 			// }
+		///
 		}
 		catch (Exception $e)
 		{

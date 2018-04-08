@@ -481,6 +481,172 @@ class Alm_datamining extends MX_Controller
         echo_pre($class);
         // echo "</pre>";
     }
+    public function fcmFILEVARS($m='', $P='')
+    {
+        $msg = '';
+        $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
+        $msg .= "<h3> Fuzzy C-Means:</h3><br>";
+        $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
+        $P=2;//numero de clusters suministrado al llamar la funcion
+        $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
+        
+        $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
+                                        array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
+                                        array('x' => 11.0, 'y' => 3436.0, 'z'=> 15),
+                                        array('x' => 12.0, 'y' => 3433.0, 'z'=> 15),
+                                        array('x' => 10.5, 'y' => 3449.0, 'z'=> 15),
+                                        array('x' => 10.0, 'y' => 4341.0, 'z'=> 15),
+                                        array('x' => 9.0, 'y' => 4354.0, 'z'=> 15),
+                                        array('x' => 8.5, 'y' => 4312.0, 'z'=> 15),
+                                        array('x' => 10.0, 'y' => 4425.0, 'z'=> 15),
+                                        array('x' => 8.5, 'y' => 3850.0, 'z'=> 15),
+                                        array('x' => 10.0, 'y' => 3563.0, 'z'=> 15),
+                                        array('x' => 8.0, 'y' => 3609.0, 'z'=> 15),
+                                        array('x' => 9.5, 'y' => 3761.0, 'z'=> 15),
+                                        array('x' => 10.0, 'y' => 3086.0, 'z'=> 15),
+                                        array('x' => 15.0, 'y' => 2372.0, 'z'=> 15),
+                                        array('x' => 15.5, 'y' => 2833.0, 'z'=> 15),
+                                        array('x' => 15.5, 'y' => 2774.0, 'z'=> 15),
+                                        array('x' => 16.0, 'y' => 2587.0, 'z'=> 15));
+        
+        $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
+                                    array('x' => 0, 'y' => 4354.0, 'z'=>0),
+                                    array('x' => 0, 'y' => 0, 'z'=> 15),
+                                    array('x' => 0, 'y' => 4354.0, 'z'=> 15),
+                                    array('x' => 16.00, 'y' => 0, 'z'=> 15),
+                                    array('x' => 16.00, 'y' => 4354.0, 'z'=> 0),
+                                    array('x' => 16.00, 'y' => 4354.0, 'z'=> 15),
+                                    array('x' => 0, 'y' => 0, 'z'=> 0));
+        $json['sample'] = $objects;
+        $c = count($centroids);//numero de centroides
+        $n = count($objects);
+        $error = 1;
+        $tolerance = 0.00001;
+        $iterations = 0;
+        $features = array();
+        foreach ($objects[0] as $key => $value)
+        {
+            $features[]=$key;
+        }
+        $dimentions = array('n' => $n, 'c'=>$c);
+
+        while ($error >= $tolerance)//mientras el error no sea tolerante
+        {
+            if(isset($newCentroids) && !empty($newCentroids))
+            {
+                $centroids = $newCentroids;//READ
+            }
+            //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
+            // $d=array();
+            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+            {
+                // $d[$k]=array();
+                for ($i=0; $i < $c; $i++)//recorre centroides
+                {
+                    $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
+                }
+            }
+            //consturccion de U: $u o matriz de membrecia
+            // $u= array();
+            $exp = 1/($m-1);
+            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+            {
+                // $u[$k] = array();
+                for ($i=0; $i < $c; $i++)//recorro los centroides
+                {
+                    /*READ*/
+                    $d1 = $this->model_alm_datamining->get_data('d['.$k.']['.$i.']', __LINE__);
+                    if($d1==0)//de acuerdo a la funcion definida a trozos
+                    {
+                        $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', 1);
+                    }
+                    else
+                    {
+                        $aux = 0;
+                        $flag = 0;
+                        for ($j=0; $j < $c; $j++)//recorro los centroides (otra vez)
+                        {
+                        
+                            /*READ*/
+                            $d2 = $this->model_alm_datamining->get_data('d['.$k.']['.$j.']', __LINE__);
+                            if(($d2==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
+                            {
+                                $flag = 1;
+                            }
+                            else
+                            {
+                                $aux+= pow($d1/$d2, $exp);
+                            }
+                        }
+                        if($flag==1)
+                        {
+                            // $u[$k][$i] = 0;//WRITE
+                            $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', 0, __LINE__);
+                        }
+                        else
+                        {
+                            // $u[$k][$i] = 1/$aux;//WRITE
+                            $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', (1/$aux), __LINE__);
+                        }
+                    }
+                }
+            }
+            // echo_pre($u, __LINE__, __FILE__);
+            // $membershipMatrix = $u;
+            $newCentroids = array();
+
+            for ($i=0; $i < $c; $i++)//para los nuevos centroides
+            {
+                $membSum=0;
+                foreach( $objects[0] as $key => $value)//para inicializar el auxiliar de la suma
+                {
+                    $membsumX[$key]=0;
+                }
+                for ($k=0; $k < $n; $k++)
+                {
+                    // echo($u[$k][$i])."<br>";
+                    // echo()."<br>";
+                    // $aux = pow($u[$k][$i], $m);//READ
+
+                    $uaux = $this->model_alm_datamining->get_data('u['.$k.']['.$i.']', __LINE__);
+                    $aux = pow($uaux, $m);//READ
+
+                    $auxVector = $this->multiply_vectors($objects[$k], $aux);//READ
+                    $membsumX = add_vectors($membsumX, $auxVector);
+                    $membSum += $aux;
+                }
+                $aux = (1/$membSum);
+                $newCentroids[$i]=$this->multiply_vectors($membsumX, $aux);
+            }
+            // die(__LINE__);
+//////////////////voy por aqui
+            /*READ*/
+            if($this->model_alm_datamining->var_exist('uk'))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
+            {
+                $auxsqr=0;
+                for ($i=0; $i < $c; $i++)
+                {
+                    for ($k=0; $k < $n; $k++)
+                    {
+                        // $aux = ($u[$k][$i]-$uk[$k][$i]);//READ
+                        $u = $this->model_alm_datamining->get_data('u['.$k.']['.$i.']', __LINE__);
+                        $uk = $this->model_alm_datamining->get_data('uk['.$k.']['.$i.']', __LINE__);
+                        $aux = ($u-$uk);//READ
+                        $auxsqr+=pow($aux, 2);
+                    }
+                }
+                $error= sqrt($auxsqr);
+                // echo_pre($error, __LINE__, __FILE__);
+            }
+            // $uk = $u;
+            $this->model_alm_datamining->copy_data('u', 'uk');
+            $iterations++;
+            // $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
+        }
+        $this->model_alm_datamining->unset_var('uk');
+        return($iterations);
+
+    }
     public function fcm($m='', $P='')//new version
     {
         // die_pre("HELLO", __LINE__, __FILE__);
@@ -662,6 +828,7 @@ class Alm_datamining extends MX_Controller
                 for ($i=0; $i < $c; $i++)//recorre centroides
                 {
                     $d[$k][$i] = $this->d($objects[$k], $centroids[$i]);//WRITE
+                    // $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
                 }
             }
             // die_pre($d, __LINE__, __FILE__);
@@ -673,17 +840,21 @@ class Alm_datamining extends MX_Controller
                 $u[$k] = array();
                 for ($i=0; $i < $c; $i++)//recorro los centroides
                 {
+                    /*READ*/
                     if($d[$k][$i]==0)//de acuerdo a la funcion definida a trozos
                     {
                         $u[$k][$i] = 1;//WRITE
+                        // $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', 1);
                     }
                     else
                     {
                         $aux = 0;
+                        // $auxtest = 0;
                         $flag = 0;
                         for ($j=0; $j < $c; $j++)//recorro los centroides (otra vez)
                         {
                         
+                            /*READ*/
                             if(($d[$k][$j]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
                             {
                                 $flag = 1;
@@ -691,15 +862,20 @@ class Alm_datamining extends MX_Controller
                             else
                             {
                                 $aux+= pow($d[$k][$i]/$d[$k][$j], $exp);//READ
+                                // $d1 = $this->model_alm_datamining->get_data('d['.$k.']['.$i.']', __LINE__);
+                                // $d2 = $this->model_alm_datamining->get_data('d['.$k.']['.$j.']', __LINE__);
+                                // $auxtest+= pow($d1/$d2, $exp);
                             }
                         }
                         if($flag==1)
                         {
                             $u[$k][$i] = 0;//WRITE
+                            // $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', 0);
                         }
                         else
                         {
                             $u[$k][$i] = 1/$aux;//WRITE
+                            // $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', (1/$auxtest));
                         }
                     }
                 }
@@ -720,6 +896,10 @@ class Alm_datamining extends MX_Controller
                     // echo($u[$k][$i])."<br>";
                     // echo()."<br>";
                     $aux = pow($u[$k][$i], $m);//READ
+
+                    // $uaux = $this->model_alm_datamining->get_data('u['.$k.']['.$i.']', __LINE__);
+                    // $aux = pow($uaux, $m);//READ
+
                     $auxVector = $this->multiply_vectors($objects[$k], $aux);//READ
                     $membsumX = add_vectors($membsumX, $auxVector);
                     $membSum += $aux;
@@ -727,8 +907,9 @@ class Alm_datamining extends MX_Controller
                 $aux = (1/$membSum);
                 $newCentroids[$i]=$this->multiply_vectors($membsumX, $aux);
             }
-            // die();
+            // die(__LINE__);
 
+            /*READ*/
             if(isset($uk))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
             {
                 $auxsqr=0;
@@ -736,7 +917,7 @@ class Alm_datamining extends MX_Controller
                 {
                     for ($k=0; $k < $n; $k++)
                     {
-                        $aux = ($u[$k][$i]-$uk[$k][$i]);
+                        $aux = ($u[$k][$i]-$uk[$k][$i]);//READ
                         $auxsqr+=pow($aux, 2);
                     }
                 }
@@ -744,9 +925,12 @@ class Alm_datamining extends MX_Controller
                 // echo_pre($error, __LINE__, __FILE__);
             }
             $uk = $u;
+            // $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
             $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
         }
+
+
         $json['iterations'] = $iterations;
         // echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
         $msg.="<br><strong>iteraciones: ".$iterations."</strong><br>";
@@ -770,16 +954,16 @@ class Alm_datamining extends MX_Controller
         // $this->print_membershipColumns($membershipMatrix, $pack['columns']);
         // echo "<br><strong>muestras agrupadas:</strong><br>";
         // $this->print_classify($membershipMatrix, $pack['columns']);
-        $BS=array();
-        for ($i=0; $i < count($membershipMatrix); $i++)
-        {
-            $aux=0;
-            for ($j=0; $j < count($membershipMatrix[$i]); $j++)
-            {
-                $aux+=$membershipMatrix[$i][$j];
-            }
-            $BS[]=$aux;
-        }
+        // $BS=array();
+        // for ($i=0; $i < count($membershipMatrix); $i++)
+        // {
+        //     $aux=0;
+        //     for ($j=0; $j < count($membershipMatrix[$i]); $j++)
+        //     {
+        //         $aux+=$membershipMatrix[$i][$j];
+        //     }
+        //     $BS[]=$aux;
+        // }
         // echo "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
         $msg.= "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
         // echo_pre($pack['reference'], __LINE__, __FILE__);
@@ -794,11 +978,12 @@ class Alm_datamining extends MX_Controller
         // die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
-        // $json['msg'] = $msg;
+        $json['msg'] = $msg.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
+        // $json['msg'] = $this->model_alm_datamining->get_allData();
         // $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
-        $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been written' => 'go fuck yourself!'));
-        $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been overwritten' => 'go fuck yourself!'));
-        $json['msg'] = $this->model_alm_datamining->get_data('['.$i.']['.$k.'].json');
+        // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been written' => 'go fuck yourself!'));
+        // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been overwritten' => 'go fuck yourself!'));
+        // $json['msg'] = $this->model_alm_datamining->get_data('['.$i.']['.$k.'].json');
         $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
         $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
         echo json_encode($json);
