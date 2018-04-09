@@ -489,7 +489,8 @@ class Alm_datamining extends MX_Controller
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
-        
+        $this->model_alm_datamining->get_allData();
+        //objetos deben venir de archivos
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                         array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
                                         array('x' => 11.0, 'y' => 3436.0, 'z'=> 15),
@@ -509,6 +510,7 @@ class Alm_datamining extends MX_Controller
                                         array('x' => 15.5, 'y' => 2774.0, 'z'=> 15),
                                         array('x' => 16.0, 'y' => 2587.0, 'z'=> 15));
         
+        //centroides deben venir de archivos
         $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
                                     array('x' => 0, 'y' => 4354.0, 'z'=>0),
                                     array('x' => 0, 'y' => 0, 'z'=> 15),
@@ -978,8 +980,8 @@ class Alm_datamining extends MX_Controller
         // die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
-        $json['msg'] = $msg.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
-        // $json['msg'] = $this->model_alm_datamining->get_allData();
+        // $json['msg'] = $msg//.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
+        $json['msg'] = $this->model_alm_datamining->get_allData();
         // $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
         // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been written' => 'go fuck yourself!'));
         // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been overwritten' => 'go fuck yourself!'));

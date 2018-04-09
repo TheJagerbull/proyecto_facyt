@@ -225,7 +225,8 @@
 
 					// }
 				});
-				var msglines = data.msg.split('<br>');
+				// var msglines = data.msg.split('<br>');
+				var msglines = data.msg;
 				console.log(data);
 				var table = buildObjectArrayTable(data.centroides, false, true);
 				$('#CentersContent').html('');
@@ -254,30 +255,40 @@
 
 				if(msglines.length>0)
 				{
-					var errorlog = '<div class="error-log"><ul>';
+					// var log = '<div class="error-log"><ul>';
+					var log = $('<div>');//'<div class="error-log"><ul>';
+					log.attr('class', 'error-log');
+					var ul = $('<ul>');
 					for (var i = 0; i < msglines.length; i++)
 					{
-						// console.log(data.response[i]);
-						// var aux = data.response[i];
-						errorlog += '<li>';
-						// errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
-						// errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
-						errorlog += msglines[i];
-						errorlog +='</li>';
-
+						var li = $('<li>');
+						li.html('<h4>'+i+'</h4>')
+						li.append(objectTable(msglines[i]));
+						ul.append(li);
+						// // console.log(data.response[i]);
+						// // var aux = data.response[i];
+						// log += '<li>';
+						// // log += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+						// // log += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+						// log += msglines[i];
+						// log +='</li>';
 					}
-					errorlog += '</ul></div>';
+					log.append(ul);
 
 					var title = "INFO:  <span class='badge badge-info'>"+msglines.length+"</span>";
 					$('#homeContent').html('');
 					$('#homeContent').append(title);
-					$('#homeContent').append(errorlog);
-					// buildModal('log', title, errorlog, '', 'lg', '');
+					$('#homeContent').append(log);
+					// buildModal('log', title, log, '', 'lg', '');
 					//id, title, content, footer, size, height
 				}
+				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
 			},
-			error: function(a)
+			error: function(a, stat, error)
 			{
+				console.log(a);
+				console.log(stat);
+				console.log(error);
 				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
 				// body...
 			}

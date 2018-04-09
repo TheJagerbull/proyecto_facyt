@@ -387,51 +387,125 @@ class Model_alm_datamining extends CI_Model
 		$dirAndFile['subDir'] = (isset($var)) ? '/'.$var : '' ;
 		return ($dirAndFile);
 	}
-	public function get_allData()
+	private function gather_sample()
 	{
 		$this->load->helper('directory');
 		$this->load->helper('file');
-		$dir = directory_map('./uploads/engine/fuzzyPatterns/', 2);
-		$samples = get_filenames('./uploads/engine/fuzzyPatterns/');
-		die_pre($samples, __LINE__, __FILE__);
-		foreach ($dir as $key => $value)
+		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
+
+		if(delete_files('./uploads/engine/fuzzyPatterns/vars', true))
 		{
-			echo 'key: '.$key.'<br>';
-			echo 'value: '.$value.'<br>';
-			//aqui leo cada archivo
-			// try
+			// $msg = '';
+			//cargar las solicitudes con dependencia, articulos, cantidades solicitadas, fecha en que fue solicitada, y en caso que aplique, fecha en que el articulo es desmontado de inventario
+			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
+			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
+			$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+			// $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo"');
+			$query = $this->db->get('alm_solicitud')->result_array();
+			// $msg.=json_encode($query, JSON_PRETTY_PRINT);
+			// echo_pre($query, __LINE__, __FILE__);
+			// die_pre($this->db->last_query());
+			// $this->db->insert_batch('alm_datamining_src', $query);
+
+			$this->db->select('alm_despacha.nr_solicitud AS nr_solicitud, alm_contiene.id_articulo AS id_articulo, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado, alm_contiene.cant_aprobada AS consumo');
+			$this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_despacha.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0', 'inner');
+			$query2 = $this->db->get('alm_solicitud')->result_array();
+
+			// $msg = json_encode(array_merge($query, $query2), JSON_PRETTY_PRINT);
+			// $msg = array_merge($query, $query2);
+			// echo_pre($query2, __LINE__, __FILE__);
+
+			// $msg = '';
+			for ($i=0; $i < sizeof($query); $i++)
+			{
+				for ($j=0; $j < sizeof($query2); $j++)
+				{
+					if($query[$i]['nr_solicitud'] == $query2[$j]['nr_solicitud'] && $query[$i]['id_articulo'] == $query2[$j]['id_articulo'])
+					{
+						$query[$i] = array_unique(array_merge($query[$i], $query2[$j]));
+						$i++;
+						$j++;
+					}
+					else
+					{
+						$query[$i];
+						$query2[$j];
+					}
+				}
+			}
+			// foreach ($query as $key1 => $registry1)
 			// {
-			
+			// 	foreach ($query2 as $key2 => $registry2)
+			// 	{
+			// 		if($registry1['nr_solicitud'] == $registry2['nr_solicitud'] && $registry1['id_dependencia'] == $registry2['id_dependencia'] && $registry1['id_articulo'] == $registry2['id_articulo'])
+			// 		{
+			// 			// echo $key1.'< >'.$key2.'<br>';
+			// 			$msg.=$key1.'< >'.$key2.'<br>';
+			// 			$msg.=json_encode(array_unique(array_merge($registry1, $registry2)), JSON_PRETTY_PRINT);
+			// 		}
+			// 		else
+			// 		{
+			// 			// echo $key1.'<br>';
+			// 			$msg.= $key1.'<br>';
+			// 			$msg.=json_encode($registry1, JSON_PRETTY_PRINT);
+			// 			// echo $key2.'<br>';
+			// 			$msg.= $key2.'<br>';
+			// 			$msg.=json_encode($registry2, JSON_PRETTY_PRINT);
+			// 		}
+			// 	}
 			// }
-			// catch (Exception $e)
-			// {
-			// 	echo 'Caught exception: ',  $e->getMessage(), "\n";
-			// }
+			return $msg;
+			// $columns= array('nr_solicitud', 'id_articulo');
+			// $columns= array('fecha_retirado');
+			// echo_pre($query2);
+			// $this->db->update_batch('alm_datamining_src', $query2, 'nr_solicitud');
 		}
+	}
+	public function get_allData()//esta funcion debe recorrer la base de datos sobre las tablas pertinentes, para construir un archivo de objetos que se le suministrará al algoritmo, adicionalmente, debe construir un archivo de centroides a partir de los valores encontrados en los objetos
+	{
+		return($this->gather_sample());
+		// $this->load->helper('directory');
+		// $this->load->helper('file');
+		// $dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
+		// // $samples = get_filenames('./uploads/engine/fuzzyPatterns/');
+		// if(!empty($dir))
+		// {
+		// 	foreach ($dir as $key => $value)
+		// 	{
+		// 		echo 'key: '.$key.'<br>';
+		// 		echo 'value: '.$value.'<br>';
+
+		// 	}
+		// }
+		// else
+		// {
+		// 	$this->gather_sample();
+		// 	// die(json_encode(array('error' => 'No existe el objeto de muestra(directorio "objeto", con contenido)')));
+		// }
+		// die_pre($dir, __LINE__, __FILE__);
 
 	}
 	public function var_exist($variable)
 	{
 		$this->load->helper('directory');
-		echo !is_dir("./uploads/engine/fuzzyPatterns/vars/".$variable);
-		if(!is_dir("./uploads/engine/fuzzyPatterns/vars/".$variable))
+		
+		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/', 1);
+		$flag = 0;
+		foreach ($dir as $key => $value)
 		{
-			// $aux = 
-			if(file_get_contents("./uploads/engine/fuzzyPatterns/vars/".$variable))
+			if($value==$variable)
 			{
-				return (true);
+				$flag+=1;
 			}
 			else
 			{
-				return(false);
+				$flag+=0;
 			}
 		}
-		else
-		{
-			$dir = directory_map('./uploads/engine/fuzzyPatterns/vars'.$variable.'/', 1);
-			die_pre($dir);
-			return ($dir);
-		}
+		// die_pre($flag, __LINE__, __FILE__);
+		return ($flag);
 	}
 	public function unset_var($variable)//la variable debe ser un directorio de archivos, para que funcione
 	{
