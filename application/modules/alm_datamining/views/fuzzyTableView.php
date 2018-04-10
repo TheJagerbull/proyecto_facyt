@@ -192,41 +192,9 @@
 					$('html, body').animate({
 						scrollTop: $('div.panel-body').offset().top
 					}, 1500, "swing");
-					// if(target ==='#Sample')
-					// {
-
-					// }
-					// if(target ==='#MatrixD')
-					// {
-
-					// }
-					// if(target ==='#MatrixM')
-					// {
-
-					// }
-					// if(target ==='#Centers')
-					// {
-
-					// }
-					// if(target ==='#Patterns')
-					// {
-
-					// }
-					// if(target ==='#rep')
-					// {
-
-					// }
-					// if(target ==='#Info')
-					// {
-
-					// }
-					// if(target ==='#home')
-					// {
-
-					// }
 				});
-				// var msglines = data.msg.split('<br>');
-				var msglines = data.msg;
+				
+				var message = data.msg;
 				console.log(data);
 				var table = buildObjectArrayTable(data.centroides, false, true);
 				$('#CentersContent').html('');
@@ -251,37 +219,64 @@
 				table2.attr('class', 'table table-hover table-bordered dataTable');
 				table3.attr('class', 'table table-hover table-bordered dataTable');
 				table4.attr('class', 'table table-hover table-bordered dataTable');
-
-
-				if(msglines.length>0)
+				console.log(typeof message);
+				var log = $('<div>');//'<div class="error-log"><ul>';
+				log.attr('class', 'error-log');
+				var ul = $('<ul>');
+				if(typeof message ==='object')
 				{
-					// var log = '<div class="error-log"><ul>';
-					var log = $('<div>');//'<div class="error-log"><ul>';
-					log.attr('class', 'error-log');
-					var ul = $('<ul>');
-					for (var i = 0; i < msglines.length; i++)
+					if(message.length>0)
 					{
-						var li = $('<li>');
-						li.html('<h4>'+i+'</h4>')
-						li.append(objectTable(msglines[i]));
-						ul.append(li);
-						// // console.log(data.response[i]);
-						// // var aux = data.response[i];
-						// log += '<li>';
-						// // log += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
-						// // log += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
-						// log += msglines[i];
-						// log +='</li>';
+						// var log = '<div class="error-log"><ul>';
+						for (var i = 0; i < message.length; i++)
+						{
+							var li = $('<li>');
+							li.html('<h4>'+i+'</h4>');
+							li.append(objectTable(message[i]));
+							ul.append(li);
+							// // console.log(data.response[i]);
+							// // var aux = data.response[i];
+							// log += '<li>';
+							// // log += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+							// // log += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+							// log += msglines[i];
+							// log +='</li>';
+						}
+
+						log.append(ul);
+						var title = "INFO:  <span class='badge badge-info'>"+message.length+"</span>";
+						// buildModal('log', title, log, '', 'lg', '');
+						//id, title, content, footer, size, height
+					}
+				}
+				if(typeof message ==='string')
+				{
+					var msglines = message.split('<br>');
+					if(typeof msglines === 'array')
+					{
+						for (var i = 0; i < msglines.length; i++)
+						{
+							var li = $('<li>');
+							li.html(msglines[i]);
+							ul.append(li);
+						}
+					}
+					else
+					{
+						if(message.length>0)
+						{
+							var li = $('<li>');
+							li.html(message);
+							ul.append(li);
+						}
+						var title = "INFO:  <span class='badge badge-info'>Message:</span>";
 					}
 					log.append(ul);
-
-					var title = "INFO:  <span class='badge badge-info'>"+msglines.length+"</span>";
-					$('#homeContent').html('');
-					$('#homeContent').append(title);
-					$('#homeContent').append(log);
-					// buildModal('log', title, log, '', 'lg', '');
-					//id, title, content, footer, size, height
 				}
+				$('#homeContent').html('');
+				$('#homeContent').append(title);
+				$('#homeContent').append(log);
+
 				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
 			},
 			error: function(a, stat, error)

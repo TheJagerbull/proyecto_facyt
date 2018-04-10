@@ -395,46 +395,108 @@ class Model_alm_datamining extends CI_Model
 
 		if(delete_files('./uploads/engine/fuzzyPatterns/vars', true))
 		{
+			//demanda
+			// $this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo')
+			// ->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo"')
+			// ->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"')
+			// ->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej')
+			// ->get('alm_solicitud');
+			// $samples = $this->db->last_query();
+
+			//consumo
+			// $samples = $this->db->select('alm_articulo.ID as id_articulo, (nuevos + usados + reserv) AS existencia, SUM(entrada) AS entradas, SUM(salida) AS salidas')
+			$samples = $this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_articulo.ID as id_articulo, (nuevos + usados + reserv) AS existencia, alm_art_en_solicitud.cant_solicitada AS demanda, alm_art_en_solicitud.cant_aprobada AS consumo')
+			// ->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a')
+			// ->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo')
+			
+			// ->join('alm_art_en_solicitud', 'alm_art_en_solicitud.id_articulo = alm_articulo.ID')
+			->join('alm_art_en_solicitud', 'alm_art_en_solicitud.nr_solicitud = alm_solicitud.nr_solicitud')
+			// ->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_art_en_solicitud.nr_solicitud')
+			->join('alm_articulo', 'alm_articulo.ID = alm_art_en_solicitud.id_articulo')
+			->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"')
+			->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.usuario_ej')
+			// ->where('entrada = NULL')
+			// ->group_by('id_articulo')
+			->get('alm_solicitud')->result_array();
+			// ->get('alm_historial_a')->result_array();
+			// ->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a')
+			// ->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo')
+			// // ->where('entrada = NULL')
+			// ->group_by('id_articulo')
+			// ->get('alm_historial_a')->result_array();
+			// $samples = $this->db->last_query();
+
 			// $msg = '';
 			//cargar las solicitudes con dependencia, articulos, cantidades solicitadas, fecha en que fue solicitada, y en caso que aplique, fecha en que el articulo es desmontado de inventario
-			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
-			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
-			$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
-			// $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
-			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo"');
-			$query = $this->db->get('alm_solicitud')->result_array();
-			// $msg.=json_encode($query, JSON_PRETTY_PRINT);
-			// echo_pre($query, __LINE__, __FILE__);
-			// die_pre($this->db->last_query());
-			// $this->db->insert_batch('alm_datamining_src', $query);
+			// $this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
+			// $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
+			// $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+			// // $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			// $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo"');
+			// $query = $this->db->get('alm_solicitud')->result_array();
+			// // $msg.=json_encode($query, JSON_PRETTY_PRINT);
+			// // echo_pre($query, __LINE__, __FILE__);
+			// // die_pre($this->db->last_query());
+			// // $this->db->insert_batch('alm_datamining_src', $query);
 
-			$this->db->select('alm_despacha.nr_solicitud AS nr_solicitud, alm_contiene.id_articulo AS id_articulo, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado, alm_contiene.cant_aprobada AS consumo');
-			$this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
-			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_despacha.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0', 'inner');
-			$query2 = $this->db->get('alm_solicitud')->result_array();
+			// $this->db->select('alm_despacha.nr_solicitud AS nr_solicitud, alm_contiene.id_articulo AS id_articulo, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado, alm_contiene.cant_aprobada AS consumo');
+			// $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			// $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_despacha.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0', 'inner');
+			// $query2 = $this->db->get('alm_solicitud')->result_array();
 
 			// $msg = json_encode(array_merge($query, $query2), JSON_PRETTY_PRINT);
 			// $msg = array_merge($query, $query2);
 			// echo_pre($query2, __LINE__, __FILE__);
 
 			// $msg = '';
-			for ($i=0; $i < sizeof($query); $i++)
-			{
-				for ($j=0; $j < sizeof($query2); $j++)
-				{
-					if($query[$i]['nr_solicitud'] == $query2[$j]['nr_solicitud'] && $query[$i]['id_articulo'] == $query2[$j]['id_articulo'])
-					{
-						$query[$i] = array_unique(array_merge($query[$i], $query2[$j]));
-						$i++;
-						$j++;
-					}
-					else
-					{
-						$query[$i];
-						$query2[$j];
-					}
-				}
-			}
+			// $samples = array();
+			// $n = sizeof($query);
+			// $k = sizeof($query2);
+			// $s = 0;
+			// $i=0;
+			// while($i < $n)
+			// {
+			// 	$j=0;
+			// 	while($j < $k)
+			// 	{
+			// 		// echo $i.'<br>';
+			// 		// echo $j.'<br>';
+			// 		if(isset($query2[$j]))
+			// 		{
+
+			// 			if(isset($query[$i]))
+			// 			{
+			// 				if($query[$i]['nr_solicitud'] == $query2[$j]['nr_solicitud'] && $query[$i]['id_articulo'] == $query2[$j]['id_articulo'])
+			// 				{
+			// 					$samples[$s] = array_unique(array_merge($query[$i], $query2[$j]));
+			// 					unset($query[$i]);
+			// 					$i++;
+			// 					unset($query2[$j]);
+			// 					$s++;
+			// 				}
+			// 				else
+			// 				{
+			// 					$samples[$s] = $query[$i];
+			// 					unset($query[$i]);
+			// 					$i++;
+			// 					$s++;
+			// 					$samples[$s] = $query2[$j];
+			// 					unset($query2[$j]);
+			// 					$s++;
+			// 				}
+			// 			}
+			// 			else
+			// 			{
+			// 				$i++;
+			// 			}
+			// 		}
+			// 		else
+			// 		{
+			// 			$j++;
+			// 		}
+			// 	}
+			// 	$i++;
+			// }
 			// foreach ($query as $key1 => $registry1)
 			// {
 			// 	foreach ($query2 as $key2 => $registry2)
@@ -456,7 +518,8 @@ class Model_alm_datamining extends CI_Model
 			// 		}
 			// 	}
 			// }
-			return $msg;
+			// return $msg;
+			return $samples;
 			// $columns= array('nr_solicitud', 'id_articulo');
 			// $columns= array('fecha_retirado');
 			// echo_pre($query2);
