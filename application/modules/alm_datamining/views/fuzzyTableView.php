@@ -82,7 +82,24 @@
 											<div id="myTabContent" class="tab-content">
 												<div id="home" class="tab-pane fade in active">
 													<div id="homeContent" class="awidget-body">
-													Pruebas.
+														<div class="controls-row">
+															<!-- <div class="control-group"> -->
+															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+																<div class="input-group">
+																		<span id="basic-addon1" class="input-group-addon">
+																				<i class="fa fa-calendar"></i>
+																		</span>
+																		<input class="form-control input-sm" name="fecha" id="date" readonly placeholder=" Búsqueda por Fechas" type="search">
+																</div>
+															</div>
+														</div>
+														<br>
+														<br>
+														<br>
+														<div id='testPrints' class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+														Pruebas.
+														</div>
+
 													</div>
 												</div>
 												<div id="Sample" class="tab-pane fade">
@@ -157,27 +174,52 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
-      	// $('#fuzzytable').dataTable({
-      	// 							"language": {
-      	// 									"url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-      	// 							},
-      	// 	"bProcessing": true,
-      	// 				"bServerSide": true,
-      	// 				"sServerMethod": "GET",
-      	// 				"sAjaxSource": "<?php echo base_url() ?>alm_datamining/fcm",
-      	// 				"iDisplayLength": 10,
-      	// 				"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-      	// 				"aaSorting": [[0, 'asc']],
-      	// 				"aoColumns": [
-      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": true },
-      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": true },
-      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": true },
-      	// 		{ "bVisible": false, "bSearchable": false, "bSortable": true },
-      	// 		{ "bVisible": false, "bSearchable": false, "bSortable": true },
-      	// 		{ "bVisible": false, "bSearchable": false, "bSortable": true },
-      	// 		{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
-      	// 				]
-      	// });
+    	var limits=0;
+      	// $('#date span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+      	$('#date').daterangepicker({
+				format: 'DD/MM/YYYY',
+				startDate: moment(),
+				endDate: moment(),
+				// minDate: '12/31/2014',
+				// maxDate: '12/31/2021',
+				dateLimit: {months: 12},
+				showDropdowns: true,
+				showWeekNumbers: true,
+				timePicker: false,
+				timePickerIncrement: 1,
+				timePicker12Hour: true,
+				ranges: {
+						'Hoy': [moment(), moment()],
+						'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+						'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+						'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+						'Este mes': [moment().startOf('month'), moment().endOf('month')],
+						'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				},
+				opens: 'right',
+				drops: 'down',
+				buttonClasses: ['btn', 'btn-sm'],
+				applyClass: 'btn-primary',
+				cancelClass: 'btn-default',
+				separator: ' al ',
+				locale: {
+						applyLabel: 'Listo',
+						cancelLabel: 'Cancelar',
+						fromLabel: 'Desde',
+						toLabel: 'Hasta',
+						customRangeLabel: 'Personalizado',
+						daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+						monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+						firstDay: 1
+				}
+
+		}, function (start, end, label) {
+				var from = parseFloat(start._d.getTime()/1000).toFixed(0);
+				var to = parseFloat(end._d.getTime()/1000).toFixed(0);
+				console.log((from), (to), {'from': from, 'to': to});
+				limits = ({'from': from, 'to': to});
+				// $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+		});
 
       	$.ajax({
 			url: "<?php echo base_url() ?>alm_datamining/fcm",
@@ -195,7 +237,7 @@
 				});
 				
 				var message = data.msg;
-				console.log(data);
+				// console.log(data);
 				var table = buildObjectArrayTable(data.centroides, false, true);
 				$('#CentersContent').html('');
 				$('#CentersContent').append(table);
@@ -219,64 +261,8 @@
 				table2.attr('class', 'table table-hover table-bordered dataTable');
 				table3.attr('class', 'table table-hover table-bordered dataTable');
 				table4.attr('class', 'table table-hover table-bordered dataTable');
-				console.log(typeof message);
-				var log = $('<div>');//'<div class="error-log"><ul>';
-				log.attr('class', 'error-log');
-				var ul = $('<ul>');
-				if(typeof message ==='object')
-				{
-					if(message.length>0)
-					{
-						// var log = '<div class="error-log"><ul>';
-						for (var i = 0; i < message.length; i++)
-						{
-							var li = $('<li>');
-							li.html('<h4>'+i+'</h4>');
-							li.append(objectTable(message[i]));
-							ul.append(li);
-							// // console.log(data.response[i]);
-							// // var aux = data.response[i];
-							// log += '<li>';
-							// // log += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
-							// // log += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
-							// log += msglines[i];
-							// log +='</li>';
-						}
-
-						log.append(ul);
-						var title = "INFO:  <span class='badge badge-info'>"+message.length+"</span>";
-						// buildModal('log', title, log, '', 'lg', '');
-						//id, title, content, footer, size, height
-					}
-				}
-				if(typeof message ==='string')
-				{
-					var msglines = message.split('<br>');
-					if(typeof msglines === 'array')
-					{
-						for (var i = 0; i < msglines.length; i++)
-						{
-							var li = $('<li>');
-							li.html(msglines[i]);
-							ul.append(li);
-						}
-					}
-					else
-					{
-						if(message.length>0)
-						{
-							var li = $('<li>');
-							li.html(message);
-							ul.append(li);
-						}
-						var title = "INFO:  <span class='badge badge-info'>Message:</span>";
-					}
-					log.append(ul);
-				}
-				$('#homeContent').html('');
-				$('#homeContent').append(title);
-				$('#homeContent').append(log);
-
+				//'testPrints'
+				print(message, 'repContent');
 				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
 			},
 			error: function(a, stat, error)
@@ -289,15 +275,77 @@
 			}
       	});
 
-      	// $.ajax({//doesnt work, so, this will not be used
-      	// 	dataType:"json",
-      	// 	url: "<?php echo base_url() ?>/uploads/testFiles/citylots.json",
-      	// 	success: function(data)
-      	// 	{
-      	// 		console.log(data);
+      	$.ajax({//doesnt work, so, this will not be used
+      		url: "<?php echo base_url() ?>alm_datamining/test",
+      		type:'POST',
+      		dataType:"json",
+			data: limits,
+      		success: function(data)
+      		{
+      			console.log(limits);
+      			print(data.msg, 'testPrints');
       	// 		$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
-      	// 	}
-      	// });
+      		}
+      	});
+      	function print(message, where)
+      	{
+      		var log = $('<div>');//'<div class="error-log"><ul>';
+      		log.attr('class', 'error-log');
+      		var ul = $('<ul>');
+      		if(typeof message ==='object')
+      		{
+      			if(message.length>0)
+      			{
+      				// var log = '<div class="error-log"><ul>';
+      				for (var i = 0; i < message.length; i++)
+      				{
+      					var li = $('<li>');
+      					li.html('<h4>'+i+'</h4>');
+      					li.append(objectTable(message[i]));
+      					ul.append(li);
+      					// // console.log(data.response[i]);
+      					// // var aux = data.response[i];
+      					// log += '<li>';
+      					// // log += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+      					// // log += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+      					// log += msglines[i];
+      					// log +='</li>';
+      				}
+
+      				log.append(ul);
+      				var title = "INFO:  <span class='badge badge-info'>"+message.length+"</span>";
+      				// buildModal('log', title, log, '', 'lg', '');
+      				//id, title, content, footer, size, height
+      			}
+      		}
+      		if(typeof message ==='string')
+      		{
+      			var msglines = message.split('<br>');
+      			if(typeof msglines === 'array')
+      			{
+      				for (var i = 0; i < msglines.length; i++)
+      				{
+      					var li = $('<li>');
+      					li.html(msglines[i]);
+      					ul.append(li);
+      				}
+      			}
+      			else
+      			{
+      				if(message.length>0)
+      				{
+      					var li = $('<li>');
+      					li.html(message);
+      					ul.append(li);
+      				}
+      				var title = "INFO:  <span class='badge badge-info'>Message:</span>";
+      			}
+      			log.append(ul);
+      		}
+      		$('#'+where).html('');
+      		$('#'+where).append(title);
+      		$('#'+where).append(log);
+      	}
 		// $('#reset').click(function()
 		// {
 		// 	$('html, body').animate({

@@ -967,7 +967,7 @@ class Alm_datamining extends MX_Controller
         //     $BS[]=$aux;
         // }
         // echo "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
-        $msg.= "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
+        // $msg.= "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
         // echo_pre($pack['reference'], __LINE__, __FILE__);
         // echo"<strong>Probando que las membrecias no excedan el 100%</strong><br>";
         // echo_pre($BS, __LINE__, __FILE__);
@@ -976,12 +976,12 @@ class Alm_datamining extends MX_Controller
         // $Impe_dmfp = $this->validation_index($u, $centroids, $n);
         // $msg.= 'validation index: ';//indice de validacion del algoritmo
         $json['validation_index'] = $this->validation_index($u, $centroids, $n);
-        $msg.=$json['validation_index'];
+        // $msg.=$json['validation_index'];
         // die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
-        // $json['msg'] = $msg//.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
-        $json['msg'] = $this->model_alm_datamining->get_allData();
+        $json['msg'] = $msg;//.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
+        // $json['msg'] = $this->model_alm_datamining->get_allData();
         // $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
         // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been written' => 'go fuck yourself!'));
         // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been overwritten' => 'go fuck yourself!'));
@@ -990,7 +990,13 @@ class Alm_datamining extends MX_Controller
         $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
         echo json_encode($json);
     }
-    public function patter_translator($patter, $Cntrs)//no es generico, se basa al objeto de muestra del proyecto
+    public function test($array='')
+    {
+        // die(json_encode($array));
+        $json['msg'] = $this->model_alm_datamining->get_allData();
+        echo json_encode($json);
+    }
+    public function pattern_translator($patter, $Cntrs)//no es generico, se basa al objeto de muestra del proyecto
     {
 
     }
