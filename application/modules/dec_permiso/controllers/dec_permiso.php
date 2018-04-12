@@ -85,7 +85,14 @@ Class Dec_permiso extends MX_Controller{
     private function deCrypt($crypted)//para desencriptar
     {
         // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
-        return($this->model_permisos->translate($crypted, $this->dominio));
+        if($crypted == 0)
+        {
+            return($this->initString());
+        }
+        else
+        {
+            return($this->model_permisos->translate($crypted, $this->dominio));
+        }
     }
     private function showMatrix($string)//para mostrar la matriz
     {
