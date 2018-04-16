@@ -423,7 +423,51 @@ class Model_alm_datamining extends CI_Model
 			}
 			// ->where('entrada = NULL')
 			// ->group_by('id_articulo')
-			$samples = $this->db->get('alm_solicitud')->result_array();
+			$samples['objects'] = $this->db->get('alm_solicitud')->result_array();
+
+
+			$this->db->select('MAX(alm_solicitud.nr_solicitud) AS nr_solicitud, MAX(alm_articulo.ID) as id_articulo, MAX((nuevos + usados + reserv)) AS existencia, MAX(alm_art_en_solicitud.cant_solicitada) AS demanda, MAX(alm_art_en_solicitud.cant_aprobada) AS consumo, MAX(UNIX_TIMESTAMP(alm_genera.fecha_ej)) AS fecha_solicitado, MAX(UNIX_TIMESTAMP(alm_historial_s.fecha_ej)) AS fecha_status_ej');
+			// ->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a')
+			// ->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo')
+			// ->join('alm_art_en_solicitud', 'alm_art_en_solicitud.id_articulo = alm_articulo.ID')
+			$this->db->join('alm_art_en_solicitud', 'alm_art_en_solicitud.nr_solicitud = alm_solicitud.nr_solicitud');
+			// ->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_art_en_solicitud.nr_solicitud')
+			$this->db->join('alm_articulo', 'alm_articulo.ID = alm_art_en_solicitud.id_articulo');
+			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
+			// $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud AND alm_historial_s.status_ej!="carrito"');
+			$this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud AND alm_historial_s.status_ej="aprobado"');
+			$this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.usuario_ej');
+			if(isset($FromToDate)&&!empty($FromToDate) && is_array($FromToDate))
+			{
+				$this->db->where('UNIX_TIMESTAMP(alm_genera.fecha_ej) >', $FromToDate['from']);
+				$this->db->where('UNIX_TIMESTAMP(alm_genera.fecha_ej) <', $FromToDate['to']);
+			}
+			$aux = $this->db->get('alm_solicitud')->row_array();
+			$centroids = array();
+			$n = sizeof($aux);
+			$i=0;
+			foreach ($aux as $key => $value)
+			{
+			    $j=0;
+			    while ($j<($n*2))
+			    {
+			        $centroids[$j][$key] = 0;
+			        $j++;
+			    }
+			    for ($k=0; $k < ($n*2); $k++)
+			    {
+			        if($k==$i)
+			        {
+			            $centroids[$k][$key] = $value;
+			        }
+			        if($k>=$n && ($i+$n)!=$k)
+			        {
+			            $centroids[$k][$key] = $value;
+			        }
+			    }
+			    $i++;
+			}
+			$samples['centroids'] = $centroids;
 			// ->get('alm_historial_a')->result_array();
 			// ->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a')
 			// ->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo')

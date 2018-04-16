@@ -481,6 +481,35 @@ class Alm_datamining extends MX_Controller
         echo_pre($class);
         // echo "</pre>";
     }
+    public function buildCentroids($centers)//deprecated
+    {
+        // die_pre($centers);
+        $centroids = array();
+        $n = sizeof($centers);
+        $i=0;
+        foreach ($centers as $key => $value)
+        {
+            $j=0;
+            while ($j<($n*2))
+            {
+                $centroids[$j][$key] = 0;
+                $j++;
+            }
+            for ($k=0; $k < ($n*2); $k++)
+            {
+                if($k==$i)
+                {
+                    $centroids[$k][$key] = $value;
+                }
+                if($k>=$n && ($i+$n)!=$k)
+                {
+                    $centroids[$k][$key] = $value;
+                }
+            }
+            $i++;
+        }
+        return($centroids);
+    }
     public function fcmFILEVARS($m='', $P='')
     {
         $msg = '';
@@ -489,8 +518,8 @@ class Alm_datamining extends MX_Controller
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
-        $this->model_alm_datamining->get_allData();
-        //objetos deben venir de archivos
+        $sample = $this->model_alm_datamining->get_allData();
+        //objetos deben venir de archivos o base de datos
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                         array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
                                         array('x' => 11.0, 'y' => 3436.0, 'z'=> 15),
@@ -510,7 +539,7 @@ class Alm_datamining extends MX_Controller
                                         array('x' => 15.5, 'y' => 2774.0, 'z'=> 15),
                                         array('x' => 16.0, 'y' => 2587.0, 'z'=> 15));
         
-        //centroides deben venir de archivos
+        //centroides deben venir de archivos o base de datos
         $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
                                     array('x' => 0, 'y' => 4354.0, 'z'=>0),
                                     array('x' => 0, 'y' => 0, 'z'=> 15),
@@ -519,6 +548,9 @@ class Alm_datamining extends MX_Controller
                                     array('x' => 16.00, 'y' => 4354.0, 'z'=> 0),
                                     array('x' => 16.00, 'y' => 4354.0, 'z'=> 15),
                                     array('x' => 0, 'y' => 0, 'z'=> 0));
+        // $sample = $this->model_alm_datamining->get_allData();
+        $objects = $sample['objects'];
+        $centroids = $sample['centers'];
         $json['sample'] = $objects;
         $c = count($centroids);//numero de centroides
         $n = count($objects);
@@ -799,17 +831,20 @@ class Alm_datamining extends MX_Controller
             constantes o exponenciales en la BD es más lento que en archivo, así que se
             elige re-diseñar las operaciones para leer y escribir los resultados en archivo
         */
+            $sample = $this->model_alm_datamining->get_allData();
+            $objects = $sample['objects'];
+            $centroids = $sample['centroids'];
         $json['sample'] = $objects;
         $c = count($centroids);//numero de centroides
         $n = count($objects);
         $error = 1;
         $tolerance = 0.00001;
         $iterations = 0;
-        $features = array();
-        foreach ($objects[0] as $key => $value)
-        {
-            $features[]=$key;
-        }
+        // $features = array();
+        // foreach ($objects[0] as $key => $value)
+        // {
+        //     $features[]=$key;
+        // }
         //Variable a travez de BD
         $dimentions = array('n' => $n, 'c'=>$c);
         // $this->model_alm_datamining->build_centroidsTable($features);
@@ -823,6 +858,11 @@ class Alm_datamining extends MX_Controller
                 $centroids = $newCentroids;//READ
             }
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
+            if(isset($d))
+            {
+                unset($d);
+            }
+
             $d=array();
             for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
             {
@@ -835,6 +875,11 @@ class Alm_datamining extends MX_Controller
             }
             // die_pre($d, __LINE__, __FILE__);
             //consturccion de U: $u o matriz de membrecia
+            if(isset($u))
+            {
+                unset($u);
+            }
+
             $u= array();
             $exp = 1/($m-1);
             for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
@@ -884,6 +929,11 @@ class Alm_datamining extends MX_Controller
             }
             // echo_pre($u, __LINE__, __FILE__);
             $membershipMatrix = $u;
+            if(isset($newCentroids))
+            {
+                unset($newCentroids);
+            }
+
             $newCentroids = array();
 
             for ($i=0; $i < $c; $i++)//para los nuevos centroides
@@ -994,6 +1044,7 @@ class Alm_datamining extends MX_Controller
     {
         // die(json_encode($array));
         $json['msg'] = $this->model_alm_datamining->get_allData();
+        // $this->buildCentroids($json['msg']['centers']);
         echo json_encode($json);
     }
     public function pattern_translator($patter, $Cntrs)//no es generico, se basa al objeto de muestra del proyecto

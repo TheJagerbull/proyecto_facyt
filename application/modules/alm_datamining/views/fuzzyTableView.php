@@ -174,6 +174,7 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
+    	var audio = new Audio('<?php echo base_url() ?>assets/sounds/done.mp3');
     	var limits=0;
       	// $('#date span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
       	$('#date').daterangepicker({
@@ -240,18 +241,47 @@
 				// console.log(data);
 				var table = buildObjectArrayTable(data.centroides, false, true);
 				$('#CentersContent').html('');
-				$('#CentersContent').append(table);
+					var log = $('<div>');//'<div class="error-log"><ul>';
+				    log.attr('class', 'error-log');
+				    var ul = $('<ul>');
+					var li = $('<li>');
+					li.append(table);
+				    ul.append(li);
+      				log.append(ul);
+				$('#CentersContent').append(log);
 				var table2 = buildObjectArrayTable(data.membershipMatrix, true);
 				$('#MatrixMContent').html('');
-				$('#MatrixMContent').append(table2);
+					var log = $('<div>');//'<div class="error-log"><ul>';
+				    log.attr('class', 'error-log');
+				    var ul = $('<ul>');
+					var li = $('<li>');
+					li.append(table2);
+				    ul.append(li);
+      				log.append(ul);
+				$('#MatrixMContent').append(log);
 				var table3 = buildObjectArrayTable(data.distanceMatrix, true);
 				$('#MatrixDContent').html('');
-				$('#MatrixDContent').append(table3);
+					var log = $('<div>');//'<div class="error-log"><ul>';
+				    log.attr('class', 'error-log');
+				    var ul = $('<ul>');
+					var li = $('<li>');
+					li.append(table3);
+				    ul.append(li);
+      				log.append(ul);
+				$('#MatrixDContent').append(log);
 				var table4 = buildObjectArrayTable(data.sample, true, true);
 				$('#SampleContent').html('');
-				$('#SampleContent').append(table4);
+					var log = $('<div>');//'<div class="error-log"><ul>';
+				    log.attr('class', 'error-log');
+				    var ul = $('<ul>');
+					var li = $('<li>');
+					li.append(table4);
+				    ul.append(li);
+      				log.append(ul);
+				$('#SampleContent').append(log);
 				$('#PatternsContent').html('');
 				$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
+				console.log(data.pattern1, data.pattern2);
 				var table5 = buildObjectArrayTable(data.pattern1, false, true);
 				$('#PatternsContent').append(table5);
 				$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
@@ -264,6 +294,8 @@
 				//'testPrints'
 				print(message, 'repContent');
 				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
+
+				audio.play();
 			},
 			error: function(a, stat, error)
 			{
@@ -275,7 +307,7 @@
 			}
       	});
 
-      	$.ajax({//doesnt work, so, this will not be used
+      	$.ajax({//used for testings
       		url: "<?php echo base_url() ?>alm_datamining/test",
       		type:'POST',
       		dataType:"json",
@@ -283,11 +315,13 @@
       		success: function(data)
       		{
       			console.log(limits);
-      			print(data.msg, 'testPrints');
+      			print(data.msg.objects, 'testPrints');
+      			print(data.msg.centroids, 'testPrints', false);
+      			audio.play();
       	// 		$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
       		}
       	});
-      	function print(message, where)
+      	function print(message, where, rewrite=true)
       	{
       		var log = $('<div>');//'<div class="error-log"><ul>';
       		log.attr('class', 'error-log');
@@ -313,7 +347,7 @@
       				}
 
       				log.append(ul);
-      				var title = "INFO:  <span class='badge badge-info'>"+message.length+"</span>";
+      				var title = "DATA SIZE:  <span class='badge badge-info'>"+message.length+"</span>";
       				// buildModal('log', title, log, '', 'lg', '');
       				//id, title, content, footer, size, height
       			}
@@ -342,7 +376,14 @@
       			}
       			log.append(ul);
       		}
-      		$('#'+where).html('');
+      		if(rewrite)
+      		{
+      			$('#'+where).html('');
+      		}
+      		else
+      		{
+      			$('#'+where).append('<br><br>');
+      		}
       		$('#'+where).append(title);
       		$('#'+where).append(log);
       	}
