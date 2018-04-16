@@ -229,6 +229,7 @@
 			// data: {"cod_segmento":this.value},
 			success: function (data)
 			{
+				audio.play();
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					var target = $(e.target).attr("href"); // activated tab
 					console.log(target);
@@ -295,7 +296,6 @@
 				print(message, 'repContent');
 				$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
 
-				audio.play();
 			},
 			error: function(a, stat, error)
 			{
