@@ -681,7 +681,7 @@ class Alm_datamining extends MX_Controller
         return($iterations);
 
     }
-    public function fcm($m='', $P='')//new version
+    public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",
     {
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
@@ -1038,7 +1038,49 @@ class Alm_datamining extends MX_Controller
         // $json['msg'] = $this->model_alm_datamining->get_data('['.$i.']['.$k.'].json');
         $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
         $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
-        echo json_encode($json);
+        // echo json_encode($json);
+        $data = json_encode($json, JSON_PRETTY_PRINT);
+        $this->writeFile($data);
+    }
+    private function writeFile($data, $filename='')
+    {
+        if(!is_dir("./uploads/engine/fuzzyPatterns/vars".$dof['subDir']))//en caso que el directorio no existe
+        {
+            if(!is_dir("./uploads/engine"))//en caso que el directorio no existe
+            {
+                mkdir("./uploads/engine", 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
+            }
+            if(!is_dir("./uploads/engine/fuzzyPatterns"))//en caso que el directorio no existe
+            {
+                mkdir("./uploads/engine/fuzzyPatterns", 0755);
+            }
+        }
+        if(!isset($filename) || empty($filename))
+        {
+            if(!write_file('./uploads/engine/fuzzyPatterns/results', $data))
+            {
+                echo(false);
+            }
+            else
+            {
+                echo(true);
+            }
+        }
+        else
+        {
+            if(!is_dir('./'.$filename))//en caso que el directorio no existe
+            {
+                mkdir('./'.$filename, 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
+            }
+            if(!write_file('./'.$filename, $data))
+            {
+                return(false);
+            }
+            else
+            {
+                return(true);
+            }
+        }
     }
     public function test($array='')
     {

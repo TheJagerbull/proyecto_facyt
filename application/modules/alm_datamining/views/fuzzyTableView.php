@@ -223,8 +223,9 @@
 		});
 
       	$.ajax({
-			url: "<?php echo base_url() ?>alm_datamining/fcm",
-			type: 'POST',
+			// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
+			url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/results",
+			// type: 'POST',
 			dataType: "json",
 			// data: {"cod_segmento":this.value},
 			success: function (data)
@@ -295,6 +296,7 @@
 				// $('#PatternsContent').append(table5);
 				$('#PatternsContent').append(log);
 				$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
+				minVal(data.centroides);
 				var table6 = buildObjectArrayTable(data.pattern2, false, true);
 				var log = $('<div>');
 			    log.attr('class', 'error-log');
@@ -403,6 +405,51 @@
       		}
       		$('#'+where).append(title);
       		$('#'+where).append(log);
+      	}
+      	function minVal(arrayObjects)
+      	{
+      		var objectkeys = Object.keys(arrayObjects[0]);
+      		var lowest = {};
+      		var highest = {};
+      		var tmp = {};
+      		for (var j = objectkeys.length - 1; j >= 0; j--)
+			{
+				// lowest[objectkeys[j]] = j;
+    //   			highest[objectkeys[j]] = j;
+      			tmp['lowest'+objectkeys[j]] = Number.POSITIVE_INFINITY;
+      			tmp['highest'+objectkeys[j]] = Number.NEGATIVE_INFINITY;
+
+			}
+			console.log('tmp=', tmp);
+   //    		var lowest = Number.POSITIVE_INFINITY;
+   //    		var highest = Number.NEGATIVE_INFINITY;
+   //    		var tmp = 0;
+			for (var i = arrayObjects.lenght-1; i>=0; i--)
+			{
+				for (var j = objectkeys.length - 1; j >= 0; j--)
+				{
+
+					console.log('lowest: ', i, 'Object.'+objectkeys[j]);
+					if(tmp['lowest'+objectkeys[j]]>arrayObjects[i][objectkeys[j]])
+					{
+						tmp['lowest'+objectkeys[j]] = arrayObjects[i][objectkeys[j]];
+						lowest[objectkeys[j]] = i;
+						console.log('lowest: ', i, 'Object.'+objectkeys[j]);
+					}
+
+					console.log('highest: ', i, 'Object.'+objectkeys[j]);
+					if(tmp['highest'+objectkeys[j]]<arrayObjects[i][objectkeys[j]])
+					{
+						tmp['highest'+objectkeys[j]] = arrayObjects[i][objectkeys[j]];
+						highest[objectkeys[j]] = i;
+						console.log('highest: ', i, 'Object.'+objectkeys[j]);
+					}
+				}
+			//   // data.push({ x: x, y: Math.floor(Math.random() * (1000000)) });
+			//   tmp = arrayObjects[i]
+			}
+      		console.log('HERE!!!!', objectkeys, lowest, highest, tmp);
+
       	}
 		// $('#reset').click(function()
 		// {
