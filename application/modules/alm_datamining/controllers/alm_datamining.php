@@ -834,7 +834,9 @@ class Alm_datamining extends MX_Controller
             $sample = $this->model_alm_datamining->get_allData();
             $objects = $sample['objects'];
             $centroids = $sample['centroids'];
-        $json['sample'] = $objects;
+        // $json['sample'] = $objects;
+        $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
+        // die_pre($files);
         $c = count($centroids);//numero de centroides
         $n = count($objects);
         $error = 1;
@@ -983,13 +985,16 @@ class Alm_datamining extends MX_Controller
         }
 
 
-        $json['iterations'] = $iterations;
+        // $json['iterations'] = $iterations;
+        $files[] = $this->writeFile(json_encode(array( 'iterations' => $iterations)), 'iterations');
         // echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
         $msg.="<br><strong>iteraciones: ".$iterations."</strong><br>";
         // echo_pre($centroids, __LINE__, __FILE__);
         $msg.="<br><strong>centroids:</strong><br>";
         // $this->print_multidimentional_array($centroids);
-        $json['centroides'] = $centroids;
+        // $json['centroides'] = $centroids;
+        // $aux = json_encode(array( 'centroides' => $centroids));
+        $files[] = $this->writeFile(json_encode(array( 'centroides' => $centroids)), 'centroides');
         $msg.=$this->print_multidimentional_array($centroids);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
@@ -997,8 +1002,12 @@ class Alm_datamining extends MX_Controller
         // echo "<br><strong>Membership Matrix:</strong><br>";
         $msg.= "<br><strong>Membership Matrix:</strong><br>";
         // $this->print_multidimentional_array($membershipMatrix, TRUE);
-        $json['distanceMatrix'] = $d;
-        $json['membershipMatrix'] = $membershipMatrix;
+        // $json['distanceMatrix'] = $d;
+        // $aux = json_encode(array( 'distanceMatrix' => $d));
+        $files[] = $this->writeFile(json_encode(array( 'distanceMatrix' => $d)), 'distanceMatrix');
+        // $json['membershipMatrix'] = $membershipMatrix;
+        // $aux = json_encode(array( 'membershipMatrix' => $membershipMatrix));
+        $files[] = $this->writeFile(json_encode(array( 'membershipMatrix' => $membershipMatrix)), 'membershipMatrix');
         $msg.=$this->print_multidimentional_array($membershipMatrix, TRUE);
 
         // $this->print_multidimentional_array($membershipMatrix);
@@ -1025,26 +1034,35 @@ class Alm_datamining extends MX_Controller
 
         // $Impe_dmfp = $this->validation_index($u, $centroids, $n);
         // $msg.= 'validation index: ';//indice de validacion del algoritmo
-        $json['validation_index'] = $this->validation_index($u, $centroids, $n);
+        // $json['validation_index'] = $this->validation_index($u, $centroids, $n);
+        // $aux = json_encode(array( 'validation_index' => $this->validation_index($u, $centroids, $n)));
+        $files[] = $this->writeFile(json_encode(array( 'validation_index' => $this->validation_index($u, $centroids, $n))), 'validation_index');
         // $msg.=$json['validation_index'];
         // die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
         // echo $msg;
-        $json['msg'] = $msg;//.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
+        // $json['msg'] = $msg;//.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);;
+        //.'<br>file variables iterations: '.$this->fcmFILEVARS($m, $P);
+        // $aux = json_encode(array( 'msg' => $msg));
+        $files[] = $this->writeFile(json_encode(array( 'msg' => $msg)), 'msg');
         // $json['msg'] = $this->model_alm_datamining->get_allData();
         // $json['msg'] = $this->model_alm_datamining->read_data('citylots.json');
         // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been written' => 'go fuck yourself!'));
         // $json['msg'] = $this->model_alm_datamining->save_data('['.$i.']['.$k.'].json', array('the file has been overwritten' => 'go fuck yourself!'));
         // $json['msg'] = $this->model_alm_datamining->get_data('['.$i.']['.$k.'].json');
-        $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
-        $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
-        // echo json_encode($json);
-        $data = json_encode($json, JSON_PRETTY_PRINT);
-        $this->writeFile($data);
+        // $json['pattern2'] = $this->pattern_story($membershipMatrix, $centroids);
+        // $aux = json_encode(array( 'pattern2' => $this->pattern_story($membershipMatrix, $centroids)));
+        $files[] = $this->writeFile(json_encode(array( 'pattern2' => $this->pattern_story($membershipMatrix, $centroids))), 'pattern2');
+        // $json['pattern1'] = $this->pattern_results($membershipMatrix, $centroids);
+        // $aux = json_encode(array( 'pattern1' => $this->pattern_results($membershipMatrix, $centroids)));
+        $files[] = $this->writeFile(json_encode(array( 'pattern1' => $this->pattern_results($membershipMatrix, $centroids))), 'pattern1');
+        echo json_encode($files);
+        // $data = json_encode($json, JSON_PRETTY_PRINT);
+        // $this->writeFile($data);
     }
     private function writeFile($data, $filename='')
     {
-        if(!is_dir("./uploads/engine/fuzzyPatterns/vars".$dof['subDir']))//en caso que el directorio no existe
+        if(!is_dir("./uploads/engine/fuzzyPatterns"))//en caso que el directorio no existe
         {
             if(!is_dir("./uploads/engine"))//en caso que el directorio no existe
             {
@@ -1059,26 +1077,26 @@ class Alm_datamining extends MX_Controller
         {
             if(!write_file('./uploads/engine/fuzzyPatterns/results', $data))
             {
-                echo(false);
+                return('error writing file: "./uploads/engine/fuzzyPatterns/results"');
             }
             else
             {
-                echo(true);
+                return('./uploads/engine/fuzzyPatterns/results');
             }
         }
         else
         {
-            if(!is_dir('./'.$filename))//en caso que el directorio no existe
+            if(!is_dir('./uploads/engine/fuzzyPatterns/json_files'))//en caso que el directorio no existe
             {
-                mkdir('./'.$filename, 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
+                mkdir('./uploads/engine/fuzzyPatterns/json_files', 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
             }
-            if(!write_file('./'.$filename, $data))
+            if(!write_file('./uploads/engine/fuzzyPatterns/json_files/'.$filename, $data))
             {
-                return(false);
+                return('error writing file: "./uploads/engine/fuzzyPatterns/json_files/'.$filename.'"');
             }
             else
             {
-                return(true);
+                return('./uploads/engine/fuzzyPatterns/json_files/'.$filename);
             }
         }
     }
