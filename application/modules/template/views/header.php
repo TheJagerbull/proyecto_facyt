@@ -263,9 +263,9 @@
 										<?php if(!empty($TicGenerarSolicitud) && isset($TicGenerarSolicitud)):?>
                                                                                       <li><a href="<?php echo base_url() ?>tic_solicitudes/solicitud">Crear solicitud</a></li>
                                                                                 <?php endif;?>
-										<?php // if(!empty($TicReportes) && isset($TicReportes)):?>
-                                                                                      <!--<li><a href="<?php echo base_url() ?>tic_solicitudes/reportes">Reportes</a></li>-->
-                                                                                <?php // endif;?>				
+										<?php if(!empty($TicReportes) && isset($TicReportes)):?>
+                                              	<li><a href="<?php echo base_url() ?>tic_solicitudes/reportes">Reportes</a></li>
+                                        <?php endif;?>				
 									</ul>
 								</li>
 							<?php endif;?>

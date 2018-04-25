@@ -209,6 +209,16 @@ $route['tic/desasignar/ayudante']                                               
 $route['tic/ayudantes/seleccionar']   				                = 'tic_responsable_orden/tic_responsable_orden/select_responsable';
 $route['tic/ayudantes/sin_asignar']                                             = 'tic_ayudante/tic_ayudante/mostrar_unassigned';
 $route['tic/ayudantes/asignados']                                               = 'tic_ayudante/tic_ayudante/mostrar_assigned';
+
+//Ruta para TIC reportes
+$route['tic_solicitudes/reportes']					       = 'tic_reportes/tic_reportes/reporte';
+$route['tic_solicitudes/reportes_pdf']                                         = 'tic_reportes/tic_reportes/pdf_reportes_worker';
+$route['tic_solicitudes/tic_buscar_trabajador']                                = 'tic_ayudante/tic_ayudante/load_ayu_asig';
+$route['tic_solicitudes/tic_buscar_responsable']                               = 'tic_responsable_orden/tic_responsable_orden/show_all_respon';
+$route['tic_solicitudes/tic_buscar_tipo_orden']                                = 'tic_asigna_cuadrilla/tic_asigna_cuadrilla/show_cuad_signed';
+$route['tic_solicitudes/tic_trabajador']                                       = 'tic_ayudante/tic_ayudante/load_consult';
+$route['tic_solicitudes/tic_responsable']                                      = 'tic_responsable_orden/tic_responsable_orden/load_respond';
+$route['tic_solicitudes/tic_tipo_orden']                                       = 'tic_asigna_cuadrilla/tic_asigna_cuadrilla/load_cuad_tipo_orden';
         
 // Routes para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
