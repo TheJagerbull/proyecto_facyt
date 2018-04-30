@@ -392,7 +392,21 @@ class Model_alm_datamining extends CI_Model
 		$this->load->helper('directory');
 		$this->load->helper('file');
 		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
-
+		if(!is_dir("./uploads/engine/fuzzyPatterns/vars/object"))//en caso que el directorio no existe
+		{
+		    if(!is_dir("./uploads/engine"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine", 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns", 0755);
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns/vars"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns/vars", 0755);
+		    }
+		}
 		if(delete_files('./uploads/engine/fuzzyPatterns/vars', true))
 		{
 			//demanda
@@ -468,6 +482,14 @@ class Model_alm_datamining extends CI_Model
 			    $i++;
 			}
 			$samples['centroids'] = $centroids;
+
+			return $samples;
+			///have to write in files
+		}
+		else
+		{
+			echo "no files deleted!";
+		}
 			// ->get('alm_historial_a')->result_array();
 			// ->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a')
 			// ->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo')
@@ -568,13 +590,17 @@ class Model_alm_datamining extends CI_Model
 			// 		}
 			// 	}
 			// }
-			// return $msg;
-			return $samples;
+			// // return $msg;
+			// return $samples;
 			// $columns= array('nr_solicitud', 'id_articulo');
 			// $columns= array('fecha_retirado');
 			// echo_pre($query2);
 			// $this->db->update_batch('alm_datamining_src', $query2, 'nr_solicitud');
-		}
+		// }
+		// else
+		// {
+		// 	echo "no files deleted!";
+		// }
 	}
 	public function get_allData()//esta funcion debe recorrer la base de datos sobre las tablas pertinentes, para construir un archivo de objetos que se le suministrará al algoritmo, adicionalmente, debe construir un archivo de centroides a partir de los valores encontrados en los objetos
 	{

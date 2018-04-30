@@ -510,11 +510,11 @@ class Alm_datamining extends MX_Controller
         }
         return($centroids);
     }
-    public function fcmFILEVARS($m='', $P='')
+    public function fcmFILEVARS($m='', $P='')//never finishes
     {
-        $msg = '';
-        $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
-        $msg .= "<h3> Fuzzy C-Means:</h3><br>";
+        // $msg = '';
+        // $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
+        // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
@@ -550,8 +550,10 @@ class Alm_datamining extends MX_Controller
                                     array('x' => 0, 'y' => 0, 'z'=> 0));
         // $sample = $this->model_alm_datamining->get_allData();
         $objects = $sample['objects'];
-        $centroids = $sample['centers'];
+        $centroids = $sample['centroids'];
         $json['sample'] = $objects;
+        $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
+
         $c = count($centroids);//numero de centroides
         $n = count($objects);
         $error = 1;
@@ -639,7 +641,7 @@ class Alm_datamining extends MX_Controller
                 for ($k=0; $k < $n; $k++)
                 {
                     // echo($u[$k][$i])."<br>";
-                    // echo()."<br>";
+                    // echo()."<br>"; D-206978   23/06/2011  380,00  Boleta por Pagar    DVTT-PNB   QfneP6
                     // $aux = pow($u[$k][$i], $m);//READ
 
                     $uaux = $this->model_alm_datamining->get_data('u['.$k.']['.$i.']', __LINE__);
@@ -652,7 +654,6 @@ class Alm_datamining extends MX_Controller
                 $aux = (1/$membSum);
                 $newCentroids[$i]=$this->multiply_vectors($membsumX, $aux);
             }
-            // die(__LINE__);
 //////////////////voy por aqui
             /*READ*/
             if($this->model_alm_datamining->var_exist('uk'))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
@@ -677,7 +678,18 @@ class Alm_datamining extends MX_Controller
             $iterations++;
             // $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
         }
+            die('WTF!!!!'.__LINE__);
+
+
         $this->model_alm_datamining->unset_var('uk');
+        $files[] = $this->writeFile(json_encode(array( 'iterations' => $iterations)), 'iterations');
+        $files[] = $this->writeFile(json_encode(array( 'centroides' => $centroids)), 'centroides');
+        // $files[] = $this->writeFile(json_encode(array( 'distanceMatrix' => $d)), 'distanceMatrix');
+        // $files[] = $this->writeFile(json_encode(array( 'membershipMatrix' => $membershipMatrix)), 'membershipMatrix');
+        // $files[] = $this->writeFile(json_encode(array( 'validation_index' => $this->validation_index($u, $centroids, $n))), 'validation_index');
+        // $files[] = $this->writeFile(json_encode(array( 'pattern2' => $this->pattern_story($membershipMatrix, $centroids))), 'pattern2');
+        // $files[] = $this->writeFile(json_encode(array( 'pattern1' => $this->pattern_results($membershipMatrix, $centroids))), 'pattern1');
+        echo "finished!";
         return($iterations);
 
     }
