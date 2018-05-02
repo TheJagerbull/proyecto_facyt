@@ -166,7 +166,7 @@ class Model_tic_reporte extends CI_Model
          en la variable $sWhere se guarda la clausula sql del where y se evalua dependiendo de las situaciones */ 
 
         $sWhere = ""; // Se inicializa y se crea la variable
-        $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+        $sSearchVal = str_replace("+", " ", $arr['search[value]']); //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
         if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
             if(isset($filtro)&& $filtro != ''):
                 $sWhere = "AND (";
@@ -180,7 +180,7 @@ class Model_tic_reporte extends CI_Model
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')'; //Se cierra la sentencia sql
         endif;
-        
+    
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
         for ($i = 0; $i < count($aColumns)-9; $i++):
