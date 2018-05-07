@@ -1098,6 +1098,10 @@ class Alm_datamining extends MX_Controller
         }
         else
         {
+            if(file_exists('./uploads/engine/fuzzyPatterns/json_files/'.$filename))
+            {
+                delete_files('./uploads/engine/fuzzyPatterns/json_files/');
+            }
             if(!is_dir('./uploads/engine/fuzzyPatterns/json_files'))//en caso que el directorio no existe
             {
                 mkdir('./uploads/engine/fuzzyPatterns/json_files', 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema

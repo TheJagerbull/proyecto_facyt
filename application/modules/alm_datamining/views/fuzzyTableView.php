@@ -68,6 +68,11 @@
 							            </div>
 									<div class="panel-body">
 										<div class="awidget-body">
+											<div>
+												<button id="runServerProcess" class="button btn-xs btn-default"> try me! 1</button>
+												<button id="runClientReads" class="button btn-xs btn-default"> try me! 2</button>
+											</div>
+
 											<ul id="myTab" class="nav nav-tabs nav-justified">
 												<li class="active"><a href="#home" data-toggle="tab">Pruebas</a></li>
 												<li><a href="#Sample" data-toggle="tab">Muestra</a></li>
@@ -221,7 +226,34 @@
 				limits = ({'from': from, 'to': to});
 				// $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 		});
-
+      	$("#runServerProcess").on('click', function(){
+      		console.log(this);
+	  //     	$.ajax({
+			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
+			// 	url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/fcm",
+			// 	// type: 'POST',
+			// 	dataType: "json",
+			// 	// data: {"cod_segmento":this.value},
+			// 	success: function (data)
+			// 	{
+			// 		console.log(data);
+			// 	}
+			// });
+      	});
+      	$("#runClientReads").on('click', function(){
+      		console.log(this);
+	  //     	$.ajax({
+			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
+			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/fcm",
+			// 	// type: 'POST',
+			// 	dataType: "json",
+			// 	// data: {"cod_segmento":this.value},
+			// 	success: function (data)
+			// 	{
+			// 		console.log(data);
+			// 	}
+			// });
+      	});
       	$.ajax({
 			// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
 			url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/results",
