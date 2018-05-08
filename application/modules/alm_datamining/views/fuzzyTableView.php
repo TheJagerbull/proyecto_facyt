@@ -62,17 +62,17 @@
 						<div class="col-lg-12 col-nd-12 col-sm-12">
 							<div class="full-width">
 								<div class="panel" style="border-radius: 10px;">
-							            <div class="panel-heading">
+							            <div class="panel-heading clearfix">
 							                <h3>Operaciones sobre inventario de almacén</h3>
 							                <h4>Memory usage: {memory_usage}</h4>
 							            </div>
-									<div class="panel-body">
+									<div class="panel-body clearfix">
 										<div class="awidget-body">
-											<div>
-												<button id="runServerProcess" class="button btn-xs btn-default"> try me! 1</button>
-												<button id="runClientReads" class="button btn-xs btn-default"> try me! 2</button>
+											<div class="input-group btn-group">
+												<button id="runServerProcess" class="btn btn-xs btn-success">Run Fuzzy C-means </button>
+												<button id="runClientReads" class="btn btn-xs btn-success"> Read results</button>
 											</div>
-
+											<hr>
 											<ul id="myTab" class="nav nav-tabs nav-justified">
 												<li class="active"><a href="#home" data-toggle="tab">Pruebas</a></li>
 												<li><a href="#Sample" data-toggle="tab">Muestra</a></li>
@@ -179,7 +179,10 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
-    	var audio = new Audio('<?php echo base_url() ?>assets/sounds/done.mp3');
+    	var audioBad = new Audio('<?php echo base_url() ?>assets/sounds/bad.wav');
+    	var audioBegin = new Audio('<?php echo base_url() ?>assets/sounds/begin.wav');
+    	var audioDone = new Audio('<?php echo base_url() ?>assets/sounds/done.mp3');
+    	var audioFinish = new Audio('<?php echo base_url() ?>assets/sounds/finish.wav');
     	var limits=0;
       	// $('#date span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
       	$('#date').daterangepicker({
@@ -227,21 +230,128 @@
 				// $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 		});
       	$("#runServerProcess").on('click', function(){
-      		console.log(this);
-	  //     	$.ajax({
+      		audioBegin.play();
+	      	$.ajax({
 			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
-			// 	url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/fcm",
+				url: "<?php echo base_url() ?>alm_datamining/fcm",
 			// 	// type: 'POST',
-			// 	dataType: "json",
-			// 	// data: {"cod_segmento":this.value},
-			// 	success: function (data)
-			// 	{
-			// 		console.log(data);
-			// 	}
-			// });
+				dataType: "json",
+				// data: {"cod_segmento":this.value},
+				success: function (data)
+				{
+					audioFinish.play();
+					setTimeout(function(){audioDone.play();}, 3000);
+					// audioDone.play();
+					// console.log(data);
+				},
+				error: function (msg)
+				{
+					audioBad.play();
+					console.log(msg);
+				}
+			});
       	});
       	$("#runClientReads").on('click', function(){
-      		console.log(this);
+      		// var fs = require('fs');
+      		// var files = fs.readdirSync('<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/');
+      		$.get('<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files', (data)=>
+      		{
+      			let listing = parseDirectoryListing(data);
+      			// console.log(JSON.stringify(listing));
+      			var files = JSON.stringify(listing);
+      			if(listing[0] !== 'http')
+      			{
+      				console.log(listing[0]);
+	      			audioBegin.play();
+
+	      			// buildModal('log', 'json files dir', log, '', 'lg', '');
+	      			// console.log(listing);
+	      			read_files();
+      			}
+      			else
+      			{
+      				audioBad.play();
+      				console.log('dir EMPTYYY!!!!');
+      			}
+      		});
+      		function parseDirectoryListing(text) 
+  		    {
+  		        let docs = text
+  		                     .match(/href="([\w]+)/g) // pull out the hrefs
+  		                     .map((x) => x.replace('href="', '')); // clean up
+  		        console.log(docs);
+  		        return docs;
+  		    }
+  		    function read_files()
+  		    {
+    	   //    	$.ajax({//used for testings
+    	   //    		url: "<?php echo base_url() ?>alm_datamining/test",
+    	   //    		type:'POST',
+    	   //    		dataType:"json",
+    				// data: limits,
+    	   //    		success: function(data)
+    	   //    		{
+    	   //    			// console.log(limits);
+    	   //    			print(data.msg.objects, 'testPrints');
+    	   //    			print(data.msg.centroids, 'testPrints', false);
+    	   //    			audioBad.play();
+    	   //    			$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
+    	   //    		}
+    	   //    	});
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/centroides",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+	  		    		// console.log(data.centroides);
+						var table = buildObjectArrayTable(data.centroides, false, true);
+						$('#CentersContent').html('');
+						var log = $('<div>');//'<div class="error-log"><ul>';
+					    log.attr('class', 'error-log');
+					    var ul = $('<ul>');
+						var li = $('<li>');
+						li.append(table);
+					    ul.append(li);
+	      				log.append(ul);
+						$('#CentersContent').append(log);
+	      				audioDone.play();
+					}
+    	      	});
+  		 //    	$.ajax({
+  		 //    		url: '<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/centroides',
+					// cache: false,
+					// dataType: "json",
+  		 //    		success: function(data)
+  		 //    		{
+	  		//     		// console.log(data.centroides);
+					// 	var table = buildObjectArrayTable(data.centroides, false, true);
+					// 	$('#CentersContent').html('');
+					// 	var log = $('<div>');//'<div class="error-log"><ul>';
+					//     log.attr('class', 'error-log');
+					//     var ul = $('<ul>');
+					// 	var li = $('<li>');
+					// 	li.append(table);
+					//     ul.append(li);
+	    //   				log.append(ul);
+					// 	$('#CentersContent').append(log);
+	    //   				audioDone.play();
+					// }
+  		 //    	});
+				// var table = buildObjectArrayTable(data.centroides, false, true);
+				// $('#CentersContent').html('');
+				// 	var log = $('<div>');//'<div class="error-log"><ul>';
+				//     log.attr('class', 'error-log');
+				//     var ul = $('<ul>');
+				// 	var li = $('<li>');
+				// 	li.append(table);
+				//     ul.append(li);
+    //   				log.append(ul);
+				// $('#CentersContent').append(log);
+  		    }
+      		// console.log(files);
 	  //     	$.ajax({
 			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
 			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/fcm",
@@ -254,7 +364,7 @@
 			// 	}
 			// });
       	});
-      	$.ajax({
+      	/*$.ajax({
 			// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
 			url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/results",
 			// type: 'POST',
@@ -262,7 +372,7 @@
 			// data: {"cod_segmento":this.value},
 			success: function (data)
 			{
-				audio.play();
+				// audio.play();
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					var target = $(e.target).attr("href"); // activated tab
 					console.log(target);
@@ -357,21 +467,21 @@
 				// body...
 			}
       	});
-
-      	$.ajax({//used for testings
-      		url: "<?php echo base_url() ?>alm_datamining/test",
-      		type:'POST',
-      		dataType:"json",
-			data: limits,
-      		success: function(data)
-      		{
-      			console.log(limits);
-      			print(data.msg.objects, 'testPrints');
-      			print(data.msg.centroids, 'testPrints', false);
-      			audio.play();
-      	// 		$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
-      		}
-      	});
+		*/
+   //    	$.ajax({//used for testings
+   //    		url: "<?php echo base_url() ?>alm_datamining/test",
+   //    		type:'POST',
+   //    		dataType:"json",
+			// data: limits,
+   //    		success: function(data)
+   //    		{
+   //    			console.log(limits);
+   //    			print(data.msg.objects, 'testPrints');
+   //    			print(data.msg.centroids, 'testPrints', false);
+   //    			// audio.play();
+   //    	// 		$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
+   //    		}
+   //    	});
       	function print(message, where, rewrite=true)
       	{
       		var log = $('<div>');//'<div class="error-log"><ul>';
