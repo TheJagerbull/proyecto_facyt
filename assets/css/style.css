@@ -1512,7 +1512,12 @@ footer .copy{
 /*
 *   Luis Pérez, 29/07/2016
 */
-
+/*Luis Palacios, 15/03/2018*/
+.gritter-custom {
+  left: 1px;
+  top: 60px;
+}
+/*Luis Palacios, 15/03/2018*/
 /* Estilo para el gritter modifica tamaño del texto*/
 .gritter-title {
 	font-size:20px;

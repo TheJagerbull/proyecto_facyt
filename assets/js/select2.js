@@ -1591,7 +1591,7 @@ the specific language governing permissions and limitations under the Apache Lic
             // ensure assistive technology can determine the active choice
             this.search.attr("aria-activedescendant", choice.find(".select2-result-label").attr("id"));
 
-            this.ensureHighlightVisible();
+            // this.ensureHighlightVisible();//edit //BIG STINKY ERROR!!!!!!!!!
 
             this.liveRegion.text(choice.text());
 

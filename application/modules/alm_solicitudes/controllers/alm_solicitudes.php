@@ -805,18 +805,21 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
     	if($this->session->userdata('user'))
 		{
-            if($this->dec_permiso->has_permission('alm', 15))
+            if($this->dec_permiso->has_permission('alm', 14))//el permiso de enviar, aplica para completar
             {
     			if($_POST)
     			{
-                    // die_pre($_POST, __FILE__, __LINE__);
-    				$uri=$_POST['completa']['uri'];
+                    // echo_pre($this->input->post('completa')['falta'], __LINE__, __FILE__);
+                    // die_pre($this->input->post('completa', true), __FILE__, __LINE__);
+                    $uri=$_POST['completa']['uri'];
                     $solicitud=$_POST['completa'];
                     unset($solicitud['uri']);
-                    if($_POST['my-checkbox']!='SI')
+                    // if($_POST['my-checkbox']!='SI')
+                    if($this->input->post('completa')['falta'])
                     {
                         $solicitud['observacion']='En la solicitud faltó los siguientes artículos: '.$solicitud['falta'];
                     }
+                    // die_pre($solicitud, __LINE__, __FILE__);
                     unset($solicitud['falta']);
                     if($this->model_alm_solicitudes->completar_solicitud($solicitud))
                     {
@@ -1662,7 +1665,7 @@ class Alm_solicitudes extends MX_Controller
 							$this->session->set_flashdata('revision', 'error');
 							redirect($uri);
 						}
-    					die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
+    					// die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
     				}
     			}
     		}
@@ -2303,7 +2306,7 @@ class Alm_solicitudes extends MX_Controller
                                                                             $("#completa"+aux).submit();
                                                                         }
 								});
-                                                            $("[name=' . "'".'my-checkbox' . "'".']").bootstrapSwitch();
+                                                            $("[name=\'my-checkbox\']").bootstrapSwitch();
                                                                  
                                                            
 						  	});
@@ -2983,9 +2986,9 @@ class Alm_solicitudes extends MX_Controller
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                <h4 class="modal-title">Número de solicitud '.$refID.'</h4>
                               </div>
-                                              <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'solicitud/completar" method="post"> 
+                              <form class="form" id="completa'.$refID.'" name="completa'.$refID.'" action="'.base_url().'solicitud/completar" method="post"> 
                               <div class="modal-body">                    
                                 <!-- Profile form -->
                                 <div class="table-responsive">
@@ -3019,21 +3022,21 @@ class Alm_solicitudes extends MX_Controller
                                         <label class="control-label col-lg-9" for="recibido">'.ucfirst($recib_user['nombre']).' '.ucfirst($recib_user['apellido']).'</label>    
                                         <div class="col-lg-12"><br></div>
                                         <div align="center"><strong>¿Recibí los artículos de la solicitud?</strong> 
-                                            <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
+                                            <input form="completa'.$refID.'" data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($(\'#check'.$refID.'\'),($(\'#motivo'.$refID.'\')))>
                                         </div>
                                         <div class="col-lg-12" id="motivo'.$refID.'" style="display:none;">
                                                 <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
                                                 <span id="motivo_msg" class="label label-danger"></span>
                                             </div>
-                                    <input hidden name="completa[nr_solicitud]" value="'.$refID.'"/>
-                                    <input hidden name="completa[uri]" value="solicitudes/departamento"/>
+                                    <input hidden form="completa'.$refID.'" name="completa[nr_solicitud]" value="'.$refID.'"/>
+                                    <input hidden form="completa'.$refID.'" name="completa[uri]" value="solicitudes/departamento"/>
                                         <div class="col-lg-12"><br></div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                                            <button id="com'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Guardar</button>
-                                </div>
+                                            <button form="completa'.$refID.'" type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                                            <button id="com'.$refID.'" form="completa'.$refID.'" type="button" class="btn btn-primary">Guardar</button>
                                         </div>
-                                         </form>
+                                        </div>
+                                </form>
                             </div>
                           </div>
                         </div>';
@@ -3174,7 +3177,7 @@ class Alm_solicitudes extends MX_Controller
                                                         <label class="control-label col-lg-9" for="recibido">'.ucfirst($recib_user['nombre']).' '.ucfirst($recib_user['apellido']).'</label>    
                                                         <div class="col-lg-12"><br></div>
                                                         <div align="center"><strong>¿Recibí los artículos de la solicitud?</strong> 
-                                                            <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
+                                                            <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($(\'#check'.$refID.'\'),($(\'#motivo'.$refID.'\')))>
                                                         </div>
                                                         <div class="col-lg-12" id="motivo'.$refID.'" style="display:none;">
                                                                 <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
@@ -3701,6 +3704,7 @@ class Alm_solicitudes extends MX_Controller
                                                                         $auxModales.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
                                                                     break;
                                                                     case 'aprobado':
+                                                                        $record['fecha_ej'] = $record['TIME'];
                                                                         $auxModales.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
                                                                     break;
                                                                     case 'enviado':
@@ -3904,4 +3908,5 @@ class Alm_solicitudes extends MX_Controller
     	$this->load->view('template/footer');
 
     }
+
 }

@@ -7,9 +7,9 @@ class Model_dec_permiso extends CI_Model
 	{
 		parent::__construct();
 	}
-     var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
-   //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
-    function get_list()
+    var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
+   //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable
+    function get_list($dominio)
     {
         ////para busqueda de usuarios de acuerdo a permisos asignados
         //Por: Luigi Palacios
@@ -27,7 +27,7 @@ class Model_dec_permiso extends CI_Model
                 }
                 array_push($permits[$item[0]], $item[1]);
             }
-            $users_id = $this->usersXpermission($permits);
+            $users_id = $this->usersXpermission($permits, $dominio);
         }
         ////Fin de preparacion de los datos para busqueda
 
@@ -188,14 +188,22 @@ class Model_dec_permiso extends CI_Model
         return $output;// Para retornar los datos al controlador
     }
 
-    public function get_permission($usuario='')
+    public function get_permission($usuario='', $bool=false)
     {
         if(empty($usuario))
         {
             $usuario = $this->session->userdata('user')['id_usuario'];
         }
         $this->db->select('nivel');
-        $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array();
+        if(!$bool)
+        {
+            $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array();
+        }
+        else
+        {
+            $query = $this->db->get('dec_permiso')->row_array();
+        }
+
         if(isset($query['nivel']))
         {
             return($query['nivel']);
@@ -205,6 +213,22 @@ class Model_dec_permiso extends CI_Model
             return(0);
         }
 
+    }
+    public function edit_dec_permiso($original='', $nuevo='')
+    {
+        if($this->session->userdata('user')['id_usuario']=='18781981')
+        {
+            $this->db->where($original);
+            $this->db->update('dec_permiso',$nuevo);
+            return($this->db->affected_rows());
+        }
+    }
+    public function get_dec_permiso()
+    {
+        if($this->session->userdata('user')['id_usuario']=='18781981')
+        {
+            return $this->db->get('dec_permiso')->result_array();
+        }
     }
     public function set_permission($usuario)
     {
@@ -236,91 +260,100 @@ class Model_dec_permiso extends CI_Model
         return ($this->db->get('dec_permiso')->result_array());
     }
 //////extra security by Luigi Palacios.
-    public function cript($string)//encripta el string de permisos
+    public function crypt($string, $chunk='')//encripta el string de permisos
     {
-        echo"before: <br>";
-        echo_pre($string, __LINE__, __FILE__);
-        // $Block = (strlen($string)/18);
-        // echo "blocksize= ".$Block."<br>";
+        if(!isset($chunk)|| empty($chunk) || $chunk == '')
+        {
+            // $chunk = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
+            $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+        }
+        
+        if(is_array($chunk))
+        {
+            $dom = count($chunk);
+        }
+        else
+        {
+            $dom=strlen($chunk);
+        }
         $j=0;
         $octadec='';
-        // for ($i=(strlen($string)); $i >= 0; $i--)
-        for ($i=1; $i < (strlen($string)); $i++)
+        for ($i=0; $i < (strlen($string)); $i++)
         {
-            // echo $aux.'<br>';
-            // echo substr($string, $i, 18).'<br>';
-            // echo bindec(substr($string, $aux, 8)).'<br>';
-
-            $dec = bindec(substr($string, $i, 18));
-            // $octadec.= $this->dec2octaDec($dec);
-            $octadec.= $this->dec2octaDec($dec).'L';
+            $dec = bindec(substr($string, $i, $dom));
+            $octadec.= $this->dec2Chunk($dec, $chunk).'I';
             $j++;
-            $i+=17;
+            $i+=$dom-1;
         }
         $octadec = substr($octadec, 0, strlen($octadec)-1);
-        echo "<br>after: <br>";
-        print_r($octadec);
-        echo "<br>";
         return($octadec);
-        // $this->translate($octadec);
-        // die_pre($string, __LINE__, __FILE__);
     }
-    public function translate($string)//desencripta el string de permisos
+    public function translate($string, $chunk='')//desencripta el string de permisos
     {
-        echo"before: <br>";
-        echo_pre($string, __LINE__, __FILE__);
+        if(!isset($chunk)|| empty($chunk) || $chunk == '')
+        {
+            // $chunk = array('0', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'j', 'J', 'k');//Domino de "CHUNK", chunk sera el "abecedario" del encriptado
+            $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+        }
+        
+        if(is_array($chunk))
+        {
+            $dom = count($chunk);
+        }
+        else
+        {
+            $dom=strlen($chunk);
+        }
 
-        $array = preg_split("/['L']+/", $string);
-        $translation = '0';
+        $array = preg_split("/['I']+/", $string);
+        $translation = '';
         foreach ($array as $key => $value)
         {
             if($value != '0')
             {
-                $dec = $this->octaDec2dec($value);
+                $dec = $this->chunk2Dec($value, $chunk);
                 // $translation.= decbin($dec);
-                $translation.= str_pad(decbin($dec), 18, '0', STR_PAD_LEFT);
+                $translation.= str_pad(decbin($dec), $dom, '0', STR_PAD_LEFT);
             }
             else
             {
-                $translation.= '000000000000000000';
+                // $translation.= '000000000000000000';
+                $translation.= str_pad('', $dom, '0', STR_PAD_LEFT);;
             }
         }
-        $translation = substr($translation, 0, strlen($translation)-1);
-        echo "<br>after: <br>";
-        // echo "<br>".strlen($translation)."<br>";
-        print_r($translation);
+        $translation = substr($translation, 0, strlen($translation));
         return($translation);
-        // die_pre($array);
     }
-    public function dec2octaDec($int)
+    public function dec2Chunk($int, $dominio='')//el valor pasa de binario a decimal y luego a octadecimal
     {
         ////para octadec
-        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro 5dominio para el arreglo
         // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
+        $dom = count($dominio);
         $indice = $int;
         $octadec = '';
-        // echo "dec= ".$indice.'<br>';
-        if($int > 17)
+        if($int > $dom-1)
         {
             while ($indice>1)
             {
-                $aux = $indice%18;
+                $aux = $indice%$dom;
                 $octadec .=$dominio[$aux];
-                $indice/=18;
+                $indice/=$dom;
             }
         }
         else
         {
-            $aux = $indice%18;
+            $aux = $indice%$dom;
             $octadec = $dominio[$aux];
         }
         return (strrev($octadec));
         //fin de octadec
     }
-    public function octaDec2dec($OcD)
+    public function chunk2Dec($OcD, $dominio='')//el valor pasa de octadecimal a decimal y luego a binario
     {
+        //decimal
         // echo 'Begining:<br>  '.$OcD.'<br>';
-        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro 5dominio para el arreglo
         // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
         $dom = count($dominio);
         $n = strlen($OcD);
@@ -328,20 +361,17 @@ class Model_dec_permiso extends CI_Model
         $sum = 0;
         while($n > 0)
         {
-            // echo (array_search($OcD[$n-1], $dominio)).'<br>';
             $aux = (array_search($OcD[$n-1], $dominio));
             $sum+= $aux * pow($dom, $i);
             $OcD = substr($OcD, 0, $n-1);
-            // echo $OcD.'<br>';
             $n--;
             $i++;
         }
         return($sum);
-        // die_pre($sum, __LINE__, __FILE__);
-
+        //fin de decimal
     }
 /////FIN de extra security by Luigi Palacios.
-    public function usersXpermission($array='')//acepta ...usersXpermission(array[MODULO][FUNCION])
+    public function usersXpermission($array='', $dominio)//acepta ...usersXpermission(array[MODULO][FUNCION])
     {
         if(isset($array) && !empty($array))
         {
@@ -358,14 +388,14 @@ class Model_dec_permiso extends CI_Model
                 {
                     for ($i=0; $i < sizeof($function); $i++)//recorre cada funcion del modulo de los permisos que pregunto
                     {
-                        if($this->check_permit($value['nivel'], $module, $function[$i])=='flagged')//no tiene ninung permiso en ese modulo
+                        if($this->check_permit($this->translate($value['nivel'],$dominio), $module, $function[$i])=='flagged')//no tiene ninung permiso en ese modulo
                         {
                             $flag *= 0;//falso
                             continue;//paso al siguiente modulo del listado de permisos (reduce tiempo de ejecucion al recorrer los arreglos)
                         }
                         else
                         {
-                            $flag*=$this->check_permit($value['nivel'], $module, $function[$i]);
+                            $flag*=$this->check_permit($this->translate($value['nivel'],$dominio), $module, $function[$i]);
                         }
                     }
                 }
@@ -390,6 +420,16 @@ class Model_dec_permiso extends CI_Model
             switch ($module)//pueden haber un maximo de 18 modulos a verificar por permisologia
             {
                 case 'air':
+                    if($mat[0]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18);//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'alm':
                     if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 1;//localizo la casilla del permiso correspondiente
@@ -399,7 +439,7 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'alm':
+                case 'mnt':
                     if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 2;//localizo la casilla del permiso correspondiente
@@ -409,7 +449,7 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'mnt':
+                case 'usr':
                     if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 3;//localizo la casilla del permiso correspondiente
@@ -419,20 +459,10 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'usr':
-                    if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($function * 18) + 4;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 'flagged';
-                    }
-                break;
                 case 'mnt2':
-                if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                 {
-                    $permiso = ($function * 18) + 5;//localizo la casilla del permiso correspondiente
+                    $permiso = ($function * 18) + 4;//localizo la casilla del permiso correspondiente
                 }
                 else
                     {
@@ -440,6 +470,16 @@ class Model_dec_permiso extends CI_Model
                     }
                 break;
                 case 'rhh':
+                    if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 5;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'tic':
                     if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 6;//localizo la casilla del permiso correspondiente
@@ -449,7 +489,7 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'tic':
+                case 'tic2':
                     if($mat[7]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 7;//localizo la casilla del permiso correspondiente
@@ -459,20 +499,10 @@ class Model_dec_permiso extends CI_Model
                         return 'flagged';
                     }
                 break;
-                case 'tic2':
+                case 'alm2':
                     if($mat[8]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($function * 18) + 8;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 'flagged';
-                    }
-                break;
-                case 'alm2':
-                    if($mat[9]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($function * 18) + 9;//localizo la casilla del permiso correspondiente
                     }
                     else
                     {

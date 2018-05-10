@@ -1,3 +1,8 @@
+<?php 
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+header("Pragma: no-cache"); // HTTP 1.0.
+header("Expires: 0"); // Proxies.
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +19,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
 		
+		<!-- Styles -->
 		<?php if(isset($link)&&!empty($link)):
 			print_r($link);?>
 		<?php else:?>
-		<!-- Styles -->
 		<!-- Select2 CSS -->
 		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
 		<!-- Bootstrap selectpicker -->
@@ -96,6 +101,29 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
+						<?php if($this->session->userdata('user')['sys_rol']=='autoridad'):?>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle negritas" data-toggle="dropdown"><img src="<?php echo base_url() ?>assets/img/Authority1.png" class="img-rounded" alt="bordes redondeados" width="25" height="23">  Funciones de Autoridad <!-- <span id="CMD" class="label label-default"> </span> --> <b class="caret"></b></a>
+							<!-- Big dropdown menu -->
+							<ul class="dropdown-menu dropdown-big animated fadeInUp">
+								<!-- Dropdown menu header -->
+								<div class="dropdown-head">
+									<span class="dropdown-title">Opciones Disponibles</span>
+								</div>
+								<!-- Dropdown menu body -->
+								<div class="dropdown-body">
+									<div id="AuthOptions" class="alert alert-info well-xs" style="margin-bottom: 0px !important;">
+									<li><a id="AuthOptionsHC" href="<?php echo $this->uri->uri_string(); ?>">
+									<i class="glyphicon glyphicon-certificate"></i> Habilitar cierre de inventario</a></li>
+									</div>
+								</div>
+								<!-- Dropdown menu footer -->
+								<div class="dropdown-foot text-center">
+									
+								</div>
+							</ul>
+						</li>
+						<?php endif;?>
 						<?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle negritas" data-toggle="dropdown"><img src="<?php echo base_url() ?>assets/img/alm/solicitud_actual4.png" class="img-rounded" alt="bordes redondeados" width="25" height="23">  Solicitud actual <?php $i=0; if(!empty($aux)){ $i=count($this->session->userdata('articulos'));} if($i!=0) {?><span id="cart_nr" class="label label-success negritas"><?php } else {?><span id="cart_nr" class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
@@ -154,8 +182,15 @@
 								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134' || $this->session->userdata('user')['id_usuario'] == '19919468'):?>
 									<li><a href="<?php echo base_url() ?>migrarDB">
 									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
-									<li><a href="<?php echo base_url() ?>alterDB">
+									<li><a href="<?php echo base_url() ?>alterDB/17-10-2016">
 									<i class="glyphicon glyphicon-console"></i> Alteraci&oacute;n de BD[alm_articulo.cod_artnuevo] - 17-10-2016</a></li>
+									<li><a href="<?php echo base_url() ?>alterDB/22-03-2017">
+										<i class="glyphicon glyphicon-console"></i> Creacion de Tabla[alm_reporte]<br>
+										<i class="glyphicon glyphicon-console"></i> Creacion de Tabla[alm_cierre]<br>
+										<i class="glyphicon glyphicon-console"></i> Ajustes a Tabla[alm_categoria]<br>
+										<i class="glyphicon glyphicon-console"></i> Corrección atributo[alm_pertenece.cod_categoria]<br>
+										<i class="glyphicon glyphicon-console"></i> Ajuste de tamaño para [*.cod_articulo][*.id_articulo][*.id_historial_a] - 22-03-2017</a>
+										</li>
 								<?php endif;?>
 							</ul>
 								</li>

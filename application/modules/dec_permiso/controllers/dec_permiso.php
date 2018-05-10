@@ -10,18 +10,180 @@ Class Dec_permiso extends MX_Controller{
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('model_dec_permiso', 'model_permisos');
     }
+    private $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+    private function modules()//retorna la cantidad de modulos embebidos en el string de permisos
+    {
+        $permit = $this->deCrypt($this->model_permisos->get_permission('', true));
+        if($permit)
+        {
+            // $this->showMatrix($permit);
+            $aux = strlen($permit);
+            $modules = $aux/18;
+        }
+        else
+        {
+            $modules = 1;
+        }
+        return($modules);
+    }
+    private function initString()//inicia el string para asignar permisos, a partir de la cantidad de modulos definidos en la permisologia
+    {
+        $string='';
+        $mods=$this->modules();
+        for ($i=0; $i < ($mods*18); $i++)
+        {
+            if($i>=0 && $i<$mods)
+            {
+                $string.='1';
+            }
+            else
+            {
+                $string.='0';
+            }
+        }
+        // $this->showMatrix($string);
+        // die_pre($string);
+        return($string);
+    }
+    private function addModuleMatrix($original, $modules='')//funcion para agregar un modulo de permisos a la estructura
+    {
+        $newM = '';
+        // echo strlen($original)/18;
+        if(!isset($modules) || $modules==0)
+        {
+            $modules=1;
+        }
+        $tope = strlen($original)/18;
+        $j=0;
+        for ($i=0; $i < strlen($original); $i++)
+        {
+            $newM.=$original[$i];
+            $j++;
+            if($j==$tope)
+            {
+                if($i==$tope-1)
+                {
+                    // $newM.= '1';
+                    $newM.= str_repeat("1",$modules);
+                }
+                else
+                {
+                    // $newM.= '0';
+                    $newM.= str_repeat("0",$modules);
+                }
+                $j=0;
 
-    
+            }
+        }
+        return($newM);
+    }
+    private function Crypt($original='')//para encriptar
+    {
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        return($this->model_permisos->crypt($original, $this->dominio));
+    }
+    private function deCrypt($crypted)//para desencriptar
+    {
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        return($this->model_permisos->translate($crypted, $this->dominio));
+    }
+    private function showMatrix($string)//para mostrar la matriz
+    {
+        echo '<br>';
+        echo 'length: '.strlen($string).'<br>';
+        $m = strlen($string)/18;
+        echo 'modules: '.$m.'<br><br>';
+        $j=0;
+        for ($i=0; $i < strlen($string); $i++)
+        {
+            echo $string[$i];
+            $j++;
+            if($j==$m)
+            {
+                echo "<br>";
+                $j=0;
+            }
+        }
+        echo "<br><br>";
+    }
+
+    private function update_permits($int='', $how='')//para actualizar los permisos que ya fueron asignados en el sistema
+    {
+        $permit = $this->model_permisos->get_permission('', true);
+        if(strlen($permit)<324)
+        {
+            $this->session->set_flashdata('set_permission','success');
+            redirect('usuarios/permisos');
+        }
+        else
+        {
+            if($this->session->userdata('user')['id_usuario']=='18781981')
+            {
+                if(isset($int) && !empty($int) && $int!=0)//define el punto fijo de modulos en uso, a conciencia del programador del sistema
+                {
+
+                }
+                else
+                {
+                    if($how=='Adjust&Crypt')
+                    {
+                        $flag = 1;
+                        $users = $this->model_permisos->get_dec_permiso();
+                        foreach ($users as $key => $value)
+                        {
+                            $original = $value['nivel'];
+                            $new = '';
+                            for ($i=0; $i < strlen($original); $i++)//me salto las primeras $max_mod casillas del string
+                            {
+                                if(isset($original[$i+1]))
+                                {
+                                    $new .= $original[$i+1];
+                                }
+                                else
+                                {
+                                    $new.='0';
+                                }
+                            }
+                            // $resultante['nivel'] = $new;
+                            $aux = $this->Crypt($new);
+                            $resultante['nivel'] = $aux;
+                            $resultante['TIME'] = $value['TIME'];
+
+                            // $this->showMatrix($original);
+                            // $this->showMatrix($new);
+                            // echo "crypted:<br>".$aux;
+                            // $this->showMatrix($this->deCrypt($aux));
+                            $flag*=$this->model_permisos->edit_dec_permiso($value, $resultante);
+                        }
+                        if($flag)
+                        {
+                            $this->session->set_flashdata('set_permission','success');
+                            redirect('usuarios/permisos');
+                        }
+                        else
+                        {
+
+                            $this->session->set_flashdata('set_permission','error');
+                            redirect('usuarios/permisos');
+                        }
+                    }
+                }
+            }
+        }
+
+    }
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de permisos
-    function list_user() {
-        $results = $this->model_permisos->get_list();//Va al modelo para tomar los datos para llenar el datatable
+    function list_user()//lista usuarios por datatable
+    {
+        $results = $this->model_permisos->get_list($this->dominio);//Va al modelo para tomar los datos para llenar el datatable
         echo json_encode($results); //genera la salida de datos
     }
     
-    public function load_vista() {
+    public function load_vista()
+    {
         if($this->session->userdata('user'))
         {
-            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $header['title'] = 'Asignación de Permisos de Usuarios';
             $this->load->view('template/header', $header);
             $this->load->view('dec_permiso/view_dec_permiso');
             $this->load->view('template/footer');
@@ -34,15 +196,18 @@ Class Dec_permiso extends MX_Controller{
     }
     
     public function has_permission($modulo, $funcion='',$id_user='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
-    {
+    {///IMPORTANTE!!!!!!!!!!!!!!!!
         if($this->session->userdata('user'))
         {
         // $mat = $this->session->userdata('user')['permiso'];
-            if(empty($id_user)):
-                $mat = $this->model_permisos->get_permission();
-            else:
-                $mat = $this->model_permisos->get_permission($id_user);
-            endif;
+            if(empty($id_user))
+            {
+                $mat = $this->deCrypt($this->model_permisos->get_permission());
+            }
+            else
+            {
+                $mat = $this->deCrypt($this->model_permisos->get_permission($id_user));
+            }
         // echo strlen($mat).'</br>';
         // for ($i=0; $i < 324; $i++)
         // {
@@ -59,6 +224,16 @@ Class Dec_permiso extends MX_Controller{
                 switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
                 {
                     case 'air':
+                        if($mat[0]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 0;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'alm':
                         if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
@@ -68,7 +243,7 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
-                    case 'alm':
+                    case 'mnt':
                         if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
@@ -78,7 +253,7 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
-                    case 'mnt':
+                    case 'usr':
                         if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
@@ -88,27 +263,27 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
-                    case 'usr':
+                    case 'mnt2':
                         if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
                         }
-                        else
-                        {
-                            return 0;
-                        }
-                    break;
-                    case 'mnt2':
-                    if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
-                    }
                     else
                         {
                             return 0;
                         }
                     break;
                     case 'rhh':
+                        if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'tic':
                         if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
@@ -118,7 +293,7 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
-                    case 'tic':
+                    case 'tic2':
                         if($mat[7]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 7;//localizo la casilla del permiso correspondiente
@@ -128,20 +303,10 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
-                    case 'tic2':
+                    case 'alm2':
                         if($mat[8]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                         {
                             $permiso = ($funcion * 18) + 8;//localizo la casilla del permiso correspondiente
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    break;
-                    case 'alm2':
-                        if($mat[9]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                        {
-                            $permiso = ($funcion * 18) + 9;//localizo la casilla del permiso correspondiente
                         }
                         else
                         {
@@ -155,7 +320,7 @@ Class Dec_permiso extends MX_Controller{
                 // die_pre($mat[$permiso], __LINE__, __FILE__);
                 return($mat[$permiso]);//retorno el valor del permiso que se consulta
             }
-        }    
+        }
         else
         {
             $header['title'] = 'Error de Acceso';
@@ -163,16 +328,17 @@ Class Dec_permiso extends MX_Controller{
         }
     }
     public function asignar_permiso()//COMPLETADO
-    {
-     // die_pre($_POST, __LINE__, __FILE__);
+    {///IMPORTANTE!!!!!!!!!!!!!!!!
+     // die_pre($_POST, __LINE__, __FILE__);luigi 010101111111111111101010000000000000001010000000000000001000000000000000001010000000000000001010000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000001000000000000000
         if($this->session->userdata('user'))
         {
             if($_POST['id_usuario'])
             {
-    //             die_pre($_POST, __LINE__, __FILE__);
+                // die_pre($_POST, __LINE__, __FILE__);
                 $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
                 unset($_POST['id_usuario']);
-                $string = '011111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+                // $string = '011111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+                $string = $this->initString();
                 // echo strlen($string).'</br>';
                 foreach ($_POST as $key => $value)
                 {
@@ -180,6 +346,15 @@ Class Dec_permiso extends MX_Controller{
                     switch ($key)
                     {
                         case 'air':
+                            $string[0] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18);
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'alm':
                             $string[1] = 0;
                             foreach ($value as $i => $perm)
                             {
@@ -188,7 +363,7 @@ Class Dec_permiso extends MX_Controller{
                                 $string[$permiso]='1';
                             }
                         break;
-                        case 'alm':
+                        case 'mnt':
                             $string[2] = 0;
                             foreach ($value as $i => $perm)
                             {
@@ -197,76 +372,69 @@ Class Dec_permiso extends MX_Controller{
                                 $string[$permiso]='1';
                             }
                         break;
-                        case 'mnt':
+                        case 'usr':
                             $string[3] = 0;
                             foreach ($value as $i => $perm)
                             {
                                 // echo $i."</br>";
-                                $permiso = ($i*18)+3;
-                                $string[$permiso]='1';
-                            }
-                        break;
-                        case 'usr':
-                            $string[4] = 0;
-                            foreach ($value as $i => $perm)
-                            {
-                                // echo $i."</br>";
-                                $permiso = ($i*18)+4;////        $permiso -4 = $i*8      ($permiso - 4)/18)
+                                $permiso = ($i*18)+3;////        $permiso -3 = $i*8      ($permiso - 4)/18)
                                 $string[$permiso]='1';
                             }
                         break;
                         case 'mnt2':
-                            $string[5] = 0;
+                            $string[4] = 0;
                             foreach ($value as $i => $perm)
                             {
                                 // echo $i."</br>";
+                                $permiso = ($i*18)+4;
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'rhh':
+                            $string[5] = 0;
+                            foreach ($value as $i => $perm)
+                            {
                                 $permiso = ($i*18)+5;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'rhh':
-                        $string[6] = 0;
-                        foreach ($value as $i => $perm)
-                        {
-                            $permiso = ($i*18)+6;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'tic':
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'tic':
+                            $string[6] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+6;
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'tic2':
                             $string[7] = 0;
                             foreach ($value as $i => $perm)
                             {
                                 // echo $i."</br>";
                                 $permiso = ($i*18)+7;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'tic2':
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'alm2':
                             $string[8] = 0;
                             foreach ($value as $i => $perm)
                             {
                                 // echo $i."</br>";
                                 $permiso = ($i*18)+8;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'alm2':
-                            $string[9] = 0;
-                            foreach ($value as $i => $perm)
-                            {
-                                // echo $i."</br>";
-                                $permiso = ($i*18)+9;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    default:
-                        return(0);
-                    break;
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        default:
+                            return(0);
+                        break;
+                    }
                 }
             }
-            
+            // $this->showMatrix($string);
+            // die_pre($string, __LINE__, __FILE__);
             $assign['id_usuario'] = $user;
-            $assign['nivel'] = $string;
+            $assign['nivel'] = $this->Crypt($string);
             if($this->model_permisos->set_permission($assign))
             {
                 $this->session->set_flashdata('set_permission','success');
@@ -277,8 +445,6 @@ Class Dec_permiso extends MX_Controller{
                 $this->session->set_flashdata('set_permission','error');
                 redirect('usuarios/permisos');
             }
-
-            }
         }
         else
         {
@@ -288,59 +454,61 @@ Class Dec_permiso extends MX_Controller{
     }
 
     public function parse_permission($id_usuario='', $modulo='')//3 formas distintas de usar, explicado mas abajo
-    {
+    {///IMPORTANTE!!!!!!!!!!!!!!!!
         if(empty($id_usuario))
         {
             $id_usuario = $this->session->userdata('user')['id_usuario'];
         }
-        $mat = $this->model_permisos->get_permission($id_usuario);
-        $max_mod = 18;//numero maximo de modulos en el sistema
+        $mat = $this->deCrypt($this->model_permisos->get_permission($id_usuario));
+        // $mat = '101011111111111111010100000000000000010100000000000000010000000000000000010100000000000000010100000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000010000000000000000';
+        // $max_mod = 18;//numero maximo de modulos en el sistema
+        $max_mod = $this->modules();//numero maximo de modulos en el sistema
         $strlength = strlen($mat);//tamano total del string del permiso
         /////alm[1]
         for ($i=$max_mod; $i < $strlength; $i++)//me salto las primeras $max_mod casillas del string
         {
             if($mat[$i]== 1)
             {
-                if(is_int((($i-1)/$max_mod)))//modulo de aires
+                if(is_int((($i)/$max_mod)))//modulo de aires
                 {
-                    $parse['air'][((($i-1)/$max_mod))]= 1;
+                    $parse['air'][((($i)/$max_mod))]= 1;
                 }
-                if(is_int((($i-2)/$max_mod)))//modulo de almacen
+                if(is_int((($i-1)/$max_mod)))//modulo de almacen
                 {
-                    $parse['alm'][((($i-2)/$max_mod))]= 1;
+                    $parse['alm'][((($i-1)/$max_mod))]= 1;
                 }
-                if(is_int((($i-3)/$max_mod)))//modulo de mantenimiento
+                if(is_int((($i-2)/$max_mod)))//modulo de mantenimiento
                 {
-                    $parse['mnt'][((($i-3)/$max_mod))]= 1;
+                    $parse['mnt'][((($i-2)/$max_mod))]= 1;
                 }
-                if(is_int((($i-4)/$max_mod)))//modulo de usuario
+                if(is_int((($i-3)/$max_mod)))//modulo de usuario
                 {
-                    $parse['usr'][((($i-4)/$max_mod))]= 1;
+                    $parse['usr'][((($i-3)/$max_mod))]= 1;
                 }
-                if(is_int((($i-5)/$max_mod)))//modulo de mantenimiento continuacion
+                if(is_int((($i-4)/$max_mod)))//modulo de mantenimiento continuacion
                 {
-                    $parse['mnt2'][((($i-5)/$max_mod))]= 1;
+                    $parse['mnt2'][((($i-4)/$max_mod))]= 1;
                 }
-                if(is_int((($i-6)/$max_mod)))//modulo de recursos humanos
+                if(is_int((($i-5)/$max_mod)))//modulo de recursos humanos
                 {
-                    $parse['rhh'][((($i-6)/$max_mod))]= 1;
+                    $parse['rhh'][((($i-5)/$max_mod))]= 1;
                 }
-                if(is_int((($i-7)/$max_mod)))//modulo tic
+                if(is_int((($i-6)/$max_mod)))//modulo tic
                 {
-                    $parse['tic'][((($i-7)/$max_mod))]= 1;
+                    $parse['tic'][((($i-6)/$max_mod))]= 1;
                 }
-                if(is_int((($i-8)/$max_mod)))//modulo tic2
+                if(is_int((($i-7)/$max_mod)))//modulo tic2
+                {
+                    $parse['tic2'][((($i-7)/$max_mod))]= 1;
+                }
+                if(is_int((($i-8)/$max_mod)))//modulo alm2
                 {
                     $parse['tic2'][((($i-8)/$max_mod))]= 1;
-                }
-                if(is_int((($i-9)/$max_mod)))//modulo alm2
-                {
-                    $parse['tic2'][((($i-9)/$max_mod))]= 1;
                 }
                 // echo (($i-2)/18).'</br>';
             }
         }
-        // echo_pre($parse, __LINE__, __FILE__);
+        // die_pre($parse, __LINE__, __FILE__);
         if(isset($parse))
         {
             if(empty($modulo))
@@ -356,7 +524,7 @@ Class Dec_permiso extends MX_Controller{
     }
     
     public function load_permissionsView()
-    {
+    {///IMPORTANTE!!!!!!!!!!!!!!!!
         $aux = $this->parse_permission($this->session->userdata('user')['id_usuario']);//retorna los permisos de los modulos solicitados
         //die_pre($this->parse_permission($this->session->userdata('user')['id_usuario']));
         // echo_pre($aux, __LINE__, __FILE__);
@@ -432,7 +600,6 @@ Class Dec_permiso extends MX_Controller{
             return($view);
         }
     }
-
     public function asignar($id='')
     {
         if($this->session->userdata('user'))
@@ -446,9 +613,9 @@ Class Dec_permiso extends MX_Controller{
             $view['id'] = $id;
             $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
             $header = $this->load_permissionsView();
-            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $header['title'] = 'Asignación de Permisos de Usuarios';
             $this->load->view('template/header', $header);
-            $this->load->view('dec_permiso/asignar_permisos',$view);
+            $this->load->view('dec_permiso/asignar_permisos',$view);///IMPORTANTE!!!!!!!!!!!!!!!!
             $this->load->view('template/footer');
         }
         else
@@ -457,7 +624,7 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
-    public function listUserByPermission($modulo='', $funcion='')
+    public function UserByPermission($modulo='', $funcion='')//dado un permiso, muestra a los usuarios que lo poseen
     {
         if($this->session->userdata('user'))
         {
@@ -472,6 +639,66 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
+    public function testCrypt($original='')
+    {
+        // die_pre($this->dominio);
+        // $this->initString();
+        if(!isset($original) || $original=='')
+        {
+            // $original = $this->model_permisos->get_permission('10131920');
+            $original = $this->deCrypt($this->model_permisos->get_permission());
+            // $original = str_repeat("1", 558);
+        }
+        // $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        $crypt = $this->Crypt($original);
+        $decrypt = $this->deCrypt($crypt);
+        if(strcmp($original, $decrypt)==0)
+        {
+            echo "<br>crypt length: ".strlen($crypt);
+            echo '<br>crypt: '.$crypt;
+        }
+        // echo '<br>original: '.$original;
+        // echo '<br>decrypt:  '.$decrypt;
+        $this->showMatrix($original);
+        // $this->showMatrix($decrypt);
+    }
+    public function test()//para agrandar la tabla de permisos a 30 columnas(modulos), en lugar de 18
+    {
+        // Adjust&Crypt
+        $this->update_permits('', 'Adjust&Crypt');
+
+        //matriz 18x18 = 324, ahora 31x18 = 558
+        // $original = $this->model_permisos->get_permission('10131920');
+        // $users = $this->model_permisos->get_dec_permiso();
+        // foreach ($users as $key => $value)
+        // {
+        //     $original = $value['nivel'];
+        //     $new = '';
+        //     for ($i=0; $i < strlen($original); $i++)//me salto las primeras $max_mod casillas del string
+        //     {
+        //         if(isset($original[$i+1]))
+        //         {
+        //             $new .= $original[$i+1];
+        //         }
+        //         else
+        //         {
+        //             $new.='0';
+        //         }
+        //     }
+        //     // $resultante['nivel'] = $new;
+        //     $aux = $this->Crypt($new);
+        //     $resultante['nivel'] = $aux;
+        //     $resultante['TIME'] = $value['TIME'];
+
+        //     // $this->showMatrix($original);
+        //     // $this->showMatrix($new);
+        //     // echo "crypted:<br>".$aux;
+        //     // $this->showMatrix($this->deCrypt($aux));
+        //     $this->model_permisos->edit_dec_permiso($value, $resultante);
+        // }
+        // $newM =$this->addModuleMatrix($original, 13);
+
+    }
 }
 //Design By Luigi:
     ////////////////////////Instrucciones///////////////////////////////
@@ -483,25 +710,25 @@ Class Dec_permiso extends MX_Controller{
     // cada fila es una funcionalidad del modulo, e indica 1 si tiene permiso, y 0 si no.
     ////////////////////FIN DE Instrucciones////////////////////////////
     //////////////////////Permisos//////////////////////////////////////////////////
-    //mod//Air Alm Mnt Usr Mnt2 Rhh ___ ___ Alm ___ ___ ___ ___ ___ ___ ___ per//
-    //0  // 1   0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 //
-    //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20:[1] ver catalogo                  alm27: reportar art    mnt21: ver solicitudes de dependencia
-    //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38:[2] ver solicitud                 alm45:                 mnt39: ver solicitudes de todas las dependencias
-    //55 // 0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm56:[3] ver solicitud de departamento                        mnt57: ver solicitudes de todos los estatus
-    //73 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm74:[4] ver historial/reportes                               mnt75: ver solicitudes en proceso
-    //91 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm92:[5] ver inventario                                       mnt93: ver solicitudes cerradas/anuladas
-    //109// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm110:[6] agregar inventario                                  mnt111: ver personal asignado
-    //127// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm128:[7] agregar por archivo                                 mnt129: ver detalle de solicitud de dependencia
-    //145// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm146:[8] generar cierre                                      mnt147: ver detalle de solicitud adm
-    //163// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm164:[9] editar articulo                                     mnt165: agregar cuadrilla
-    //181// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm182:[10] editar solicitud                                    mnt183: agregar ubicacion
-    //199// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm200:[11] aprobar solicitud                                   mnt201: crear solicitud de dependencia
-    //217// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm218:[12] despachar solicitud                                 mnt219: crear solicitud adm
-    //235// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm236:[13] generar solicitud                                   mnt237: editar solicitudes abiertas
-    //253// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm254:[14] enviar solicitud                                    mnt255: cambiar estatus de solicitudes
-    //271// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm272:[15] anular solicitud                                    mnt273: asignar personal
-    //289// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm290:[16] cancelar solicitud                                  mnt291: editar cuadrilla
-    //307// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm308:[17] retirar solicitud                                   mnt309: eliminar miembros de cuadrilla
+    //mod//    Air Alm Mnt Usr Mnt2 Rhh Tic Tic Alm ___ ___ ___ ___ ___ ___ ___ ___  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___//
+    //0  // 0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   0    1   1   1   1   1   1   1   1   1   1   1   1   1   1  //
+    //19 //     0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm20:[1] ver catalogo                  alm27: reportar art    mnt21: ver solicitudes de dependencia
+    //37 //     0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm38:[2] ver solicitud                 alm45:                 mnt39: ver solicitudes de todas las dependencias
+    //55 //     0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm56:[3] ver solicitud de departamento                        mnt57: ver solicitudes de todos los estatus
+    //73 //     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm74:[4] ver historial/reportes                               mnt75: ver solicitudes en proceso
+    //91 //     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm92:[5] ver inventario                                       mnt93: ver solicitudes cerradas/anuladas
+    //109//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm110:[6] agregar inventario                                  mnt111: ver personal asignado
+    //127//     0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm128:[7] agregar por archivo                                 mnt129: ver detalle de solicitud de dependencia
+    //145//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm146:[8] generar cierre                                      mnt147: ver detalle de solicitud adm
+    //163//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm164:[9] editar articulo                                     mnt165: agregar cuadrilla
+    //181//     0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm182:[10] editar solicitud                                    mnt183: agregar ubicacion
+    //199//     0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm200:[11] aprobar solicitud                                   mnt201: crear solicitud de dependencia
+    //217//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm218:[12] despachar solicitud                                 mnt219: crear solicitud adm
+    //235//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm236:[13] generar solicitud                                   mnt237: editar solicitudes abiertas
+    //253//     0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm254:[14] enviar solicitud                                    mnt255: cambiar estatus de solicitudes
+    //271//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm272:[15] anular solicitud                                    mnt273: asignar personal
+    //289//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm290:[16] cancelar solicitud                                  mnt291: editar cuadrilla
+    //307//     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0    0   0   0   0   0   0   0   0   0   0   0   0   0   0  //alm308:[17] retirar solicitud                                   mnt309: eliminar miembros de cuadrilla
     ///////////////////FIN DE Permisos//////////////////////////////////////////////
 
 /////Instrucciones para usar parse_permission($id_usuario='', $modulo='')

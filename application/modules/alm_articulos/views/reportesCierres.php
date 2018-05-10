@@ -48,6 +48,11 @@
 	}
 
 	$(document).ready(function() {
+		$("#actDeIni").select2({
+		    placeholder: "Seleccione un archivo",
+		    allowClear: true
+		});
+
 		if($("#actDeIni").val()!== '')
 		{
 			// console.log($("#actDeIni").val());

@@ -17,7 +17,7 @@
                     "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
                     "aoColumnDefs": [{"orderable": false, "targets": [-1]}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
-                        "url": "<?php echo site_url('dec_permiso/dec_permiso/list_user') ?>",
+                        "url": "<?php echo site_url('permisos/listar') ?>",
                         "type": "GET",
                         "data": function(d)
                         {
@@ -123,7 +123,7 @@
             permitUI +='                                    <tr class="active">';
             permitUI +='                                        <th valign="middle"><div align="center">Artículo</div></th>';
             permitUI +='                                        <th valign="middle"><div align="center">Solicitud</div></th>';
-            permitUI +='                                        <th valign="middle"><div align="center">Inventario por archivo</div></th>';
+            permitUI +='                                        <th valign="middle"><div align="center">Reporte de existencia</div></th>';
             permitUI +='                                        <th valign="middle"><div align="center">Cierre Inventario</div></th>';
             permitUI +='                                    </tr>';
             permitUI +='                                </thead>';
