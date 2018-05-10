@@ -249,7 +249,7 @@ class Model_tic_ayudante extends CI_Model
         
         $table = 'tic_ayudante_orden';
         $sJoin = "INNER JOIN tic_orden_trabajo ON tic_ayudante_orden.id_orden_trabajo=tic_orden_trabajo.id_orden "
-                . "INNER JOIN mnt_estatus ON tic_orden_trabajo.estatus=tic_estatus.id_estado "
+                . "INNER JOIN mnt_estatus ON tic_orden_trabajo.estatus=mnt_estatus.id_estado "
                 . "INNER JOIN dec_usuario ON tic_ayudante_orden.id_trabajador=dec_usuario.id_usuario "
                 . "INNER JOIN dec_dependencia ON tic_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
                 . "INNER JOIN tic_tipo_orden ON tic_orden_trabajo.id_tipo=tic_tipo_orden.id_tipo ";

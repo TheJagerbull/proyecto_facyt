@@ -1,4 +1,4 @@
-<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+ <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
 
@@ -131,7 +131,7 @@
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6, 7]}, //para desactivar el ordenamiento en esas columnas
-                {"className": "dt-center", "targets": [0, 1, 4, 5,6]}],
+                {"className": "dt-center", "targets": [0, 1, 4, 5,6,7]}],
             "ajax": $.fn.dataTable.pipeline({
                 "url": "<?php echo base_url() ?>tic_solicitudes/solicitudes",
                 "type": "GET",
@@ -237,6 +237,17 @@ if ($asig_per) {
 </script>
 <!-- Page content -->
 <style type="text/css">
+    .lb-sm {
+        font-size: 12px;
+    }
+
+    .lb-md {
+        font-size: 16px;
+    }
+
+    .lb-lg {
+        font-size: 20px;
+    }
     th.dt-center, td.dt-center { text-align: center; }
 
     .fancy-checkbox input[type="checkbox"],
@@ -295,7 +306,12 @@ if ($asig_per) {
 
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
+        <h2 align="right">
+            <!--<i class="fa fa-desktop color"></i>-->
+            <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+            Consulta de solicitud 
+            <small>Seleccione para ver detalles </small>
+        </h2>
         <hr />
     </div>
 
@@ -319,7 +335,7 @@ if ($asig_per) {
                             <?php if ($close || $ver_asig) { ?> 
                                 <a href="<?php echo base_url() ?>tic_solicitudes/cerrada" class="btn btn-default" title="Ver solicitudes cerradas">Cerradas</a>
                             <?php } ?>
-                            <?php if ($anuladas || $ver_asig) { ?> 
+                            <?php if ($anuladas) { ?> 
                                 <a href="<?php echo base_url() ?>tic_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
                             <?php } ?>
                             <?php if ($reportes) { ?>     
@@ -386,7 +402,7 @@ if ($asig_per) {
 
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <table id="solicitudes" class="table table-hover table-bordered table-condensed dt-responsive nowrap" cellspacing="0" align="center" width="100%">
+                <table id="solicitudes" class="table table-hover table-bordered table-condensed nowrap" cellspacing="0" align="center" width="100%">
                     <thead>
                         <tr>
                             <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
@@ -411,9 +427,9 @@ if ($asig_per) {
             <!--</div>-->
         </div>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cuad">
+<!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cuad">
         Modal Prueba
-    </button>
+    </button>-->
 </div>    
 <div id="cuad" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
     <div class="modal-dialog" role="document">
@@ -640,6 +656,279 @@ if ($asig_per) {
 
 </div>-->
 <script>
+    function mod_cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
+    var id = id_cuadrilla;
+    var solicitud = sol;
+    var uri,uri2,uri3;
+//    console.log(id);
+    var Modal;
+        Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
+                    '<div class="modal-dialog">'+
+                        '<div class="modal-content">'+
+                            '<div class="modal-header">'+
+                                tit+
+                            '</div>'+
+                            '<div class="modal-body">'+
+                                cuer+
+                                "<div class=\'well well-sm\'>"+ 
+                                    "<div class=\'row\'>"+
+                                        "<div class=\'col-md-12 text-center\'>"+
+                                            "<label>Jefe de cuadrilla:<\/label>" + ' '+
+                                            "<label name='respon' id='res" + sol + "'><\/label>"+
+                                        "<\/div>"+
+                                    "<\/div>"+
+                                    "<div class=\'row\'>" +
+                                        "<div class=\'col-md-5\'>" +
+                                            "<label>Responsable de la orden:<\/label>" +
+                                        "<\/div>" +
+                                    "<div class=\'col-md-6\'>" +
+                                        "<div class=\'input-group input-group\'>" +
+                                            "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
+                                                name=\'responsable\' disabled>" +
+                                            "<\/select>";
+                                        if(typeof(close) !== "undefined" && close !== ''){
+                                            Modal = Modal+"<span class=\'input-group-addon\'>" +
+                                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
+                                                    "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
+                                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
+                                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
+                                                "<\/label>" +
+                                            "<\/span>";
+                                        }
+                                    Modal = Modal+"<\/div>" +
+                                    "<\/div>" +
+                                    "<div class=\'col-md-12\'><br\/></div>" +
+                                        "<div class=\'col-md-12\'>" +
+                                            "<div id=\'show_signed" + sol + "\'>" +
+                                                "<!--mostrara la tabla de la cuadrilla asignada-->" +
+                                            "<\/div>";
+//                                      "<br\/>";
+                                        if(typeof(close) !== "undefined" && close !== ''){
+                                            Modal = Modal+"<div class=\'col-md-12\'>" +
+                                                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
+                                                    "<label class=\'checkbox-inline\'>" +
+                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+                                                    "<\/label>" +
+                                                "<\/div>" +
+                                            "<\/div>"+
+                                        "<br\/>";
+                                    }
+                                Modal=Modal+"<\/div>" +
+                            "<\/div>" +
+                            "<\/form>" +
+                        "<\/div>"+
+                        '<div class="modal-footer">'+
+                            foo+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+        $('body').append(Modal);
+        $("#cuad" + sol).modal();
+        $("#cuad" + sol).modal('show');
+        $("#cuad" + sol).on('hidden.bs.modal', function (e) {
+            $(this).remove();
+        });
+    if (band === 1) {
+//        console.log('tic');
+        uri  = base_url + "tic_cuadrilla/responsable";
+        uri2 = base_url + "tic_cuadrilla/seleccionar";
+        uri3 = base_url + "tic_cuadrilla/miembros";
+    }else{
+        uri  = base_url + "mnt_cuadrilla/responsable";
+        uri2 = base_url + "mnt_cuadrilla/seleccionar";
+        uri3 = base_url + "mnt_cuadrilla/miembros";
+    }
+    $.post(uri, {
+        id: id
+    }, function (data) {
+//        $(etiqueta).text(data);
+        $('#res'+sol).text(data);
+    });
+    $.post(uri2, {
+        sol: solicitud,
+        id: id
+    }, function (data) {
+        $('#responsable'+sol).append(data);
+        $('#responsable'+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    });
+    $.post(uri3, {
+        id: id,
+        solicitud: sol
+    }, function (data) {
+        $('#show_signed'+sol).append(data);
+        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+        } );
+        $('#cuad_assigned' + solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
+//            scrollY:        200,
+             scrollCollapse: true,
+             'sDom': 'tp',
+             responsive: true,
+            "bLengthChange": false,
+            "iDisplayLength": 5
+        });
+        $('#ayu_assigned'+ solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
+//            scrollY:        200,
+             scrollCollapse: true,
+             responsive: true,
+            'sDom': 'tp',
+            "bLengthChange": false,
+            "iDisplayLength": 5        
+        });
+        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
+        $('#otro'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+            $('.modal .btn-primary').prop('disabled', !this.checked);
+        });
+        $('#mod_resp'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+          $('.modal .btn-primary').prop('disabled', !this.checked);
+          $('#responsable'+sol).prop('disabled', !this.checked);
+        });
+        $('.modal').on('hidden.bs.modal', function () {
+            $('#responsable'+sol).prop('disabled', 'disabled');
+            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+            $('#show_signed'+sol).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+            $('.modal .btn-primary').prop('disabled', false);
+        });
+
+    });    
+}
+
+function mod_ayudantes(estatus,sol, tit, cuer, foo, band) {
+    var id = sol;
+    var table1;
+    var table;
+    var ayu = 'ayu';
+    var uri,uri2,uri3;
+    var Modal;
+        Modal = '<div id="ayud' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
+                    '<div class="modal-dialog">'+
+                        '<div class="modal-content">'+
+                            '<div class="modal-header">'+
+                                tit+
+                            '</div>'+
+                            '<div class="modal-body">'+
+                                cuer+
+                            "<\/div>" +
+                        "<\/div>"+
+                        '<div class="modal-footer">'+
+                            foo+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+        $('body').append(Modal);
+        $("#ayud" + sol).modal();
+        $("#ayud" + sol).modal('show');
+        $("#ayud" + sol).on('hidden.bs.modal', function (e) {
+            $(this).remove();
+        });
+    if (band === 1){
+        uri  = base_url + "tic/ayudantes/seleccionar";
+        uri2 = base_url + "tic/ayudantes/sin_asignar";
+        uri3 = base_url + "tic/ayudantes/asignados";
+    }else{
+        uri = base_url + "mnt/ayudantes/seleccionar";
+        uri2= base_url + "mnt/ayudantes/sin_asignar";
+        uri3= base_url + "mnt/ayudantes/asignados";
+    }
+    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+     } );
+    $.post(uri, {
+        sol: sol,
+        id: ayu
+    }, function (data) {
+//        $(select).html(data);
+        $("#ayu_resp"+sol).html(data);
+        $("#ayu_resp"+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    }); 
+    $.post(uri2, {
+        id: id
+    }, function (data) {
+//        $(div1).html(data);
+            $('#disponibles' + sol).html(data); 
+         
+        // console.log('#ayudantes'+sol);
+        table1 = $('#ayudisp' + sol).DataTable({
+             responsive: true,
+            "bLengthChange": false,
+//            "sPaginationType": "numbers",
+            "iDisplayLength": 4,
+            "oLanguage": { 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",  
+                "oPaginate": 
+                {
+                    "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                  "sLast": '<i class="glyphicon glyphicon-step-forward" ></i>',
+//                  "sFirst": '<i class="glyphicon glyphicon-step-backward" ></i>'
+                }
+            }
+        });
+//        table1.columns.adjust();
+    });
+    $.post(uri3, {
+        id: id,
+        estatus: estatus
+    }, function (data) {
+//        $(div2).html(data);
+        $('#asignados' + sol).html(data);
+        table = $('#ayudasig' + sol).DataTable({
+             responsive: true,
+        "oLanguage": {
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sProcessing": "Procesando...",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+        "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+            },
+            "bLengthChange": false,
+            "iDisplayLength": 4
+        });
+//        table.columns.adjust();
+    });
+//    $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//        $(select).prop('disabled', !this.checked);
+//    });
+    $('#mod_resp'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+        $('#ayu_resp'+sol).prop('disabled', !this.checked);
+    });
+    $('.modal .btn-primary').prop('disabled', false);
+//    $('.modal').on('hidden.bs.modal', function () {
+////            $(select).prop('disabled', 'disabled');
+//            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+//            $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
+//            $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
+//    });
+}
                     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
                             // function statusOnChange(sel,div,txt) {
                                     //    var test = sel.value;

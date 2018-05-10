@@ -2,7 +2,11 @@
 <div class="mainy">
   <!-- Page title -->
   <div class="page-title">
-    <h2><i class="fa fa-user color"></i> Modificar<small> cuadrilla de mantenimiento</small></h2> 
+    <h2>
+        <!--<i class="fa fa-user color"></i>--> 
+        <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+        Modificar
+        <small> cuadrillas</small></h2> 
     <hr />
   </div>
   <!-- Page title -->

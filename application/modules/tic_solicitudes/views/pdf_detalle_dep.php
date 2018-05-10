@@ -1,5 +1,4 @@
-<html lang="en">
-   <head>
+<html lang="en"><head>
   <!--<link type="text/css" href="www/test/css/bootstrap.css" rel="stylesheet" /> -->
     <style type="text/css">
         body {
@@ -73,10 +72,7 @@
 
     </style>
   
-     </head>
-     <meta charset="utf-8">
-
-    <body>
+     </head><meta charset="utf-8"><body>
         <div id="header">
             <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia</h1>
             <img align="right"src="assets/img/LOGO-UC.png" width="40" height="50">
@@ -232,7 +228,6 @@
                             </tr>
                               
                     </table>
-    </body>
-</html>
+    </body></html>
 
 

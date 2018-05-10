@@ -104,7 +104,11 @@
 <div class="mainy">
     <!-- Page title -->
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
+        <h2 align="right">
+            <!--<i class="fa fa-desktop color"></i>-->
+            <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+            Solicitud
+            <small>Detalles</small></h2>
         <hr /> 
     </div>
     <div class="row">

@@ -10,7 +10,12 @@
   <!-- Page title -->
   <div class="page-title">
     <?php if (!isset($error)):?>
-      <h2 align="right"><i class="fa fa-user color"></i> Nueva<small> TIC Cuadrilla </small></h2> 
+      <h2 align="right">
+            <!--<i class="fa fa-user color"></i>--> 
+            <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+            Nueva
+            <small> Cuadrilla </small>
+      </h2> 
      <?php else : ?>
       <h2 align="center" class="alert-danger"><?php echo $error ?> </h2> 
       

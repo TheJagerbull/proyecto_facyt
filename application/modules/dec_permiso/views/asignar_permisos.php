@@ -545,14 +545,14 @@
 					</div>
 				</div>
 				<!-- 3. PERMISOS DE USUARIOS -->
-                                <?php if ($this->session->userdata('user')['id_usuario'] == '14713134'){?>
-				<!-- 4. PERMISOS TIC -->
+                
+                <!-- 4. PERMISOS TIC -->
 				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 					<div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="headingOne">
 							<a class="negritas permisos-nombre-grande" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
 								<h3 class="panel-title">
-									<i class="fa fa-desktop fa-fw fa-2x" style="margin-right: 10px;"></i><span class="negritas permisos-nombre-grande">TIC</span>
+									<i class="fa fa-desktop fa-fw fa-2x" style="margin-right: 10px;"></i><span class="negritas permisos-nombre-grande">DTIC</span>
 								</h3>
 							</a>
 						</div>
@@ -685,7 +685,7 @@
 						</div>
 					</div>
 				</div>
-                                <?php } ?>
+                         
 				<!-- 4. FIN PERMISOS TIC -->                                
 			</div>
 	  
