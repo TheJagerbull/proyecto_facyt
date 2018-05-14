@@ -179,6 +179,10 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
+
+    	var sample;
+    	var centers;
+    	var clusters;
     	var audioBad = new Audio('<?php echo base_url() ?>assets/sounds/bad.wav');
     	var audioBegin = new Audio('<?php echo base_url() ?>assets/sounds/begin.wav');
     	var audioDone = new Audio('<?php echo base_url() ?>assets/sounds/done.mp3');
@@ -292,7 +296,8 @@
     				// data: limits,
     	      		success: function(data)
     	      		{
-	  		    		// console.log(data.centroides);
+    	      			centers = data.centroides;
+	  		    		// console.log(data.centroides);i simply trust that everything will be okay, and "when my time comes, it will be, because it is my time to go", i try to make the best of things (even when i get mad at a situation or at someone), and trust that god has a plan, and me being alive or dead is part of it
 						var table = buildObjectArrayTable(data.centroides, false, true);
 						table.attr('class', 'table table-hover table-bordered dataTable');
 						$('#CentersContent').html('');
@@ -305,145 +310,166 @@
 	      				log.append(ul);
 						$('#CentersContent').append(log);
 	      				audioFinish.play();
-					}
-    	      	});
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/distanceMatrix",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-	  		    		// console.log(data.centroides);
-						var table = buildObjectArrayTable(data.distanceMatrix, true);
-						table.attr('class', 'table table-hover table-bordered dataTable');
-						$('#MatrixDContent').html('');
-						var log = $('<div>');//'<div class="error-log"><ul>';
-					    log.attr('class', 'error-log');
-					    var ul = $('<ul>');
-						var li = $('<li>');
-						li.append(table);
-					    ul.append(li);
-	      				log.append(ul);
-						$('#MatrixDContent').append(log);
-	      				audioFinish.play();
-					}
-    	      	});
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/membershipMatrix",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-	  		    		// console.log(data.centroides);
-						var table = buildObjectArrayTable(data.membershipMatrix, true);
-						table.attr('class', 'table table-hover table-bordered dataTable');
-						$('#MatrixMContent').html('');
-						var log = $('<div>');//'<div class="error-log"><ul>';
-					    log.attr('class', 'error-log');
-					    var ul = $('<ul>');
-						var li = $('<li>');
-						li.append(table);
-					    ul.append(li);
-	      				log.append(ul);
-						$('#MatrixMContent').append(log);
-	      				audioFinish.play();
-					}
-    	      	});
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/sample",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-	  		    		// console.log(data.centroides);
-						var table = buildObjectArrayTable(data.sample, false);
-						table.attr('class', 'table table-hover table-bordered dataTable');
-						$('#SampleContent').html('');
-						var log = $('<div>');//'<div class="error-log"><ul>';
-					    log.attr('class', 'error-log');
-					    var ul = $('<ul>');
-						var li = $('<li>');
-						li.append(table);
-					    ul.append(li);
-	      				log.append(ul);
-						$('#SampleContent').append(log);
-	      				audioFinish.play();
-					}
-    	      	});
+					},
+					complete: function()
+					{
+		    	      	$.ajax({//used for testings
+		    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/distanceMatrix",
+		    	      		cache: false,
+		    	      		type:'POST',
+		    	      		dataType:"json",
+		    				// data: limits,
+		    	      		success: function(data)
+		    	      		{
+			  		    		// console.log(data.centroides);
+								var table = buildObjectArrayTable(data.distanceMatrix, true);
+								table.attr('class', 'table table-hover table-bordered dataTable');
+								$('#MatrixDContent').html('');
+								var log = $('<div>');//'<div class="error-log"><ul>';
+							    log.attr('class', 'error-log');
+							    var ul = $('<ul>');
+								var li = $('<li>');
+								li.append(table);
+							    ul.append(li);
+			      				log.append(ul);
+								$('#MatrixDContent').append(log);
+			      				audioFinish.play();
+							},
+							complete: function()
+							{
+				    	      	$.ajax({//used for testings
+				    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/membershipMatrix",
+				    	      		cache: false,
+				    	      		type:'POST',
+				    	      		dataType:"json",
+				    				// data: limits,
+				    	      		success: function(data)
+				    	      		{
+					  		    		// console.log(data.centroides);
+										var table = buildObjectArrayTable(data.membershipMatrix, true);
+										table.attr('class', 'table table-hover table-bordered dataTable');
+										$('#MatrixMContent').html('');
+										var log = $('<div>');//'<div class="error-log"><ul>';
+									    log.attr('class', 'error-log');
+									    var ul = $('<ul>');
+										var li = $('<li>');
+										li.append(table);
+									    ul.append(li);
+					      				log.append(ul);
+										$('#MatrixMContent').append(log);
+					      				audioFinish.play();
+									},
+									complete: function()
+									{
+						    	      	$.ajax({//used for testings
+						    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/sample",
+						    	      		cache: false,
+						    	      		type:'POST',
+						    	      		dataType:"json",
+						    				// data: limits,
+						    	      		success: function(data)
+						    	      		{
+							  		    		// console.log(data.centroides);
+							  		    		sample = data.sample;
+												var table = buildObjectArrayTable(data.sample, false);
+												table.attr('class', 'table table-hover table-bordered dataTable');
+												$('#SampleContent').html('');
+												var log = $('<div>');//'<div class="error-log"><ul>';
+											    log.attr('class', 'error-log');
+											    var ul = $('<ul>');
+												var li = $('<li>');
+												li.append(table);
+											    ul.append(li);
+							      				log.append(ul);
+												$('#SampleContent').append(log);
+							      				audioFinish.play();
+											},
+											complete: function()
+											{
 
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern1",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-						$('#PatternsContent').html('');
-						$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
-						var table = buildObjectArrayTable(data.pattern1, false, true);
-						var log = $('<div>');//'<div class="error-log"><ul>';
-					    log.attr('class', 'error-log');
-					    var ul = $('<ul>');
-						var li = $('<li>');
-						li.append(table);
-					    ul.append(li);
-	      				log.append(ul);
-						$('#PatternsContent').append(log);
-	      				audioFinish.play();
+								    	      	$.ajax({//used for testings
+								    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/msg",
+								    	      		cache: false,
+								    	      		type:'POST',
+								    	      		dataType:"json",
+								    				// data: limits,
+								    	      		success: function(data)
+								    	      		{
+								    	      			$('#testPrints').html('');
+								    	      			print(data.msg, 'testPrints');
+									      				audioFinish.play();
+													},
+													complete: function()
+													{
+										    	      	$.ajax({//used for testings
+										    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern1",
+										    	      		cache: false,
+										    	      		type:'POST',
+										    	      		dataType:"json",
+										    				// data: limits,
+										    	      		success: function(data)
+										    	      		{
+																$('#PatternsContent').html('');
+																$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
+																var table = buildObjectArrayTable(data.pattern1, false, true);
+																var log = $('<div>');//'<div class="error-log"><ul>';
+															    log.attr('class', 'error-log');
+															    var ul = $('<ul>');
+																var li = $('<li>');
+																li.append(table);
+															    ul.append(li);
+											      				log.append(ul);
+																$('#PatternsContent').append(log);
+											      				audioFinish.play();
+															},
+															complete: function()
+															{
+												    	      	$.ajax({//used for testings
+												    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern2",
+												    	      		cache: false,
+												    	      		type:'POST',
+												    	      		dataType:"json",
+												    				// data: limits,
+												    	      		success: function(data)
+												    	      		{
+												    	      			clusters = data.pattern2;
+												    	      			$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
+																		var table = buildObjectArrayTable(data.pattern2, false, true);
+																		var log = $('<div>');//'<div class="error-log"><ul>';
+																	    log.attr('class', 'error-log');
+																	    var ul = $('<ul>');
+																		var li = $('<li>');
+																		li.append(table);
+																	    ul.append(li);
+													      				log.append(ul);
+																		$('#PatternsContent').append(log);
+													      				audioFinish.play();
+																	},
+																	complete: function()
+																	{
+    	      															console.log("done reading...");
+    	      															evaluate();
+																	}
+												    	      	});
+															}
+										    	      	});
+													}
+								    	      	});
+											}
+						    	      	});
+									}
+				    	      	});
+							}
+		    	      	});
 					}
     	      	});
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern2",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-    	      			$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
-						var table = buildObjectArrayTable(data.pattern2, false, true);
-						var log = $('<div>');//'<div class="error-log"><ul>';
-					    log.attr('class', 'error-log');
-					    var ul = $('<ul>');
-						var li = $('<li>');
-						li.append(table);
-					    ul.append(li);
-	      				log.append(ul);
-						$('#PatternsContent').append(log);
-	      				audioFinish.play();
-					}
-    	      	});
-
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/msg",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-    	      			$('#testPrints').html('');
-    	      			print(data.msg, 'testPrints');
-						// var table = buildObjectArrayTable(data.msg, false, true);
-						// var log = $('<div>');//'<div class="error-log"><ul>';
-					 //    log.attr('class', 'error-log');
-					 //    var ul = $('<ul>');
-						// var li = $('<li>');
-						// li.append(table);
-					 //    ul.append(li);
-	     //  				log.append(ul);
-						// $('#testPrints').append(log);
-	      				audioFinish.play();
-					}
-    	      	});
-  		    }   
+  		    }
+  		    function evaluate()
+  		    {
+  		    	console.log('evaluating...');
+				minVal(centers, sample);
+				console.log('...done evaluating!');
+  		    }
       	});
       	/*$.ajax({
 			// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
@@ -629,50 +655,75 @@
       		$('#'+where).append(title);
       		$('#'+where).append(log);
       	}
-      	function minVal(arrayObjects)
+      	function minVal(centroids, sample)
       	{
-      		var objectkeys = Object.keys(arrayObjects[0]);
+      		//No...don’t say your goodbyes, Rose. Don’t you give up. Don’t do it.
+      		// You’re going to get out of this...you’re going to go on and you’re going to make babies and watch them grow and you’re going to die an old lady, warm in your bed. Not here...Not this night. Do you understand me?
+      		// Rose, listen to me. Winning that ticket was the best thing that ever happened to me. It brought me to you. And I’m thankful, Rose. I’m thankful. You must do me this honor...promise me you will survive....that you will never give up...not matter what happens...no matter how hopeless...promise me now, and never let go of that promise.
+      		var centroidkeys = Object.keys(centroids[0]);
       		var lowest = {};
       		var highest = {};
       		var tmp = {};
-      		for (var j = objectkeys.length - 1; j >= 0; j--)
-			{
-				// lowest[objectkeys[j]] = j;
-    //   			highest[objectkeys[j]] = j;
-      			tmp['lowest'+objectkeys[j]] = Number.POSITIVE_INFINITY;
-      			tmp['highest'+objectkeys[j]] = Number.NEGATIVE_INFINITY;
 
-			}
-			console.log('tmp=', tmp);
-   //    		var lowest = Number.POSITIVE_INFINITY;
-   //    		var highest = Number.NEGATIVE_INFINITY;
-   //    		var tmp = 0;
-			for (var i = arrayObjects.lenght-1; i>=0; i--)
+			console.log('here lowestAttr begins...');
+			// lowestAttr('demanda', centroids);
+			var lowAux = lowestAttr('demanda', centroids);
+			var lowSamp = Object.keys(clusters[lowAux]);
+			console.log(lowSamp);
+			var aux;
+			for (var i = lowSamp.length - 1; i >= 0; i--)
 			{
-				for (var j = objectkeys.length - 1; j >= 0; j--)
+				aux = sample[lowSamp[i]];
+				console.log(aux);
+			}
+			console.log('here lowestAttr ends...');
+  			console.log('here highestAttr begins...');
+  			// highestAttr('demanda', centroids);
+  			var highAux = highestAttr('demanda', centroids);
+  			var highSamp = Object.keys(clusters[highAux]);
+  			console.log(highSamp);
+  			for (var i = highSamp.length - 1; i >= 0; i--)
+  			{
+  				aux = sample[highSamp[i]];
+  				console.log(aux);
+  			}
+  			console.log('here highestAttr ends...');
+
+      	}
+      	function lowestAttr(attr, object)
+      	{
+      		// console.log(attr);
+      		// console.log(object);
+      		var lowest = Number.POSITIVE_INFINITY;
+      		var centroid = -1;
+			for (var i = object.length - 1; i >= 0; i--)
+			{
+				// console.log(object[i][attr]);
+				if(object[i][attr] < lowest)
 				{
-
-					console.log('lowest: ', i, 'Object.'+objectkeys[j]);
-					if(tmp['lowest'+objectkeys[j]]>arrayObjects[i][objectkeys[j]])
-					{
-						tmp['lowest'+objectkeys[j]] = arrayObjects[i][objectkeys[j]];
-						lowest[objectkeys[j]] = i;
-						console.log('lowest: ', i, 'Object.'+objectkeys[j]);
-					}
-
-					console.log('highest: ', i, 'Object.'+objectkeys[j]);
-					if(tmp['highest'+objectkeys[j]]<arrayObjects[i][objectkeys[j]])
-					{
-						tmp['highest'+objectkeys[j]] = arrayObjects[i][objectkeys[j]];
-						highest[objectkeys[j]] = i;
-						console.log('highest: ', i, 'Object.'+objectkeys[j]);
-					}
+					lowest = object[i][attr];
+					centroid = i;
 				}
-			//   // data.push({ x: x, y: Math.floor(Math.random() * (1000000)) });
-			//   tmp = arrayObjects[i]
 			}
-      		console.log('HERE!!!!', objectkeys, lowest, highest, tmp);
+			return(centroid);
+      	}
 
+      	function highestAttr(attr, object)
+      	{
+      		// console.log(attr);
+      		// console.log(object);
+      		var highest = Number.NEGATIVE_INFINITY;
+      		var centroid = -1;
+			for (var i = object.length - 1; i >= 0; i--)
+			{
+				// console.log(object[i][attr]);
+				if(object[i][attr] > highest)
+				{
+					highest = object[i][attr];
+					centroid = i;
+				}
+			}
+			return(centroid);
       	}
 		// $('#reset').click(function()
 		// {
