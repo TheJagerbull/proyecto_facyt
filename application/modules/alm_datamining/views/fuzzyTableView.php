@@ -284,20 +284,6 @@
   		    }
   		    function read_files()
   		    {
-    	   //    	$.ajax({//used for testings
-    	   //    		url: "<?php echo base_url() ?>alm_datamining/test",
-    	   //    		type:'POST',
-    	   //    		dataType:"json",
-    				// data: limits,
-    	   //    		success: function(data)
-    	   //    		{
-    	   //    			// console.log(limits);
-    	   //    			print(data.msg.objects, 'testPrints');
-    	   //    			print(data.msg.centroids, 'testPrints', false);
-    	   //    			audioBad.play();
-    	   //    			$('.panel-heading').append('<h4>Memory usage: {memory_usage}</h4>');
-    	   //    		}
-    	   //    	});
     	      	$.ajax({//used for testings
     	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/centroides",
     	      		cache: false,
@@ -308,6 +294,7 @@
     	      		{
 	  		    		// console.log(data.centroides);
 						var table = buildObjectArrayTable(data.centroides, false, true);
+						table.attr('class', 'table table-hover table-bordered dataTable');
 						$('#CentersContent').html('');
 						var log = $('<div>');//'<div class="error-log"><ul>';
 					    log.attr('class', 'error-log');
@@ -317,52 +304,146 @@
 					    ul.append(li);
 	      				log.append(ul);
 						$('#CentersContent').append(log);
-	      				audioDone.play();
+	      				audioFinish.play();
 					}
     	      	});
-  		 //    	$.ajax({
-  		 //    		url: '<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/centroides',
-					// cache: false,
-					// dataType: "json",
-  		 //    		success: function(data)
-  		 //    		{
-	  		//     		// console.log(data.centroides);
-					// 	var table = buildObjectArrayTable(data.centroides, false, true);
-					// 	$('#CentersContent').html('');
-					// 	var log = $('<div>');//'<div class="error-log"><ul>';
-					//     log.attr('class', 'error-log');
-					//     var ul = $('<ul>');
-					// 	var li = $('<li>');
-					// 	li.append(table);
-					//     ul.append(li);
-	    //   				log.append(ul);
-					// 	$('#CentersContent').append(log);
-	    //   				audioDone.play();
-					// }
-  		 //    	});
-				// var table = buildObjectArrayTable(data.centroides, false, true);
-				// $('#CentersContent').html('');
-				// 	var log = $('<div>');//'<div class="error-log"><ul>';
-				//     log.attr('class', 'error-log');
-				//     var ul = $('<ul>');
-				// 	var li = $('<li>');
-				// 	li.append(table);
-				//     ul.append(li);
-    //   				log.append(ul);
-				// $('#CentersContent').append(log);
-  		    }
-      		// console.log(files);
-	  //     	$.ajax({
-			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
-			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/fcm",
-			// 	// type: 'POST',
-			// 	dataType: "json",
-			// 	// data: {"cod_segmento":this.value},
-			// 	success: function (data)
-			// 	{
-			// 		console.log(data);
-			// 	}
-			// });
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/distanceMatrix",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+	  		    		// console.log(data.centroides);
+						var table = buildObjectArrayTable(data.distanceMatrix, true);
+						table.attr('class', 'table table-hover table-bordered dataTable');
+						$('#MatrixDContent').html('');
+						var log = $('<div>');//'<div class="error-log"><ul>';
+					    log.attr('class', 'error-log');
+					    var ul = $('<ul>');
+						var li = $('<li>');
+						li.append(table);
+					    ul.append(li);
+	      				log.append(ul);
+						$('#MatrixDContent').append(log);
+	      				audioFinish.play();
+					}
+    	      	});
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/membershipMatrix",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+	  		    		// console.log(data.centroides);
+						var table = buildObjectArrayTable(data.membershipMatrix, true);
+						table.attr('class', 'table table-hover table-bordered dataTable');
+						$('#MatrixMContent').html('');
+						var log = $('<div>');//'<div class="error-log"><ul>';
+					    log.attr('class', 'error-log');
+					    var ul = $('<ul>');
+						var li = $('<li>');
+						li.append(table);
+					    ul.append(li);
+	      				log.append(ul);
+						$('#MatrixMContent').append(log);
+	      				audioFinish.play();
+					}
+    	      	});
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/sample",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+	  		    		// console.log(data.centroides);
+						var table = buildObjectArrayTable(data.sample, false);
+						table.attr('class', 'table table-hover table-bordered dataTable');
+						$('#SampleContent').html('');
+						var log = $('<div>');//'<div class="error-log"><ul>';
+					    log.attr('class', 'error-log');
+					    var ul = $('<ul>');
+						var li = $('<li>');
+						li.append(table);
+					    ul.append(li);
+	      				log.append(ul);
+						$('#SampleContent').append(log);
+	      				audioFinish.play();
+					}
+    	      	});
+
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern1",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+						$('#PatternsContent').html('');
+						$('#PatternsContent').append("<h2>Muestras pertenecen a centroide a X%</h2>");
+						var table = buildObjectArrayTable(data.pattern1, false, true);
+						var log = $('<div>');//'<div class="error-log"><ul>';
+					    log.attr('class', 'error-log');
+					    var ul = $('<ul>');
+						var li = $('<li>');
+						li.append(table);
+					    ul.append(li);
+	      				log.append(ul);
+						$('#PatternsContent').append(log);
+	      				audioFinish.play();
+					}
+    	      	});
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern2",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+    	      			$('#PatternsContent').append("<h2>Centroides cerca a las muestras (coordenadas del centroide)</h2>");
+						var table = buildObjectArrayTable(data.pattern2, false, true);
+						var log = $('<div>');//'<div class="error-log"><ul>';
+					    log.attr('class', 'error-log');
+					    var ul = $('<ul>');
+						var li = $('<li>');
+						li.append(table);
+					    ul.append(li);
+	      				log.append(ul);
+						$('#PatternsContent').append(log);
+	      				audioFinish.play();
+					}
+    	      	});
+
+    	      	$.ajax({//used for testings
+    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/msg",
+    	      		cache: false,
+    	      		type:'POST',
+    	      		dataType:"json",
+    				// data: limits,
+    	      		success: function(data)
+    	      		{
+    	      			$('#testPrints').html('');
+    	      			print(data.msg, 'testPrints');
+						// var table = buildObjectArrayTable(data.msg, false, true);
+						// var log = $('<div>');//'<div class="error-log"><ul>';
+					 //    log.attr('class', 'error-log');
+					 //    var ul = $('<ul>');
+						// var li = $('<li>');
+						// li.append(table);
+					 //    ul.append(li);
+	     //  				log.append(ul);
+						// $('#testPrints').append(log);
+	      				audioFinish.play();
+					}
+    	      	});
+  		    }   
       	});
       	/*$.ajax({
 			// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
