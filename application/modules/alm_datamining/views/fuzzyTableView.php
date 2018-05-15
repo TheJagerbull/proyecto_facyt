@@ -668,13 +668,30 @@
 			console.log('here lowestAttr begins...');
 			// lowestAttr('demanda', centroids);
 			var lowAux = lowestAttr('demanda', centroids);
+			var lowestCluster = clusters[lowAux];
+			console.log('lowestCluster', lowestCluster);
+			var lowscope = [];
+			var aux;
+			for(var key in lowestCluster)///quede por aquí
+			{
+				if(typeof key === "number")
+				{
+					aux = (lowestCluster[key]).replace( /[%]/, '');
+					if(aux >= 50)
+					{
+						console.log('key:', key);
+						console.log('value:', lowestCluster[key]);
+						lowscope[key] = lowestCluster[key];
+					}
+				}
+			}
+			console.log(lowscope);
 			var lowSamp = Object.keys(clusters[lowAux]);
 			console.log(lowSamp);
-			var aux;
-			for (var i = lowSamp.length - 1; i >= 0; i--)
+			for (var i = lowSamp.length - 2; i >= 0; i--)
 			{
 				aux = sample[lowSamp[i]];
-				console.log(aux);
+				// console.log(i, aux);
 			}
 			console.log('here lowestAttr ends...');
   			console.log('here highestAttr begins...');
@@ -682,7 +699,7 @@
   			var highAux = highestAttr('demanda', centroids);
   			var highSamp = Object.keys(clusters[highAux]);
   			console.log(highSamp);
-  			for (var i = highSamp.length - 1; i >= 0; i--)
+  			for (var i = highSamp.length - 2; i >= 0; i--)
   			{
   				aux = sample[highSamp[i]];
   				console.log(aux);
