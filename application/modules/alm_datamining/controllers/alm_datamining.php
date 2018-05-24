@@ -695,6 +695,7 @@ class Alm_datamining extends MX_Controller
     }
     public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",
     {
+        set_time_limit ( 1500 );//para el limite de tiempo de ejecucion
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
         [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
@@ -737,7 +738,7 @@ class Alm_datamining extends MX_Controller
         $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         $msg .= "<h3> Fuzzy C-Means:</h3><br>";
-        $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
+        $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
@@ -865,8 +866,11 @@ class Alm_datamining extends MX_Controller
         // $this->model_alm_datamining->set_centroids($centroids);
         // $this->model_alm_datamining->build_distanceTable($features);
         // $this->model_alm_datamining->build_membershipTable($features);
+        $start = microtime(true);
+        // echo "Trabajando.";
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
+            // echo ($iterations+1);
             if(isset($newCentroids) && !empty($newCentroids))
             {
                 $centroids = $newCentroids;//READ
@@ -994,9 +998,9 @@ class Alm_datamining extends MX_Controller
             // $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
             $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
+            // echo ".";
         }
-
-
+        $msg.="<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
         // $json['iterations'] = $iterations;
         $files[] = $this->writeFile(json_encode(array( 'iterations' => $iterations)), 'iterations');
         // echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
