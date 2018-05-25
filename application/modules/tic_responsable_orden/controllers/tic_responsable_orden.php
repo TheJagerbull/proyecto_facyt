@@ -67,13 +67,15 @@ class Tic_responsable_orden extends MX_Controller {
     }
     
     public function show_all_respon(){
-        $todos = $this->model_user->get_userObrero();
+        $todos = $this->model_miembros_cuadrilla->get_miembros();
+        //die_pre($todos);
         $id_tipo = $this->model_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);
+        die_pre($id_tipo);
         ?><option></option><?php
         foreach ($todos as $all):
-            if ($this->model_responsable->existe_resp_2($all['id_usuario'],"","","",$id_tipo)):
+            if ($this->model_responsable->existe_resp_2($all['id_trabajador'],"","","","")):
                 ?>
-                <option value="<?php echo $all['id_usuario']?>"><?php echo $all['nombre'].' '.$all['apellido'];?></option>
+                <option value="<?php echo $all['id_trabajador']?>"><?php echo $all['id_trabajador']?></option>
  <?php       endif;
         endforeach;
     }

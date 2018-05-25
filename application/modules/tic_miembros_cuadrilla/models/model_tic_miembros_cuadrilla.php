@@ -26,10 +26,11 @@ class Model_tic_miembros_cuadrilla extends CI_Model {
      * Modificada por Juan Parra en fecha: 02/07/2015 con la finalidad de extraer los 
      * miembros activos de la cuadrilla con sus nombres
      */
-    public function get_miembros_cuadrilla($id) {
+    public function get_miembros_cuadrilla($id = '') {
         if (!empty($id)) {
-            $this->db->where('id_cuadrilla', $id);
-            $this->db->select('id_trabajador');
+          $this->db->where('id_cuadrilla', $id);
+        }
+         $this->db->select('id_trabajador');
             $miembros = $this->db->get('tic_miembros_cuadrilla')->result();
             $i = 0;
             foreach ($miembros as $miemb):
@@ -43,7 +44,6 @@ class Model_tic_miembros_cuadrilla extends CI_Model {
             endforeach;
             $miembros = array_values($miembros); //repara el indice que quedo mal distribuido al eliminar el trabajador de la cuadrilla inactivo
             return $miembros;
-        }
         return FALSE;
     }
 

@@ -230,7 +230,7 @@
                 $("#responsab").show();
                 $('#trabajadores').prop('disabled', true);
                 $('#tipo_orden').prop('disabled', true);
-                mostrar_respon($('#responsable'));
+                mostrar_respon_tic($('#responsable'));
                 $('#responsable').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
 //                table.order([5, 'asc']);
                 table.columns(5).visible(false);
@@ -278,6 +278,12 @@
 //        $("#header_table").val(JSON.stringify(colum));
 //        console.log(table.context[0].aoColumns.length);
     });
+    function mostrar_respon_tic(select){
+        $.post(base_url + "tic_solicitudes/tic_buscar_responsable", 
+            function (data) {
+                $(select).html(data);
+        });
+    }
 </script>
 <style>
     tr.group,

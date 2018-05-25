@@ -218,7 +218,7 @@ class Model_tic_cuadrilla extends CI_Model {
     }
     
     public function es_responsable($id='',$cuad='',$band=''){
-        if($id != ''){
+       if($id != ''){
             $datos = array (
                 'id_trabajador_responsable' =>$id
             );
@@ -251,8 +251,10 @@ class Model_tic_cuadrilla extends CI_Model {
             if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
                     $band = 1;
                     $info = $this->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                    //die_pre($info);
                     $id_cuad = $info[0]['id'];
                     $cuadrilla = ($info[0]['cuadrilla']);
+                     echo_pre($cuadrilla);
                     if ($this->model_tipo->devuelve_id_tipo($cuadrilla)):
                         $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
                     else:
