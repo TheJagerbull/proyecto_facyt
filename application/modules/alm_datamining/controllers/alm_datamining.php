@@ -738,7 +738,7 @@ class Alm_datamining extends MX_Controller
         $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         $msg .= "<h3> Fuzzy C-Means:</h3><br>";
-        $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1
+        $m=3.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
@@ -1000,6 +1000,7 @@ class Alm_datamining extends MX_Controller
             $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
             // echo ".";
         }
+        $msg.="<br><strong>Parámetro de fuzzificación M:".$m."</strong>";
         $msg.="<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
         // $json['iterations'] = $iterations;
         $files[] = $this->writeFile(json_encode(array( 'iterations' => $iterations)), 'iterations');

@@ -69,8 +69,8 @@
 									<div class="panel-body clearfix">
 										<div class="awidget-body">
 											<div class="input-group btn-group">
-												<button id="runServerProcess" class="btn btn-xs btn-success">Run Fuzzy C-means </button>
-												<button id="runClientReads" class="btn btn-xs btn-success"> Read results</button>
+												<button id="runServerProcess" class="btn btn-xs btn-success"> Run</button>
+												<button id="runClientReads" class="btn btn-xs btn-success"> Read</button>
 											</div>
 											<hr>
 											<ul id="myTab" class="nav nav-tabs nav-justified">
