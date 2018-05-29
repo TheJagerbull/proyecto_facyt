@@ -693,6 +693,41 @@ class Alm_datamining extends MX_Controller
         return($iterations);
 
     }
+    public function fcmResults($m='')
+    {
+        // $centroides = $this->readFile('centroides', 'json_files');
+        if(!isset($m) || empty($m))
+        {
+            $result = $this->readFile('pattern2', 'json_files');
+        }
+        else
+        {
+            $result = $this->readFile('pattern2', 'json_files m='.$m);
+        }
+        echo_pre($result);
+        $auxRe = array();
+        $centroides = array();
+        foreach ($result['pattern2'] as $key => $value)
+        {
+            foreach ($value as $key2 => $value2)
+            {
+                // echo $key2.'<br>';
+                if(!is_numeric($key2))
+                {
+                    $centroides[] = $result['pattern2'][$key][$key2];
+                    unset($result['pattern2'][$key][$key2]);
+                    arsort($result['pattern2'][$key]);
+                    // die_pre($result['pattern2'][$key][$key2]);
+                    // $auxRe[$key] = arsort($value);
+                    // die_pre($result['pattern2'][$key]);
+                }
+            }
+        }
+
+
+        echo_pre($centroides);
+        die_pre($result);
+    }
     public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",
     {
         set_time_limit ( 1500 );//para el limite de tiempo de ejecucion
@@ -735,12 +770,28 @@ class Alm_datamining extends MX_Controller
         /*U se compone de cada iteracion de $distanceMatrix, es decir U[m]= a la m-esimo iteracion de $distance Matrix*/
         $msg = '';
         // echo "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
-        $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
+        $msg .= "<h1> Ejecución de cluster difuzzo de C-medias: </h1> <br>";
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         $msg .= "<h3> Fuzzy C-Means:</h3><br>";
-        $m=3.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1
-        $P=2;//numero de clusters suministrado al llamar la funcion
+        // $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
+        // $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
+        // $m=1.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=378.16534996033 it=83
+        // $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
+        // $m=2.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=455.82271695137 it=99
+        // $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=665.96932792664 it=119
+        // $m=2.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=522.48389196396 it=110
+        $m=3;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=496.38486790657 it=110
+        // $m=3.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=3.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=3.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=4;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=4.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=4.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=4.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
+        $msg.="<br><strong>Parámetro de fuzzificación M:".$m."</strong><br><br>";
+
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
         // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
         // $objects = array(array('x' => 12.0, 'y' => 3504.0),
@@ -1000,7 +1051,6 @@ class Alm_datamining extends MX_Controller
             $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
             // echo ".";
         }
-        $msg.="<br><strong>Parámetro de fuzzificación M:".$m."</strong>";
         $msg.="<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
         // $json['iterations'] = $iterations;
         $files[] = $this->writeFile(json_encode(array( 'iterations' => $iterations)), 'iterations');
@@ -1121,6 +1171,43 @@ class Alm_datamining extends MX_Controller
             }
         }
     }
+    private function readFile($filename='', $dir='')
+    {
+        $this->load->helper('directory');
+        if(!isset($dir) || empty($dir))
+        {
+            $dir = './uploads/engine/fuzzyPatterns/vars/';
+        }
+        else
+        {
+            $dir = './uploads/engine/fuzzyPatterns/'.$dir.'/';
+        }
+            $folderContent = directory_map($dir, 1);
+        $flag = 0;
+        foreach ($folderContent as $key => $value)
+        {
+            if($value==$filename)
+            {
+                $flag+=1;
+            }
+            else
+            {
+                $flag+=0;
+            }
+        }
+        if($flag)
+        {
+            $myFile = $dir.$filename;
+            try
+            {
+                return json_decode(file_get_contents($myFile), true);
+            }
+            catch (Exception $e)
+            {
+                echo 'Caught exception: ',  $e->getMessage(), "\n";
+            }
+        }
+    }
     public function test($array='')
     {
         // die(json_encode($array));
@@ -1151,7 +1238,7 @@ class Alm_datamining extends MX_Controller
                 // }
                 if(($percent*100)>1)
                 {
-                    $pattern[$probe][$key+1] = ($percent*100)."%";
+                    $pattern[$probe][$key+1] = ($percent*100);
                     // array_push($pattern[$probe], $key);
                 }
             }
@@ -1181,7 +1268,7 @@ class Alm_datamining extends MX_Controller
             {
                 if(($percent*100)>1)
                 {
-                    $memMat[$key]['centroide: '.($probe+1)] = ($percent*100)."%";
+                    $memMat[$key]['centroide: '.($probe+1)] = ($percent*100);
                     // $pattern[$probe][$key+1] = ($percent*100);
                     // array_push($pattern[$probe], $key);
                 }
