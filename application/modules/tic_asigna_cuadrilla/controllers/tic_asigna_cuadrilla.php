@@ -68,6 +68,7 @@ class Tic_asigna_cuadrilla extends MX_Controller {
     public function asignar_cuadrilla() { //Se usa para asignar o quitar la cuadrilla de una orden
 //         die_pre($_POST);
         $uri=$_POST['uri']; ///Se asigna el post a una variable la cual contiene la direccion de la pagina de donde viene
+        //die_pre($_POST);
         ($user = $this->session->userdata('user')['id_usuario']); //se obtiene el id del usuario en sesion
         $this->load->helper('date'); // el helper de fecha para guardar en formato de sql
         $datestring = "%Y-%m-%d %h:%i:%s";

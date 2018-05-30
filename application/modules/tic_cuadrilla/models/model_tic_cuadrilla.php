@@ -249,19 +249,19 @@ class Model_tic_cuadrilla extends CI_Model {
     public function es_resp_no_jefe_cuad($id){//Esta funcion devuelve el id_tipo de un usuario que sea responsable de cuadrilla pero que no sea jefe de mantenimiento.
         if($this->es_responsable($id)){
             if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
-                    $band = 1;
-                    $info = $this->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
-                    //die_pre($info);
-                    $id_cuad = $info[0]['id'];
-                    $cuadrilla = ($info[0]['cuadrilla']);
-                     echo_pre($cuadrilla);
-                    if ($this->model_tipo->devuelve_id_tipo($cuadrilla)):
-                        $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
-                    else:
-                        $id_tipo = 0;
-                    endif;
-                    return $id_tipo;
-                }
+                $band = 1;
+                $info = $this->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                //die_pre($info);
+                $id_cuad = $info[0]['id'];
+                $cuadrilla = ($info[0]['cuadrilla']);
+                echo_pre($cuadrilla);
+                if ($this->model_tipo->devuelve_id_tipo($cuadrilla)):
+                    $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
+                else:
+                    $id_tipo = 0;
+                endif;
+                return $id_tipo;
+            }
             
         }
     }

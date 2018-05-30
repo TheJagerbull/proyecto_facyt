@@ -261,6 +261,19 @@ class Model_dec_usuario extends CI_Model
 		$result = $this->db->get('dec_usuario')->result_array();
 		return($result);
 	}
+
+//by jcparra para mostrar en tic solicitudes
+	public function get_userTic()
+	{
+        $this->db->order_by('nombre','asc');
+        $this->db->select('id_usuario,nombre,apellido,telefono,cargo');
+        $id_dependen = array('6','9');
+	    $this->db->where_in('id_dependencia', $id_dependen);
+        //$this->db->or_where('cargo', 'Jefe de Mantenimiento');
+		$this->db->where('status', 'activo');
+		$result = $this->db->get('dec_usuario')->result_array();
+		return($result);
+	}
         //by jcparra para mostrar en mnt crear solicitud de mantenimiento
         public function get_user_activos($id_dependen='')
 	{

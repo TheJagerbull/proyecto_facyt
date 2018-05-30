@@ -72,7 +72,7 @@ class Tic_reportes extends MX_Controller
                 $view['tipo'] = $this->model_tic_tipo_orden->devuelve_tipo($id_tipo);
             else:
                 $view['estatus'] = $this->model_mnt_estatus->get_estatus();
-                $view['trabajadores'] = $this->model_user->get_userObrero();
+                $view['trabajadores'] = $this->model_user->get_userTic();
                 $view['tipo'] =$this->model_tic_tipo_orden->devuelve_tipo();
             endif;
             

@@ -58,15 +58,23 @@ class Model_tic_responsable_orden extends CI_Model {
     
     function get_responsable($sol=''){ //funcion para obtener el responsable de la solicitud
         
-        $this->db->where('id_orden_trabajo',$sol);
         if($this->db->count_all_results('tic_responsable_orden') > 0):
-           $this->db->where('id_orden_trabajo',$sol);
-           $this->db->join('dec_usuario', 'dec_usuario.id_usuario = tic_responsable_orden.id_responsable', 'inner');
-           $this->db->select('id_responsable , nombre , apellido');
-           $query = $this->db->get('tic_responsable_orden');
-           return $query->row_array();
-        endif;
-        return FALSE; 
+            if (!empty($sol)):
+                $this->db->where('id_orden_trabajo',$sol);
+            else:
+                $this->db->group_by(array("nombre", "apellido"));
+            endif;
+            $this->db->join('dec_usuario', 'dec_usuario.id_usuario = tic_responsable_orden.id_responsable', 'inner');
+            $this->db->select('id_responsable , nombre , apellido');
+            $query = $this->db->get('tic_responsable_orden');
+            if (!empty($sol)):
+                return $query->row_array();
+            else:
+                return $query->result_array();
+            endif;
+        else:
+            return FALSE;
+        endif; 
     }
             
     function edit_resp($data = '',$resp_orden=''){ //funcion para editar el responsable de la solicitud
