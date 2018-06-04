@@ -698,25 +698,25 @@ class Alm_datamining extends MX_Controller
         // $centroides = $this->readFile('centroides', 'json_files');
         if(!isset($m) || empty($m))
         {
-            $result = $this->readFile('pattern2', 'json_files');
+            $result = $this->readFile('msg', 'json_files');
         }
         else
         {
-            $result = $this->readFile('pattern2', 'json_files m='.$m);
+            $result = $this->readFile('msg', 'json_files m='.$m);
         }
         echo_pre($result);
         $auxRe = array();
         $centroides = array();
-        foreach ($result['pattern2'] as $key => $value)
+        foreach ($result['msg'] as $key => $value)
         {
             foreach ($value as $key2 => $value2)
             {
                 // echo $key2.'<br>';
                 if(!is_numeric($key2))
                 {
-                    $centroides[] = $result['pattern2'][$key][$key2];
-                    unset($result['pattern2'][$key][$key2]);
-                    arsort($result['pattern2'][$key]);
+                    $centroides[] = $result['msg'][$key][$key2];
+                    unset($result['msg'][$key][$key2]);
+                    arsort($result['msg'][$key]);
                     // die_pre($result['pattern2'][$key][$key2]);
                     // $auxRe[$key] = arsort($value);
                     // die_pre($result['pattern2'][$key]);
@@ -728,9 +728,9 @@ class Alm_datamining extends MX_Controller
         echo_pre($centroides);
         die_pre($result);
     }
-    public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",
+    public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `value_occurrence` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `value_occurrence` DESC LIMIT 1 ]
     {
-        set_time_limit ( 1500 );//para el limite de tiempo de ejecucion
+        set_time_limit ( 1500 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
         [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
@@ -774,20 +774,21 @@ class Alm_datamining extends MX_Controller
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         $msg .= "<h3> Fuzzy C-Means:</h3><br>";
         // $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
-        // $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
+        $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
         // $m=1.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=378.16534996033 it=83
         // $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
         // $m=2.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=455.82271695137 it=99
         // $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=665.96932792664 it=119
         // $m=2.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=522.48389196396 it=110
-        $m=3;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=496.38486790657 it=110
-        // $m=3.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
-        // $m=3.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
-        // $m=3.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
-        // $m=4;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
-        // $m=4.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
-        // $m=4.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
-        // $m=4.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t= it=
+        // $m=3;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=496.38486790657 it=110
+        // $m=3.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=691.79837989807 it=150
+        // $m=3.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=583.93491005898 it=127
+        // $m=3.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=737.5228331089 it=161
+        // $m=4;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=723.57445001602 it=158
+        // $m=4.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=596.95481801033 it=130
+        // $m=4.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=507.72616386414 it=111
+        // $m=4.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=802.94658899307 it=171
+        // $m=5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=657.42558193207 it=118
         // $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
         $msg.="<br><strong>Parámetro de fuzzificación M:".$m."</strong><br><br>";

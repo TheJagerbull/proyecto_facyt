@@ -70,7 +70,7 @@
 										<div class="awidget-body">
 											<div class="input-group btn-group">
 												<button id="runServerProcess" class="btn btn-xs btn-success"> Run</button>
-												<button id="runClientReads" class="btn btn-xs btn-success"> Read</button>
+												<button id="runClientReads" class="btn btn-xs btn-success"> Read</button>												
 											</div>
 											<hr>
 											<ul id="myTab" class="nav nav-tabs nav-justified">
@@ -179,7 +179,8 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
-
+    	// $("#loading").hide();
+    	// $("#loading").show();
     	var sample;
     	var centers;
     	var clusters;
@@ -233,7 +234,20 @@
 				limits = ({'from': from, 'to': to});
 				// $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 		});
+		// setTimeout(function(){
+			
+		// }, 2000);
       	$("#runServerProcess").on('click', function(){
+			
+			swal({
+				title:'Procesando...',
+				text:'Esperando por respuesta del servidor',
+				imageUrl: "<?php echo base_url() ?>assets/img/Loaders/gears.svg",
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
       		audioBegin.play();
 	      	$.ajax({
 			// 	// url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/engine",
@@ -247,15 +261,26 @@
 					setTimeout(function(){audioDone.play();}, 3000);
 					// audioDone.play();
 					// console.log(data);
+					swal.closeModal();
 				},
 				error: function (msg)
 				{
+					swal.closeModal();
 					audioBad.play();
 					console.log(msg);
 				}
 			});
       	});
       	$("#runClientReads").on('click', function(){
+
+      		swal({
+      			title:'Procesando...',
+      			text:'Lectura de resultados del servidor',
+      			imageUrl: "<?php echo base_url() ?>assets/img/ajax-loader.gif",
+      			showCancelButton: false,
+      			showConfirmButton: false,
+      			allowOutsideClick: false
+      		});
       		// var fs = require('fs');
       		// var files = fs.readdirSync('<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/');
       		$.get('<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files', (data)=>
@@ -276,6 +301,7 @@
       			{
       				audioBad.play();
       				console.log('dir EMPTYYY!!!!');
+					swal.closeModal();
       			}
       		});
       		function parseDirectoryListing(text) 
@@ -449,6 +475,7 @@
 																	{
     	      															console.log("done reading...");
     	      															evaluate();
+																		swal.closeModal();
 																	}
 												    	      	});
 															}
