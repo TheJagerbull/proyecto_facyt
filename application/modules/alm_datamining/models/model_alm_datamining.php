@@ -387,6 +387,23 @@ class Model_alm_datamining extends CI_Model
 		$dirAndFile['subDir'] = (isset($var)) ? '/'.$var : '' ;
 		return ($dirAndFile);
 	}
+	public function adjust_cod_artNU()
+	{
+		$this->db->select('ID, cod_articulo');
+		$alm_articulos = $this->db->get('alm_articulo')->result_array();
+		foreach ($alm_articulos as $key => $value)
+		{
+			// $aux = preg_split('/[\-]/', $value['cod_articulo']);
+			// if(!empty($aux))
+			if(preg_match('/^[0-9]{8}[\-]/', $value['cod_articulo'], $aux))
+			{
+				// echo '<br>'.substr($aux[0], 0, -1);
+				$artNU = substr($aux[0], 0, -1);
+				$this->db->where('ID', $value['ID']);
+				$this->db->update('alm_articulo',array('cod_articulonu' => $artNU));
+			}
+		}
+	}
 	private function gather_sample($FromToDate='')
 	{
 		$this->load->helper('directory');

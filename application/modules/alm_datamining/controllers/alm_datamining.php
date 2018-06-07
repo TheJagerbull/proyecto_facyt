@@ -728,7 +728,7 @@ class Alm_datamining extends MX_Controller
         echo_pre($centroides);
         die_pre($result);
     }
-    public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `value_occurrence` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `value_occurrence` DESC LIMIT 1 ]
+    public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `veces_solicitado`, SUM(`cant_solicitada`) AS `total_demanda`, SUM(`cant_aprobada`) AS `total_consumo` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `veces_solicitado` DESC LIMIT 10]
     {
         set_time_limit ( 1500 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
         // die_pre("HELLO", __LINE__, __FILE__);
@@ -1127,6 +1127,11 @@ class Alm_datamining extends MX_Controller
         echo json_encode($files);
         // $data = json_encode($json, JSON_PRETTY_PRINT);
         // $this->writeFile($data);
+    }
+    public function adjustDB()
+    {
+        $this->model_alm_datamining->adjust_cod_artNU();
+        echo "DONE!";
     }
     private function writeFile($data, $filename='')
     {
