@@ -730,6 +730,11 @@ class Alm_datamining extends MX_Controller
     }
     public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `veces_solicitado`, SUM(`cant_solicitada`) AS `total_demanda`, SUM(`cant_aprobada`) AS `total_consumo` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `veces_solicitado` DESC LIMIT 10]
     {
+        //Def del vector caracteristico: ^[i]{n}[c]{3}[f]{3}... donde "i" es un articulo de la tabla de "n" articulos del sistema, "c" es una clasificacion del codigo de las naciones unidas {segmento, familia, categoria}; y "f" corresponde a la fecha de la solicitud realizada, {dia, mes, año}
+                                    //para el cuadrante "i", cada valor del vector, es la cantidad solicitada de ese articulo en la solicitud
+                                    //para el cuadrante "c", cada valor es el numero del identificador de la categoria(puede cambiar y pasaría a ser mi, mj, mk; donde mi es la cantidad de segmentos, mj es la cantidad de familias, y mk es la cantidad de categorias)
+                                    //para el cuadrante "f", cada valor es el dia, mes y año que corresponde con la fecha de solicitud.
+        
         set_time_limit ( 1500 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
