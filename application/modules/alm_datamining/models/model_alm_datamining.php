@@ -404,7 +404,129 @@ class Model_alm_datamining extends CI_Model
 			}
 		}
 	}
-	private function gather_sample($FromToDate='')
+	private function gather_sample($FromToDate='')//NEW!!!!!
+	{
+		$this->load->helper('directory');
+		$this->load->helper('file');
+		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
+		if(!is_dir("./uploads/engine/fuzzyPatterns/vars/object"))//en caso que el directorio no existe
+		{
+			//crea el directorio de la muestra, basado en el vector caracteristico
+		    if(!is_dir("./uploads/engine"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine", 0755);//crea el directorio, con el permiso necesario para trabajarlo desde el sistema
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns", 0755);
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns/vars"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns/vars", 0755);
+		    }
+		    if(!is_dir("./uploads/engine/fuzzyPatterns/vars/object"))//en caso que el directorio no existe
+			{
+		    	mkdir("./uploads/engine/fuzzyPatterns/vars/object", 0755);
+		    }
+		    //FIN de crea el directorio de la muestra, basado en el vector caracteristico
+		    // $this->db->join('alm_art_en_solicitud', 'alm_art_en_solicitud.nr_solicitud = alm_solicitud.nr_solicitud');
+		    // $this->db->join('alm_articulo', 'alm_articulo.ID = alm_art_en_solicitud.id_articulo');
+		    // $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
+		    // $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud AND alm_historial_s.status_ej="aprobado"');
+		    // $this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.usuario_ej');
+
+
+		    // $this->db->select('*, UNIX_TIMESTAMP(alm_art_en_solicitud.TIME) AS fecha');
+		    $this->db->select('alm_art_en_solicitud.nr_solicitud, id_articulo, cant_solicitada, cant_aprobada, id_dependencia, cod_segmento, cod_familia, alm_categoria.cod_categoria AS cod_categoria, UNIX_TIMESTAMP(alm_art_en_solicitud.TIME) AS fecha');
+		    $this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_art_en_solicitud.nr_solicitud');
+		    $this->db->join('alm_articulo', 'alm_articulo.ID = alm_art_en_solicitud.id_articulo');
+		    $this->db->join('alm_pertenece', 'alm_pertenece.cod_articulo = alm_articulo.cod_articulo');
+		    $this->db->join('alm_categoria', 'alm_categoria.cod_categoria = alm_pertenece.cod_categoria');
+		    $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
+		    $this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.usuario_ej');
+		    $this->db->order_by('alm_art_en_solicitud.nr_solicitud', 'asc');
+		    $query = $this->db->get('alm_art_en_solicitud')->result_array();
+		    // $query = $this->db->get('alm_art_en_solicitud')->result_array();
+		    echo ('1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+		    echo "size".count($query).'<br>';
+		    echo_pre($query, __LINE__, __FILE__);
+		    $vectorCaracteristico = array();
+		    foreach ($query as $key => $value)
+		    {
+		    	if(!isset($vectorCaracteristico['art_'.$value['id_articulo']]))
+		    	{
+		    		$vectorCaracteristico['art_'.$value['id_articulo']] = 0;
+		    	}
+		    	$fecha = getdate($value['fecha']);
+		    	if(!isset($vectorCaracteristico['yday_'.$fecha['yday']]))
+		    	{
+		    		$vectorCaracteristico['yday_'.$fecha['yday']] = 0;
+		    	}
+		    	if(!isset($vectorCaracteristico['year_'.$fecha['year']]))
+		    	{
+		    		$vectorCaracteristico['year_'.$fecha['year']] = 0;
+		    	}
+		    }
+		    // echo "size".count($vectorCaracteristico).'<br>';
+		    echo ('2)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+		    // die_pre($vectorCaracteristico, __LINE__, __FILE__);
+		    $query2 = $this->db->get('dec_dependencia')->result_array();
+		    foreach ($query2 as $key => $value)
+		    {
+		    	$vectorCaracteristico['dep_'.$value['id_dependencia']] = 0;
+		    }
+		    $query2 = $this->db->get('alm_categoria')->result_array();
+		    foreach ($query2 as $key => $value)
+		    {
+				if(!isset($vectorCaracteristico['se_'.$value['cod_segmento']]))
+				{
+		    		$vectorCaracteristico['se_'.$value['cod_segmento']] = 0;
+				}
+				if(!isset($vectorCaracteristico['fa_'.$value['cod_familia']]))
+				{
+		    		$vectorCaracteristico['fa_'.$value['cod_familia']] = 0;
+				}
+				if(!isset($vectorCaracteristico['ca_'.$value['cod_categoria']]))
+				{
+		    		$vectorCaracteristico['ca_'.$value['cod_categoria']] = 0;
+				}
+		    }
+		    echo "size".count($vectorCaracteristico).'<br>';
+		    echo_pre($vectorCaracteristico, __LINE__, __FILE__);
+		    //lleno la muestra
+		    $sample = array();
+		    foreach ($query as $key => $value)
+		    {
+		    	$aux = $vectorCaracteristico;
+		    	$aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];
+		    	$aux['yday_'.$fecha['yday']] = 1;
+		    	$aux['year_'.$fecha['year']] = 1;
+		    	$aux['dep_'.$value['id_dependencia']] = 1;
+		    	$aux['se_'.$value['cod_segmento']] = 1;
+		    	$aux['fa_'.$value['cod_familia']] = 1;
+		    	$aux['ca_'.$value['cod_categoria']] = 1;
+		    	$sample[$key] = $aux;
+		    }
+		    //fin de llenado de muestra
+		    
+		    // $this->db->select('id_articulo, cant_solicitada, dependen, ')
+		    // $this->db->select('cod_segmento, cod_familia, cod_categoria, cod_articulonu');
+		    // $this->db->join('alm_pertenece', 'alm_pertenece')
+		    // $query = $this->db->get('alm_categoria')->result_array();
+		    echo "size".count($sample).'<br>';
+		    echo_pre($sample);
+		    echo ('3)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+		    
+		}
+		else
+		{
+			if(delete_files('./uploads/engine/fuzzyPatterns/vars', true))
+			{
+				return(array('dir exists' => 'hell'));
+			}
+		}
+	}
+	private function gather_sampleOLD($FromToDate='')
 	{
 		$this->load->helper('directory');
 		$this->load->helper('file');

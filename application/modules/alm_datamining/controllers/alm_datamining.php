@@ -519,6 +519,7 @@ class Alm_datamining extends MX_Controller
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
         $sample = $this->model_alm_datamining->get_allData();
+        die_pre($sample, __LINE__, __FILE__);
         //objetos deben venir de archivos o base de datos
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                         array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
@@ -902,6 +903,7 @@ class Alm_datamining extends MX_Controller
             elige re-diseñar las operaciones para leer y escribir los resultados en archivo
         */
             $sample = $this->model_alm_datamining->get_allData();
+            die_pre($sample, __LINE__, __FILE__);
             $objects = $sample['objects'];
             $centroids = $sample['centroids'];
         // $json['sample'] = $objects;
@@ -1056,6 +1058,7 @@ class Alm_datamining extends MX_Controller
             $iterations++;
             $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
             // echo ".";
+            $msg.= 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
         }
         $msg.="<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
         // $json['iterations'] = $iterations;
