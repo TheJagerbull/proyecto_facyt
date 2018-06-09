@@ -406,6 +406,7 @@ class Model_alm_datamining extends CI_Model
 	}
 	private function gather_sample($FromToDate='')//NEW!!!!!
 	{
+		$start = microtime(true);
 		$this->load->helper('directory');
 		$this->load->helper('file');
 		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
@@ -428,6 +429,7 @@ class Model_alm_datamining extends CI_Model
 			{
 		    	mkdir("./uploads/engine/fuzzyPatterns/vars/object", 0755);
 		    }
+		}
 		    //FIN de crea el directorio de la muestra, basado en el vector caracteristico
 		    // $this->db->join('alm_art_en_solicitud', 'alm_art_en_solicitud.nr_solicitud = alm_solicitud.nr_solicitud');
 		    // $this->db->join('alm_articulo', 'alm_articulo.ID = alm_art_en_solicitud.id_articulo');
@@ -448,8 +450,10 @@ class Model_alm_datamining extends CI_Model
 		    $query = $this->db->get('alm_art_en_solicitud')->result_array();
 		    // $query = $this->db->get('alm_art_en_solicitud')->result_array();
 		    echo ('1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
-		    echo "size".count($query).'<br>';
-		    echo_pre($query, __LINE__, __FILE__);
+		    echo "size Query: ".count($query).'<br>';
+		    // echo_pre($query, __LINE__, __FILE__);
+		    //construccion del vector caracteristico...
+		    //articulos, dia del año, y año...
 		    $vectorCaracteristico = array();
 		    foreach ($query as $key => $value)
 		    {
@@ -467,64 +471,98 @@ class Model_alm_datamining extends CI_Model
 		    		$vectorCaracteristico['year_'.$fecha['year']] = 0;
 		    	}
 		    }
+		    //FIN DE articulos, dia del año, y año...
+
 		    // echo "size".count($vectorCaracteristico).'<br>';
 		    echo ('2)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
 		    // die_pre($vectorCaracteristico, __LINE__, __FILE__);
-		    $query2 = $this->db->get('dec_dependencia')->result_array();
-		    foreach ($query2 as $key => $value)
+		    if(isset($dependencia)&& !empty($dependencia))
 		    {
-		    	$vectorCaracteristico['dep_'.$value['id_dependencia']] = 0;
-		    }
-		    $query2 = $this->db->get('alm_categoria')->result_array();
-		    foreach ($query2 as $key => $value)
-		    {
-				if(!isset($vectorCaracteristico['se_'.$value['cod_segmento']]))
-				{
-		    		$vectorCaracteristico['se_'.$value['cod_segmento']] = 0;
-				}
-				if(!isset($vectorCaracteristico['fa_'.$value['cod_familia']]))
-				{
-		    		$vectorCaracteristico['fa_'.$value['cod_familia']] = 0;
-				}
-				if(!isset($vectorCaracteristico['ca_'.$value['cod_categoria']]))
-				{
-		    		$vectorCaracteristico['ca_'.$value['cod_categoria']] = 0;
-				}
-		    }
-		    echo "size".count($vectorCaracteristico).'<br>';
-		    echo_pre($vectorCaracteristico, __LINE__, __FILE__);
-		    //lleno la muestra
+			    //dependencias..
+			    $query2 = $this->db->get('dec_dependencia')->result_array();
+			    foreach ($query2 as $key => $value)
+			    {
+			    	$vectorCaracteristico['dep_'.$value['id_dependencia']] = 0;
+			    }
+			    //FIN DE dependencias..
+			}
+
+			if(isset($categoria)&& !empty($categoria))
+			{
+			    //Categorias(familia, segmento, categoria)...
+			    $query2 = $this->db->get('alm_categoria')->result_array();
+			    foreach ($query2 as $key => $value)
+			    {
+					if(!isset($vectorCaracteristico['se_'.$value['cod_segmento']]))
+					{
+			    		$vectorCaracteristico['se_'.$value['cod_segmento']] = 0;
+					}
+					if(!isset($vectorCaracteristico['fa_'.$value['cod_familia']]))
+					{
+			    		$vectorCaracteristico['fa_'.$value['cod_familia']] = 0;
+					}
+					if(!isset($vectorCaracteristico['ca_'.$value['cod_categoria']]))
+					{
+			    		$vectorCaracteristico['ca_'.$value['cod_categoria']] = 0;
+					}
+			    }
+			    //Categorias(familia, segmento, categoria)...
+			}
+
+		    echo "size vectorCaracteristico: ".count($vectorCaracteristico).'<br>';
+		    // echo_pre($vectorCaracteristico, __LINE__, __FILE__);
+		    //lleno la matriz de muestra en función del vector caracteristico...
 		    $sample = array();
 		    foreach ($query as $key => $value)
 		    {
-		    	$aux = $vectorCaracteristico;
-		    	$aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];
-		    	$aux['yday_'.$fecha['yday']] = 1;
-		    	$aux['year_'.$fecha['year']] = 1;
-		    	$aux['dep_'.$value['id_dependencia']] = 1;
-		    	$aux['se_'.$value['cod_segmento']] = 1;
-		    	$aux['fa_'.$value['cod_familia']] = 1;
-		    	$aux['ca_'.$value['cod_categoria']] = 1;
+		    	$aux = $vectorCaracteristico;//copia el vector caracteristico sobre una variable auxiliar que se indexara a la matriz de muestras
+		    	$aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];//el valor de la columna de articulo es la cantidad solicitada
+		    	$aux['yday_'.$fecha['yday']] = $value['id_articulo'];//indica que se pide un articulo en ese dia
+		    	$aux['year_'.$fecha['year']] = $value['id_articulo'];//indica que se pide un articulo en ese año
+		    	if(isset($dependencia)&& !empty($dependencia))
+		    	{
+			    	$aux['dep_'.$value['id_dependencia']] = $value['id_articulo'];//indica que se pide un articulo en ese departamento
+			    }
+			    if(isset($categoria)&& !empty($categoria))
+			    {
+			    	$aux['se_'.$value['cod_segmento']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a ese segmento de categoria
+			    	$aux['fa_'.$value['cod_familia']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa familia de categoria
+			    	$aux['ca_'.$value['cod_categoria']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa categoria
+				}
 		    	$sample[$key] = $aux;
 		    }
+		    echo "size muestra: ".count($sample).'<br>';
+		    echo ('3)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+		    // echo_pre($sample);
 		    //fin de llenado de muestra
-		    
+
+		    //seleccion de centroides
+		    $centers = array();
+		    foreach ($vectorCaracteristico as $key => $value)
+		    {
+		    	$aux = $vectorCaracteristico;
+		    	$aux[$key] = 1;
+		    	$centers[] = $aux;
+		    }
+		    echo "size centroides".count($centers).'<br>';
+		    echo ('4)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+		    // die_pre($centers, __LINE__, __FILE__);
+			echo 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
+			echo "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
+		    return(array('objects' => $sample, 'centroids' => $centers));
 		    // $this->db->select('id_articulo, cant_solicitada, dependen, ')
 		    // $this->db->select('cod_segmento, cod_familia, cod_categoria, cod_articulonu');
 		    // $this->db->join('alm_pertenece', 'alm_pertenece')
 		    // $query = $this->db->get('alm_categoria')->result_array();
-		    echo "size".count($sample).'<br>';
-		    echo_pre($sample);
-		    echo ('3)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
 		    
-		}
-		else
-		{
-			if(delete_files('./uploads/engine/fuzzyPatterns/vars', true))
-			{
-				return(array('dir exists' => 'hell'));
-			}
-		}
+		// }
+		// else
+		// {
+		// 	if(delete_files('./uploads/engine/fuzzyPatterns/vars', true))
+		// 	{
+		// 		return(array('dir exists' => 'hell'));
+		// 	}
+		// }
 	}
 	private function gather_sampleOLD($FromToDate='')
 	{

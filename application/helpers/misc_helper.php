@@ -39,6 +39,25 @@ function memory_units($size)
     return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
 }
 
+function time_units($seconds)
+{
+    $trans = array(60, 3200);
+    $hours=0;
+    while ($seconds >= 3200)
+    {
+        $hours++;
+        $seconds-=3200;
+    }
+    $minutes=0;
+    while ($seconds >= 60)
+    {
+        $minutes++;
+        $seconds-=60;
+    }
+    return($hours.':'.$minutes.':'.$seconds);
+    // return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+}
+
 function current_time()
 {
 	return(now());

@@ -736,7 +736,8 @@ class Alm_datamining extends MX_Controller
                                     //para el cuadrante "c", cada valor es el numero del identificador de la categoria(puede cambiar y pasaría a ser mi, mj, mk; donde mi es la cantidad de segmentos, mj es la cantidad de familias, y mk es la cantidad de categorias)
                                     //para el cuadrante "f", cada valor es el dia, mes y año que corresponde con la fecha de solicitud.
         
-        set_time_limit ( 1500 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
+        // die_pre(time_units(), __LINE__, __FILE__);
+        set_time_limit ( 1800 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
         [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
@@ -902,12 +903,13 @@ class Alm_datamining extends MX_Controller
             constantes o exponenciales en la BD es más lento que en archivo, así que se
             elige re-diseñar las operaciones para leer y escribir los resultados en archivo
         */
+            $start = microtime(true);
             $sample = $this->model_alm_datamining->get_allData();
-            die_pre($sample, __LINE__, __FILE__);
+            // die_pre($sample, __LINE__, __FILE__);
             $objects = $sample['objects'];
             $centroids = $sample['centroids'];
         // $json['sample'] = $objects;
-        $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
+        // $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
         // die_pre($files);
         $c = count($centroids);//numero de centroides
         $n = count($objects);
@@ -925,21 +927,24 @@ class Alm_datamining extends MX_Controller
         // $this->model_alm_datamining->set_centroids($centroids);
         // $this->model_alm_datamining->build_distanceTable($features);
         // $this->model_alm_datamining->build_membershipTable($features);
-        $start = microtime(true);
-        // echo "Trabajando.";
-        while ($error >= $tolerance)//mientras el error no sea tolerante
+        // $start = microtime(true);
+        echo "Trabajando.";
+        while ($error >= $tolerance)//mientras el error esté por arriba del valor tolerante
         {
             // echo ($iterations+1);
+            //ORIGINAL
             if(isset($newCentroids) && !empty($newCentroids))
             {
                 $centroids = $newCentroids;//READ
             }
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
+            //ORIGINAL
             if(isset($d))
             {
                 unset($d);
             }
-
+            echo '..distancia..';
+            //ORIGINAL
             $d=array();
             for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
             {
@@ -950,13 +955,15 @@ class Alm_datamining extends MX_Controller
                     // $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
                 }
             }
+            echo '...fin de distancias';
             // die_pre($d, __LINE__, __FILE__);
             //consturccion de U: $u o matriz de membrecia
+            //ORIGINAL
             if(isset($u))
             {
                 unset($u);
             }
-
+            //ORIGINAL
             $u= array();
             $exp = 1/($m-1);
             for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
@@ -1005,14 +1012,15 @@ class Alm_datamining extends MX_Controller
                 }
             }
             // echo_pre($u, __LINE__, __FILE__);
+            //ORIGINAL
             $membershipMatrix = $u;
             if(isset($newCentroids))
             {
                 unset($newCentroids);
             }
-
+            
+            //ORIGINAL
             $newCentroids = array();
-
             for ($i=0; $i < $c; $i++)//para los nuevos centroides
             {
                 $membSum=0;
@@ -1039,6 +1047,7 @@ class Alm_datamining extends MX_Controller
             // die(__LINE__);
 
             /*READ*/
+            //ORIGINAL
             if(isset($uk))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
             {
                 $auxsqr=0;
@@ -1053,6 +1062,7 @@ class Alm_datamining extends MX_Controller
                 $error= sqrt($auxsqr);
                 // echo_pre($error, __LINE__, __FILE__);
             }
+            //ORIGINAL
             $uk = $u;
             // $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
