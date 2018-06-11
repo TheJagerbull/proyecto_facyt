@@ -384,6 +384,10 @@ class Model_alm_datamining extends CI_Model
 			}
 			$dirAndFile['pointer'] = $auxPointer;
 		}
+		else
+		{
+			$dirAndFile['pointer'] = $pointer;
+		}
 		$dirAndFile['subDir'] = (isset($var)) ? '/'.$var : '' ;
 		return ($dirAndFile);
 	}
@@ -404,13 +408,13 @@ class Model_alm_datamining extends CI_Model
 			}
 		}
 	}
-	private function gather_sample($FromToDate='')//NEW!!!!!
+	public function gather_sample($FromToDate='')//NEW!!!!!
 	{
 		$start = microtime(true);
 		$this->load->helper('directory');
 		$this->load->helper('file');
-		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
-		if(!is_dir("./uploads/engine/fuzzyPatterns/vars/object"))//en caso que el directorio no existe
+		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars', 1);
+		if(!is_dir("./uploads/engine/fuzzyPatterns/vars"))//en caso que el directorio no existe
 		{
 			//crea el directorio de la muestra, basado en el vector caracteristico
 		    if(!is_dir("./uploads/engine"))//en caso que el directorio no existe
@@ -425,12 +429,8 @@ class Model_alm_datamining extends CI_Model
 			{
 		    	mkdir("./uploads/engine/fuzzyPatterns/vars", 0755);
 		    }
-		    if(!is_dir("./uploads/engine/fuzzyPatterns/vars/object"))//en caso que el directorio no existe
-			{
-		    	mkdir("./uploads/engine/fuzzyPatterns/vars/object", 0755);
-		    }
+		    //FIN de crea el directorio de variables
 		}
-		    //FIN de crea el directorio de la muestra, basado en el vector caracteristico
 		    // $this->db->join('alm_art_en_solicitud', 'alm_art_en_solicitud.nr_solicitud = alm_solicitud.nr_solicitud');
 		    // $this->db->join('alm_articulo', 'alm_articulo.ID = alm_art_en_solicitud.id_articulo');
 		    // $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
@@ -547,16 +547,19 @@ class Model_alm_datamining extends CI_Model
 		    echo "size centroides".count($centers).'<br>';
 		    echo ('4)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
 		    // die_pre($centers, __LINE__, __FILE__);
+			// foreach ($sample as $key => $value)
+			// {
+			// 	foreach ($value as $feature => $val)
+			// 	{
+			// 		$this->save_data('object['.$key.']['.$feature.']', $val);
+			// 	}
+			// }
+			$this->save_data('sample', $sample);
+			$this->save_data('centers', $centers);
+			unset($sample);
+			unset($centers);
 			echo 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
 			echo "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
-			foreach ($sample as $key => $value)
-			{
-				foreach ($value as $feature => $val)
-				{
-					$this->model_alm_datamining->save_data('object['.$key.']['.$feature.']', $val);
-				}
-			}
-			unset($sample);
 			return('done');
 		    // return(array('objects' => $sample, 'centroids' => $centers));
 		    // $this->db->select('id_articulo, cant_solicitada, dependen, ')
@@ -676,141 +679,76 @@ class Model_alm_datamining extends CI_Model
 		{
 			echo "no files deleted!";
 		}
-			// ->get('alm_historial_a')->result_array();
-			// ->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a')
-			// ->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo')
-			// // ->where('entrada = NULL')
-			// ->group_by('id_articulo')
-			// ->get('alm_historial_a')->result_array();
-			// $samples = $this->db->last_query();
-
-			// $msg = '';
-			//cargar las solicitudes con dependencia, articulos, cantidades solicitadas, fecha en que fue solicitada, y en caso que aplique, fecha en que el articulo es desmontado de inventario
-			// $this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
-			// $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"');
-			// $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
-			// // $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
-			// $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo"');
-			// $query = $this->db->get('alm_solicitud')->result_array();
-			// // $msg.=json_encode($query, JSON_PRETTY_PRINT);
-			// // echo_pre($query, __LINE__, __FILE__);
-			// // die_pre($this->db->last_query());
-			// // $this->db->insert_batch('alm_datamining_src', $query);
-
-			// $this->db->select('alm_despacha.nr_solicitud AS nr_solicitud, alm_contiene.id_articulo AS id_articulo, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado, alm_contiene.cant_aprobada AS consumo');
-			// $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
-			// $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_despacha.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0', 'inner');
-			// $query2 = $this->db->get('alm_solicitud')->result_array();
-
-			// $msg = json_encode(array_merge($query, $query2), JSON_PRETTY_PRINT);
-			// $msg = array_merge($query, $query2);
-			// echo_pre($query2, __LINE__, __FILE__);
-
-			// $msg = '';
-			// $samples = array();
-			// $n = sizeof($query);
-			// $k = sizeof($query2);
-			// $s = 0;
-			// $i=0;
-			// while($i < $n)
-			// {
-			// 	$j=0;
-			// 	while($j < $k)
-			// 	{
-			// 		// echo $i.'<br>';
-			// 		// echo $j.'<br>';
-			// 		if(isset($query2[$j]))
-			// 		{
-
-			// 			if(isset($query[$i]))
-			// 			{
-			// 				if($query[$i]['nr_solicitud'] == $query2[$j]['nr_solicitud'] && $query[$i]['id_articulo'] == $query2[$j]['id_articulo'])
-			// 				{
-			// 					$samples[$s] = array_unique(array_merge($query[$i], $query2[$j]));
-			// 					unset($query[$i]);
-			// 					$i++;
-			// 					unset($query2[$j]);
-			// 					$s++;
-			// 				}
-			// 				else
-			// 				{
-			// 					$samples[$s] = $query[$i];
-			// 					unset($query[$i]);
-			// 					$i++;
-			// 					$s++;
-			// 					$samples[$s] = $query2[$j];
-			// 					unset($query2[$j]);
-			// 					$s++;
-			// 				}
-			// 			}
-			// 			else
-			// 			{
-			// 				$i++;
-			// 			}
-			// 		}
-			// 		else
-			// 		{
-			// 			$j++;
-			// 		}
-			// 	}
-			// 	$i++;
-			// }
-			// foreach ($query as $key1 => $registry1)
-			// {
-			// 	foreach ($query2 as $key2 => $registry2)
-			// 	{
-			// 		if($registry1['nr_solicitud'] == $registry2['nr_solicitud'] && $registry1['id_dependencia'] == $registry2['id_dependencia'] && $registry1['id_articulo'] == $registry2['id_articulo'])
-			// 		{
-			// 			// echo $key1.'< >'.$key2.'<br>';
-			// 			$msg.=$key1.'< >'.$key2.'<br>';
-			// 			$msg.=json_encode(array_unique(array_merge($registry1, $registry2)), JSON_PRETTY_PRINT);
-			// 		}
-			// 		else
-			// 		{
-			// 			// echo $key1.'<br>';
-			// 			$msg.= $key1.'<br>';
-			// 			$msg.=json_encode($registry1, JSON_PRETTY_PRINT);
-			// 			// echo $key2.'<br>';
-			// 			$msg.= $key2.'<br>';
-			// 			$msg.=json_encode($registry2, JSON_PRETTY_PRINT);
-			// 		}
-			// 	}
-			// }
-			// // return $msg;
-			// return $samples;
-			// $columns= array('nr_solicitud', 'id_articulo');
-			// $columns= array('fecha_retirado');
-			// echo_pre($query2);
-			// $this->db->update_batch('alm_datamining_src', $query2, 'nr_solicitud');
-		// }
-		// else
-		// {
-		// 	echo "no files deleted!";
-		// }
+	}
+	public function iterateVarFile($pointer='')
+	{
+		$this->load->helper('file');
+		$dof = $this->get_dirOrFile($pointer);
+		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
+		$handler = fopen($myFile, 'r');
+		while (!feof($handler))
+		{
+			yield json_decode(trim(fgets($handler)), true);
+		}
+		fclose($handler);
+	}
+	public function varFileLength($pointer='')
+	{
+		$this->load->helper('file');
+		$dof = $this->get_dirOrFile($pointer);
+		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
+		$handler = fopen($myFile, 'r');
+		$length = 0;
+		while (!feof($handler))
+		{
+			$lines = fgets($handler);
+			$length++;
+		}
+		fclose($handler);
+		return($length);
 	}
 	public function get_allData()//esta funcion debe recorrer la base de datos sobre las tablas pertinentes, para construir un archivo de objetos que se le suministrará al algoritmo, adicionalmente, debe construir un archivo de centroides a partir de los valores encontrados en los objetos
 	{
-		return($this->gather_sample());
-		// $this->load->helper('directory');
-		// $this->load->helper('file');
-		// $dir = directory_map('./uploads/engine/fuzzyPatterns/vars/object', 1);
-		// // $samples = get_filenames('./uploads/engine/fuzzyPatterns/');
-		// if(!empty($dir))
-		// {
-		// 	foreach ($dir as $key => $value)
-		// 	{
-		// 		echo 'key: '.$key.'<br>';
-		// 		echo 'value: '.$value.'<br>';
 
-		// 	}
-		// }
-		// else
-		// {
-		// 	$this->gather_sample();
-		// 	// die(json_encode(array('error' => 'No existe el objeto de muestra(directorio "objeto", con contenido)')));
-		// }
-		// die_pre($dir, __LINE__, __FILE__);
+		$start = microtime(true);
+		$length = $this->varFileLength('sample');
+		$variable = $this->iterateVarFile('sample');
+		print memory_units(memory_get_peak_usage());
+		print '<br>Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
+		print "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
+		print "filas: ".$length."<br>";
+		// die();
+		// $this->gather_sample();
 
+		$start = microtime(true);
+		$buffer = '';
+		$i=0;
+		foreach ($variable as $key => $row)
+		{
+			if($i==1)
+			{
+				print_r($row);
+				die();
+			}
+			else
+			{
+				// print $row.'<br>';
+				// print_r($row);
+				// $line = json_decode($row, true);
+				foreach ($row as $attr => $value)
+				{
+					print '$row[$attr]: '.$row[$attr].'--';
+					print '$attr: '.$attr.':';
+					print '$value: '.$value;
+					print '<br>'.'<br>';
+				}
+			}
+			$i++;
+		}
+		print "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
+		
+
+		return('done!');
 	}
 	public function var_exist($variable)
 	{
@@ -842,59 +780,18 @@ class Model_alm_datamining extends CI_Model
 	{
 		$this->load->helper('directory');
 		$this->load->helper('file');
-		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/', 2);
-		// echo $original.'<br>';
-		if(isset($copy) && !is_dir("./uploads/engine/fuzzyPatterns/vars/".$copy))
-		{
-			mkdir("./uploads/engine/fuzzyPatterns/vars/".$copy, 0755);
-		}
-		// else
-		// {
-			$msg = '';
-		// }
-		foreach ($dir as $key => $value)
-		{
-			if($key == $original)
-			{
-				foreach ($value as $num => $file)
-				{
-					$myFile='./uploads/engine/fuzzyPatterns/vars/'.$key.'/'.$file;
-					$aux = file_get_contents($myFile);
-					if(isset($msg))
-					{
-						$msg .= $aux;
-							$msg .= '<br>';
-					}
-					// else
-					// {
-						$myCopy='./uploads/engine/fuzzyPatterns/vars/'.$copy.'/'.$file;
-						if ( ! write_file($myCopy, $aux))
-						{
-					        die('Unable to write the file: '.$myCopy);
-						}
-					// }
+		$dir = './uploads/engine/fuzzyPatterns/vars/';
 
-				}
-			}
-		}
-		return ($msg);
+		$handlerOrigin = fopen($dir.$original, 'r');
+		$handlerCopy = fopen($dir.$copy, 'w');
+		stream_copy_to_stream($handlerOrigin, $handlerCopy);
+		fclose($handlerOrigin);
+		fclose($handlerCopy);
 	}
 	public function save_data($pointer='', $value='', $calledFrom='')
 	{
-		//preg_match('/^en\s(proceso)?/', $sSearch)
+
 		$this->load->helper('file');
-		// if(preg_match('/\[/', $pointer))
-		// {
-		// 	$subdirAndFile = preg_split('/\[/', $pointer);
-		// 	$var = $subdirAndFile[0];
-		// 	$auxPointer = '';
-		// 	for ($i=1; $i < sizeof($subdirAndFile); $i++)
-		// 	{
-		// 		$auxPointer.='['.$subdirAndFile[$i];
-		// 	}
-		// 	$pointer = $auxPointer;
-		// }
-		// $subDir = (isset($var)) ? '/'.$var : '' ;
 		$dof = $this->get_dirOrFile($pointer);
 		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
 
@@ -921,33 +818,39 @@ class Model_alm_datamining extends CI_Model
 		    	mkdir("./uploads/engine/fuzzyPatterns/vars".$dof['subDir'], 0755);
 		    }
 		}
-
-		try
+		if(is_array($value))
 		{
-
-			//Convert updated array to JSON
-			$jsondata = json_encode($value, JSON_PRETTY_PRINT);
-			//write json data into data.json file
-			if ( ! write_file($myFile, $jsondata))
+			$handler = fopen($myFile, 'w');
+			foreach ($value as $key => $data)
 			{
-		        die('Unable to write the file: '.$myFile);
+				$jsondata = json_encode($data);
+				fwrite($handler, $jsondata."\n");
 			}
-			else
-			{
-		        return(true);
-			}
-			// if(write_data($myFile, $jsondata))
-			// {
-			// 	return('Data successfully saved');
-			// }
-			// else
-			// {
-			// 	return("error");
-			// }
+			fclose($handler);
+			return(true);
 		}
-		catch (Exception $e)
+		else
 		{
-			return('Caught exception: '.$e->getMessage()."\n");
+			try
+			{
+
+				//Convert updated array to JSON
+				// $jsondata = json_encode($value, JSON_PRETTY_PRINT);
+				$jsondata = $value;
+				//write json data into data.json file
+				if ( ! write_file($myFile, $jsondata))
+				{
+			        die('Unable to write the file: '.$myFile);
+				}
+				else
+				{
+			        return(true);
+				}
+			}
+			catch (Exception $e)
+			{
+				return('Caught exception: '.$e->getMessage()."\n");
+			}
 		}
 	}
 	public function get_data($pointer='', $calledFrom='')

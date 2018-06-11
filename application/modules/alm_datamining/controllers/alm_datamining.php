@@ -519,8 +519,10 @@ class Alm_datamining extends MX_Controller
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
-        $sample = $this->model_alm_datamining->get_allData();
-        die_pre($sample, __LINE__, __FILE__);
+        if(!$this->model_alm_datamining->var_exist('sample') || !$this->model_alm_datamining->var_exist('centers'))
+        {
+            $sample = $this->model_alm_datamining->gather_sample();
+        }
         //objetos deben venir de archivos o base de datos
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                         array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
@@ -551,39 +553,73 @@ class Alm_datamining extends MX_Controller
                                     array('x' => 16.00, 'y' => 4354.0, 'z'=> 15),
                                     array('x' => 0, 'y' => 0, 'z'=> 0));
         // $sample = $this->model_alm_datamining->get_allData();
-        $objects = $sample['objects'];
-        $centroids = $sample['centroids'];
-        $json['sample'] = $objects;
-        $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
+        // $objects = $sample['objects'];
+        // $centroids = $sample['centroids'];
+        // $json['sample'] = $objects;
+        // $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
 
-        $c = count($centroids);//numero de centroides
-        $n = count($objects);
+        // $c = count($centroids);//numero de centroides
+        // $n = count($objects);
+
+        $c = $this->model_alm_datamining->varFileLength('sample');//numero de centroides
+        $n = $this->model_alm_datamining->varFileLength('centers');
+        echo $c.'<br><br>';
+        echo $n.'<br><br>';
         $error = 1;
         $tolerance = 0.00001;
         $iterations = 0;
-        $features = array();
-        foreach ($objects[0] as $key => $value)
-        {
-            $features[]=$key;
-        }
-        $dimentions = array('n' => $n, 'c'=>$c);
+        // $features = array();
+        // foreach ($objects[0] as $key => $value)
+        // {
+        //     $features[]=$key;
+        // }
+        // $dimentions = array('n' => $n, 'c'=>$c);
 
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
-            if(isset($newCentroids) && !empty($newCentroids))
+            // if(isset($newCentroids) && !empty($newCentroids))
+            // {
+            //     $centroids = $newCentroids;//READ
+            // }
+        //file version
+            if($this->model_alm_datamining->var_exist('newCenters'))
             {
-                $centroids = $newCentroids;//READ
+                // $centroids = $newCentroids;//READ-WRITE
+                $this->model_alm_datamining->copy_data('centers', 'newCenters');//READ-WRITE
             }
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             // $d=array();
-            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+            // for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+            // {
+            //     // $d[$k]=array();
+            //     for ($i=0; $i < $c; $i++)//recorre centroides
+            //     {
+            //         $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
+            //     }
+            // }
+        // file version
+            $distance = $this->model_alm_datamining->varFileLength('d');
+            echo_pre($distance);
+        die('stop!');
+            $distanceMatrix = fopen("./uploads/engine/fuzzyPatterns/vars/d", "w") or die("Unable to open file!");
+            $objects = $this->model_alm_datamining->iterateVarFile('sample');
+            foreach ($objects as $rowNumber => $row)//recorro los puntos de la muestra
             {
                 // $d[$k]=array();
-                for ($i=0; $i < $c; $i++)//recorre centroides
+                $centroids = $this->model_alm_datamining->iterateVarFile('centers');
+                $distanceRow = array();
+                foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
                 {
-                    $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
+                    $aux = $this->d($row, $cRow);
+                    $distanceRow[$rowNumber][$cRowNumber]=$aux;
                 }
+                $newLine = json_encode($distanceRow);//JSON_FORCE_OBJECT
+                fwrite($distanceMatrix, $newLine."\n");
+                // print_r($distanceRow);
+                // die();
             }
+            // fclose($myfile);
+        die('stop!');
             //consturccion de U: $u o matriz de membrecia
             // $u= array();
             $exp = 1/($m-1);
