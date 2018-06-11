@@ -549,7 +549,16 @@ class Model_alm_datamining extends CI_Model
 		    // die_pre($centers, __LINE__, __FILE__);
 			echo 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
 			echo "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
-		    return(array('objects' => $sample, 'centroids' => $centers));
+			foreach ($sample as $key => $value)
+			{
+				foreach ($value as $feature => $val)
+				{
+					$this->model_alm_datamining->save_data('object['.$key.']['.$feature.']', $val);
+				}
+			}
+			unset($sample);
+			return('done');
+		    // return(array('objects' => $sample, 'centroids' => $centers));
 		    // $this->db->select('id_articulo, cant_solicitada, dependen, ')
 		    // $this->db->select('cod_segmento, cod_familia, cod_categoria, cod_articulonu');
 		    // $this->db->join('alm_pertenece', 'alm_pertenece')

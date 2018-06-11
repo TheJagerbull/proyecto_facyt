@@ -474,7 +474,7 @@
 																	complete: function()
 																	{
     	      															console.log("done reading...");
-    	      															evaluate();
+    	      															// evaluate();
 																		swal.closeModal();
 																	}
 												    	      	});

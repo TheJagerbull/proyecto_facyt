@@ -512,6 +512,7 @@ class Alm_datamining extends MX_Controller
     }
     public function fcmFILEVARS($m='', $P='')//never finishes
     {
+        set_time_limit ( 1800 );
         // $msg = '';
         // $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
         // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
