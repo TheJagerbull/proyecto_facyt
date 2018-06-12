@@ -39,7 +39,13 @@ class Tic_asigna_cuadrilla extends MX_Controller {
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);//se obtienen los miembros de la cuadrilla
 //            echo_pre($miembros);
             if (!empty($miembros))://En caso de que el resultado no sea vacio se muestran los datos
+                $to = serialize($miembros);
+                
+                //echo_pre($to);
                 ?>
+
+                  <input name="campo" id="campo" type="hidden" value="<?php echo htmlentities($to) ?>"
+                 
                 <div align="center"><label for = "cuadrilla">Miembros de la cuadrilla seleccionada</label></div>
                 <table id="miembro<?php echo $num_sol ?>" name="miembro" class="table table-hover table-bordered table-condensed">
                     <thead>
@@ -52,7 +58,6 @@ class Tic_asigna_cuadrilla extends MX_Controller {
                 <?php foreach ($miembros as $miemb): ?>
                         <tr>
                             <td> <?php echo($miemb->trabajador);?>   </td> 
-                            <input name="campo[]" id="campo[]" type="hidden" value="<?php echo($miemb->id_trabajador); ?>"
                         </tr>
                 <?php endforeach; ?>
                     </tbody>
@@ -68,7 +73,7 @@ class Tic_asigna_cuadrilla extends MX_Controller {
     public function asignar_cuadrilla() { //Se usa para asignar o quitar la cuadrilla de una orden
 //         die_pre($_POST);
         $uri=$_POST['uri']; ///Se asigna el post a una variable la cual contiene la direccion de la pagina de donde viene
-        //die_pre($_POST);
+       
         ($user = $this->session->userdata('user')['id_usuario']); //se obtiene el id del usuario en sesion
         $this->load->helper('date'); // el helper de fecha para guardar en formato de sql
         $datestring = "%Y-%m-%d %h:%i:%s";
@@ -78,8 +83,15 @@ class Tic_asigna_cuadrilla extends MX_Controller {
             $var = "2"; //Se establece el id del cambio de estatus para luego guardarlo
             $num_sol = $_POST['num_sol']; ///Se asigna el post a una variable que contiene el numero de la solicitud
             $cuadrilla = $_POST['cuadrilla_select']; //Se asigna el post a una variable que contiene el id de la cuadrilla seleccionada
-//          $miembros = implode(',', $_POST['campo']);
-            $miembros = $_POST['campo']; //estos son los miembros de la cuadrilla seleccionada
+            $trabajadores = json_decode( json_encode(unserialize($_POST['campo'])), true );//se unserializa y se convier a array
+            foreach ($trabajadores as $key => $t) { //Se extraen los nombre para ordenar
+                $aux[$key] = $t['trabajador'];
+            }
+            array_multisort($aux, SORT_STRING, $trabajadores);//una vez ordenado se extraen los id_trabajador.
+            foreach ($trabajadores as $key => $t) { 
+                $id_trabajador[$key] = $t['id_trabajador'];
+            }
+            $miembros = $id_trabajador; //estos son los miembros de la cuadrilla seleccionada
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
@@ -101,15 +113,6 @@ class Tic_asigna_cuadrilla extends MX_Controller {
                 'fecha_p' => $fecha,
                 'motivo_cambio' => 'asig_cuad_resp');
             $this->model_estatus->insert_orden($datos2);//Se guarda el cambio de estatus
-//            $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$cuadrilla);//Se obtienen a los ayudantes de cuadrilla asignados a esa orden
-//            foreach ($miembros as $i=>$miemb): //Se recorren los datos con la finalidad de evaluar si hay alguno que no pertenezca a una cuadrilla
-//                foreach ($asignados as $asig):
-//                  if ($miemb == $asig['id_trabajador']):
-//                      unset($miembros[$i]);
-//                  endif;
-//                endforeach;
-//            endforeach;
-//            $miembros = array_values($miembros);
             foreach ($miembros as $miemb)://Se recorre para guardar a cada uno de los miembros de la cuadrilla en la orden a asignar
                 $guardar = array(
                     'id_trabajador' => $miemb,
