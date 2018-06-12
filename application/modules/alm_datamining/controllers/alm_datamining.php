@@ -512,7 +512,7 @@ class Alm_datamining extends MX_Controller
     }
     public function fcmFILEVARS($m='', $P='')//never finishes
     {
-        set_time_limit ( 1800 );
+        set_time_limit ( 18000 );
         // $msg = '';
         // $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
         // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
@@ -582,12 +582,13 @@ class Alm_datamining extends MX_Controller
             // {
             //     $centroids = $newCentroids;//READ
             // }
-        //file version
+//file version PART1
             if($this->model_alm_datamining->var_exist('newCenters'))
             {
                 // $centroids = $newCentroids;//READ-WRITE
                 $this->model_alm_datamining->copy_data('centers', 'newCenters');//READ-WRITE
             }
+//FIN de file version PART1
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             // $d=array();
             // for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
@@ -598,37 +599,52 @@ class Alm_datamining extends MX_Controller
             //         $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
             //     }
             // }
-        // file version
-            // $distance = $this->model_alm_datamining->varFileLength('d');
-            // echo_pre($distance);
-        // die('stop!');
-            $dir = "./uploads/engine/fuzzyPatterns/vars/";
-            $distanceMatrix = fopen($dir."d", "w") or die("Unable to open file!");
-            $objects = $this->model_alm_datamining->iterateVarFile('sample');
-            foreach ($objects as $rowNumber => $row)//recorro los puntos de la muestra
-            {
-                // $d[$k]=array();
-                if(isset($row)&& !empty($row))
-                {
-                    $centroids = $this->model_alm_datamining->iterateVarFile('centers');
-                    $distanceRow = array();
-                    foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
-                    {
-                        if(isset($cRow)&& !empty($cRow))
-                        {
-                            $aux = $this->d($row, $cRow);
-                            $distanceRow[$rowNumber][$cRowNumber]=$aux;
-                        }
-                    }
-                    $newLine = json_encode($distanceRow, JSON_FORCE_OBJECT);//JSON_FORCE_OBJECT
-                    fwrite($distanceMatrix, $newLine."\n");
-                }
-                // print_r($distanceRow);
-                // die();
-            }
-            // fclose($myfile);
+//file version PART2
+            // $dir = "./uploads/engine/fuzzyPatterns/vars/";
+            // $distanceMatrix = fopen($dir."d", "w") or die("Unable to open file!");
+            // $objects = $this->model_alm_datamining->iterateVarFile('sample');
+            // foreach ($objects as $rowNumber => $row)//recorro los puntos de la muestra
+            // {
+            //     if(isset($row)&& !empty($row))
+            //     {
+            //         $centroids = $this->model_alm_datamining->iterateVarFile('centers');
+            //         $distanceRow = array();
+            //         foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
+            //         {
+            //             if(isset($cRow)&& !empty($cRow))
+            //             {
+            //                 $aux = $this->d($row, $cRow);
+            //                 $distanceRow[$rowNumber][$cRowNumber]=$aux;
+            //             }
+            //         }
+            //         $newLine = json_encode($distanceRow, JSON_FORCE_OBJECT);//JSON_FORCE_OBJECT
+            //         fwrite($distanceMatrix, $newLine."\n");
+            //     }
+            // }
+            // fclose($distanceMatrix);
+            /*
+            *    1)-. Memoria Usada: 4.5 mb
+                Tiempo de ciclo de ejecucion:1296.7541699409
+                4.43 mb
+            */
+//FIN de file version PART2
+
+            // $distance = $this->model_alm_datamining->iterateVarFile('d');
+            // foreach ($distance as $line)
+            // {
+            //     foreach ($line as $attr => $val)
+            //     {
+            //         foreach ($val as $n)
+            //         {
+            //             print_r($val);
+            //             echo "<br><br><br>";
+            //         }
+            //     }
+            // }
+
+
         echo ('1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
-        echo "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
+        echo "<br><strong>Tiempo de ciclo de ejecucion: ".time_units(microtime(true)-$start)." </strong><br>";
         print memory_units(memory_get_peak_usage());
         die('stop!');
             //consturccion de U: $u o matriz de membrecia
