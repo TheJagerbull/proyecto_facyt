@@ -697,15 +697,22 @@ class Model_alm_datamining extends CI_Model
 		$this->load->helper('file');
 		$dof = $this->get_dirOrFile($pointer);
 		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
-		$handler = fopen($myFile, 'r');
-		$length = 0;
-		while (!feof($handler))
+		if($this->var_exist($dof['subDir']))
 		{
-			$lines = fgets($handler);
-			$length++;
+			$handler = fopen($myFile, 'r');
+			$length = 0;
+			while (!feof($handler))
+			{
+				$lines = fgets($handler);
+				$length++;
+			}
+			fclose($handler);
+			return($length);
 		}
-		fclose($handler);
-		return($length);
+		else
+		{
+			return 0;
+		}
 	}
 	public function get_allData()//esta funcion debe recorrer la base de datos sobre las tablas pertinentes, para construir un archivo de objetos que se le suministrará al algoritmo, adicionalmente, debe construir un archivo de centroides a partir de los valores encontrados en los objetos
 	{

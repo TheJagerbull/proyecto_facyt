@@ -575,6 +575,7 @@ class Alm_datamining extends MX_Controller
         // }
         // $dimentions = array('n' => $n, 'c'=>$c);
 
+        $start = microtime(true);
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
             // if(isset($newCentroids) && !empty($newCentroids))
@@ -598,27 +599,37 @@ class Alm_datamining extends MX_Controller
             //     }
             // }
         // file version
-            $distance = $this->model_alm_datamining->varFileLength('d');
-            echo_pre($distance);
-        die('stop!');
-            $distanceMatrix = fopen("./uploads/engine/fuzzyPatterns/vars/d", "w") or die("Unable to open file!");
+            // $distance = $this->model_alm_datamining->varFileLength('d');
+            // echo_pre($distance);
+        // die('stop!');
+            $dir = "./uploads/engine/fuzzyPatterns/vars/";
+            $distanceMatrix = fopen($dir."d", "w") or die("Unable to open file!");
             $objects = $this->model_alm_datamining->iterateVarFile('sample');
             foreach ($objects as $rowNumber => $row)//recorro los puntos de la muestra
             {
                 // $d[$k]=array();
-                $centroids = $this->model_alm_datamining->iterateVarFile('centers');
-                $distanceRow = array();
-                foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
+                if(isset($row)&& !empty($row))
                 {
-                    $aux = $this->d($row, $cRow);
-                    $distanceRow[$rowNumber][$cRowNumber]=$aux;
+                    $centroids = $this->model_alm_datamining->iterateVarFile('centers');
+                    $distanceRow = array();
+                    foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
+                    {
+                        if(isset($cRow)&& !empty($cRow))
+                        {
+                            $aux = $this->d($row, $cRow);
+                            $distanceRow[$rowNumber][$cRowNumber]=$aux;
+                        }
+                    }
+                    $newLine = json_encode($distanceRow, JSON_FORCE_OBJECT);//JSON_FORCE_OBJECT
+                    fwrite($distanceMatrix, $newLine."\n");
                 }
-                $newLine = json_encode($distanceRow);//JSON_FORCE_OBJECT
-                fwrite($distanceMatrix, $newLine."\n");
                 // print_r($distanceRow);
                 // die();
             }
             // fclose($myfile);
+        echo ('1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
+        print memory_units(memory_get_peak_usage());
         die('stop!');
             //consturccion de U: $u o matriz de membrecia
             // $u= array();
