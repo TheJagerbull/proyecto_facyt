@@ -680,6 +680,26 @@ class Model_alm_datamining extends CI_Model
 			echo "no files deleted!";
 		}
 	}
+	public function getFileLine($file, $line)
+	{
+		$this->load->helper('file');
+		$dof = $this->get_dirOrFile($file);
+		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
+		$handler = fopen($myFile, 'r');
+		$lineCounter = 0;
+		while (!feof($handler))
+		{
+			$aux = json_decode(trim(fgets($handler)), true);
+			if($line==$lineCounter)
+			{
+				fclose($handler);
+				return $aux;
+			}
+			$lineCounter++;
+		}
+		return(-1);
+		fclose($handler);
+	}
 	public function iterateVarFile($pointer='')
 	{
 		$this->load->helper('file');
@@ -697,7 +717,7 @@ class Model_alm_datamining extends CI_Model
 		$this->load->helper('file');
 		$dof = $this->get_dirOrFile($pointer);
 		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
-		if($this->var_exist($dof['subDir']))
+		if($this->var_exist($dof['pointer']))
 		{
 			$handler = fopen($myFile, 'r');
 			$length = 0;
