@@ -803,14 +803,14 @@ class Model_alm_datamining extends CI_Model
 		$this->load->helper('file');
 		return(delete_files("./uploads/engine/fuzzyPatterns/vars/".$variable));
 	}
-	public function copy_data($original='', $copy='')//$original debe ser un directorio existente
+	public function copy_data($origin='', $destiny='')//$origin debe ser un directorio existente
 	{
 		$this->load->helper('directory');
 		$this->load->helper('file');
 		$dir = './uploads/engine/fuzzyPatterns/vars/';
 
-		$handlerOrigin = fopen($dir.$original, 'r');
-		$handlerCopy = fopen($dir.$copy, 'w');
+		$handlerOrigin = fopen($dir.$origin, 'r');
+		$handlerCopy = fopen($dir.$destiny, 'w');
 		stream_copy_to_stream($handlerOrigin, $handlerCopy);
 		fclose($handlerOrigin);
 		fclose($handlerCopy);
