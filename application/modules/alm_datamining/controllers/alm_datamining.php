@@ -512,7 +512,10 @@ class Alm_datamining extends MX_Controller
     }
     public function fcmFILEVARS($m='', $P='')//never finishes
     {
-        set_time_limit ( 18000 );
+        $start = microtime(true);
+        ini_set('memory_limit', '254217728');
+        // ini_set('memory_limit', '-1');
+        set_time_limit ( 36000 );
         // die_pre(time_units(1296.7541699409), __LINE__, __FILE__);
         // $msg = '';
         // $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
@@ -520,10 +523,15 @@ class Alm_datamining extends MX_Controller
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
+        echo "carga de datos:...<br>";
+        $start0 = microtime(true);
         if(!$this->model_alm_datamining->var_exist('sample') || !$this->model_alm_datamining->var_exist('centers'))
         {
             $sample = $this->model_alm_datamining->gather_sample();
         }
+        echo ('0)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
+        print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br>";
         //objetos deben venir de archivos o base de datos
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                         array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
@@ -578,57 +586,51 @@ class Alm_datamining extends MX_Controller
         //for file creating and saving as variables purposes
         $dir = "./uploads/engine/fuzzyPatterns/vars/";
         $start = microtime(true);
+        $objects = $this->model_alm_datamining->load_var('sample');
+        $centroids = $this->model_alm_datamining->load_var('centers');
+
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
-        //
-            // if(isset($newCentroids) && !empty($newCentroids))
-            // {
-            //     $centroids = $newCentroids;//READ
-            // }
-        //
 //file version PART1
+            echo "<br>remplazo de nuevos centros:...<br>";
+        $start0 = microtime(true);
             if($this->model_alm_datamining->var_exist('newCenters'))
             {
-                echo 'descomentar en la linea:'.__LINE__;
+                // echo 'descomentar en la linea:'.__LINE__.'<br>';
                 // $centroids = $newCentroids;//READ-WRITE
-                // $this->model_alm_datamining->copy_data('newCenters', 'centers');//READ-WRITE
+                $this->model_alm_datamining->copy_data('newCenters', 'centers');//READ-WRITE
             }
+        echo ('<br>1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<br><strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
+        print "<br><strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br>";
+
 //FIN de file version PART1
-        //
-            // $d=array();
-            // for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
-            // {
-            //     // $d[$k]=array();
-            //     for ($i=0; $i < $c; $i++)//recorre centroides
-            //     {
-            //         $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
-            //     }
-            // }
-        //
+
 //file version PART2
-        // $start = microtime(true);
-        //     //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
-        //     $distanceMatrix = fopen($dir."d", "w") or die("Unable to open file!");
-        //     $objects = $this->model_alm_datamining->iterateVarFile('sample');
-        //     foreach ($objects as $rowNumber => $row)//recorro los puntos de la muestra
-        //     {
-        //         if(isset($row)&& !empty($row))
-        //         {
-        //             $centroids = $this->model_alm_datamining->iterateVarFile('centers');
-        //             $distanceRow = array();
-        //             foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
-        //             {
-        //                 if(isset($cRow)&& !empty($cRow))
-        //                 {
-        //                     $aux = $this->d($row, $cRow);
-        //                     $distanceRow[$cRowNumber]=$aux;
-        //                 }
-        //             }
-        //             $newLine = json_encode($distanceRow);//JSON_FORCE_OBJECT
-        //             fwrite($distanceMatrix, $newLine."\n");
-        //         }
-        //     }
-        //     fclose($distanceMatrix);
+        echo "<br>construccion de matriz de distancias entre muestras y centros:...<br>";
+        $start0 = microtime(true);
+            //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
+            $distanceMatrix = fopen($dir."d", "w") or die("Unable to open file!");
+           // $objects = $this->model_alm_datamining->load_var('sample');
+            foreach ($objects as $rowNumber => $row)//recorro los puntos de la muestra
+            {
+                if(isset($row)&& !empty($row))
+                {
+                    //$centroids = $this->model_alm_datamining->iterateVarFile('centers');
+                    $distanceRow = array();
+                    foreach ($centroids as $cRowNumber => $cRow)//recorre centroides
+                    {
+                        if(isset($cRow)&& !empty($cRow))
+                        {
+                            $aux = $this->d($row, $cRow);
+                            $distanceRow[$cRowNumber]=$aux;
+                        }
+                    }
+                    $newLine = json_encode($distanceRow);//JSON_FORCE_OBJECT
+                    fwrite($distanceMatrix, $newLine."\n");
+                }
+            }
+            fclose($distanceMatrix);
             /*CPU 6cores 3.3GHz
             *    2)-. Memoria Usada: 4.5 mb
                 Tiempo de ciclo de ejecucion:1296.7541699409 => 21:36 minutes
@@ -649,142 +651,105 @@ class Alm_datamining extends MX_Controller
                 Tiempo de ciclo de ejecucion: 813.71073102951 => 13:33 minutes
                 Pico de uso de memoria en la ejecucion: 684.66 kb
             */
-        // echo ('2)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
-        // echo "<br><strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
-        // print "<br><strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage());
+            /*CPU 6Cores 3.21GHz
+            *   2)-. Memoria Usada: 84.5 mb
+                Tiempo de ciclo de ejecucion: 1229.9153468609 => 20:29 minutes
+                Pico de uso de memoria en la ejecucion: 84.31 mb
+            */
+        echo ('<br>2)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<br><strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
+        print "<br><strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br>";
+        // die('<br>line: '.__LINE__.' stop!</strong>');
 //FIN de file version PART2
-            //
-                //consturccion de U: $u o matriz de membrecia
-                // $u= array();
-                // $exp = 1/($m-1);
-                // for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
-                // {
-                //     // $u[$k] = array();
-                //     for ($i=0; $i < $c; $i++)//recorro los centroides
-                //     {
-                //         /*READ*/
-                //         $d1 = $this->model_alm_datamining->get_data('d['.$k.']['.$i.']', __LINE__);
-                //         if($d1==0)//de acuerdo a la funcion definida a trozos
-                //         {
-                //             $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', 1);
-                //         }
-                //         else
-                //         {
-                //             $aux = 0;
-                //             $flag = 0;
-                //             for ($j=0; $j < $c; $j++)//recorro los centroides (otra vez)
-                //             {
-                //                 /*READ*/
-                //                 $d2 = $this->model_alm_datamining->get_data('d['.$k.']['.$j.']', __LINE__);
-                //                 if(($d2==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
-                //                 {
-                //                     $flag = 1;
-                //                 }
-                //                 else
-                //                 {
-                //                     $aux+= pow($d1/$d2, $exp);
-                //                 }
-                //             }
-                //             if($flag==1)
-                //             {
-                //                 // $u[$k][$i] = 0;//WRITE
-                //                 $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', 0, __LINE__);
-                //             }
-                //             else
-                //             {
-                //                 // $u[$k][$i] = 1/$aux;//WRITE
-                //                 $this->model_alm_datamining->save_data('u['.$k.']['.$i.']', (1/$aux), __LINE__);
-                //             }
-                //         }
-                //     }
-                // }
-            //
+
 //file version PART3
-        // $start = microtime(true);
-        //     //consturccion de U: $u o matriz de membrecia
-        //     $membershipMatrix = fopen($dir."u", "w") or die("Unable to open file!");
-        //     $distanceMatrix = $this->model_alm_datamining->iterateVarFile('d');
-        //     $exp = 1/($m-1);
-        //     foreach ($distanceMatrix as $sample => $line)//recorro los puntos de la muestra(cada linea del archivo es una muestra)
-        //     {
-        //         if(isset($line)&& !empty($line))
-        //         {
-        //             $line2 = $line;//copio la linea, para uso de comparacion mas adelante...
-        //             if(isset($u))
-        //             {
-        //                 unset($u);
-        //             }
-        //             $u=array();
-        //             foreach ($line as $cluster => $d1)//recorro los centroides(cada columna, o atributo de la linea, es un cluster)
-        //             {
-        //                 if(isset($d1))
-        //                 {
-        //                     if($d1==0)
-        //                     {
-        //                         $u[$cluster]=1;
-        //                     }
-        //                     else
-        //                     {
-        //                         $aux = 0;
-        //                         $flag = 0;
-        //                         foreach ($line2 as $cluster2 => $d2)//recorro los centroides (otra vez, en paralelo)
-        //                         {
-        //                             if(($d2==0)&&($cluster!=$cluster2))
-        //                             {
-        //                                 $flag=1;
-        //                             }
-        //                             else
-        //                             {
-        //                                 $aux+= pow($d1/$d2, $exp);
-        //                             }
-        //                         }
-        //                         if($flag==1)
-        //                         {
-        //                             $u[$cluster] = 0;
-        //                         }
-        //                         else
-        //                         {
-        //                             $u[$cluster] = 1/$aux;
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //             if(count($u)!= 330)
-        //             {
-        //                 die('error!!! muestra: '.$sample.' cluster: '.$cluster);
-        //             }
-        //             $newLine = json_encode($u);
-        //             fwrite($membershipMatrix, $newLine."\n");
-        //         }
-        //         // if ($sample==3)
-        //         // {
-        //         //         fclose($membershipMatrix);
-        //         //         die_pre($u);
-                    
-        //         // }
-        //     }
-        //     fclose($membershipMatrix);
+        echo "<br>construccion de matriz de membrecia (porcentage representativo de las distancias entre las muestras con respectos a los centros):...<br>";
+        $start0 = microtime(true);
+            //consturccion de U: $u o matriz de membrecia
+            $membershipMatrix = fopen($dir."u", "w") or die("Unable to open file!");
+            $distanceMatrix = $this->model_alm_datamining->iterateVarFile('d');
+            $exp = 1/($m-1);
+            foreach ($distanceMatrix as $sample => $line)//recorro los puntos de la distancias entre muestra-centroide(cada linea del archivo es una muestra)
+            {
+                if(isset($line)&& !empty($line))
+                {
+                    $line2 = $line;//copio la linea, para uso de comparacion mas adelante...
+                    if(isset($u))
+                    {
+                        unset($u);
+                    }
+                    $u=array();
+                    foreach ($line as $cluster => $d1)//recorro los centroides(cada columna, o atributo de la linea, es un cluster)
+                    {
+                        if(isset($d1))
+                        {
+                            if($d1==0)
+                            {
+                                $u[$cluster]=1;
+                            }
+                            else
+                            {
+                                $aux = 0;
+                                $flag = 0;
+                                foreach ($line2 as $cluster2 => $d2)//recorro los centroides (otra vez, en paralelo)
+                                {
+                                    if(($d2==0)&&($cluster!=$cluster2))
+                                    {
+                                        $flag=1;
+                                    }
+                                    else
+                                    {
+                                        $aux+= pow($d1/$d2, $exp);
+                                    }
+                                }
+                                if($flag==1)
+                                {
+                                    $u[$cluster] = 0;
+                                }
+                                else
+                                {
+                                    $u[$cluster] = 1/$aux;
+                                }
+                            }
+                        }
+                    }
+                    if(count($u)!= 330)
+                    {
+                        die('error!!! muestra: '.$sample.' cluster: '.$cluster);
+                    }
+                    $newLine = json_encode($u);
+                    fwrite($membershipMatrix, $newLine."\n");
+                }
+            }
+            fclose($membershipMatrix);
             /*CPU 6Cores 3.21GHz
             *   3)-. Memoria Usada: 4.5 mb
                 Tiempo de ciclo de ejecucion: 578.32707810402 => 9:38 minutes
                 Pico de uso de memoria en la ejecucion: 4.45 mb 
             */
             /*CPU 2cores 2.53GHz
-            *    3)-. Memoria Usada: 768 kb
+            *   3)-. Memoria Usada: 768 kb
                 Tiempo de ciclo de ejecucion: 422.4248790741  => 7:2 minutes
                 Pico de uso de memoria en la ejecucion: 630.19 kb
             */
-        // echo ('3)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
-        // echo "<br><strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
-        // print "<br><strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage());
+
+            /*CPU 6Cores 3.21GHz
+            *   3)-. Memoria Usada: 84.5 mb
+                Tiempo de ciclo de ejecucion: 562.67018294334 => 0:9:22.670182943344minutes
+                Pico de uso de memoria en la ejecucion: 84.42 mb
+            */
+        echo ('<br>3)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
+        print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br>";
+        // die('line: '.__LINE__.' stop!</strong>');
 //FIN de file version PART3
 
 //file version PART4
-        $start = microtime(true);
+        echo "<br>desplazando los centroides a partir de centroides nuevos(creando nuevos centros)...<br>";
+        $start0 = microtime(true);
             $newCentroids = fopen($dir."newCenters", "w") or die("Unable to open file!");
-            $forCountingCenters = $this->model_alm_datamining->iterateVarFile('centers');
             $oneObject = json_decode(fgets(fopen($dir."sample", 'r')), true);//leo solo la primera linea de las muestras para usar como referencia
-            foreach ($forCountingCenters as $i => $ignore)//para recorrer los nuevos centroides
+            foreach ($centroids as $i => $ignore)//para recorrer los nuevos centroides
             {
                 if(isset($ignore))
                 {
@@ -793,14 +758,15 @@ class Alm_datamining extends MX_Controller
                     {
                         $membsumX[$key] = 0;
                     }
-                    $membershipMatrix = $this->model_alm_datamining->iterateVarFile('u');
+                    $membershipMatrix = $this->model_alm_datamining->iterateVarFile('u');//generador
                     foreach ($membershipMatrix as $k => $sample)
                     {
                         if(isset($sample))
                         {
                             $aux = pow($sample[$i], $m);
-                            $objectK = $this->model_alm_datamining->getFileLine('sample', $k);
-                            $auxVector = $this->multiply_vectors($objectK, $aux);
+                            // $objectK = $this->model_alm_datamining->getFileLine('sample', $k);
+                            // $auxVector = $this->multiply_vectors($objectK, $aux);
+                            $auxVector = $this->multiply_vectors($objects[$k], $aux);
                             $membsumX = add_vectors($membsumX, $auxVector);
                             $membSum += $aux;
                         }
@@ -819,63 +785,64 @@ class Alm_datamining extends MX_Controller
                 Tiempo de ciclo de ejecucion: 0:2:30.973231077194
                 Pico de uso de memoria en la ejecucion: 791.64 kb
             */
+            /*CPU 6Cores 3.21GHz
+            *   4)-. Memoria Usada: 84.75 mb
+                Tiempo de ciclo de ejecucion: 1290.0877890587 => 0:21:30.087789058685minutes
+                Pico de uso de memoria en la ejecucion: 84.68 mb
+            */
         echo ('4)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
-        echo "<br><strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." </strong><br>";
-        echo "<br><strong>Tiempo de ciclo de ejecucion: ".time_units(microtime(true)-$start)." </strong><br>";
-        print "<br><strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage());
-        die('<br>line: '.__LINE__.' stop!</strong>');
-
-            $newCentroids = array();
-
-            for ($i=0; $i < $c; $i++)//para los nuevos centroides
-            {
-                $membSum=0;
-                foreach( $objects[0] as $key => $value)//para inicializar el auxiliar de la suma
-                {
-                    $membsumX[$key]=0;
-                }
-                for ($k=0; $k < $n; $k++)
-                {
-                    // echo($u[$k][$i])."<br>";
-                    // echo()."<br>"; D-206978   23/06/2011  380,00  Boleta por Pagar    DVTT-PNB   QfneP6
-                    // $aux = pow($u[$k][$i], $m);//READ
-
-                    $uaux = $this->model_alm_datamining->get_data('u['.$k.']['.$i.']', __LINE__);
-                    $aux = pow($uaux, $m);//READ
-
-                    $auxVector = $this->multiply_vectors($objects[$k], $aux);//READ
-                    $membsumX = add_vectors($membsumX, $auxVector);
-                    $membSum += $aux;
-                }
-                $aux = (1/$membSum);
-                $newCentroids[$i]=$this->multiply_vectors($membsumX, $aux);
-            }
+        echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
+        print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage());
+        // die('line: '.__LINE__.' stop!</strong>');
 //FIN de file version PART4
+
+//file version PART5
 //////////////////voy por aqui
-            /*READ*/
             if($this->model_alm_datamining->var_exist('uk'))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
             {
+                echo "<br>calculando la \"distancia\" entre matriz de pertenencia de la iteracion actual, y la anterior ...<br>";
+                $start0 = microtime(true);
+                $u = $this->model_alm_datamining->iterateVarFile('u');
+                // $uk = $this->model_alm_datamining->load_var('uk');
+                $uk = $this->model_alm_datamining->load_var('uk');//para pruebas
                 $auxsqr=0;
-                for ($i=0; $i < $c; $i++)
+                foreach ($u as $pos => $row)
                 {
-                    for ($k=0; $k < $n; $k++)
+                    if(isset($row))
                     {
-                        // $aux = ($u[$k][$i]-$uk[$k][$i]);//READ
-                        $u = $this->model_alm_datamining->get_data('u['.$k.']['.$i.']', __LINE__);
-                        $uk = $this->model_alm_datamining->get_data('uk['.$k.']['.$i.']', __LINE__);
-                        $aux = ($u-$uk);//READ
-                        $auxsqr+=pow($aux, 2);
+                        foreach ($row as $column => $value)
+                        {
+                            $aux= ($value-$uk[$pos][$column]);
+                            $auxsqr+=pow($aux, 2);
+                        }
                     }
                 }
                 $error= sqrt($auxsqr);
-                // echo_pre($error, __LINE__, __FILE__);
+                echo ('6)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+                echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
+                print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br><br>";
             }
-            // $uk = $u;
             $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
+
+            /*CPU 6Cores 3.21GHz
+            *   5)-. Memoria Usada: 144.5 mb
+                Tiempo de ciclo de ejecucion: 2.8221609592438 => 0:2 minutes
+                Pico de uso de memoria en la ejecucion: 144.28 mb
+            */
+            // echo ('5)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+            // echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
+            // print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage());
+            // die('line: '.__LINE__.' stop!</strong>');
+//FIN de file version PART5
+            /*READ*/
             // $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
         }
-            die('WTF!!!!'.__LINE__);
+        echo "<br><br><br> total de iteraciones: ".$iteraciones."<br>";
+        echo ('6)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
+        print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br><br>";
+        die('line: '.__LINE__.' stop!</strong>');
 
 
         $this->model_alm_datamining->unset_var('uk');

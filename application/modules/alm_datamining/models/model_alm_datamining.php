@@ -680,6 +680,20 @@ class Model_alm_datamining extends CI_Model
 			echo "no files deleted!";
 		}
 	}
+	public function load_var($file)
+	{
+		$this->load->helper('file');
+		$dof = $this->get_dirOrFile($file);
+		$myFile = './uploads/engine/fuzzyPatterns/vars'.$dof['subDir'].'/'.$dof['pointer'];
+		$handler = fopen($myFile, 'r');
+		$line = [];
+		while (!feof($handler))
+		{
+			$line[] = json_decode(trim(fgets($handler)), true);
+		}
+		fclose($handler);
+		return($line);
+	}
 	public function getFileLine($file, $line)
 	{
 		$this->load->helper('file');
