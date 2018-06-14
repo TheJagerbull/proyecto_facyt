@@ -906,13 +906,17 @@ class Alm_datamining extends MX_Controller
     }
     public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `veces_solicitado`, SUM(`cant_solicitada`) AS `total_demanda`, SUM(`cant_aprobada`) AS `total_consumo` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `veces_solicitado` DESC LIMIT 10]
     {
+        $start = microtime(true);
+        ini_set('memory_limit', '254217728');
+        // ini_set('memory_limit', '-1');
         //Def del vector caracteristico: ^[i]{n}[c]{3}[f]{3}... donde "i" es un articulo de la tabla de "n" articulos del sistema, "c" es una clasificacion del codigo de las naciones unidas {segmento, familia, categoria}; y "f" corresponde a la fecha de la solicitud realizada, {dia, mes, año}
                                     //para el cuadrante "i", cada valor del vector, es la cantidad solicitada de ese articulo en la solicitud
                                     //para el cuadrante "c", cada valor es el numero del identificador de la categoria(puede cambiar y pasaría a ser mi, mj, mk; donde mi es la cantidad de segmentos, mj es la cantidad de familias, y mk es la cantidad de categorias)
                                     //para el cuadrante "f", cada valor es el dia, mes y año que corresponde con la fecha de solicitud.
         
         // die_pre(time_units(), __LINE__, __FILE__);
-        set_time_limit ( 1800 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
+        set_time_limit ( 36000 );
+        // set_time_limit ( 1800 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
         [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
@@ -950,11 +954,11 @@ class Alm_datamining extends MX_Controller
 
 
         /*U se compone de cada iteracion de $distanceMatrix, es decir U[m]= a la m-esimo iteracion de $distance Matrix*/
-        $msg = '';
+        // $msg = '';
         // echo "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
-        $msg .= "<h1> Ejecución de cluster difuzzo de C-medias: </h1> <br>";
+        // $msg .= "<h1> Ejecución de cluster difuzzo de C-medias: </h1> <br>";
         // echo "<h3> Fuzzy C-Means:</h3><br>";
-        $msg .= "<h3> Fuzzy C-Means:</h3><br>";
+        // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
         // $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
         $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
         // $m=1.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=378.16534996033 it=83
@@ -973,7 +977,7 @@ class Alm_datamining extends MX_Controller
         // $m=5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=657.42558193207 it=118
         // $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
-        $msg.="<br><strong>Parámetro de fuzzificación M:".$m."</strong><br><br>";
+        // $msg.="<br><strong>Parámetro de fuzzificación M:".$m."</strong><br><br>";
 
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
         // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
@@ -1079,10 +1083,13 @@ class Alm_datamining extends MX_Controller
             elige re-diseñar las operaciones para leer y escribir los resultados en archivo
         */
             $start = microtime(true);
-            $sample = $this->model_alm_datamining->get_allData();
+            
+            $objects = $this->model_alm_datamining->load_var('sample');
+            $centroids = $this->model_alm_datamining->load_var('centers');
+            // $sample = $this->model_alm_datamining->get_allData();
             // die_pre($sample, __LINE__, __FILE__);
-            $objects = $sample['objects'];
-            $centroids = $sample['centroids'];
+            // $objects = $sample['objects'];
+            // $centroids = $sample['centroids'];
         // $json['sample'] = $objects;
         // $files[] = $this->writeFile(json_encode(array('sample'=> $objects)), 'sample');
         // die_pre($files);
@@ -1118,7 +1125,7 @@ class Alm_datamining extends MX_Controller
             {
                 unset($d);
             }
-            echo '..distancia..';
+            // echo '..distancia..';
             //ORIGINAL
             $d=array();
             for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
@@ -1130,7 +1137,7 @@ class Alm_datamining extends MX_Controller
                     // $this->model_alm_datamining->save_data('d['.$k.']['.$i.']', $this->d($objects[$k], $centroids[$i]));
                 }
             }
-            echo '...fin de distancias';
+            // echo '...fin de distancias';
             // die_pre($d, __LINE__, __FILE__);
             //consturccion de U: $u o matriz de membrecia
             //ORIGINAL
@@ -1241,10 +1248,15 @@ class Alm_datamining extends MX_Controller
             $uk = $u;
             // $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
-            $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
+            // $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
             // echo ".";
-            $msg.= 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
+            // $msg.= 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
         }
+        echo "<br><br><br> total de iteraciones: ".$iterations."<br>";
+        echo ('6)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
+        print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br><br>";
+        die('line: '.__LINE__.' stop!</strong>');
         $msg.="<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
         // $json['iterations'] = $iterations;
         $files[] = $this->writeFile(json_encode(array( 'iterations' => $iterations)), 'iterations');
