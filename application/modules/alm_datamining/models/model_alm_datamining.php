@@ -689,7 +689,11 @@ class Model_alm_datamining extends CI_Model
 		$line = [];
 		while (!feof($handler))
 		{
-			$line[] = json_decode(trim(fgets($handler)), true);
+			$aux = json_decode(trim(fgets($handler)), true);
+			if(isset($aux))
+			{
+				$line[] = $aux;
+			}
 		}
 		fclose($handler);
 		return($line);

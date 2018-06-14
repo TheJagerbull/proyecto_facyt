@@ -314,119 +314,119 @@
   		    }
   		    function read_files()
   		    {
-    	      	$.ajax({//used for testings
-    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/centroides",
-    	      		cache: false,
-    	      		type:'POST',
-    	      		dataType:"json",
-    				// data: limits,
-    	      		success: function(data)
-    	      		{
-    	      			centers = data.centroides;
-	  		    		// console.log(data.centroides);i simply trust that everything will be okay, and "when my time comes, it will be, because it is my time to go", i try to make the best of things (even when i get mad at a situation or at someone), and trust that god has a plan, and me being alive or dead is part of it
-						var table = buildObjectArrayTable(data.centroides, false, true);
-						table.attr('class', 'table table-hover table-bordered dataTable');
-						$('#CentersContent').html('');
-						var log = $('<div>');//'<div class="error-log"><ul>';
-					    log.attr('class', 'error-log');
-					    var ul = $('<ul>');
-						var li = $('<li>');
-						li.append(table);
-					    ul.append(li);
-	      				log.append(ul);
-						$('#CentersContent').append(log);
-	      				audioFinish.play();
-					},
-					complete: function()
-					{
-		    	      	$.ajax({//used for testings
-		    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/distanceMatrix",
-		    	      		cache: false,
-		    	      		type:'POST',
-		    	      		dataType:"json",
-		    				// data: limits,
-		    	      		success: function(data)
-		    	      		{
-			  		    		// console.log(data.centroides);
-								var table = buildObjectArrayTable(data.distanceMatrix, true);
-								table.attr('class', 'table table-hover table-bordered dataTable');
-								$('#MatrixDContent').html('');
-								var log = $('<div>');//'<div class="error-log"><ul>';
-							    log.attr('class', 'error-log');
-							    var ul = $('<ul>');
-								var li = $('<li>');
-								li.append(table);
-							    ul.append(li);
-			      				log.append(ul);
-								$('#MatrixDContent').append(log);
-			      				audioFinish.play();
-							},
-							complete: function()
-							{
-				    	      	$.ajax({//used for testings
-				    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/membershipMatrix",
-				    	      		cache: false,
-				    	      		type:'POST',
-				    	      		dataType:"json",
-				    				// data: limits,
-				    	      		success: function(data)
-				    	      		{
-					  		    		// console.log(data.centroides);
-										var table = buildObjectArrayTable(data.membershipMatrix, true);
-										table.attr('class', 'table table-hover table-bordered dataTable');
-										$('#MatrixMContent').html('');
-										var log = $('<div>');//'<div class="error-log"><ul>';
-									    log.attr('class', 'error-log');
-									    var ul = $('<ul>');
-										var li = $('<li>');
-										li.append(table);
-									    ul.append(li);
-					      				log.append(ul);
-										$('#MatrixMContent').append(log);
-					      				audioFinish.play();
-									},
-									complete: function()
-									{
-						    	      	$.ajax({//used for testings
-						    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/sample",
-						    	      		cache: false,
-						    	      		type:'POST',
-						    	      		dataType:"json",
-						    				// data: limits,
-						    	      		success: function(data)
-						    	      		{
-							  		    		// console.log(data.centroides);
-							  		    		sample = data.sample;
-												var table = buildObjectArrayTable(data.sample, false);
-												table.attr('class', 'table table-hover table-bordered dataTable');
-												$('#SampleContent').html('');
-												var log = $('<div>');//'<div class="error-log"><ul>';
-											    log.attr('class', 'error-log');
-											    var ul = $('<ul>');
-												var li = $('<li>');
-												li.append(table);
-											    ul.append(li);
-							      				log.append(ul);
-												$('#SampleContent').append(log);
-							      				audioFinish.play();
-											},
-											complete: function()
-											{
+    	//       	$.ajax({//used for testings
+    	//       		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/centroides",
+    	//       		cache: false,
+    	//       		type:'POST',
+    	//       		dataType:"json",
+    	// 			// data: limits,
+    	//       		success: function(data)
+    	//       		{
+    	//       			centers = data.centroides;
+	  		//     		// console.log(data.centroides);i simply trust that everything will be okay, and "when my time comes, it will be, because it is my time to go", i try to make the best of things (even when i get mad at a situation or at someone), and trust that god has a plan, and me being alive or dead is part of it
+					// 	var table = buildObjectArrayTable(data.centroides, false, true);
+					// 	table.attr('class', 'table table-hover table-bordered dataTable');
+					// 	$('#CentersContent').html('');
+					// 	var log = $('<div>');//'<div class="error-log"><ul>';
+					//     log.attr('class', 'error-log');
+					//     var ul = $('<ul>');
+					// 	var li = $('<li>');
+					// 	li.append(table);
+					//     ul.append(li);
+	    //   				log.append(ul);
+					// 	$('#CentersContent').append(log);
+	    //   				audioFinish.play();
+					// },
+					// complete: function()
+					// {
+		   //  	      	$.ajax({//used for testings
+		   //  	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/distanceMatrix",
+		   //  	      		cache: false,
+		   //  	      		type:'POST',
+		   //  	      		dataType:"json",
+		   //  				// data: limits,
+		   //  	      		success: function(data)
+		   //  	      		{
+			  // 		    		// console.log(data.centroides);
+					// 			var table = buildObjectArrayTable(data.distanceMatrix, true);
+					// 			table.attr('class', 'table table-hover table-bordered dataTable');
+					// 			$('#MatrixDContent').html('');
+					// 			var log = $('<div>');//'<div class="error-log"><ul>';
+					// 		    log.attr('class', 'error-log');
+					// 		    var ul = $('<ul>');
+					// 			var li = $('<li>');
+					// 			li.append(table);
+					// 		    ul.append(li);
+			  //     				log.append(ul);
+					// 			$('#MatrixDContent').append(log);
+			  //     				audioFinish.play();
+					// 		},
+					// 		complete: function()
+					// 		{
+				 //    	      	$.ajax({//used for testings
+				 //    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/membershipMatrix",
+				 //    	      		cache: false,
+				 //    	      		type:'POST',
+				 //    	      		dataType:"json",
+				 //    				// data: limits,
+				 //    	      		success: function(data)
+				 //    	      		{
+					//   		    		// console.log(data.centroides);
+					// 					var table = buildObjectArrayTable(data.membershipMatrix, true);
+					// 					table.attr('class', 'table table-hover table-bordered dataTable');
+					// 					$('#MatrixMContent').html('');
+					// 					var log = $('<div>');//'<div class="error-log"><ul>';
+					// 				    log.attr('class', 'error-log');
+					// 				    var ul = $('<ul>');
+					// 					var li = $('<li>');
+					// 					li.append(table);
+					// 				    ul.append(li);
+					//       				log.append(ul);
+					// 					$('#MatrixMContent').append(log);
+					//       				audioFinish.play();
+					// 				},
+					// 				complete: function()
+					// 				{
+					// 	    	      	$.ajax({//used for testings
+					// 	    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/sample",
+					// 	    	      		cache: false,
+					// 	    	      		type:'POST',
+					// 	    	      		dataType:"json",
+					// 	    				// data: limits,
+					// 	    	      		success: function(data)
+					// 	    	      		{
+					// 		  		    		// console.log(data.centroides);
+					// 		  		    		sample = data.sample;
+					// 							var table = buildObjectArrayTable(data.sample, false);
+					// 							table.attr('class', 'table table-hover table-bordered dataTable');
+					// 							$('#SampleContent').html('');
+					// 							var log = $('<div>');//'<div class="error-log"><ul>';
+					// 						    log.attr('class', 'error-log');
+					// 						    var ul = $('<ul>');
+					// 							var li = $('<li>');
+					// 							li.append(table);
+					// 						    ul.append(li);
+					// 		      				log.append(ul);
+					// 							$('#SampleContent').append(log);
+					// 		      				audioFinish.play();
+					// 						},
+					// 						complete: function()
+					// 						{
 
-								    	      	$.ajax({//used for testings
-								    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/msg",
-								    	      		cache: false,
-								    	      		type:'POST',
-								    	      		dataType:"json",
-								    				// data: limits,
-								    	      		success: function(data)
-								    	      		{
-								    	      			$('#testPrints').html('');
-								    	      			print(data.msg, 'testPrints');
-									      				audioFinish.play();
-													},
-													complete: function()
-													{
+					// 			    	      	$.ajax({//used for testings
+					// 			    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/msg",
+					// 			    	      		cache: false,
+					// 			    	      		type:'POST',
+					// 			    	      		dataType:"json",
+					// 			    				// data: limits,
+					// 			    	      		success: function(data)
+					// 			    	      		{
+					// 			    	      			$('#testPrints').html('');
+					// 			    	      			print(data.msg, 'testPrints');
+					// 				      				audioFinish.play();
+					// 								},
+					// 								complete: function()
+													// {
 										    	      	$.ajax({//used for testings
 										    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/pattern1",
 										    	      		cache: false,
@@ -480,16 +480,16 @@
 												    	      	});
 															}
 										    	      	});
-													}
-								    	      	});
-											}
-						    	      	});
-									}
-				    	      	});
-							}
-		    	      	});
-					}
-    	      	});
+													// }
+					// 			    	      	});
+					// 						}
+					// 	    	      	});
+					// 				}
+				 //    	      	});
+					// 		}
+		   //  	      	});
+					// }
+    	//       	});
   		    }
   		    function evaluate()
   		    {
