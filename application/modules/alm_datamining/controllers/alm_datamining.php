@@ -600,7 +600,8 @@ class Alm_datamining extends MX_Controller
             {
                 // echo 'descomentar en la linea:'.__LINE__.'<br>';
                 // $centroids = $newCentroids;//READ-WRITE
-                $this->model_alm_datamining->copy_data('newCenters', 'centers');//READ-WRITE
+                // $this->model_alm_datamining->copy_data('newCenters', 'centers');//READ-WRITE
+                $centroids = $this->model_alm_datamining->load_var('newCenters');
             }
         echo ('1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
         echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
@@ -750,7 +751,7 @@ class Alm_datamining extends MX_Controller
         echo "<br>4)-. desplazando los centroides a partir de centroides nuevos(creando nuevos centros)...<br>";
         $start0 = microtime(true);
             $newCentroids = fopen($dir."newCenters", "w") or die("Unable to open file!");
-            $oneObject = json_decode(fgets(fopen($dir."sample", 'r')), true);//leo solo la primera linea de las muestras para usar como referencia
+            $oneObject = $objects[0]//leo solo la primera linea de las muestras para usar como referencia
             foreach ($centroids as $i => $ignore)//para recorrer los nuevos centroides
             {
                 if(isset($ignore))
@@ -826,7 +827,7 @@ class Alm_datamining extends MX_Controller
             }
             $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
-
+            echo "<br>error = ".$error;
             /*CPU 6Cores 3.21GHz
             *   5)-. Memoria Usada: 144.5 mb
                 Tiempo de ciclo de ejecucion: 2.8221609592438 => 0:2 minutes
@@ -907,7 +908,7 @@ class Alm_datamining extends MX_Controller
     public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `veces_solicitado`, SUM(`cant_solicitada`) AS `total_demanda`, SUM(`cant_aprobada`) AS `total_consumo` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `veces_solicitado` DESC LIMIT 10]
     {
         $start = microtime(true);
-        ini_set('memory_limit', '254217728');
+        ini_set('memory_limit', '511917728');
         // ini_set('memory_limit', '-1');
         //Def del vector caracteristico: ^[i]{n}[c]{3}[f]{3}... donde "i" es un articulo de la tabla de "n" articulos del sistema, "c" es una clasificacion del codigo de las naciones unidas {segmento, familia, categoria}; y "f" corresponde a la fecha de la solicitud realizada, {dia, mes, año}
                                     //para el cuadrante "i", cada valor del vector, es la cantidad solicitada de ese articulo en la solicitud
@@ -915,7 +916,7 @@ class Alm_datamining extends MX_Controller
                                     //para el cuadrante "f", cada valor es el dia, mes y año que corresponde con la fecha de solicitud.
         
         // die_pre(time_units(), __LINE__, __FILE__);
-        set_time_limit ( 36000 );
+        set_time_limit ( 360000 );
         // set_time_limit ( 1800 );//para el limite de tiempo de ejecucion (1500 segundos = 25 minutos)
         // die_pre("HELLO", __LINE__, __FILE__);
         /*Explicacion basica del objetivo de la funcion
@@ -960,9 +961,9 @@ class Alm_datamining extends MX_Controller
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
         // $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
-        $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
+        // $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
         // $m=1.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=378.16534996033 it=83
-        // $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
+        $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
         // $m=2.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=455.82271695137 it=99
         // $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=665.96932792664 it=119
         // $m=2.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=522.48389196396 it=110
@@ -981,24 +982,6 @@ class Alm_datamining extends MX_Controller
 
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
         // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
-        // $objects = array(array('x' => 12.0, 'y' => 3504.0),
-        //                 array('x' => 11.5, 'y' => 3693.0),
-        //                 array('x' => 11.0, 'y' => 3436.0),
-        //                 array('x' => 12.0, 'y' => 3433.0),
-        //                 array('x' => 10.5, 'y' => 3449.0),
-        //                 array('x' => 10.0, 'y' => 4341.0),
-        //                 array('x' => 9.0, 'y' => 4354.0),
-        //                 array('x' => 8.5, 'y' => 4312.0),
-        //                 array('x' => 10.0, 'y' => 4425.0),
-        //                 array('x' => 8.5, 'y' => 3850.0),
-        //                 array('x' => 10.0, 'y' => 3563.0),
-        //                 array('x' => 8.0, 'y' => 3609.0),
-        //                 array('x' => 9.5, 'y' => 3761.0),
-        //                 array('x' => 10.0, 'y' => 3086.0),
-        //                 array('x' => 15.0, 'y' => 2372.0),
-        //                 array('x' => 15.5, 'y' => 2833.0),
-        //                 array('x' => 15.5, 'y' => 2774.0),
-        //                 array('x' => 16.0, 'y' => 2587.0));
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                 array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
                                 array('x' => 11.0, 'y' => 3436.0, 'z'=> 15),
@@ -1034,19 +1017,6 @@ class Alm_datamining extends MX_Controller
         // $objects = $pack['data'];
         // $centroids = $this->notSoRandom_centroids($objects);
 
-
-        // $objects = array(array('x' =>0.58, 'y' =>0.33),
-        //                  array('x' =>0.90, 'y' =>0.11),
-        //                  array('x' =>0.68, 'y' =>0.17),
-        //                  array('x' =>0.11, 'y' =>0.44),
-        //                  array('x' =>0.47, 'y' =>0.81),
-        //                  array('x' =>0.24, 'y' =>0.83),
-        //                  array('x' =>0.09, 'y' =>0.18),
-        //                  array('x' =>0.82, 'y' =>0.11),
-        //                  array('x' =>0.65, 'y' =>0.50),
-        //                  array('x' =>0.09, 'y' =>0.63),
-        //                  array('x' =>0.98, 'y' =>0.24));
-        // echo_pre($objects);
         // 0.11, 0.44
         // 0.82, 0.11
         // $rand_centroids = array(array('x' =>0.11, 'y'=>0.44),
@@ -1195,12 +1165,11 @@ class Alm_datamining extends MX_Controller
             }
             // echo_pre($u, __LINE__, __FILE__);
             //ORIGINAL
-            $membershipMatrix = $u;
+            // $membershipMatrix = $u;
             if(isset($newCentroids))
             {
                 unset($newCentroids);
             }
-            
             //ORIGINAL
             $newCentroids = array();
             for ($i=0; $i < $c; $i++)//para los nuevos centroides
@@ -1243,15 +1212,19 @@ class Alm_datamining extends MX_Controller
                 }
                 $error= sqrt($auxsqr);
                 // echo_pre($error, __LINE__, __FILE__);
+                unset($uk);
             }
             //ORIGINAL
             $uk = $u;
             // $this->model_alm_datamining->copy_data('u', 'uk');
             $iterations++;
+            echo $iterations."<br>";
             // $msg.= 'Jm= '.$this->Jm($objects, $u, $centroids, $m).'<br>';
             // echo ".";
             // $msg.= 'Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
         }
+        $this->model_alm_datamining->save_data('FCM_MembershipMatrix', $u);
+        echo_pre($u, __LINE__, __FILE__);
         echo "<br><br><br> total de iteraciones: ".$iterations."<br>";
         echo ('6)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
         echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
