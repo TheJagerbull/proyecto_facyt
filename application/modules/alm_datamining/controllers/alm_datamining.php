@@ -751,7 +751,7 @@ class Alm_datamining extends MX_Controller
         echo "<br>4)-. desplazando los centroides a partir de centroides nuevos(creando nuevos centros)...<br>";
         $start0 = microtime(true);
             $newCentroids = fopen($dir."newCenters", "w") or die("Unable to open file!");
-            $oneObject = $objects[0]//leo solo la primera linea de las muestras para usar como referencia
+            $oneObject = $objects[0];//leo solo la primera linea de las muestras para usar como referencia
             foreach ($centroids as $i => $ignore)//para recorrer los nuevos centroides
             {
                 if(isset($ignore))
