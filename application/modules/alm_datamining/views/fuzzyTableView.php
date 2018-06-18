@@ -388,7 +388,7 @@
 					// 				complete: function()
 					// 				{
 					// 	    	      	$.ajax({//used for testings
-					// 	    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/json_files/sample",
+					// 	    	      		url: "<?php echo base_url() ?>uploads/engine/fuzzyPatterns/vars/sample",
 					// 	    	      		cache: false,
 					// 	    	      		type:'POST',
 					// 	    	      		dataType:"json",

@@ -515,7 +515,7 @@ class Alm_datamining extends MX_Controller
         $start = microtime(true);
         ini_set('memory_limit', '254217728');
         // ini_set('memory_limit', '-1');
-        set_time_limit ( 36000 );
+        set_time_limit ( 360000 );
         // die_pre(time_units(1296.7541699409), __LINE__, __FILE__);
         // $msg = '';
         // $msg .= "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
@@ -524,6 +524,7 @@ class Alm_datamining extends MX_Controller
         $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
+        $dir = "./uploads/engine/fuzzyPatterns/vars/";
         echo "m=".$m."...<br><br>";
         echo "carga de datos:...<br>";
         $start0 = microtime(true);
@@ -586,7 +587,6 @@ class Alm_datamining extends MX_Controller
         // }
         // $dimentions = array('n' => $n, 'c'=>$c);
         //for file creating and saving as variables purposes
-        $dir = "./uploads/engine/fuzzyPatterns/vars/";
         $start = microtime(true);
         $objects = $this->model_alm_datamining->load_var('sample');
         $centroids = $this->model_alm_datamining->load_var('centers');
@@ -716,10 +716,10 @@ class Alm_datamining extends MX_Controller
                             }
                         }
                     }
-                    if(count($u)!= 330)
-                    {
-                        die('error!!! muestra: '.$sample.' cluster: '.$cluster);
-                    }
+                    // if(count($u)!= 330)
+                    // {
+                    //     die('error!!! muestra: '.$sample.' cluster: '.$cluster);
+                    // }
                     $newLine = json_encode($u);
                     fwrite($membershipMatrix, $newLine."\n");
                 }
@@ -960,10 +960,10 @@ class Alm_datamining extends MX_Controller
         // $msg .= "<h1> Ejecución de cluster difuzzo de C-medias: </h1> <br>";
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
-        // $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
+        $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
         // $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
         // $m=1.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=378.16534996033 it=83
-        $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
+        // $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
         // $m=2.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=455.82271695137 it=99
         // $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=665.96932792664 it=119
         // $m=2.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=522.48389196396 it=110

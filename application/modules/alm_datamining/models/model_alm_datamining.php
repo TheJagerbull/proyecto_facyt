@@ -457,10 +457,10 @@ class Model_alm_datamining extends CI_Model
 		    $vectorCaracteristico = array();
 		    foreach ($query as $key => $value)
 		    {
-		    	if(!isset($vectorCaracteristico['art_'.$value['id_articulo']]))
-		    	{
-		    		$vectorCaracteristico['art_'.$value['id_articulo']] = 0;
-		    	}
+		    	// if(!isset($vectorCaracteristico['art_'.$value['id_articulo']]))
+		    	// {
+		    	// 	$vectorCaracteristico['art_'.$value['id_articulo']] = 0;
+		    	// }
 		    	$fecha = getdate($value['fecha']);
 		    	if(!isset($vectorCaracteristico['yday_'.$fecha['yday']]))
 		    	{
@@ -516,7 +516,7 @@ class Model_alm_datamining extends CI_Model
 		    foreach ($query as $key => $value)
 		    {
 		    	$aux = $vectorCaracteristico;//copia el vector caracteristico sobre una variable auxiliar que se indexara a la matriz de muestras
-		    	$aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];//el valor de la columna de articulo es la cantidad solicitada
+		    	// $aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];//el valor de la columna de articulo es la cantidad solicitada
 		    	$aux['yday_'.$fecha['yday']] = $value['id_articulo'];//indica que se pide un articulo en ese dia
 		    	$aux['year_'.$fecha['year']] = $value['id_articulo'];//indica que se pide un articulo en ese año
 		    	if(isset($dependencia)&& !empty($dependencia))
