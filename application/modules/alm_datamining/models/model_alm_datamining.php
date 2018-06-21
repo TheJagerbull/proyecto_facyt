@@ -455,21 +455,23 @@ class Model_alm_datamining extends CI_Model
 		    //construccion del vector caracteristico...
 		    //articulos, dia del año, y año...
 		    $vectorCaracteristico = array();
+		    $vectorCaracteristico['yday'] = 0;
+		    $vectorCaracteristico['year'] = 0;
 		    foreach ($query as $key => $value)
 		    {
 		    	// if(!isset($vectorCaracteristico['art_'.$value['id_articulo']]))
 		    	// {
 		    	// 	$vectorCaracteristico['art_'.$value['id_articulo']] = 0;
 		    	// }
-		    	$fecha = getdate($value['fecha']);
-		    	if(!isset($vectorCaracteristico['yday_'.$fecha['yday']]))
-		    	{
-		    		$vectorCaracteristico['yday_'.$fecha['yday']] = 0;
-		    	}
-		    	if(!isset($vectorCaracteristico['year_'.$fecha['year']]))
-		    	{
-		    		$vectorCaracteristico['year_'.$fecha['year']] = 0;
-		    	}
+		    	// $fecha = getdate($value['fecha']);
+		    	// if(!isset($vectorCaracteristico['yday_'.$fecha['yday']]))
+		    	// {
+		    	// 	$vectorCaracteristico['yday_'.$fecha['yday']] = 0;
+		    	// }
+		    	// if(!isset($vectorCaracteristico['year_'.$fecha['year']]))
+		    	// {
+		    	// 	$vectorCaracteristico['year_'.$fecha['year']] = 0;
+		    	// }
 		    }
 		    //FIN DE articulos, dia del año, y año...
 
@@ -517,18 +519,23 @@ class Model_alm_datamining extends CI_Model
 		    {
 		    	$aux = $vectorCaracteristico;//copia el vector caracteristico sobre una variable auxiliar que se indexara a la matriz de muestras
 		    	// $aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];//el valor de la columna de articulo es la cantidad solicitada
-		    	$aux['yday_'.$fecha['yday']] = $value['id_articulo'];//indica que se pide un articulo en ese dia
-		    	$aux['year_'.$fecha['year']] = $value['id_articulo'];//indica que se pide un articulo en ese año
-		    	if(isset($dependencia)&& !empty($dependencia))
-		    	{
-			    	$aux['dep_'.$value['id_dependencia']] = $value['id_articulo'];//indica que se pide un articulo en ese departamento
-			    }
-			    if(isset($categoria)&& !empty($categoria))
-			    {
-			    	$aux['se_'.$value['cod_segmento']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a ese segmento de categoria
-			    	$aux['fa_'.$value['cod_familia']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa familia de categoria
-			    	$aux['ca_'.$value['cod_categoria']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa categoria
-				}
+		    	$fecha = getdate($value['fecha']);
+		  //   	$aux['yday_'.$fecha['yday']] = $value['id_articulo'];//indica que se pide un articulo en ese dia
+		  //   	$aux['year_'.$fecha['year']] = $value['id_articulo'];//indica que se pide un articulo en ese año
+		  //   	if(isset($dependencia)&& !empty($dependencia))
+		  //   	{
+			 //    	$aux['dep_'.$value['id_dependencia']] = $value['id_articulo'];//indica que se pide un articulo en ese departamento
+			 //    }
+			 //    if(isset($categoria)&& !empty($categoria))
+			 //    {
+			 //    	$aux['se_'.$value['cod_segmento']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a ese segmento de categoria
+			 //    	$aux['fa_'.$value['cod_familia']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa familia de categoria
+			 //    	$aux['ca_'.$value['cod_categoria']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa categoria
+				// }
+
+			//borrable
+		    	$aux['yday'] = $fecha['yday'];
+		    	$aux['year'] = $fecha['year'];
 		    	$sample[$key] = $aux;
 		    }
 		    echo "size muestra: ".count($sample).'<br>';
@@ -536,7 +543,7 @@ class Model_alm_datamining extends CI_Model
 		    // echo_pre($sample);
 		    //fin de llenado de muestra
 
-		    //seleccion de centroides
+		    //seleccion de centroides (errado)
 		    $centers = array();
 		    foreach ($vectorCaracteristico as $key => $value)
 		    {
@@ -756,41 +763,41 @@ class Model_alm_datamining extends CI_Model
 	{
 
 		$start = microtime(true);
-		$length = $this->varFileLength('sample');
-		$variable = $this->iterateVarFile('sample');
+		// $length = $this->varFileLength('sample');
+		// $variable = $this->iterateVarFile('sample');
+		$this->gather_sample();
 		print memory_units(memory_get_peak_usage());
 		print '<br>Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>';
 		print "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
-		print "filas: ".$length."<br>";
+		// print "filas: ".$length."<br>";
 		// die();
-		// $this->gather_sample();
 
-		$start = microtime(true);
-		$buffer = '';
-		$i=0;
-		foreach ($variable as $key => $row)
-		{
-			if($i==1)
-			{
-				print_r($row);
-				die();
-			}
-			else
-			{
-				// print $row.'<br>';
-				// print_r($row);
-				// $line = json_decode($row, true);
-				foreach ($row as $attr => $value)
-				{
-					print '$row[$attr]: '.$row[$attr].'--';
-					print '$attr: '.$attr.':';
-					print '$value: '.$value;
-					print '<br>'.'<br>';
-				}
-			}
-			$i++;
-		}
-		print "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
+		// $start = microtime(true);
+		// $buffer = '';
+		// $i=0;
+		// foreach ($variable as $key => $row)
+		// {
+		// 	if($i==1)
+		// 	{
+		// 		print_r($row);
+		// 		die();
+		// 	}
+		// 	else
+		// 	{
+		// 		// print $row.'<br>';
+		// 		// print_r($row);
+		// 		// $line = json_decode($row, true);
+		// 		foreach ($row as $attr => $value)
+		// 		{
+		// 			print '$row[$attr]: '.$row[$attr].'--';
+		// 			print '$attr: '.$attr.':';
+		// 			print '$value: '.$value;
+		// 			print '<br>'.'<br>';
+		// 		}
+		// 	}
+		// 	$i++;
+		// }
+		// print "<br><strong>Tiempo de ciclo de ejecucion:".(microtime(true)-$start)."</strong><br>";
 		
 
 		return('done!');

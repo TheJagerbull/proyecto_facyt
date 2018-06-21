@@ -65,6 +65,36 @@ class Template extends MX_Controller
     {
         $this->load->view('template/erroracc.php');
     }
+    private function sendSMS($recipient='', $message='')
+    {
+        $to = $recipient."@sms.movistar.ve";
+        // $to = $recipient."@sms.movistar.net.ve";
+        $from = "SiSAI.facyt.uc.edu.ve";
+        if(!isset($message)||empty($message))
+        {
+            $message = "esto es una prueba del sistema para\navisos por mensaje de texto mobil\n";
+        }
+        $headers = "From: $from\n";
+        if(@mail($to, "", $message, $headers))
+        {
+            echo "enviado";
+        }
+        else
+        {
+            echo "nope!";
+        }
+    }
+    public function enviarMensaje()
+    {
+        if($this->input->post())
+        {
+            $this->sendSMS($this->input->post('numero'), $this->input->post('mensaje'));
+        }
+        else
+        {
+            echo "vacío";
+        }
+    }
     public function update_cart_session()
     {
         $uri = $this->input->post();

@@ -94,12 +94,35 @@ class Alm_datamining extends MX_Controller
         // $this->load->view('template/footer');
     }
 
-    public function validation_index($u, $centroids, $n)//$u matriz de membrecia, $centroids centroides, $n cantidad de puntos de la muestra
+    public function Dunn_PC($u, $K, $N)//de https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Fuzzy_Clustering.pdf pagina 2
+    {
+        $Fu = 0;
+        $sumK=0;
+        for ($k=0; $k < $K; $k++)
+        {
+            $sumN=0;
+            for ($i=0; $i < $N; $i++)
+            {
+                // $u[$i][$k]
+                $sumN+=pow($u[$i][$k], 2);
+            }
+            $sumK+=$sumN;
+        }
+        $Fu = ($sumK/$N);
+        $normalized = (($Fu - (1/$K))/(1-(1/$K)));//rango= de 0(completamente difuzzo) a 1(clusterizado rígido)
+        $string = 'Partición de coeficiente: '.$Fu.'<br>\n';
+        $string .= 'Partición de coeficiente(Normalizada): '.$normalized.'<br>\n';
+        // echo 'Partición de coeficiente: '.$Fu.'<br>\n Partición de coeficiente(Normalizada): '.$normalized.'<br>\n';
+        // die();
+        return($string);
+    }
+
+    public function validation_index($u, $c, $n)//$u matriz de membrecia, $centroids centroides, $n cantidad de puntos de la muestra
     {//extraido de: http://www.engineeringletters.com/issues_v20/issue_1/EL_20_1_08.pdf
     // - http://www2.math.cycu.edu.tw/TEACHER/MSYANG/yang-pdf/yang-n-28-cluster-validity.pdf
         $string='archivo: '.__FILE__.'<br>';
         $string.='Linea: '.__LINE__.'<br>';
-        $c = count($centroids);
+        // $c = count($centroids);
         $Impe=0;//primer termino para el indice de validacion de clusters del algoritmo (indice de la entropia de la particion)
         for ($i=0; $i < $c; $i++)
         {
@@ -110,7 +133,7 @@ class Alm_datamining extends MX_Controller
                 $Impe+= ($sumAux*$logAux);
             }
         }
-        $Impe = -1*($Impe/$n);
+        $Impe = (-1/$n)*$Impe;
         // echo_pre($Impe, __LINE__, __FILE__.'<br>Partition Entropy: ');//termino (13) del articulo EL_20_1_08.pdf pagina 2
         $string.='<br>Partition Entropy: '.$Impe;
         $M = array();//media de las particiones generadas por el algoritmo difuzo
@@ -122,9 +145,10 @@ class Alm_datamining extends MX_Controller
             {
                 for ($j=0; $j < $n; $j++)
                 {
-                    $M[$k]+=($u[$j][$i])/$n;//termino (15)
-                }//aqui quede
+                    $M[$k]+=($u[$j][$i]);//termino (15)
+                }
             }
+            $M[$k]=$M[$k]/$n;
         }
         // echo_pre($M, __LINE__, __FILE__);
 
@@ -960,10 +984,10 @@ class Alm_datamining extends MX_Controller
         // $msg .= "<h1> Ejecución de cluster difuzzo de C-medias: </h1> <br>";
         // echo "<h3> Fuzzy C-Means:</h3><br>";
         // $msg .= "<h3> Fuzzy C-Means:</h3><br>";
-        $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
+        // $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=243.7555141449 it=56
         // $m=1.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=317.18084597588 it=72
         // $m=1.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=378.16534996033 it=83
-        // $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
+        $m=2;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=933.02929210663 it=204
         // $m=2.25;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=455.82271695137 it=99
         // $m=2.5;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=665.96932792664 it=119
         // $m=2.75;//parametro de fuzzificacion //suministrado al llamar la funcion //debe ser mayor o igual a 1 t=522.48389196396 it=110
@@ -1052,6 +1076,10 @@ class Alm_datamining extends MX_Controller
             constantes o exponenciales en la BD es más lento que en archivo, así que se
             elige re-diseñar las operaciones para leer y escribir los resultados en archivo
         */
+        if(!$this->model_alm_datamining->var_exist('sample') || !$this->model_alm_datamining->var_exist('centers'))
+        {
+            echo ($this->model_alm_datamining->get_allData());
+        }
             $start = microtime(true);
             
             $objects = $this->model_alm_datamining->load_var('sample');
@@ -1227,6 +1255,12 @@ class Alm_datamining extends MX_Controller
         echo_pre($u, __LINE__, __FILE__);
         echo "<br><br><br> total de iteraciones: ".$iterations."<br>";
         echo ('6)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
+        echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
+        
+        $start = microtime(true);
+        echo ($this->Dunn_PC($u, $c, $n));
+        echo ($this->validation_index($u, $c, $n));
+        echo ('7)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
         echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start)." => ".time_units(microtime(true)-$start)."minutes </strong><br>";
         print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br><br>";
         die('line: '.__LINE__.' stop!</strong>');
