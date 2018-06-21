@@ -111,7 +111,7 @@ class Tic_solicitudes extends MX_Controller {
                 $view['edit_status']=0;
             }
             if ($this->dec_permiso->has_permission('tic', 15)) {
-                $view['resportes']=1;
+                $view['reportes']=1;
             }else{
                 $view['reportes']=0;
             }

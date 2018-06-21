@@ -338,7 +338,7 @@ if ($asig_per) {
                             <?php if ($anuladas) { ?> 
                                 <a href="<?php echo base_url() ?>tic_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
                             <?php } ?>
-                            <?php if ($reportes) { ?>     
+                            <?php if ($reportes) {  ?>     
                                 <a href="<?php echo base_url() ?>tic_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
                             <?php } ?>
                             <?php if ($crear || $crear_dep) { ?>     
