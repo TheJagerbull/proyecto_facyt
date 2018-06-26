@@ -450,12 +450,12 @@
                                                                                 endforeach;
                                                                                 echo '</td>';
                                                                                 };
-                                                                        }else {
-                                                                            echo '<td>';
-                                                                            foreach ($ayudantes as $ayu):
-                                                                                echo ($ayu) . '<br>';
-                                                                            endforeach;
-                                                                            echo '</td>';
+                                                                        }else {//correccion de variable vacía
+                                                                            // echo '<td>';
+                                                                            // foreach ($ayudantes as $ayu):
+                                                                            //     echo ($ayu) . '<br>';
+                                                                            // endforeach;
+                                                                            // echo '</td>';
                                                                         };
                                                                     ?> 
                                                                 </tr>
