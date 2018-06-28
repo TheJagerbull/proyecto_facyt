@@ -1561,6 +1561,7 @@ class Model_alm_articulos extends CI_Model
 		{
 			$this->load->module('dec_permiso');
 			$this->load->model('model_dec_permiso');
+			echo $this->dec_permiso->check_integrity();
 			if($this->dec_permiso->check_integrity())
 			{
 				echo('ALL GOOD!<br>');//todo en orden
@@ -1571,11 +1572,10 @@ class Model_alm_articulos extends CI_Model
 				$rows = count($all_permits);
 				foreach ($all_permits as $key => $value)
 				{
-					// echo $key.'.- ';
-					$aux = $this->dec_permiso->fix_permit($value['nivel']);
+					$adjust = substr($value['nivel'], 1).'0';
+					$aux = $this->dec_permiso->fix_permit($adjust);
 					$all_permits[$key]['nivel'] = $aux;
 				}
-				// echo_pre($all_permits);
 				$affected = $this->db->update_batch('dec_permiso', $all_permits, 'ID');
 				echo 'rows = '.$rows.' affected rows = '.$affected.'<br>';
 				if($rows == $affected)
