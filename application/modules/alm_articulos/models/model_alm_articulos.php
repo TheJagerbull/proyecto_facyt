@@ -1557,6 +1557,38 @@ class Model_alm_articulos extends CI_Model
 				echo_pre('El atributo `categoria` de `alm_articulo, ya fue removido de la BD');
 			}
 		}
+		if($fecha=='28-06-2018')//from binary to new crypt
+		{
+			$this->load->module('dec_permiso');
+			$this->load->model('model_dec_permiso');
+			if($this->dec_permiso->check_integrity())
+			{
+				echo('ALL GOOD!<br>');//todo en orden
+			}
+			else
+			{
+				$all_permits = $this->model_dec_permiso->get_dec_permiso();
+				$rows = count($all_permits);
+				foreach ($all_permits as $key => $value)
+				{
+					// echo $key.'.- ';
+					$aux = $this->dec_permiso->fix_permit($value['nivel']);
+					$all_permits[$key]['nivel'] = $aux;
+				}
+				// echo_pre($all_permits);
+				$affected = $this->db->update_batch('dec_permiso', $all_permits, 'ID');
+				echo 'rows = '.$rows.' affected rows = '.$affected.'<br>';
+				if($rows == $affected)
+				{
+					echo('DONE!<br>');
+				}
+				else
+				{
+					echo('error: rows = '.$rows.' affected rows = '.$affected.'<br>');
+				}
+				// die('faak!');
+			}
+		}
 
 	}
 

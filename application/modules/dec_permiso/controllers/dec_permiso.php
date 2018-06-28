@@ -11,6 +11,14 @@ Class Dec_permiso extends MX_Controller{
         $this->load->model('model_dec_permiso', 'model_permisos');
     }
     private $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+    public function check_integrity()
+    {
+        return(is_int($this->modules()));
+    }
+    public function fix_permit($binPermit)
+    {
+        return($this->Crypt($binPermit, $this->dominio));
+    }
     private function modules()//retorna la cantidad de modulos embebidos en el string de permisos
     {
         $permit = $this->deCrypt($this->model_permisos->get_permission('', true));

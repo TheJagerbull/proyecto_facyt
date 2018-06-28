@@ -191,6 +191,8 @@ header("Expires: 0"); // Proxies.
 										<i class="glyphicon glyphicon-console"></i> Corrección atributo[alm_pertenece.cod_categoria]<br>
 										<i class="glyphicon glyphicon-console"></i> Ajuste de tamaño para [*.cod_articulo][*.id_articulo][*.id_historial_a] - 22-03-2017</a>
 										</li>
+									<li><a href="<?php echo base_url() ?>alterDB/28-06-2018">
+									<i class="glyphicon glyphicon-console"></i> Alteraci&oacute;n de BD[dec_permiso] - {encriptado}28-06-2018</a></li>
 								<?php endif;?>
 							</ul>
 								</li>
