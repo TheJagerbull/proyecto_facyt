@@ -463,15 +463,15 @@ class Model_alm_datamining extends CI_Model
 		    	// {
 		    	// 	$vectorCaracteristico['art_'.$value['id_articulo']] = 0;
 		    	// }
-		    	// $fecha = getdate($value['fecha']);
-		    	// if(!isset($vectorCaracteristico['yday_'.$fecha['yday']]))
-		    	// {
-		    	// 	$vectorCaracteristico['yday_'.$fecha['yday']] = 0;
-		    	// }
-		    	// if(!isset($vectorCaracteristico['year_'.$fecha['year']]))
-		    	// {
-		    	// 	$vectorCaracteristico['year_'.$fecha['year']] = 0;
-		    	// }
+		    	$fecha = getdate($value['fecha']);
+		    	if(!isset($vectorCaracteristico['yday_'.$fecha['yday']]))
+		    	{
+		    		$vectorCaracteristico['yday_'.$fecha['yday']] = 0;
+		    	}
+		    	if(!isset($vectorCaracteristico['year_'.$fecha['year']]))
+		    	{
+		    		$vectorCaracteristico['year_'.$fecha['year']] = 0;
+		    	}
 		    }
 		    //FIN DE articulos, dia del año, y año...
 
@@ -520,8 +520,8 @@ class Model_alm_datamining extends CI_Model
 		    	$aux = $vectorCaracteristico;//copia el vector caracteristico sobre una variable auxiliar que se indexara a la matriz de muestras
 		    	// $aux['art_'.$value['id_articulo']] = $value['cant_solicitada'];//el valor de la columna de articulo es la cantidad solicitada
 		    	$fecha = getdate($value['fecha']);
-		  //   	$aux['yday_'.$fecha['yday']] = $value['id_articulo'];//indica que se pide un articulo en ese dia
-		  //   	$aux['year_'.$fecha['year']] = $value['id_articulo'];//indica que se pide un articulo en ese año
+		    	$aux['yday_'.$fecha['yday']] = $value['id_articulo'];//indica que se pide un articulo en ese dia
+		    	$aux['year_'.$fecha['year']] = $value['id_articulo'];//indica que se pide un articulo en ese año
 		  //   	if(isset($dependencia)&& !empty($dependencia))
 		  //   	{
 			 //    	$aux['dep_'.$value['id_dependencia']] = $value['id_articulo'];//indica que se pide un articulo en ese departamento
@@ -532,10 +532,6 @@ class Model_alm_datamining extends CI_Model
 			 //    	$aux['fa_'.$value['cod_familia']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa familia de categoria
 			 //    	$aux['ca_'.$value['cod_categoria']] = $value['id_articulo'];//indica que se pide un articulo perteneciente a esa categoria
 				// }
-
-			//borrable
-		    	$aux['yday'] = $fecha['yday'];
-		    	$aux['year'] = $fecha['year'];
 		    	$sample[$key] = $aux;
 		    }
 		    echo "size muestra: ".count($sample).'<br>';
@@ -808,15 +804,18 @@ class Model_alm_datamining extends CI_Model
 		
 		$dir = directory_map('./uploads/engine/fuzzyPatterns/vars/', 1);
 		$flag = 0;
-		foreach ($dir as $key => $value)
+		if(!empty($dir))
 		{
-			if($value==$variable)
+			foreach ($dir as $key => $value)
 			{
-				$flag+=1;
-			}
-			else
-			{
-				$flag+=0;
+				if($value==$variable)
+				{
+					$flag+=1;
+				}
+				else
+				{
+					$flag+=0;
+				}
 			}
 		}
 		// die_pre($flag, __LINE__, __FILE__);

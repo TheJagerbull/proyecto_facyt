@@ -559,6 +559,7 @@ class Alm_datamining extends MX_Controller
         echo ('0)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
         echo "<strong>Tiempo de ciclo de ejecucion: ".(microtime(true)-$start0)." => ".time_units(microtime(true)-$start0)."minutes </strong><br>";
         print "<strong>Pico de uso de memoria en la ejecucion: ".memory_units(memory_get_peak_usage())."<br>";
+        die();
         //objetos deben venir de archivos o base de datos
         $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
                                         array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
