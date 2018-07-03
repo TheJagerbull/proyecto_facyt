@@ -30,7 +30,7 @@ class Tic_miembros_cuadrilla extends MX_Controller {
         <!--<div class="col-md-12">-->
             <ul id="myTab2" class="nav nav-tabs" role="tablist">
 		<li class="active">
-                    <a href="#tabtable1<?php echo $num_sol ?>" role="tab" data-toggle="tab">Cuadrilla asignada</a>
+                    <a href="#tabtable1<?php echo $num_sol ?>" role="tab" data-toggle="tab">Grupo asignado</a>
 		</li>
 		<li>
                     <a href="#tabtable2<?php echo $num_sol ?>" role="tab" data-toggle="tab">Ayudantes asignados</a>

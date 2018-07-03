@@ -254,7 +254,7 @@ class Model_tic_cuadrilla extends CI_Model {
                 //die_pre($info);
                 $id_cuad = $info[0]['id'];
                 $cuadrilla = ($info[0]['cuadrilla']);
-                echo_pre($cuadrilla);
+                //echo_pre($cuadrilla);
                 if ($this->model_tipo->devuelve_id_tipo($cuadrilla)):
                     $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
                 else:

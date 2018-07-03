@@ -219,7 +219,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                                 <th>Creada</th>
                                 <th>Dependencia</th>
                                 <th>Asunto</th>
-                                <th><span title="Cuadrillas asignadas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
+                                <th><span title="Grupos de trabajo asignados"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th><span title="Ayudantes asignados"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 
                             </tr>
@@ -552,7 +552,7 @@ function mod_cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
                                 "<div class=\'well well-sm\'>"+ 
                                     "<div class=\'row\'>"+
                                         "<div class=\'col-md-12 text-center\'>"+
-                                            "<label>Jefe de cuadrilla:<\/label>" + ' '+
+                                            "<label>Encargado:<\/label>" + ' '+
                                             "<label name='respon' id='res" + sol + "'><\/label>"+
                                         "<\/div>"+
                                     "<\/div>"+
@@ -586,7 +586,7 @@ function mod_cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
                                             Modal = Modal+"<div class=\'col-md-12\'>" +
                                                 "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
                                                     "<label class=\'checkbox-inline\'>" +
-                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación" +
                                                     "<\/label>" +
                                                 "<\/div>" +
                                             "<\/div>"+

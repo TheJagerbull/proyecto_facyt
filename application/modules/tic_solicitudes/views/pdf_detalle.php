@@ -169,8 +169,8 @@
                     <table class="gridtable">    
                         <?php if ($tipo['id_estado'] != '1' || !empty($cuadrilla)) : ?>
                             <tr>    
-                                <th><strong>Cuadrilla</strong></th>
-                                <th><strong>Jefe de cuadrilla</strong></th>
+                                <th><strong>Grupo de trabajo</strong></th>
+                                <th><strong>Encargado</strong></th>
                                 <th><strong>Miembros</strong></th>
                                 <?php if (!empty($responsable['id_responsable'])): ?>
                                     <th><strong>Responsable de la orden</strong></th>

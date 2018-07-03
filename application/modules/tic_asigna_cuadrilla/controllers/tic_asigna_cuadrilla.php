@@ -46,7 +46,7 @@ class Tic_asigna_cuadrilla extends MX_Controller {
 
                   <input name="campo" id="campo" type="hidden" value="<?php echo htmlentities($to) ?>"
                  
-                <div align="center"><label for = "cuadrilla">Miembros de la cuadrilla seleccionada</label></div>
+                <div align="center"><label for = "cuadrilla">Miembros del Grupo seleccionado</label></div>
                 <table id="miembro<?php echo $num_sol ?>" name="miembro" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -64,7 +64,7 @@ class Tic_asigna_cuadrilla extends MX_Controller {
                 </table>
       <?php else:
                 ?>
-                <div class="alert alert-warning" style="text-align: center">No hay trabajadores en esta cuadrilla</div>
+                <div class="alert alert-warning" style="text-align: center">No hay trabajadores en este Grupo</div>
             <?php
             endif;
         endif;
@@ -350,7 +350,7 @@ class Tic_asigna_cuadrilla extends MX_Controller {
                     <thead>
                         <tr>
                             <!--<th></th>-->
-                            <th>Cuadrilla</th>
+                            <th>Grupo de Trabajo</th>
                             <th><div align="center">Orden</div></th>
                             <th><div align="center">Asignada</div></th>
                             <th><div align="center">Dependencia</div></th>

@@ -333,7 +333,7 @@ function edit_var(id)
     <h2 align="right">
         <!--<i class="fa fa-desktop color"></i>-->
         <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
-        Cuadrilla 
+        Grupo de trabajo
         <small> detalles</small>
     </h2>
         <hr /> 
@@ -349,10 +349,10 @@ function edit_var(id)
                 </div>
                 <div class="awidget-body">
                     <?php if ($this->session->flashdata('edit_item') == 'success') : ?>
-                        <div class="alert alert-success" style="text-align: center">La cuadrilla fue modificada con éxito</div>
+                        <div class="alert alert-success" style="text-align: center">El grupo fue modificado con éxito</div>
                     <?php endif ?>
                     <?php if ($this->session->flashdata('edit_item') == 'error') : ?>
-                        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la cuadrilla</div>
+                        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del grupo de trabajo</div>
                     <?php endif ?>
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
@@ -370,7 +370,7 @@ function edit_var(id)
                                     <p align="center"><strong><?php echo strtoupper($item['cuadrilla']) ?></strong></p>
                                 </div>
                                 <div class="panel-footer">
-                                    <p align="center"><strong>Jefe de cuadrilla:&nbsp;</strong>
+                                    <p align="center"><strong>Encargado:&nbsp;</strong>
                                     <?php echo $item['nombre'] ?></p>
                                 </div>
                             </div>
@@ -424,7 +424,7 @@ function edit_var(id)
             </div>
             <div class="modal-body">
             <div align="center">
-                <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
+                <div align="center"><h3>Agregar trabajadores al grupo</h3></div>
                     <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
                         <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" width="100%" >
                             <thead>
@@ -474,7 +474,7 @@ function edit_var(id)
                         </div>
                           <!-- SELECT RESPONSABLE -->
                         <div class="form-group">
-                            <label class="control-label col-lg-3" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
+                            <label class="control-label col-lg-3" for = "id_trabajador_responsable">Encargado:</label>
                                 <div class="col-lg-7"> 
                                     <select class="form-control" id = "id_trabajador_responsable" name="id_trabajador_responsable">
                                         <option></option>

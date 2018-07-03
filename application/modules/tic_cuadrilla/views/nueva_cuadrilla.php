@@ -13,8 +13,8 @@
       <h2 align="right">
             <!--<i class="fa fa-user color"></i>--> 
             <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
-            Nueva
-            <small> Cuadrilla </small>
+            Nuevo
+            <small> Grupo de trabajo </small>
       </h2> 
      <?php else : ?>
       <h2 align="center" class="alert-danger"><?php echo $error ?> </h2> 
@@ -58,10 +58,10 @@
       <div class="awidget full-width">
        
              <?php if($this->session->flashdata('new_cuadrilla') == 'success') : ?>
-              <div class="alert alert-success" style="text-align: center">La cuadrilla ha sido creada exitosamente.</div>
+              <div class="alert alert-success" style="text-align: center">El grupo de trabajo ha sido creado exitosamente.</div>
             <?php endif ?>
             <?php if($this->session->flashdata('new_cuadrilla') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Creación de la cuadrilla. Por favor, intentelo nuevamente</div>
+              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la creación del grupo de trabajo. Por favor, intentelo nuevamente</div>
             <?php endif ?>
         <div class="awidget-body">
              <i class="color">*  Campos Obligatorios</i>
@@ -77,14 +77,14 @@
                           <div class="form-group">
                             <label class="control-label col-lg-2" for="cuadrilla"> <i class="color">* </i>Nombre:</label>
                             <div class="col-lg-5">
-                              <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
+                              <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre del grupo de trabajo'>
                             </div>
                           </div>
                           <!-- SELECT RESPONSABLE -->
                           <?php $total = count($obreros);
                           ?>
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_trabajador_responsable"><i class="color">* </i>Jefe de cuadrilla:</label>
+                            <label class="control-label col-lg-2" for = "id_trabajador_responsable"><i class="color">* </i>Encargado:</label>
                                 <div class="col-lg-5"> 
                                     <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla,1)">
                                         <option></option>

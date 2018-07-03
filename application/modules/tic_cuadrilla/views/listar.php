@@ -35,7 +35,7 @@
         <h2 align="right">
             <!--<i class="fa fa-user color"></i>--> 
             <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
-            Cuadrillas
+            Grupos de trabajo
             <small> Seleccione el nombre para ver detalles</small>
         </h2> 
         <hr />
@@ -91,19 +91,19 @@
 
                 </div>
                 <?php if ($this->session->flashdata('create_item') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Cuadrilla creada con éxito</div>
+                    <div class="alert alert-success" style="text-align: center">Grupo de trabajo creado con éxito</div>
                 <?php endif ?>
                 <?php if ($this->session->flashdata('edit_item') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Cuadrilla modificada con éxito</div>
+                    <div class="alert alert-success" style="text-align: center">Grupo de trabajo modificado con éxito</div>
                 <?php endif ?>
                 <?php if ($this->session->flashdata('drop_item') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Cuadrilla eliminada con éxito</div>
+                    <div class="alert alert-success" style="text-align: center">Grupo eliminado con éxito</div>
                 <?php endif ?>
                 <?php if ($this->session->flashdata('drop_item') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema eliminando la cuadrilla</div>
+                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema eliminando al grupo de trabajo</div>
                 <?php endif ?>
                 <?php if ($this->session->flashdata('edit_item') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la cuadrilla</div>
+                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del Grupo de trabajo</div>
                 <?php endif ?>
 
                 <?php // if (empty($item)) : ?>
@@ -114,7 +114,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Jefe de cuadrilla</th>
+                                <th>Encargado del grupo</th>
                             </tr>
                         </thead>
                         <tbody>

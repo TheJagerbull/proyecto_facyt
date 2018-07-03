@@ -279,16 +279,16 @@ if ($asig_per) {
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">Cuadrilla asignada con éxito</div>
+        <div class="alert alert-success" style="text-align: center">Grupo de trabajo asignado con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'responsable') : ?>
         <div class="alert alert-success" style="text-align: center">Responsable de la orden modificado con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
-        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando el Grupo... Verifique los datos</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'quitar') : ?>
-        <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
+        <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar un Grupo de trabajo</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asign_help') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito</div>
@@ -415,7 +415,7 @@ if ($asig_per) {
                         <th>Asunto</th>
                         <th>Estatus</th>
                         <th>Estatus</th>
-                        <th><div align="center"><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></div></th>
+                        <th><div align="center"><span title="Asignar Grupos de trabajo"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></div></th>
                     <th><div align="center"><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></div></th>
                     </tr>
                     </thead>
@@ -436,7 +436,7 @@ if ($asig_per) {
         <div class="modal-content">
             <form class="form" action="'.base_url().'tic_asigna_cuadrilla/tic_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                 <div class="modal-header">
-                    <label class="modal-title">Asignar Cuadrilla</label>
+                    <label class="modal-title">Asignar Grupo de trabajo</label>
                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
                 </div>
                 <div class="modal-body">
@@ -458,7 +458,7 @@ if ($asig_per) {
 <!--                        </div>
                         <div class="row">-->
                             <div class="col-md-12">
-                                <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                <label class="control-label" for="cuadrilla">Grupo de trabajo</label>
 <!--                            </div>
                             <div class="col-md-12">-->
                                 <select class = "form-control input-sm" id = "cuadrilla_select" name="cuadrilla_select">
@@ -606,7 +606,7 @@ if ($asig_per) {
                     }
                 } else {
                                 $aux = $aux . '<div class="col-lg-12">
-                                                    <div class="alert alert-warning" style="text-align: center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
+                                                    <div class="alert alert-warning" style="text-align: center">No se puede asignar grupo de trabajo ya que un ayudante es responsable de la orden</div>
                                                 </div>';
                     }
             } else {
@@ -673,7 +673,7 @@ if ($asig_per) {
                                 "<div class=\'well well-sm\'>"+ 
                                     "<div class=\'row\'>"+
                                         "<div class=\'col-md-12 text-center\'>"+
-                                            "<label>Jefe de cuadrilla:<\/label>" + ' '+
+                                            "<label>Encargado:<\/label>" + ' '+
                                             "<label name='respon' id='res" + sol + "'><\/label>"+
                                         "<\/div>"+
                                     "<\/div>"+
@@ -707,7 +707,7 @@ if ($asig_per) {
                                             Modal = Modal+"<div class=\'col-md-12\'>" +
                                                 "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
                                                     "<label class=\'checkbox-inline\'>" +
-                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación" +
                                                     "<\/label>" +
                                                 "<\/div>" +
                                             "<\/div>"+

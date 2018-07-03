@@ -292,7 +292,7 @@ header("Expires: 0"); // Proxies.
 									</a>
 									<ul>
 										<?php if(!empty($TicAdministrarCuadrilla) && isset($TicAdministrarCuadrilla)):?>
-                                                                                      <li><a href="<?php echo base_url() ?>tic_cuadrilla">Cuadrillas</a></li>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_cuadrilla">Grupos de trabajo</a></li>
                                                                                 <?php endif;?>
 										<?php if(!empty($TicConsultarSolicitud) && isset($TicConsultarSolicitud)):?>
                                                                                       <li><a href="<?php echo base_url() ?>tic_solicitudes/lista_solicitudes">Solicitudes</a></li>

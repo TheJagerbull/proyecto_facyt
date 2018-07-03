@@ -152,16 +152,16 @@
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema al tratar de actualizar la foto</div>
     <?php endif ?>
      <?php if ($this->session->flashdata('asigna_cuadrilla') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">Cuadrilla asignada con éxito</div>
+        <div class="alert alert-success" style="text-align: center">Grupo de trabajo asignado con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'responsable') : ?>
         <div class="alert alert-success" style="text-align: center">Responsable de la orden modificado con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
-        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando el grupo... Verifique los datos</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'quitar') : ?>
-        <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
+        <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar un Grupo de trabajo</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asign_help') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito</div>
@@ -215,7 +215,7 @@
                                             <button class="btn btn-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Asignar personal <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                 <?php       if (!empty($tipo['cuadrilla'])): ?>
-                                              <?php $title = '<label class="modal-title">Asignar Cuadrilla</label>'
+                                              <?php $title = '<label class="modal-title">Asignar Grupo de trabajo</label>'
                                                               .'<span><i class="fa fa-users" aria-hidden="true"></i></span>';
                                                 $cuerpo = '<div class="row">'
                                                     .'<div class="col-md-12 text-center">'
@@ -245,11 +245,11 @@
 <!--                                                    <a onclick='cuad_asignada($("#responsable<?php echo($tipo['id_orden']) ?>"),($("#respon<?php echo($tipo['id_orden']) ?>")),<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, ($("#show_signed<?php echo $tipo['id_orden'] ?>")), ($("#otro<?php echo $tipo['id_orden'] ?>")),($("#mod_resp<?php echo $tipo['id_orden'] ?>")),1)' href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center">Cuadrilla</div></a>                           -->
                                                     <a onclick='mod_cuad_asignada(<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, <?php echo json_encode($title) ?>, <?php echo json_encode($cuerpo) ?>,<?php echo json_encode($footer) ?>,1,1)'>
-                                                    <div align="center">Cuadrilla</div></a>  
+                                                    <div align="center">Grupo de trabajo</div></a>  
                                                 </li>
                                 <?php       else:?>
                                                 <li><a href='#cua<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
-                                                    <div align="center">Cuadrilla</div></a>
+                                                    <div align="center">Grupo de trabajo</div></a>
                                                 </li>
                                       <?php endif; ?> 
                                             <!--<li class="divider" role="separador"></li>-->
@@ -603,7 +603,7 @@
                                                                 <tr>                                 
                                                                     <th><strong>Responsable</strong></th>
                                                                     <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
-                                                                        <th><strong>Cuadrilla</strong></th>
+                                                                        <th><strong>Grupo de trabajo</strong></th>
                                                                         <th><strong>Miembros</strong></th>
                                                                         <?php
                                                                         if (!empty($ayudantes)) {
@@ -935,7 +935,7 @@
         <div class="modal-content">
             <!--<form class="form" action="'.base_url().'tic_asigna_cuadrilla/tic_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">-->
                 <div class="modal-header">
-                    <label class="modal-title">Asignar Cuadrilla</label>
+                    <label class="modal-title">Asignar Grupo de trabajo</label>
                     <span><i class="fa fa-users" aria-hidden="true"></i></span>
                 </div>
                 <div class="modal-body">
@@ -962,7 +962,7 @@
                                         <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $tipo['id_orden']?>">
                                         <div class="row"> 
                                             <div class="col-md-12">
-                                                <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                                <label class="control-label" for="cuadrilla">Grupo de trbajo</label>
                                             </div>
                                             <div class="col-md-12">
                                                 <select class ="form-control input-sm select2" id = "cuadrilla_select<?php echo $tipo['id_orden']?>" name="cuadrilla_select" onchange="mostrar(this.form.num_sol,this.form.cuadrilla_select,this.form.responsable,$('#tab<?php echo $tipo['id_orden']?>'),'1')">
@@ -992,7 +992,7 @@
                             <div class="row">
                                 <br/>
                                 <div class="col-lg-12">
-                                    <div class="alert alert-warning" style="text-align:center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
+                                    <div class="alert alert-warning" style="text-align:center">No se puede asignar Grupo de trabajo ya que un ayudante es responsable de la orden</div>
                                 </div>
                             </div>
                 <?php endif;?>
@@ -1373,7 +1373,7 @@
                                 "<div class=\'well well-sm\'>"+ 
                                     "<div class=\'row\'>"+
                                         "<div class=\'col-md-12 text-center\'>"+
-                                            "<label>Jefe de cuadrilla:<\/label>" + ' '+
+                                            "<label>Encargado:<\/label>" + ' '+
                                             "<label name='respon' id='res" + sol + "'><\/label>"+
                                         "<\/div>"+
                                     "<\/div>"+
@@ -1407,7 +1407,7 @@
                                             Modal = Modal+"<div class=\'col-md-12\'>" +
                                                 "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
                                                     "<label class=\'checkbox-inline\'>" +
-                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación" +
                                                     "<\/label>" +
                                                 "<\/div>" +
                                             "<\/div>"+

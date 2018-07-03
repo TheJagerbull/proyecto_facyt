@@ -140,8 +140,8 @@ class Tic_cuadrilla extends MX_Controller {
     public function modificar_cuadrilla() {
         //if($this->session->userdata('item'))
         //{
-        echo_pre($_FILES);
-        die_pre($_POST);
+        //echo_pre($_FILES);
+        //die_pre($_POST);
         if ($_POST) {
             // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR 
             $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');

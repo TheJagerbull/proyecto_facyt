@@ -334,10 +334,10 @@ class Model_tic_solicitudes extends CI_Model {
             }
             //Mod construccion de modal para cuadrillas 06/03/2017 by jcparra
             if(empty($est) && !(isset($band))){
-                $title = "<label class=\'modal-title\'>Asignar Cuadrilla<\/label>"
+                $title = "<label class=\'modal-title\'>Asignar Grupo de trabajo<\/label>"
                         ."<span><i class=\'fa fa-users\' aria-hidden=\'true\'><\/i><\/span>";
             }else{
-                $title="<label class=\'modal-title\'>Cuadrilla Asignada<\/label>"
+                $title="<label class=\'modal-title\'>Grupo Asignado<\/label>"
                       ."<span><i class=\'fa fa-users\' aria-hidden=\'true\'><\/i><\/span>";
             }
             $cuerpo =   "<div class=\'row\' >"
@@ -364,7 +364,7 @@ class Model_tic_solicitudes extends CI_Model {
                                         ."<input type =\'hidden\' id=\'num_sol\' name=\'num_sol\' value=\'" . $sol['id_orden'] . "\'>"
                                                ." <div class=\'row\'>" 
                                                  ."   <div class=\'col-md-12\'>"
-                                                 ."       <label class=\'control-label\' for=\'cuadrilla\'>Cuadrilla<\/label>"
+                                                 ."       <label class=\'control-label\' for=\'cuadrilla\'>Grupo de trabajo<\/label>"
                                                   ."  <\/div>"
                                                    ." <div class=\'col-md-12\'>"
                                                        ."<select class = \'form-control input-sm select2\' onmousemove=\'sel(this.form.cuadrilla_select)\' id = \'cuadrilla_select".$sol['id_orden']."\' name=\'cuadrilla_select\' onchange=mostrar(this.form.num_sol,this.form.cuadrilla_select,this.form.responsable,$(\'#tab".$sol['id_orden']."\'),\'1\')>"
@@ -407,7 +407,7 @@ class Model_tic_solicitudes extends CI_Model {
                     $cuerpo .= "<div class=\'row\'>"
                                ."<br\/>"
                                ."<div class=\'col-lg-12\'>"
-                                    ."<div class=\'alert alert-warning\' style=\'text-align:center\'>No se puede asignar cuadrillas ya que un ayudante es responsable de la orden<\/div>"
+                                    ."<div class=\'alert alert-warning\' style=\'text-align:center\'>No se puede asignar grupos de trabajo ya que un ayudante es responsable de la orden<\/div>"
                                     ."<\/div>"
                                ."<\/div>";
                 }  
@@ -415,7 +415,7 @@ class Model_tic_solicitudes extends CI_Model {
                 if (empty($sol['cuadrilla'])){
                     $cuerpo.="<div class=\'row\'>"
                                 ."<div class=\'col-md-12\'>"
-                                    ."<div class=\'alert alert-info\' align=\'center\'><strong>¡No hay cuadrilla asignada a esta solicitud<\/strong><\/div>"
+                                    ."<div class=\'alert alert-info\' align=\'center\'><strong>¡No hay Grupo de trabajo asignado a esta solicitud<\/strong><\/div>"
                                 ."<\/div>"
                             ."<\/div>";
                 }
@@ -431,16 +431,16 @@ class Model_tic_solicitudes extends CI_Model {
         if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';  
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Grupo de trabajo asignado: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';  
             }
             else
             {
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel('. "'"."#cuadrilla_select".$sol['id_orden']."'".')"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel('. "'"."#cuadrilla_select".$sol['id_orden']."'".')"><div align="center">  <i title="Asignar Grupo de trabajo" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
             }
         }else{
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_cuad_asignada((' . "'".$sol['id_orden']."'" . '),(' . "'".$sol['id_cuadrilla']."'" . '), ('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_cuad_asignada((' . "'".$sol['id_orden']."'" . '),(' . "'".$sol['id_cuadrilla']."'" . '), ('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1)" ><div align="center"> <img title="Grupo asignado: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
             }
             else
             {

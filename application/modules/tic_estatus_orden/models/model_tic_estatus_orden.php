@@ -39,7 +39,7 @@ class Model_tic_estatus_orden extends CI_Model {
     }
     
     public function status_orden_calificadas($id_user=''){
-        echo_pre('Usuario:'.$id_user);
+        echo_pre(('Usuario:'.$id_user),__LINE__, __FILE__);
     }
 
 }
