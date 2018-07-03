@@ -2,7 +2,8 @@
 
       
       <!-- Logo & Navigation starts -->
-      
+  
+    
       <div class="header">
          <div class="container">
             <div class="row">
@@ -39,7 +40,7 @@
                      <div class="side-cont">
                         <ul class="nav">
                             <!-- Main menu -->
-                            <li><a href="#"><i class="fa fa-user"></i> <?php echo $user?></a></li>
+                            <li><a href="#"><i class="fa fa-user"></i> Usuario: <?php echo $username; ?></a></li>
                             <li class="current"><a href="#"><i class="fa fa-home"></i> Servicios</a></li>
                             <li><a href="#"><i class="fa fa-file"></i> Nosotros</a></li>
                             <li><a href="#"><i class="fa fa-sitemap"></i> Contactos</a></li>

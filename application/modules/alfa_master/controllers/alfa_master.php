@@ -37,29 +37,33 @@ class Alfa_master extends MX_Controller
             $rules->set_rules('username', 'Username', 'required|alpha_dash');
             $rules->set_rules('password', 'Password', 'required');
             
+            //Usuario
+            $user = $this->input->post('username');
+            $pass = $this->input->post('password');
+            $datos['username']=$user;
+            $datos['password']=$pass;
+               //   datos array con los datos de alfa;
+
             // Do the login...
             if($rules->run() && $this->auth_ldap->login($rules->set_value('username'),$rules->set_value('password'))){
                 // Login WIN!
 
+                //******* se chequea si esta o no su usuario en la base de datos de sisai*******
+                //------- se le debe pasar el username
+
+                if(!$this->existe_user('')){
+                  
+
+                }
+
                 if($this->session->userdata('username')){
-                    //echo_pre($this->session->all_userdata()); //imprime el array de la data
-                   // $this->load->view('template/header');
-                  $user = $this->input->post('username');
-                 
-                  echo $user;
-                  //consulta que exitan en bd
-                  $user = $this->model_usuario_alfa->existe_user($user);
-                  if($user){
-                   // permisos en la bd
-                    
-                  }else{
-                   // registrarlo
-                  }
+                //echo_pre($this->session->all_userdata()); //imprime el array de la data
+                  
                   $this->load->view('auth/header');
-                  $this->load->view('auth/home', $user);
+                  $this->load->view('auth/home', $datos);
                   $this->load->view('auth/footer');
-                   // $this->load->view('template/footer');
-                    //redirect('welcome_message');
+                  // $this->load->view('template/footer');
+                  //redirect('welcome_message');
                         
                 }else{
                     $this->load->view('template/error_404');
@@ -69,13 +73,18 @@ class Alfa_master extends MX_Controller
                $this->load->view('auth/login_form', array('login_fail_msg'=> 'Error with LDAP authentication.'));
             }
         }else {
-                // Already logged in...
-                //echo "ya estas registrado";
-          $user = $this->input->post('username');
-          $user = $this->input->post('username');
+
+           $user = $this->input->post('username');
+            $pass = $this->input->post('password');
+            $datos['username']=$user;
+            $datos['password']=$pass;
+
+                if($this->session->userdata('username')){
+
                   $this->load->view('auth/header');
-                  $this->load->view('auth/home');
+                  $this->load->view('auth/home', $datos);
                   $this->load->view('auth/footer');
+                }
         }
     }
 
