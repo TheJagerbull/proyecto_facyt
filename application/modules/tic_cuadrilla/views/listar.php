@@ -114,7 +114,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Encargado del grupo</th>
+                                <th>Encargado</th>
                             </tr>
                         </thead>
                         <tbody>
