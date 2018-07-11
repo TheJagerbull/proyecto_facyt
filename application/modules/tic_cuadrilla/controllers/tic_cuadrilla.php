@@ -458,7 +458,7 @@ class Tic_cuadrilla extends MX_Controller {
         foreach ($results  as $i=> $r):
 //            if ($this->dec_permiso->has_permission('tic',13) || $this->dec_permiso->has_permission('tic',15)): 
                 array_push($data, array(
-                    '<a href="'.base_url().'tic_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
+                    '<a href="'.base_url().'tic_grupo/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
                     $r->nombre
                 ));
 //            else:

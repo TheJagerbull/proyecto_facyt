@@ -37,7 +37,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         
-        <li class="active"><a href="<?php echo base_url() ?>tic_cuadrilla/crear">Agregar</a></li>
+        <li class="active"><a href="<?php echo base_url() ?>tic_grupo/crear">Agregar</a></li>
       
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
@@ -47,7 +47,7 @@
       </form>
         </ul>
        <ul class="nav navbar-form navbar-right">
-        <a href="<?php echo base_url() ?>tic_cuadrilla" class="btn btn-info" data-toggle="modal">Listar</a>
+        <a href="<?php echo base_url() ?>tic_grupos" class="btn btn-info" data-toggle="modal">Listar</a>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -67,7 +67,7 @@
              <i class="color">*  Campos Obligatorios</i>
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-          <form id="newuser" class="form-horizontal"  enctype="multipart/form-data" action="<?php echo base_url() ?>tic_cuadrilla/crear" onsubmit="return valida_cuadrilla()" method="post">
+          <form id="newuser" class="form-horizontal"  enctype="multipart/form-data" action="<?php echo base_url() ?>tic_grupo/crear" onsubmit="return valida_cuadrilla()" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_trabajador_responsable'); ?>
                                     <?php echo form_error('cuadrilla'); ?>

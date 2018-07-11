@@ -7,7 +7,7 @@
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             },
-            "ajax": "<?php echo base_url('tic_cuadrilla/lista'); ?>",
+            "ajax": "<?php echo base_url('tic_grupo/lista'); ?>",
              "bProcessing": true,
             "bDeferRender": true,
             responsive: true,
@@ -54,7 +54,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="<?php echo base_url() ?>tic_cuadrilla">Listar <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="<?php echo base_url() ?>tic_grupos">Listar <span class="sr-only">(current)</span></a></li>
                 </ul>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
@@ -64,7 +64,7 @@
                 </form>
                     <ul class="nav navbar-form navbar-right">
                         <?php if ($cuadrilla){?>
-                            <a href="<?php echo base_url() ?>tic_cuadrilla/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>tic_grupo/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
                         <?php } ?>
                     </ul>
                 

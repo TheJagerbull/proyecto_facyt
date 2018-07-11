@@ -25,7 +25,7 @@
         <div class="awidget-body">
           
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>tic_cuadrilla/modificar" method="post">
+                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>tic_grupo/modificar" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id'); ?>
                                     <?php echo form_error('cuadrilla'); ?>

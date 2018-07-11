@@ -233,11 +233,15 @@ $route['tic_solicitudes/detalles/(:num)']	    		                = 'tic_solicitud
 $route['tic_solicitudes/cerrada']                        			= 'tic_solicitudes/tic_solicitudes/listado_close';
 $route['tic_solicitudes/anulada']                                               = 'tic_solicitudes/tic_solicitudes/listado_null';
 
+//Routes para tic tipo de solicitudes
+$route['tic_tipos_solicitud']                                                    = 'tic_tipo/tic_tipo_orden/listar_tipo';
+$route['tipos']						                         = 'tic_tipo/tic_tipo_orden/list_tipo';
+
 //Routes para tic_cuadrillas
-$route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
-$route['tic_cuadrilla/lista'] 							= 'tic_cuadrilla/tic_cuadrilla/get_cuadrilla';
-$route['tic_cuadrilla/crear']                                                   = 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla';
-$route['tic_cuadrilla/detalle/(:num)']					        = 'tic_cuadrilla/tic_cuadrilla/detalle_cuadrilla/$1';
+$route['tic_grupos'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
+$route['tic_grupo/lista'] 							= 'tic_cuadrilla/tic_cuadrilla/get_cuadrilla';
+$route['tic_grupo/crear']                                                   = 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla';
+$route['tic_grupo/detalle/(:num)']					        = 'tic_cuadrilla/tic_cuadrilla/detalle_cuadrilla/$1';
 $route['tic_cuadrilla/responsable']                                             = 'tic_asigna_cuadrilla/tic_asigna_cuadrilla/get_responsable';
 $route['tic_cuadrilla/seleccionar']                                             = 'tic_responsable_orden/tic_responsable_orden/select_responsable';
 $route['tic_cuadrilla/mostrar']                                                 = 'tic_asigna_cuadrilla/tic_asigna_cuadrilla/mostrar_cuadrilla';
