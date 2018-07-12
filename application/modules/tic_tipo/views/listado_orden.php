@@ -23,6 +23,7 @@
                         "type": "GET"
                     },
                     "columns": [
+                        {"data": "id"},
                         {"data": "cuadrilla"},
                         {"data": "tipo_orden"}
                     ]
@@ -54,6 +55,7 @@
                 <table id="tipo_orden" class="table table-hover table-bordered table-condensed nowrap" cellspacing="0" align="center" width="100%">
                     <thead>
                         <tr>
+                            <th><div align="center"></div></th>
                             <th><div align="center">Grupo</div></th>
                             <th><div align="center">Tipo de Solicitud</div></th>
                     </thead>

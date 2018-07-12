@@ -56,7 +56,7 @@ class Model_tic_tipo_orden extends CI_Model {
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('id_tipo', 'tipo_orden');
+        $aColumns = array('id_tipo', 'pert_cuad' ,'tipo_orden');
 
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_tipo";
@@ -211,8 +211,9 @@ class Model_tic_tipo_orden extends CI_Model {
        
         foreach ($rResult->result_array() as $sol):
             $row = array();
-            $row['cuadrilla'] = '<div align="center">'.$sol['id_tipo'].'</div>';
-            $row['tipo_orden'] = $sol['tipo_orden'];
+            $row['id'] = '<div align="center">'.$sol['id_tipo'].'</div>';
+            $row['cuadrilla'] = '<div align="center">'.$sol['pert_cuad'].'</div>';
+            $row['tipo_orden'] = '<div align="center">'.$sol['tipo_orden'].'</div>';
            
             $output['data'][] = $row;
         endforeach;
