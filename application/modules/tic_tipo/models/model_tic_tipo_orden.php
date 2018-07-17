@@ -184,8 +184,11 @@ class Model_tic_tipo_orden extends CI_Model {
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
             else:
-                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $sWhere $sOrder $sLimit";
+            //    $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            // FROM $this->table $sJoin $sWhere $sOrder $sLimit";
+
+               $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $this->table $sWhere $sOrder $sLimit";
             endif;
             
         endif;
@@ -214,7 +217,7 @@ class Model_tic_tipo_orden extends CI_Model {
             $row['id'] = '<div align="center">'.$sol['id_tipo'].'</div>';
             $row['cuadrilla'] = '<div align="center">'.$sol['pert_cuad'].'</div>';
             $row['tipo_orden'] = '<div align="center">'.$sol['tipo_orden'].'</div>';
-           
+            $row['edit'] = '<div align="center"><a href="'.base_url().'tipo_orden/edit" class="btn btn-info btn-xs" title="Editar"><i class="fa fa-pencil"></i></a> <a href="'.base_url().'tipo_orden/erase" class="btn btn-danger btn-xs" title="Borrar"><i class="fa fa-trash-o"></i></a></div>';
             $output['data'][] = $row;
         endforeach;
         return $output; // Para retornar los datos al controlador

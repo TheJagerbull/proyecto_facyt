@@ -234,8 +234,10 @@ $route['tic_solicitudes/cerrada']                        			= 'tic_solicitudes/t
 $route['tic_solicitudes/anulada']                                               = 'tic_solicitudes/tic_solicitudes/listado_null';
 
 //Routes para tic tipo de solicitudes
-$route['tic_tipos_solicitud']                                                    = 'tic_tipo/tic_tipo_orden/listar_tipo';
-$route['tipos']						                         = 'tic_tipo/tic_tipo_orden/list_tipo';
+$route['tic_tipos_solicitud']                                     = 'tic_tipo/tic_tipo_orden/listar_tipo';
+$route['tipos']						                          = 'tic_tipo/tic_tipo_orden/list_tipo';
+$route['tipo_orden/add']                                      = 'tic_tipo/tic_tipo_orden/agregar';
+$route['tipo_orden/erase']                                      = 'tic_tipo/tic_tipo_orden/borrar';
 
 //Routes para tic_cuadrillas
 $route['tic_grupos'] 							= 'tic_cuadrilla/tic_cuadrilla/index';

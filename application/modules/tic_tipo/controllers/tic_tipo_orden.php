@@ -26,20 +26,20 @@ class Tic_tipo_orden extends MX_Controller{
         $this->load->model('tic_cuadrilla/model_tic_cuadrilla', 'model_tic_cuadrilla');
     }
 
-        public function listar_tipo(){
-            //if ($this->dec_permiso->has_permission('tic', 5) || $this->dec_permiso->has_permission('tic', 9) || $this->dec_permiso->has_permission('tic', 10) || $this->dec_permiso->has_permission('tic', 11) || $this->dec_permiso->has_permission('tic', 13) || $this->dec_permiso->has_permission('tic', 14) || $this->dec_permiso->has_permission('tic', 16) || $this->dec_permiso->has_permission('tic', 17)) 
-            //{           
-            
-            $header = $this->dec_permiso->load_permissionsView();
-            
-            $header['title'] = 'Tipos de Solicitud';
-                $this->load->view('template/header', $header);
-            //if(isset($view)){
-            //    $this->load->view('tic_solicitudes/solicitudes',$view);
-            //}else{
-                $this->load->view('tic_tipo/listado_orden');
-           // }
-            $this->load->view('template/footer');
+    public function listar_tipo(){
+        //if ($this->dec_permiso->has_permission('tic', 5) || $this->dec_permiso->has_permission('tic', 9) || $this->dec_permiso->has_permission('tic', 10) || $this->dec_permiso->has_permission('tic', 11) || $this->dec_permiso->has_permission('tic', 13) || $this->dec_permiso->has_permission('tic', 14) || $this->dec_permiso->has_permission('tic', 16) || $this->dec_permiso->has_permission('tic', 17)) 
+        //{           
+         
+        $header = $this->dec_permiso->load_permissionsView();
+          
+        $header['title'] = 'Tipos de Solicitud';
+        $this->load->view('template/header', $header);
+        //if(isset($view)){
+        //    $this->load->view('tic_solicitudes/solicitudes',$view);
+        //}else{
+            $this->load->view('tic_tipo/listado_orden');
+        // }
+        $this->load->view('template/footer');
         //}
         // else 
        // {
@@ -48,12 +48,20 @@ class Tic_tipo_orden extends MX_Controller{
        // }
         }
         
-        function list_tipo() { // Para crear la nueva tabla con los usuarios
+    function list_tipo() { // Para crear la nueva tabla con los usuarios
         //if ($this->session->userdata('user') && $this->hasPermissionClassA()) {
-            $results = $this->model_tipo->get_list(); //Va al modelo para tomar los datos para llenar el datatable
-            echo json_encode($results); //genera la salida de datos
-           
-        //}
+        $results = $this->model_tipo->get_list(); //Va al modelo para tomar los datos para llenar el datatable
+        echo json_encode($results); //genera la salida de datos
+       //}
     }
+
+    function agregar(){
+    	die_pre('Hola');
+    }
+
+    function borrar(){
+    	die_pre('Hola');
+    }
+
 
 }
