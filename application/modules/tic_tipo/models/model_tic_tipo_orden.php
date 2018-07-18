@@ -215,7 +215,7 @@ class Model_tic_tipo_orden extends CI_Model {
         foreach ($rResult->result_array() as $sol):
             $row = array();
             $row['id'] = '<div align="center">'.$sol['id_tipo'].'</div>';
-            $row['cuadrilla'] = '<div align="center">'.$sol['pert_cuad'].'</div>';
+            $row['cuadrilla'] = '<div align="center">'.strtoupper($sol['pert_cuad']).'</div>';
             $row['tipo_orden'] = '<div align="center">'.$sol['tipo_orden'].'</div>';
             $row['edit'] = '<div align="center"><a href="'.base_url().'tipo_orden/edit" class="btn btn-info btn-xs" title="Editar"><i class="fa fa-pencil"></i></a> <a href="'.base_url().'tipo_orden/erase" class="btn btn-danger btn-xs" title="Borrar"><i class="fa fa-trash-o"></i></a></div>';
             $output['data'][] = $row;

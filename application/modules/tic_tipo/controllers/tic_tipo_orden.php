@@ -28,17 +28,20 @@ class Tic_tipo_orden extends MX_Controller{
 
     public function listar_tipo(){
         //if ($this->dec_permiso->has_permission('tic', 5) || $this->dec_permiso->has_permission('tic', 9) || $this->dec_permiso->has_permission('tic', 10) || $this->dec_permiso->has_permission('tic', 11) || $this->dec_permiso->has_permission('tic', 13) || $this->dec_permiso->has_permission('tic', 14) || $this->dec_permiso->has_permission('tic', 16) || $this->dec_permiso->has_permission('tic', 17)) 
-        //{           
-         
+        //{    
+        if ($this->model_cuadrilla->get_cuadrillas()){
+        	$view['grupos'] = $this->model_cuadrilla->get_cuadrillas();
+        } 
+        //die_pre($view['grupos']);      
         $header = $this->dec_permiso->load_permissionsView();
           
         $header['title'] = 'Tipos de Solicitud';
         $this->load->view('template/header', $header);
-        //if(isset($view)){
-        //    $this->load->view('tic_solicitudes/solicitudes',$view);
-        //}else{
+        if(isset($view)){
+            $this->load->view('tic_tipo/listado_orden',$view);
+        }else{
             $this->load->view('tic_tipo/listado_orden');
-        // }
+        }
         $this->load->view('template/footer');
         //}
         // else 
@@ -56,12 +59,24 @@ class Tic_tipo_orden extends MX_Controller{
     }
 
     function agregar(){
-    	die_pre('Hola');
+    	if ($_POST){
+    		$cuadrilla = $_POST['grupo_select'];
+    		$tipo = $_POST['tipos'];
+    		$data = array(
+            	'pert_cuad' => $cuadrilla,
+                'tipo_orden' => $tipo);
+    		$this->model_tipo->set_tipo_orden($data);
+    		$this->session->set_flashdata('create_tipo', 'success');
+    		redirect(base_url() . $_POST['uri']);
+    	}
     }
 
     function borrar(){
     	die_pre('Hola');
     }
 
+    function edit(){
+    	die_pre('Hola');
+    }
 
 }

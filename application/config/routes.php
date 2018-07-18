@@ -238,6 +238,7 @@ $route['tic_tipos_solicitud']                                     = 'tic_tipo/ti
 $route['tipos']						                          = 'tic_tipo/tic_tipo_orden/list_tipo';
 $route['tipo_orden/add']                                      = 'tic_tipo/tic_tipo_orden/agregar';
 $route['tipo_orden/erase']                                      = 'tic_tipo/tic_tipo_orden/borrar';
+$route['tipo_orden/edit']                                     = 'tic_tipo/tic_tipo_orden/edit';
 
 //Routes para tic_cuadrillas
 $route['tic_grupos'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
