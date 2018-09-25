@@ -75,6 +75,7 @@
 											<hr>
 											<ul id="myTab" class="nav nav-tabs nav-justified">
 												<li class="active"><a href="#home" data-toggle="tab">Pruebas</a></li>
+												<li><a href="#Op" data-toggle="tab">Opciones</a></li>
 												<li><a href="#Sample" data-toggle="tab">Muestra</a></li>
 												<li><a href="#MatrixD" data-toggle="tab">Matriz de distancia</a></li>
 												<li><a href="#MatrixM" data-toggle="tab">Matriz de pertenencia</a></li>
@@ -106,6 +107,74 @@
 														</div>
 
 													</div>
+												</div>
+												<div id="Op" class="tab-pane fade">
+													<div id="OptionsContent" class="awidget-body">
+														<table>
+															<tr>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="a"/> a
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="b"/> b
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="c"/> c
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="d"/> d
+																		</label>
+																	</div>
+																</td>
+															</tr>
+
+															<tr>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="a"/> a
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="b"/> b
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="c"/> c
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="d"/> d
+																		</label>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+																						
 												</div>
 												<div id="Sample" class="tab-pane fade">
 													<div id="SampleContent" class="awidget-body">
@@ -143,7 +212,6 @@
 													</div>
 																						
 												</div>
-
 							            	</div>
 
 							        	</div>
@@ -179,6 +247,7 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
+    	console.log($('input[form="findPattern"]').length);//formulario para busqueda de patrones basado en inputs de usuario
     	// $("#loading").hide();
     	// $("#loading").show();
     	var sample;
