@@ -88,20 +88,6 @@
 											<div id="myTabContent" class="tab-content">
 												<div id="home" class="tab-pane fade in active">
 													<div id="homeContent" class="awidget-body">
-														<div class="controls-row">
-															<!-- <div class="control-group"> -->
-															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-																<div class="input-group">
-																		<span id="basic-addon1" class="input-group-addon">
-																				<i class="fa fa-calendar"></i>
-																		</span>
-																		<input class="form-control input-sm" name="fecha" id="date" readonly placeholder=" Búsqueda por Fechas" type="search">
-																</div>
-															</div>
-														</div>
-														<br>
-														<br>
-														<br>
 														<div id='testPrints' class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 														Pruebas.
 														</div>
@@ -110,33 +96,60 @@
 												</div>
 												<div id="Op" class="tab-pane fade">
 													<div id="OptionsContent" class="awidget-body">
+														<div class="controls-row">
+															<!-- <div class="control-group"> -->
+															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+																<div class="input-group">
+																		<span id="basic-addon1" class="input-group-addon">
+																				<i class="fa fa-calendar"></i>
+																		</span>
+																		<input class="form-control input-sm" name="fecha" id="date" readonly placeholder=" Búsqueda por Fechas" type="search" onClick="$(this).val(''); $('#unixTimeFrame').attr('from', ''); $('#unixTimeFrame').attr('to', '');">
+																		<input hidden form="findPattern" type="search" name="dateObject" id="unixTimeFrame" from="" to="">
+																</div>
+															</div>
+														</div>
+														<br>
+														<br>
 														<table>
 															<tr>
 																<td>
 																	<div class="form-check form-check-inline">
 																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="a"/> a
+																			a
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="a"/>
 																		</label>
 																	</div>
 																</td>
 																<td>
-																	<div class="form-check form-check-inline">
-																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="b"/> b
-																		</label>
-																	</div>
+																	|
 																</td>
 																<td>
 																	<div class="form-check form-check-inline">
 																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="c"/> c
+																			b
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="b"/>
 																		</label>
 																	</div>
 																</td>
 																<td>
+																|	
+																</td>
+																<td>
 																	<div class="form-check form-check-inline">
 																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="d"/> d
+																			c
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="c"/>
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	|
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			d
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="d"/>
 																		</label>
 																	</div>
 																</td>
@@ -146,33 +159,51 @@
 																<td>
 																	<div class="form-check form-check-inline">
 																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="a"/> a
+																			e
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="e"/>
 																		</label>
 																	</div>
 																</td>
 																<td>
-																	<div class="form-check form-check-inline">
-																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="b"/> b
-																		</label>
-																	</div>
+																	|
 																</td>
 																<td>
 																	<div class="form-check form-check-inline">
 																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="c"/> c
+																			f
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="f"/>
 																		</label>
 																	</div>
 																</td>
 																<td>
+																	|
+																</td>
+																<td>
 																	<div class="form-check form-check-inline">
 																		<label class="form-check-label">
-																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="d"/> d
+																			g
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="g"/>
+																		</label>
+																	</div>
+																</td>
+																<td>
+																	|
+																</td>
+																<td>
+																	<div class="form-check form-check-inline">
+																		<label class="form-check-label">
+																			h
+																			<input form="findPattern" class="form-check-input" type="checkbox" id="InlineCheckbox1" name="h"/>
 																		</label>
 																	</div>
 																</td>
 															</tr>
 														</table>
+														<br>
+														<div class="input-group btn-group">
+															<button id="patternSubmit" class="btn btn-xs btn-success">Submit</button>
+														</div>
+
 													</div>
 																						
 												</div>
@@ -247,7 +278,59 @@
     <script type="text/javascript" >
     $(document).ready(function()
     {
-    	console.log($('input[form="findPattern"]').length);//formulario para busqueda de patrones basado en inputs de usuario
+    	var limits;
+    	$('#patternSubmit').on("click", function(){
+    		var patternSubmit = [];
+    		console.log($('input[form="findPattern"]').length);//formulario para busqueda de patrones basado en inputs de usuario para enviar a 'inputLongTermParameters'
+    		
+			swal({
+				title:'Procesando...',
+				text:'Enviando parametros al servidor',
+				imageUrl: "<?php echo base_url() ?>assets/img/Loaders/gears.svg",
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+      		audioBegin.play();
+    		$('input[form="findPattern"]').each(function(){
+    			if($(this).attr('type')=='checkbox')
+    			{
+    				if($(this).is(':checked'))
+    				{
+    					patternSubmit.push($(this).attr('name'));
+    				}
+    			}
+    			if($(this).attr('type')=='search')
+    			{
+    				patternSubmit.push($(this).attr('from'));
+    				patternSubmit.push($(this).attr('to'));
+    				
+    			}
+    		});
+    		console.log(patternSubmit);
+	      	$.ajax({
+				url: "<?php echo base_url() ?>alm_datamining/inputLongTermParameters",
+				type: 'POST',
+				dataType: "json",
+				data: {'param': patternSubmit},
+				success: function (data)
+				{
+					audioFinish.play();
+					setTimeout(function(){audioDone.play();}, 3000);
+					// audioDone.play();
+					// console.log(data);
+					swal.closeModal();
+				},
+				error: function (msg)
+				{
+					swal.closeModal();
+					audioBad.play();
+					console.log(msg);
+				}
+			});
+    	});
+    	
     	// $("#loading").hide();
     	// $("#loading").show();
     	var sample;
@@ -257,7 +340,6 @@
     	var audioBegin = new Audio('<?php echo base_url() ?>assets/sounds/begin.wav');
     	var audioDone = new Audio('<?php echo base_url() ?>assets/sounds/done.mp3');
     	var audioFinish = new Audio('<?php echo base_url() ?>assets/sounds/finish.wav');
-    	var limits=0;
       	// $('#date span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
       	$('#date').daterangepicker({
 				format: 'DD/MM/YYYY',
@@ -284,7 +366,7 @@
 				buttonClasses: ['btn', 'btn-sm'],
 				applyClass: 'btn-primary',
 				cancelClass: 'btn-default',
-				separator: ' al ',
+				separator: ' - ',
 				locale: {
 						applyLabel: 'Listo',
 						cancelLabel: 'Cancelar',
@@ -297,10 +379,19 @@
 				}
 
 		}, function (start, end, label) {
+				// console.log(start.startOf('day'));
+				start = start.startOf('day')
+				console.log(start);
+				// console.log(end.endOf('day'));
+				end = end.endOf('day')
+				console.log(end);
 				var from = parseFloat(start._d.getTime()/1000).toFixed(0);
 				var to = parseFloat(end._d.getTime()/1000).toFixed(0);
-				console.log((from), (to), {'from': from, 'to': to});
-				limits = ({'from': from, 'to': to});
+				// console.log((from), (to), {'from': from, 'to': to});
+				// limits = ({'from': from, 'to': to});
+				$('#unixTimeFrame').attr('from', from);
+				$('#unixTimeFrame').attr('to', to);
+				// $('#unixTimeFrame').value(limits);
 				// $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 		});
 		// setTimeout(function(){

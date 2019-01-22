@@ -930,6 +930,10 @@ class Alm_datamining extends MX_Controller
         // echo_pre($centroides);
         // die_pre($result);
     }
+    public function inputLongTermParameters()
+    {
+        die_pre($this->input->get_post('param'));
+    }
     public function fcm($m='', $P='')//new version para ejecucion del CRON alm_datamining/fcm",[SELECT `id_articulo`, COUNT(`id_articulo`) AS `veces_solicitado`, SUM(`cant_solicitada`) AS `total_demanda`, SUM(`cant_aprobada`) AS `total_consumo` FROM `alm_art_en_solicitud` GROUP BY `id_articulo` ORDER BY `veces_solicitado` DESC LIMIT 10]
     {
         $start = microtime(true);

@@ -16,10 +16,11 @@ class Model_alm_datamining extends CI_Model
 		$this->db->select('cod_articulo, entrada, salida, nuevos + usados AS exist');
 		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
 		$this->db->join('alm_historial_a', 'alm_historial_a.id_historial_a=alm_genera_hist_a.id_historial_a');
+		// $this->db->where("");
 		$this->db->group_by(array('id_articulo', 'alm_genera_hist_a.ID', 'alm_historial_a.ID'));
 		$query = $this->db->get('alm_articulo')->result_array();
 		$aux=$query;
-		// echo_pre($query, __LINE__, __FILE__);
+		die_pre($query, __LINE__, __FILE__);
 		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
 		$query = array();
 		$cantExit=array();
@@ -448,6 +449,7 @@ class Model_alm_datamining extends CI_Model
 		    $this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.usuario_ej');
 		    $this->db->order_by('alm_art_en_solicitud.nr_solicitud', 'asc');
 		    $query = $this->db->get('alm_art_en_solicitud')->result_array();
+		    die_pre($query, __LINE__, __FILE__);
 		    // $query = $this->db->get('alm_art_en_solicitud')->result_array();
 		    echo ('1)-. Memoria Usada: '.memory_units(memory_get_usage(true)).'<br>');
 		    echo "size Query: ".count($query).'<br>';
